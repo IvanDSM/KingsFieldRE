@@ -19,7 +19,7 @@ private:
     bool loaded = false;
     static const size_t oddStructVectorSize = 320;
     static const size_t lvlDataVectorSize = 100;
-    static const size_t magicDataVectorSize = 63;
+    static const size_t magicDataVectorSize = 64;
     static const size_t weaponStatsVectorSize = 18;
     std::vector<KingsField80175914OddStruct> oddStructVector;
     std::vector<KingsFieldPlayerLvlData> lvlDataVector;

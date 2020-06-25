@@ -233,6 +233,26 @@ void FDAT28::loadFile(QString &fileName)
         magicDataVector.push_back(s);
     }
 
+    // Skip section 6
+    inStream >> sectionSize;
+    qInfo() << "Section 6 size:" << sectionSize;
+    inStream.skipRawData(sectionSize);
+
+    // Skip section 7
+    inStream >> sectionSize;
+    qInfo() << "Section 7 size:" << sectionSize;
+    inStream.skipRawData(sectionSize);
+
+    // Skip section 8
+    inStream >> sectionSize;
+    qInfo() << "Section 8 size:" << sectionSize;
+    inStream.skipRawData(sectionSize);
+
+    // Skip section 9
+    inStream >> sectionSize;
+    qInfo() << "Section 9 size:" << sectionSize;
+    inStream.skipRawData(sectionSize);
+
     inFile.close();
 
     loaded = true;
