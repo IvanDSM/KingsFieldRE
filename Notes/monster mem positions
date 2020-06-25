@@ -1,0 +1,62 @@
+// this is for figuring out the size of the monster structure
+// seems to be 7c
+// set bp at 8003ae38, attack monster, look at a0
+//
+fisher cave first headeater at 8016c5c0
+big green place headeater 1 at 8016c6b8
+save hall kraken 1 head at 8016c8a8
+fisher cave trap slime 2 at 8016ca1c
+crystal green place slime 1 at 8016ca98
+wooden door room west kraken head at 8016cd04
+save hall kraken 1 body at 8016d350
+waterfall cave skeleton 2 at 8016d448
+short sword bones kraken head at 8016d6b4
+short sword bones kraken head at 8016d730
+fountain slime at 8016dc84
+breast plate west kraken head at 8016dd7c
+breast plate west kraken body at 8016ddf8
+entrance kraken head at 8016df6c
+wooden door room west kraken body at 8016dfe8
+wooden door room northeast kraken head at 8016e064
+wooden door room northeast kraken body at 8016e1d8
+green place slime 3 at 8016e254
+breast plate east kraken head at 8016e5b8
+kraken boss head at 8016e6b0
+fisher cave trap slime 1 at 8016ec04
+kraken boss body at 8016e72c
+breast plate east kraken body at 8016e998
+fisher cave second headeater at 8016efe4
+gate green place headeater 2 at 8016f060
+fisher cave trap headeater at 8016f6ac
+fisher cave snail at 8016f820
+big green place headeater 4 at 8016f918
+pirate's map north skeleton at 8016fa10
+save hall kraken 2 head at 8016fb08
+save hall kraken 2 body at 8016fb84
+green place slime 4 at 8016f440
+save hall kraken 3 head at 80170154
+save hall kraken 3 body at 801701d0
+fountain skeleton at 80170a88
+big green place headeater 3 at 80170cf4
+fountain north kraken head at 80170d70
+fountain north kraken body at 80170dec
+waterfall cave skeleton 1 at 80170e68
+gate green place snail at 80170fdc
+gate green place headeater 1 at 80171150
+short sword kraken head at 80171248
+short sword kraken head at 801712c4
+green place left headeater at 80171436
+green place right headeater at 80171530
+green place slime 1 at 80171628
+green place slime 2 at 80171720
+pirate's map south skeleton at 8017198c
+nest kraken X body at 80171c74
+fountain west kraken head at 80171de8
+fountain west kraken body at 80171ee0
+entrance kraken body at 80171e64
+wooden door slime at 80172244
+green place slime 5 at 80172434
+crystal green place slime 1 at 801724b0
+big green place headeater 2 at 8017252c
+
+

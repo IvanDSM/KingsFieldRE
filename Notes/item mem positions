@@ -1,0 +1,59 @@
+// this is for figuring out the size of the object structure
+// seems to be 44?
+// set bp at 800489a4, look at v1
+//
+short sword herb at 80177c20
+pre-save kraken place herb at 80177ca8
+snail cave antidote at 80177e40
+lighthouse east herb at 80178060
+pirate's cave blah herb at 8017823c
+pirate's cave morning star at80178704
+fire crystal at 80178a34
+leather shield at 80178c54
+breast place at 80178efc
+lighthouse south herb at 801790d8
+fountain herb at 801795a0
+fountain entrace herb at 801795e4
+star gate at 8017966c
+pirate's cave crystal at 8017977c 	
+short sword at 80179914
+skull key at 80179958
+pirate's map at 80179b78
+entrance barrel iron mask at 80179eec
+green place crystal at 8017a0c8
+base no 1 herb at 8017a150
+pirate's cave skeleton moon stone at 8017a21c
+surprise soldiers crystal shard at 8017a2a4
+green place blood stone at 8017a370
+short sword crystal at 8017a508
+pirate's cave moon stone at 8017a5d4
+pirate's cave grave blood stone at 8017a6a0
+pirate's cave dagger at 8017a618
+pirate's cave blah antidote at 8017a6e4
+pirate's cave blah antidote 2 at 8017a728
+pirate's cave verdite at 8017a87c
+pirate's cave herb at 8017a904
+knight sword at 8017a948
+entrance barrel herb at 8017ab24
+fisher earth herb at 8017ac34
+kraken boss dragon crystal at 8017ac78
+base no 1 rhombus key at 8017ad44
+harvine crystal flask at 8017ae54
+secret soldier light crystal at 8017b294
+no name village bones crystal shard at 8017b75c
+wind crystal at 8017b9c0
+north village entrance herb at 8017ba8c
+jail front of sandler herb 2 at 8017c174
+soldier snail cave rhombus key at 8017c2c8
+jail front of sandler herb at 8017c284
+iron boots at 8017c680
+soldier cave bones rhombus key at 8017cac0
+duplicate keys crystal shard at 8017cc58
+surprise soldiers secret crystal at 8017cc9c
+surprise soldiers secret crystal at 8017cdf0
+north village hidden herb at 8017ce78
+jail thingie secret rhombus key 8017d384
+sandle dragon stone at 8017d40c
+!!skeleton drop blood stone at 8017d95c
+surprise soldiers rhombus key at 8017dc48
+taking rhombus key out of some hole at 8017dd14

@@ -1,0 +1,1193 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>800</width>
+    <height>600</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>MainWindow</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <layout class="QGridLayout" name="gridLayout">
+    <item row="1" column="3">
+     <widget class="QGroupBox" name="groupUnk5">
+      <property name="enabled">
+       <bool>false</bool>
+      </property>
+      <property name="title">
+       <string>??? (800fb014)</string>
+      </property>
+     </widget>
+    </item>
+    <item row="1" column="2">
+     <widget class="QGroupBox" name="groupUnk4">
+      <property name="enabled">
+       <bool>false</bool>
+      </property>
+      <property name="title">
+       <string>??? (801989d8)</string>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="0">
+     <widget class="QGroupBox" name="groupGodOnlyKnows">
+      <property name="title">
+       <string>GodOnlyKnows (80175914)</string>
+      </property>
+      <layout class="QVBoxLayout" name="verticalLayout_3">
+       <item>
+        <widget class="QWidget" name="widgetGOKControl" native="true">
+         <layout class="QHBoxLayout" name="horizontalLayout_2">
+          <item>
+           <widget class="QLabel" name="labelGOKIndex">
+            <property name="text">
+             <string>Index:</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QSpinBox" name="spinGOKIndex"/>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item>
+        <widget class="QTableWidget" name="tableGOKData">
+         <property name="editTriggers">
+          <set>QAbstractItemView::NoEditTriggers</set>
+         </property>
+         <row>
+          <property name="text">
+           <string>Unknown 0x00</string>
+          </property>
+         </row>
+         <row>
+          <property name="text">
+           <string>SomeType</string>
+          </property>
+         </row>
+         <row>
+          <property name="text">
+           <string>Unknown 0x02</string>
+          </property>
+         </row>
+         <row>
+          <property name="text">
+           <string>Unknown 0x03</string>
+          </property>
+         </row>
+         <row>
+          <property name="text">
+           <string>Unknown 0x04</string>
+          </property>
+         </row>
+         <row>
+          <property name="text">
+           <string>Unknown 0x05</string>
+          </property>
+         </row>
+         <row>
+          <property name="text">
+           <string>Unknown 0x06</string>
+          </property>
+         </row>
+         <row>
+          <property name="text">
+           <string>Unknown 0x07</string>
+          </property>
+         </row>
+         <row>
+          <property name="text">
+           <string>Unknown 0x08</string>
+          </property>
+         </row>
+         <row>
+          <property name="text">
+           <string>Unknown 0x09</string>
+          </property>
+         </row>
+         <row>
+          <property name="text">
+           <string>Unknown 0x0A</string>
+          </property>
+         </row>
+         <row>
+          <property name="text">
+           <string>Unknown 0x0B</string>
+          </property>
+         </row>
+         <row>
+          <property name="text">
+           <string>Unknown 0x0C</string>
+          </property>
+         </row>
+         <row>
+          <property name="text">
+           <string>Unknown 0x0D</string>
+          </property>
+         </row>
+         <row>
+          <property name="text">
+           <string>Unknown 0x0E</string>
+          </property>
+         </row>
+         <row>
+          <property name="text">
+           <string>Unknown 0x0F</string>
+          </property>
+         </row>
+         <row>
+          <property name="text">
+           <string>Unknown 0x10</string>
+          </property>
+         </row>
+         <row>
+          <property name="text">
+           <string>Unknown 0x11</string>
+          </property>
+         </row>
+         <row>
+          <property name="text">
+           <string>Unknown 0x12</string>
+          </property>
+         </row>
+         <row>
+          <property name="text">
+           <string>Unknown 0x13</string>
+          </property>
+         </row>
+         <row>
+          <property name="text">
+           <string>Unknown 0x14</string>
+          </property>
+         </row>
+         <row>
+          <property name="text">
+           <string>Unknown 0x15</string>
+          </property>
+         </row>
+         <row>
+          <property name="text">
+           <string>Unknown 0x16</string>
+          </property>
+         </row>
+         <row>
+          <property name="text">
+           <string>Unknown 0x17</string>
+          </property>
+         </row>
+         <column>
+          <property name="text">
+           <string>Value</string>
+          </property>
+         </column>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+    </item>
+    <item row="2" column="0">
+     <widget class="QGroupBox" name="groupUnk6">
+      <property name="enabled">
+       <bool>false</bool>
+      </property>
+      <property name="title">
+       <string>??? (800864e4)</string>
+      </property>
+     </widget>
+    </item>
+    <item row="1" column="0">
+     <widget class="QGroupBox" name="groupMagic">
+      <property name="title">
+       <string>Magic Data (8019c5ec)</string>
+      </property>
+      <layout class="QVBoxLayout" name="verticalLayout_2">
+       <item>
+        <widget class="QComboBox" name="comboMagic">
+         <item>
+          <property name="text">
+           <string>0 (0x00) Waterfall</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>1 (0x01) Stone</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>2 (0x02) Earth Wave</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>3 (0x03) Meteor</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>4 (0x04) Wind Cutter</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>5 (0x05) Ice Storm</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>6 (0x06) Freeze</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>7 (0x07) Fire Ball</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>8 (0x08) Fire Wall</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>9 (0x09) Fire Storm</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>10 (0x0A) Flame</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>11 (0x0B) Lightning Volt</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>12 (0x0C) Flash</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>13 (0x0D) Seath</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>14 (0x0E) Dispoison</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>15 (0x0F) Resist Fire</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>16 (0x10) Earth Heal</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>17 (0x11) Missile Shield</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>18 (0x12) Light</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>19 (0x13) Breath</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>20 (0x14) Dunno</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>21 (0x15) Dunno</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>22 (0x16) Dunno</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>23 (0x17) Dunno</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>24 (0x18) Dunno</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>25 (0x19) Dunno</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>26 (0x1A) Dunno</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>27 (0x1B) Dunno</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>28 (0x1C) Dunno</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>29 (0x1D) Dunno</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>30 (0x1E) Dunno</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>31 (0x1F) Dunno</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>32 (0x20) Dunno</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>33 (0x21) Dunno</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>34 (0x22) Dunno</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>35 (0x23) Dunno</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>36 (0x24) Dunno</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>37 (0x25) Dunno</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>38 (0x26) Dunno</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>39 (0x27) Dunno</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>40 (0x28) Dunno</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>41 (0x29) Dunno</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>42 (0x2A) Dunno</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>43 (0x2B) Dunno</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>44 (0x2C) Dunno</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>45 (0x2D) Dunno</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>46 (0x2E) Dunno</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>47 (0x2F) Dunno</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>48 (0x30) Dunno</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>49 (0x31) Dunno</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>50 (0x32) Dunno</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>51 (0x33) Dunno</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>52 (0x34) Dunno</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>53 (0x35) Dunno</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>54 (0x36) Dunno</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>55 (0x37) Dunno</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>56 (0x38) Dunno</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>57 (0x39) Dunno</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>58 (0x3A) Dunno</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>59 (0x3B) Dunno</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>60 (0x3C) Dunno</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>61 (0x3D) Dunno</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>62 (0x3E) Dunno</string>
+          </property>
+         </item>
+        </widget>
+       </item>
+       <item>
+        <widget class="QTableWidget" name="tableMagicData">
+         <property name="editTriggers">
+          <set>QAbstractItemView::NoEditTriggers</set>
+         </property>
+         <row>
+          <property name="text">
+           <string>Player Has?</string>
+          </property>
+         </row>
+         <row>
+          <property name="text">
+           <string>Charge Recovery Time</string>
+          </property>
+         </row>
+         <row>
+          <property name="text">
+           <string>Unknown</string>
+          </property>
+         </row>
+         <row>
+          <property name="text">
+           <string>Unknown</string>
+          </property>
+         </row>
+         <row>
+          <property name="text">
+           <string>Unknown</string>
+          </property>
+         </row>
+         <row>
+          <property name="text">
+           <string>Unknown</string>
+          </property>
+         </row>
+         <row>
+          <property name="text">
+           <string>Unknown</string>
+          </property>
+         </row>
+         <row>
+          <property name="text">
+           <string>Unknown</string>
+          </property>
+         </row>
+         <row>
+          <property name="text">
+           <string>Some Damage 1</string>
+          </property>
+         </row>
+         <row>
+          <property name="text">
+           <string>Some Damage 2</string>
+          </property>
+         </row>
+         <row>
+          <property name="text">
+           <string>Some Damage 3</string>
+          </property>
+         </row>
+         <row>
+          <property name="text">
+           <string>Fire Damage</string>
+          </property>
+         </row>
+         <row>
+          <property name="text">
+           <string>Earth Damage</string>
+          </property>
+         </row>
+         <row>
+          <property name="text">
+           <string>Wind Damage</string>
+          </property>
+         </row>
+         <row>
+          <property name="text">
+           <string>Water Damage</string>
+          </property>
+         </row>
+         <row>
+          <property name="text">
+           <string>MP Cost</string>
+          </property>
+         </row>
+         <row>
+          <property name="text">
+           <string>Unknown</string>
+          </property>
+         </row>
+         <row>
+          <property name="text">
+           <string>Unknown</string>
+          </property>
+         </row>
+         <column>
+          <property name="text">
+           <string>Value</string>
+          </property>
+         </column>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+    </item>
+    <item row="0" column="1">
+     <widget class="QGroupBox" name="groupWeaponStats">
+      <property name="enabled">
+       <bool>true</bool>
+      </property>
+      <property name="title">
+       <string>Weapon Stats (801c7fbc)</string>
+      </property>
+      <layout class="QVBoxLayout" name="verticalLayout_4">
+       <item>
+        <widget class="QComboBox" name="comboWeapon">
+         <item>
+          <property name="text">
+           <string>0 (0x00) Dagger</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>1 (0x01) Short Sword</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>2 (0x02) Knight Sword</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>3 (0x03) Morning Star</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>4 (0x04) Battle Hammer</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>5 (0x05) Bastard Sword</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>6 (0x06) Crescent Axe</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>7 (0x07) A</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>8 (0x08) A</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>9 (0x09) Flame Sword</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>10 (0x0A) Shiden</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>11 (0x0B) Spider</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>12 (0x0C) Ice Blade</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>13 (0x0D) Seath's Sword</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>14 (0x0E) Moonlight Sword</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>15 (0x0F) Dark Slayer</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>16 (0x10) Bow</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>17 (0x11) Arbalest</string>
+          </property>
+         </item>
+        </widget>
+       </item>
+       <item>
+        <widget class="QTableWidget" name="tableWeaponStats">
+         <row>
+          <property name="text">
+           <string>Slash Offense</string>
+          </property>
+         </row>
+         <row>
+          <property name="text">
+           <string>Chop Offense</string>
+          </property>
+         </row>
+         <row>
+          <property name="text">
+           <string>Stab Offense</string>
+          </property>
+         </row>
+         <row>
+          <property name="text">
+           <string>Holy Magic Off.</string>
+          </property>
+         </row>
+         <row>
+          <property name="text">
+           <string>Fire Magic Off.</string>
+          </property>
+         </row>
+         <row>
+          <property name="text">
+           <string>Earth Magic Off.</string>
+          </property>
+         </row>
+         <row>
+          <property name="text">
+           <string>Wind Magic Off.</string>
+          </property>
+         </row>
+         <row>
+          <property name="text">
+           <string>Water Magic Off.</string>
+          </property>
+         </row>
+         <row>
+          <property name="text">
+           <string>Unknown 0x10</string>
+          </property>
+         </row>
+         <row>
+          <property name="text">
+           <string>Unknown 0x11</string>
+          </property>
+         </row>
+         <row>
+          <property name="text">
+           <string>Unknown 0x12</string>
+          </property>
+         </row>
+         <row>
+          <property name="text">
+           <string>Unknown 0x13</string>
+          </property>
+         </row>
+         <row>
+          <property name="text">
+           <string>Unknown 0x14</string>
+          </property>
+         </row>
+         <row>
+          <property name="text">
+           <string>Unknown 0x15</string>
+          </property>
+         </row>
+         <row>
+          <property name="text">
+           <string>Unknown 0x16</string>
+          </property>
+         </row>
+         <row>
+          <property name="text">
+           <string>Unknown 0x17</string>
+          </property>
+         </row>
+         <row>
+          <property name="text">
+           <string>Unknown 0x18</string>
+          </property>
+         </row>
+         <row>
+          <property name="text">
+           <string>Unknown 0x19</string>
+          </property>
+         </row>
+         <row>
+          <property name="text">
+           <string>Unknown 0x1A</string>
+          </property>
+         </row>
+         <row>
+          <property name="text">
+           <string>Unknown 0x1B</string>
+          </property>
+         </row>
+         <row>
+          <property name="text">
+           <string>Unknown 0x1C</string>
+          </property>
+         </row>
+         <row>
+          <property name="text">
+           <string>Unknown 0x1D</string>
+          </property>
+         </row>
+         <row>
+          <property name="text">
+           <string>Unknown 0x1E</string>
+          </property>
+         </row>
+         <row>
+          <property name="text">
+           <string>Unknown 0x1F</string>
+          </property>
+         </row>
+         <row>
+          <property name="text">
+           <string>Unknown 0x20</string>
+          </property>
+         </row>
+         <row>
+          <property name="text">
+           <string>Unknown 0x21</string>
+          </property>
+         </row>
+         <row>
+          <property name="text">
+           <string>Unknown 0x22</string>
+          </property>
+         </row>
+         <row>
+          <property name="text">
+           <string>Unknown 0x23</string>
+          </property>
+         </row>
+         <row>
+          <property name="text">
+           <string>Unknown 0x24</string>
+          </property>
+         </row>
+         <row>
+          <property name="text">
+           <string>Unknown 0x25</string>
+          </property>
+         </row>
+         <row>
+          <property name="text">
+           <string>Unknown 0x26</string>
+          </property>
+         </row>
+         <row>
+          <property name="text">
+           <string>Unknown 0x27</string>
+          </property>
+         </row>
+         <row>
+          <property name="text">
+           <string>Unknown 0x28</string>
+          </property>
+         </row>
+         <row>
+          <property name="text">
+           <string>Unknown 0x29</string>
+          </property>
+         </row>
+         <row>
+          <property name="text">
+           <string>Unknown 0x2A</string>
+          </property>
+         </row>
+         <row>
+          <property name="text">
+           <string>Unknown 0x2B</string>
+          </property>
+         </row>
+         <row>
+          <property name="text">
+           <string>Unknown 0x2C</string>
+          </property>
+         </row>
+         <row>
+          <property name="text">
+           <string>Unknown 0x2D</string>
+          </property>
+         </row>
+         <row>
+          <property name="text">
+           <string>Unknown 0x2E</string>
+          </property>
+         </row>
+         <row>
+          <property name="text">
+           <string>Unknown 0x2F</string>
+          </property>
+         </row>
+         <row>
+          <property name="text">
+           <string>Unknown 0x30</string>
+          </property>
+         </row>
+         <row>
+          <property name="text">
+           <string>Unknown 0x31</string>
+          </property>
+         </row>
+         <row>
+          <property name="text">
+           <string>Unknown 0x32</string>
+          </property>
+         </row>
+         <row>
+          <property name="text">
+           <string>Unknown 0x33</string>
+          </property>
+         </row>
+         <row>
+          <property name="text">
+           <string>Unknown 0x34</string>
+          </property>
+         </row>
+         <row>
+          <property name="text">
+           <string>Unknown 0x35</string>
+          </property>
+         </row>
+         <row>
+          <property name="text">
+           <string>Unknown 0x36</string>
+          </property>
+         </row>
+         <row>
+          <property name="text">
+           <string>Unknown 0x37</string>
+          </property>
+         </row>
+         <row>
+          <property name="text">
+           <string>Unknown 0x38</string>
+          </property>
+         </row>
+         <row>
+          <property name="text">
+           <string>Unknown 0x39</string>
+          </property>
+         </row>
+         <row>
+          <property name="text">
+           <string>Unknown 0x3A</string>
+          </property>
+         </row>
+         <row>
+          <property name="text">
+           <string>Unknown 0x3B</string>
+          </property>
+         </row>
+         <row>
+          <property name="text">
+           <string>Unknown 0x3C</string>
+          </property>
+         </row>
+         <row>
+          <property name="text">
+           <string>Unknown 0x3D</string>
+          </property>
+         </row>
+         <row>
+          <property name="text">
+           <string>Unknown 0x3E</string>
+          </property>
+         </row>
+         <row>
+          <property name="text">
+           <string>Unknown 0x3F</string>
+          </property>
+         </row>
+         <row>
+          <property name="text">
+           <string>Unknown 0x40</string>
+          </property>
+         </row>
+         <row>
+          <property name="text">
+           <string>Unknown 0x41</string>
+          </property>
+         </row>
+         <row>
+          <property name="text">
+           <string>Unknown 0x42</string>
+          </property>
+         </row>
+         <row>
+          <property name="text">
+           <string>Unknown 0x43</string>
+          </property>
+         </row>
+         <column>
+          <property name="text">
+           <string>Value</string>
+          </property>
+         </column>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+    </item>
+    <item row="0" column="2">
+     <widget class="QGroupBox" name="groupUnk2">
+      <property name="enabled">
+       <bool>false</bool>
+      </property>
+      <property name="title">
+       <string>??? (801d9ccc)</string>
+      </property>
+     </widget>
+    </item>
+    <item row="1" column="1">
+     <widget class="QGroupBox" name="groupUnk3">
+      <property name="enabled">
+       <bool>false</bool>
+      </property>
+      <property name="title">
+       <string>??? (800679a0)</string>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="3">
+     <widget class="QGroupBox" name="groupLvlStats">
+      <property name="title">
+       <string>Player Lvl Stats (8007682c)</string>
+      </property>
+      <layout class="QVBoxLayout" name="verticalLayout">
+       <item>
+        <widget class="QWidget" name="widgetLvlControl" native="true">
+         <layout class="QHBoxLayout" name="horizontalLayout">
+          <item>
+           <widget class="QLabel" name="labelLevel">
+            <property name="text">
+             <string>Level:</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QSpinBox" name="spinLevel">
+            <property name="buttonSymbols">
+             <enum>QAbstractSpinBox::PlusMinus</enum>
+            </property>
+            <property name="prefix">
+             <string/>
+            </property>
+            <property name="minimum">
+             <number>1</number>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item>
+        <widget class="QTableWidget" name="tableLvlData">
+         <property name="editTriggers">
+          <set>QAbstractItemView::NoEditTriggers</set>
+         </property>
+         <row>
+          <property name="text">
+           <string>HP</string>
+          </property>
+         </row>
+         <row>
+          <property name="text">
+           <string>MP</string>
+          </property>
+         </row>
+         <row>
+          <property name="text">
+           <string>Str Power</string>
+          </property>
+         </row>
+         <row>
+          <property name="text">
+           <string>Mag Power</string>
+          </property>
+         </row>
+         <row>
+          <property name="text">
+           <string>Exp for next level</string>
+          </property>
+         </row>
+         <column>
+          <property name="text">
+           <string>Value</string>
+          </property>
+         </column>
+         <item row="0" column="0">
+          <property name="text">
+           <string/>
+          </property>
+         </item>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>800</width>
+     <height>19</height>
+    </rect>
+   </property>
+   <widget class="QMenu" name="menuFile">
+    <property name="title">
+     <string>File</string>
+    </property>
+    <addaction name="actionLoad_FDAT_28"/>
+   </widget>
+   <widget class="QMenu" name="menuView">
+    <property name="title">
+     <string>View</string>
+    </property>
+    <addaction name="actionShow_Hide_Unknown"/>
+   </widget>
+   <addaction name="menuFile"/>
+   <addaction name="menuView"/>
+  </widget>
+  <widget class="QStatusBar" name="statusbar"/>
+  <action name="actionLoad_FDAT_28">
+   <property name="text">
+    <string>Load FDAT 28</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+O</string>
+   </property>
+  </action>
+  <action name="actionShow_Hide_Unknown">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Hide Unknown</string>
+   </property>
+  </action>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
