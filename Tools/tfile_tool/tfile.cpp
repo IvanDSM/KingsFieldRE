@@ -89,9 +89,7 @@ bool TFile::extractFiles()
 
         curFileName += prettyName;
 
-        curFileName += "_OS" + QString::number(fileOffsets[index] / 2048);
-
-        curFileName += "_TOS" + QString::number(fileOffsets[index]);
+        curFileName += "_OS0x" + QString::number(fileOffsets[index], 16).toUpper();
 
         curFileName += "." + curFileExt;
 
