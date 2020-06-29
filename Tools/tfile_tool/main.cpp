@@ -7,7 +7,7 @@ int main(int argc, char *argv[])
     bool extract = false;
     int startIndex = 1;
 
-    qInfo() << "tfile_tool - KingsFieldRE 2020";
+    qInfo() << "tfile_tool - IvanDSM 2020";
     qInfo() << "Usage:";
     qInfo() << "tfile_tool TFILE.T            Shows info about TFILE.T.";
     qInfo() << "tfile_tool extract TFILE.T    Shows info about TFILE.T and extracts contents to $(cwd)/TFILE/.";

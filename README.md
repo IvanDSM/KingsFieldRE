@@ -11,6 +11,9 @@ The tools are available in the repository, and documentation is available in the
 
 All the tools in KingsFieldRE are written using C++11 and the Qt Framework.
 
+## checksum_tool
+This is a very simple command line tool for calculating a file's checksum according to the way the game calculates it for tamper checking. The game's method for calculating a file's checksum is described in the repository's wiki.
+
 ## fdat28_tool
 This is a graphical tool for interpreting the data contained in FDAT.T's (true) file 28. This file contains data such as weapon stats for each weapon in the game, data for each of the magic spells and the player stats for each achievable level.
 
