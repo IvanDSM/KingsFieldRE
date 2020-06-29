@@ -67,6 +67,8 @@ private:
     std::map<int, int> fileMap; ///< Map that maps the T file's file indexes to the actual files.
 
     const std::unordered_map<QString, QString> prettyMapper{
+        {"FDAT.T27", "TextureDatabase"}, // TODO/FIXME: Find a better name for this file
+        {"FDAT.T28", "GameData"}, // TODO/FIXME: Find a better name for this file
         {"FDAT.T29", "WeaponDaggerData"},
         {"FDAT.T30", "WeaponShortSwordData"},
         {"FDAT.T31", "WeaponKnightSwordData"},
