@@ -72,7 +72,7 @@ private:
         "William and Mary won't do, now!",
         "Guadalajara won't do, now!",
         "I can see by what you carry that you come from Barrytown!",
-        "Did you realize that you were a champion in their eyes?"
+        "Did you realize that you were a champion in their eyes?",
         "Is there gas in the car?",
         "Yes there's gas in the car!",
         "I'm never gonna do it without the fez on!",
