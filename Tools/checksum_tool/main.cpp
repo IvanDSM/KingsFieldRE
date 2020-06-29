@@ -24,7 +24,7 @@ int main(int argc, char *argv[])
     inStream.setByteOrder(QDataStream::LittleEndian);
 
     qint64 sizeInInts = inFile.size() / 4;
-    qint32 checkSum = 0x12345678;
+    quint32 checkSum = 0x12345678;
 
     for (qint64 curIntIndex = 0; curIntIndex < sizeInInts - 1; curIntIndex++)
     {
@@ -33,7 +33,7 @@ int main(int argc, char *argv[])
         checkSum += curInt;
     }
 
-    qint32 fileCheckSum;
+    quint32 fileCheckSum;
     inStream >> fileCheckSum;
 
     qInfo() << "The file reported its checksum as being" << QString::number(fileCheckSum, 16);
