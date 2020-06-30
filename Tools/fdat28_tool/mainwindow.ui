@@ -52,7 +52,11 @@
            </widget>
           </item>
           <item>
-           <widget class="QSpinBox" name="spinGOKIndex"/>
+           <widget class="QSpinBox" name="spinGOKIndex">
+            <property name="maximum">
+             <number>319</number>
+            </property>
+           </widget>
           </item>
          </layout>
         </widget>
@@ -84,12 +88,7 @@
          </row>
          <row>
           <property name="text">
-           <string>Unknown 0x04</string>
-          </property>
-         </row>
-         <row>
-          <property name="text">
-           <string>Unknown 0x05</string>
+           <string>CollisionRadius</string>
           </property>
          </row>
          <row>

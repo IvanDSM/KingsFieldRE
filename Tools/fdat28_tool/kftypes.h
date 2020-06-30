@@ -14,8 +14,7 @@ struct KingsField80175914OddStruct {
     byte SomeType;
     undefined field_0x2;
     undefined field_0x3;
-    undefined field_0x4;
-    undefined field_0x5;
+    quint16 CollisionRadius;
     undefined field_0x6;
     undefined field_0x7;
     undefined field_0x8;

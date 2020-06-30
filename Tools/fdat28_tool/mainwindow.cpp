@@ -57,26 +57,25 @@ void MainWindow::displayGOKData(const KingsField80175914OddStruct &gokData)
     ui->tableGOKData->setItem(1, 0, new QTableWidgetItem(QString::number(gokData.SomeType)));
     ui->tableGOKData->setItem(2, 0, new QTableWidgetItem(QString::number(gokData.field_0x2)));
     ui->tableGOKData->setItem(3, 0, new QTableWidgetItem(QString::number(gokData.field_0x3)));
-    ui->tableGOKData->setItem(4, 0, new QTableWidgetItem(QString::number(gokData.field_0x4)));
-    ui->tableGOKData->setItem(5, 0, new QTableWidgetItem(QString::number(gokData.field_0x5)));
-    ui->tableGOKData->setItem(6, 0, new QTableWidgetItem(QString::number(gokData.field_0x6)));
-    ui->tableGOKData->setItem(7, 0, new QTableWidgetItem(QString::number(gokData.field_0x7)));
-    ui->tableGOKData->setItem(8, 0, new QTableWidgetItem(QString::number(gokData.field_0x8)));
-    ui->tableGOKData->setItem(9, 0, new QTableWidgetItem(QString::number(gokData.field_0x9)));
-    ui->tableGOKData->setItem(10, 0, new QTableWidgetItem(QString::number(gokData.field_0xa)));
-    ui->tableGOKData->setItem(11, 0, new QTableWidgetItem(QString::number(gokData.field_0xb)));
-    ui->tableGOKData->setItem(12, 0, new QTableWidgetItem(QString::number(gokData.field_0xc)));
-    ui->tableGOKData->setItem(13, 0, new QTableWidgetItem(QString::number(gokData.field_0xd)));
-    ui->tableGOKData->setItem(14, 0, new QTableWidgetItem(QString::number(gokData.field_0xe)));
-    ui->tableGOKData->setItem(15, 0, new QTableWidgetItem(QString::number(gokData.field_0xf)));
-    ui->tableGOKData->setItem(16, 0, new QTableWidgetItem(QString::number(gokData.field_0x10)));
-    ui->tableGOKData->setItem(17, 0, new QTableWidgetItem(QString::number(gokData.field_0x11)));
-    ui->tableGOKData->setItem(18, 0, new QTableWidgetItem(QString::number(gokData.field_0x12)));
-    ui->tableGOKData->setItem(19, 0, new QTableWidgetItem(QString::number(gokData.field_0x13)));
-    ui->tableGOKData->setItem(20, 0, new QTableWidgetItem(QString::number(gokData.field_0x14)));
-    ui->tableGOKData->setItem(21, 0, new QTableWidgetItem(QString::number(gokData.field_0x15)));
-    ui->tableGOKData->setItem(22, 0, new QTableWidgetItem(QString::number(gokData.field_0x16)));
-    ui->tableGOKData->setItem(23, 0, new QTableWidgetItem(QString::number(gokData.field_0x17)));
+    ui->tableGOKData->setItem(4, 0, new QTableWidgetItem(QString::number(gokData.CollisionRadius)));
+    ui->tableGOKData->setItem(5, 0, new QTableWidgetItem(QString::number(gokData.field_0x6)));
+    ui->tableGOKData->setItem(6, 0, new QTableWidgetItem(QString::number(gokData.field_0x7)));
+    ui->tableGOKData->setItem(7, 0, new QTableWidgetItem(QString::number(gokData.field_0x8)));
+    ui->tableGOKData->setItem(8, 0, new QTableWidgetItem(QString::number(gokData.field_0x9)));
+    ui->tableGOKData->setItem(9, 0, new QTableWidgetItem(QString::number(gokData.field_0xa)));
+    ui->tableGOKData->setItem(10, 0, new QTableWidgetItem(QString::number(gokData.field_0xb)));
+    ui->tableGOKData->setItem(11, 0, new QTableWidgetItem(QString::number(gokData.field_0xc)));
+    ui->tableGOKData->setItem(12, 0, new QTableWidgetItem(QString::number(gokData.field_0xd)));
+    ui->tableGOKData->setItem(13, 0, new QTableWidgetItem(QString::number(gokData.field_0xe)));
+    ui->tableGOKData->setItem(14, 0, new QTableWidgetItem(QString::number(gokData.field_0xf)));
+    ui->tableGOKData->setItem(15, 0, new QTableWidgetItem(QString::number(gokData.field_0x10)));
+    ui->tableGOKData->setItem(16, 0, new QTableWidgetItem(QString::number(gokData.field_0x11)));
+    ui->tableGOKData->setItem(17, 0, new QTableWidgetItem(QString::number(gokData.field_0x12)));
+    ui->tableGOKData->setItem(18, 0, new QTableWidgetItem(QString::number(gokData.field_0x13)));
+    ui->tableGOKData->setItem(19, 0, new QTableWidgetItem(QString::number(gokData.field_0x14)));
+    ui->tableGOKData->setItem(20, 0, new QTableWidgetItem(QString::number(gokData.field_0x15)));
+    ui->tableGOKData->setItem(21, 0, new QTableWidgetItem(QString::number(gokData.field_0x16)));
+    ui->tableGOKData->setItem(22, 0, new QTableWidgetItem(QString::number(gokData.field_0x17)));
 }
 
 void MainWindow::displayLevelData(const KingsFieldPlayerLvlData &levelData)

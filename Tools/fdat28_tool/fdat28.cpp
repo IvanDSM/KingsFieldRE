@@ -83,8 +83,7 @@ void FDAT28::loadFile(QString &fileName)
         inStream >> s.SomeType;
         inStream >> s.field_0x2;
         inStream >> s.field_0x3;
-        inStream >> s.field_0x4;
-        inStream >> s.field_0x5;
+        inStream >> s.CollisionRadius;
         inStream >> s.field_0x6;
         inStream >> s.field_0x7;
         inStream >> s.field_0x8;
