@@ -29,20 +29,20 @@ jobs:
     - name: Build checksum_tool
       run: |
         cd Tools/checksum_tool
-        qmake-qt5
+        qmake
         make -j4
         cd ..
     
     - name: Build fdat28_tool
       run: |
         cd Tools/fdat28_tool
-        qmake-qt5
+        qmake
         make -j4
         cd ..
         
     - name: Build tfile_tool
       run: |
         cd Tools/tfile_tool
-        qmake-qt5
+        qmake
         make -j4
         cd ..
