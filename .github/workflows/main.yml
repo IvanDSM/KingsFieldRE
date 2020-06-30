@@ -1,6 +1,6 @@
 # This is a basic workflow to help you get started with Actions
 
-name: Build
+name: Build all projects
 
 # Controls when the action will run. Triggers the workflow on push or pull request
 # events but only for the master branch
@@ -48,3 +48,21 @@ jobs:
         qmake
         make -j4
         cd ..
+
+    - name: Upload checksum_tool build
+      uses: actions/upload-artifact@v2
+      with:
+        name: checksum_tool ubuntu build
+        path: Tools/checksum_tool/checksum_tool
+        
+    - name: Upload fdat28_tool build
+      uses: actions/upload-artifact@v2
+      with:
+        name: fdat28_tool ubuntu build
+        path: Tools/fdat28_tool/fdat28_tool
+        
+    - name: Upload tfile_tool build
+      uses: actions/upload-artifact@v2
+      with:
+        name: tfile_tool ubuntu build
+        path: Tools/tfile_tool/tfile_tool
