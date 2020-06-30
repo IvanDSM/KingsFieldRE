@@ -19,35 +19,12 @@ jobs:
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
+    - name: Checkout repo
     # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
     - uses: actions/checkout@v2
-- name: Install Qt
-  uses: jurplel/install-qt-action@v2.7.2
-  with:
-    # Directory to install Qt
-    dir: # optional
-    # Version of Qt to install
-    version: # optional, default is 5.12.9
-    # Host platform
-    host: # optional
-    # Target platform for build
-    target: # optional, default is desktop
-    # Architecture for Windows/Android
-    arch: # optional
-    # Whether or not to install Qt dependencies on Linux
-    install-deps: # optional, default is true
-    # Additional Qt modules to install
-    modules: # optional
-    # Force a Qt mirror in case the default is not working
-    mirror: # optional
-    # Whether or not to actually download Qt
-    cached: # optional, default is false
-    # Version of aqtinstall to use in case of issues
-    aqtversion: # optional, default is ==0.9
-    # Version of py7zr to use in case of issues
-    py7zrversion: # optional, default is ==0.7
-    # Any extra arguments to append to the back
-    extra: # optional
+    # Install Qt
+    - name: Install Qt
+      uses: jurplel/install-qt-action@v2.7.2
     
     # Runs a single command using the runners shell
     - name: Run a one-line script
