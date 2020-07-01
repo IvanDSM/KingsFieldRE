@@ -10,7 +10,7 @@ TFile::TFile(const QString &filename)
     if (fileHandle.open(QIODevice::ReadOnly))
     {
         file = fileHandle.readAll();
-        fileName = fileHandle.fileName().mid(fileHandle.fileName().lastIndexOf(QDir::separator()) + 1);
+        fileName = fileHandle.fileName().mid(fileHandle.fileName().lastIndexOf(QRegExp("[\\/]")) + 1);
         fileHandle.close();
         unsigned short offset = 0;
         QBuffer fileBuffer(&file);
