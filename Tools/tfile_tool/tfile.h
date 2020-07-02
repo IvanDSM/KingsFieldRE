@@ -64,7 +64,7 @@ private:
     QString fileName; ///< Name of the T file
     unsigned short nFiles; ///< Number of files in the T file
     std::vector<unsigned int> fileOffsets; ///< Vector with file offsets.
-    std::map<int, int> fileMap; ///< Map that maps the T file's file indexes to the actual files.
+    std::map<unsigned int, unsigned int> fileMap; ///< Map that maps the T file's file indexes to the actual files.
 
     const std::unordered_map<QString, QString> prettyMapper{
         {"FDAT.T27", "TextureDatabase"}, // TODO/FIXME: Find a better name for this file
