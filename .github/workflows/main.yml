@@ -66,6 +66,13 @@ jobs:
     # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
     - name: Checkout repo
       uses: actions/checkout@v2
+      
+    # Install MSVC for compiling
+    - name: Install MSVC
+      uses: ilammy/msvc-dev-cmd@v1
+      with:
+        arch: x86
+      
     # Install Qt
     - name: Install Qt
       uses: jurplel/install-qt-action@v2
@@ -96,17 +103,17 @@ jobs:
     - name: Upload checksum_tool build
       uses: actions/upload-artifact@v2
       with:
-        name: checksum_tool windows (x64) build
+        name: checksum_tool windows (32-bit) build
         path: Tools\checksum_tool\checksum_tool.exe
         
     - name: Upload fdat28_tool build
       uses: actions/upload-artifact@v2
       with:
-        name: fdat28_tool windows (x64) build
+        name: fdat28_tool windows (32-bit) build
         path: Tools\fdat28_tool\fdat28_tool.exe
         
     - name: Upload tfile_tool build
       uses: actions/upload-artifact@v2
       with:
-        name: tfile_tool windows (x64) build
+        name: tfile_tool windows (32-bit) build
         path: Tools\tfile_tool\tfile_tool.exe
