@@ -101,17 +101,17 @@ jobs:
         windeployqt checksum_tool.exe
         cd ..
         ren release checksum_tool
-        tar czf checksum_tool_win64.tar.gz checksum_tool\
+        tar czf checksum_tool_win64.tar.gz checksum_tool
         cd ..\fdat28_tool\release
         windeployqt fdat28_tool.exe
         cd ..
         ren release fdat28_tool
-        tar czf fdat28_tool_win64.tar.gz checksum_tool\
+        tar czf fdat28_tool_win64.tar.gz fdat28_tool
         cd ..\tfile_tool\release
         windeployqt tfile_tool.exe
         cd ..
         ren release tfile_tool
-        tar czf tfile_tool_win64.tar.gz checksum_tool\
+        tar czf tfile_tool_win64.tar.gz tfile_tool
         cd ../..
 
     - name: Upload checksum_tool build
