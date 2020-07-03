@@ -95,20 +95,39 @@ jobs:
         make -j4
         cd ..
 
+    - name: Deploy all tools
+      run : |
+        cd Tools\checksum_tool\release
+        windeployqt checksum_tool.exe
+        cd ..
+        ren release checksum_tool
+        tar -cJf checksum_tool_win64.tar.xz checksum_tool\
+        cd ..\..\fdat28_tool\release
+        windeployqt fdat28_tool.exe
+        cd ..
+        ren release fdat28_tool
+        tar -cJf fdat28_tool_win64.tar.xz checksum_tool\
+        cd ..\..\tfile_tool\release
+        windeployqt tfile_tool.exe
+        cd ..
+        ren release tfile_tool
+        tar -cJf tfile_tool_win64.tar.xz checksum_tool\
+        cd ..
+
     - name: Upload checksum_tool build
       uses: actions/upload-artifact@v2
       with:
-        name: checksum_tool windows (32-bit) build
-        path: Tools\checksum_tool\checksum_tool.exe
+        name: checksum_tool windows (64-bit) build
+        path: Tools\checksum_tool\checksum_tool_win64.tar.xz
         
     - name: Upload fdat28_tool build
       uses: actions/upload-artifact@v2
       with:
-        name: fdat28_tool windows (32-bit) build
-        path: Tools\fdat28_tool\fdat28_tool.exe
+        name: fdat28_tool windows (64-bit) build
+        path: Tools\fdat28_tool\fdat28_tool_win64.tar.xz
         
     - name: Upload tfile_tool build
       uses: actions/upload-artifact@v2
       with:
-        name: tfile_tool windows (32-bit) build
-        path: Tools\tfile_tool\tfile_tool.exe
+        name: tfile_tool windows (64-bit) build
+        path: Tools\tfile_tool\tfile_tool_win64.tar.xz
