@@ -4,6 +4,7 @@
 #include <QDir>
 #include <QtEndian>
 #include "tfile.h"
+#include "prettynamer.h"
 
 TFile::TFile(const QString &filename)
 {
@@ -39,6 +40,8 @@ TFile::TFile(const QString &filename)
         }
 
         hash = QCryptographicHash::hash(file, QCryptographicHash::Algorithm::Md5).toHex();
+        PrettyNamer prettyNamer; ///< Instance of the PrettyNamer class.
+        prettyMap = prettyNamer.getPrettyMap(hash);
     }
     else
         nFiles = 0;
@@ -78,8 +81,8 @@ bool TFile::extractFiles()
 
         QString prettyName = "";
 
-        auto prettyNameIt = prettyMapper.find(getFilename() + QString::number(index));
-        if (prettyNameIt != prettyMapper.end())
+        auto prettyNameIt = prettyMap.find(getFilename() + QString::number(index));
+        if (prettyNameIt != prettyMap.end())
             prettyName = "_" + prettyNameIt->second;
 
         // FIXME: The way we're making the current filename is kind of ugly and probably slow! There has to be a better way to do this.
