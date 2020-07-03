@@ -1,4 +1,5 @@
 ﻿#include <QBuffer>
+#include <QCryptographicHash>
 #include <QDebug>
 #include <QDir>
 #include <QtEndian>
@@ -36,6 +37,8 @@ TFile::TFile(const QString &filename)
 
             fileMap[fileNum] = trueFileNum;
         }
+
+        hash = QCryptographicHash::hash(file, QCryptographicHash::Algorithm::Md5).toHex();
     }
     else
         nFiles = 0;
@@ -131,6 +134,11 @@ std::vector<unsigned int> TFile::getFileOffsets()
                    [] (unsigned int multipliedOffset) {return multipliedOffset / 2048;});
 
     return deMultiplied;
+}
+
+QByteArray &TFile::getHash()
+{
+    return hash;
 }
 
 std::vector<unsigned int> TFile::getTrueFileOffsets()

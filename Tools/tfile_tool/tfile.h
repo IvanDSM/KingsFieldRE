@@ -36,6 +36,12 @@ public:
     std::vector<unsigned int> getFileOffsets();
 
     /*!
+     * \brief Returns the T file's MD5 hash.
+     * \return MD5 hash for the T file.
+     */
+    QByteArray &getHash();
+
+    /*!
      * \brief Retrieves the vector of de-duplicated and multiplied file offsets.
      * \return Vector of de-duplicated and multiplied file offsets.
      */
@@ -60,6 +66,7 @@ public:
 
 private:
     QByteArray file; ///< Byte array for the T file
+    QByteArray hash; ///< MD5 hash of the file for getting pretty names.
     QDataStream stream; ///< Data stream for reading the file
     QString fileName; ///< Name of the T file
     unsigned short nFiles; ///< Number of files in the T file

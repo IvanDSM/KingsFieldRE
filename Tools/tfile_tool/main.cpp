@@ -33,6 +33,7 @@ int main(int argc, char *argv[])
     {
         TFile curTFile(argv[i]);
         qInfo() << curTFile.getFilename();
+        qInfo() << "MD5 hash:" << curTFile.getHash();
         qInfo() << "Number of files according to T file:" << curTFile.getNumFiles();
         qInfo() << "Actual number of files: " << curTFile.getTrueNumFiles();
         qInfo() << "File offsets (original): " << curTFile.getFileOffsets();
