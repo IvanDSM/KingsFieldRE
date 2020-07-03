@@ -11,6 +11,10 @@ The tools are available in the repository, and documentation is available in the
 
 All the tools in KingsFieldRE are written using C++11 and the Qt Framework.
 
+Automated builds for Linux (based on latest Ubuntu) and 64-bit Windows are available on the project's [GitHub Actions page](https://github.com/IvanDSM/KingsFieldRE/actions). Just select the latest run (the first run on the page)! 
+
+You will need to be signed into GitHub to download the automated builds due to GitHub limitations. **We do not receive any information about you when you download a build.**
+
 ## checksum_tool
 This is a very simple command line tool for calculating a file's checksum according to the way the game calculates it for integrity checking. The game's method for calculating a file's checksum is described [in the repository's wiki](https://github.com/IvanDSM/KingsFieldRE/wiki/File-Checksum-Algorithm).
 
