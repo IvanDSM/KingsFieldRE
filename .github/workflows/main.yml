@@ -99,16 +99,19 @@ jobs:
       run : |
         cd Tools\checksum_tool\release
         windeployqt checksum_tool.exe
+        del *.o
         cd ..
         ren release checksum_tool
         tar czf checksum_tool_win64.tar.gz checksum_tool
         cd ..\fdat28_tool\release
         windeployqt fdat28_tool.exe
+        del *.o
         cd ..
         ren release fdat28_tool
         tar czf fdat28_tool_win64.tar.gz fdat28_tool
         cd ..\tfile_tool\release
         windeployqt tfile_tool.exe
+        del *.o
         cd ..
         ren release tfile_tool
         tar czf tfile_tool_win64.tar.gz tfile_tool
@@ -118,16 +121,16 @@ jobs:
       uses: actions/upload-artifact@v2
       with:
         name: checksum_tool windows (64-bit) build
-        path: Tools\checksum_tool\checksum_tool_win64.tar.gz
+        path: Tools\checksum_tool\checksum_tool\
         
     - name: Upload fdat28_tool build
       uses: actions/upload-artifact@v2
       with:
         name: fdat28_tool windows (64-bit) build
-        path: Tools\fdat28_tool\fdat28_tool_win64.tar.gz
+        path: Tools\fdat28_tool\fdat28_tool\
         
     - name: Upload tfile_tool build
       uses: actions/upload-artifact@v2
       with:
         name: tfile_tool windows (64-bit) build
-        path: Tools\tfile_tool\tfile_tool_win64.tar.gz
+        path: Tools\tfile_tool\tfile_tool\
