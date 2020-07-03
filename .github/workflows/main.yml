@@ -71,7 +71,7 @@ jobs:
     - name: Install Qt
       uses: jurplel/install-qt-action@v2
       with:
-        arch: win32_mingw53
+        arch: win64_mingw73
         version: 5.14.2 
       
     - name: Build checksum_tool
