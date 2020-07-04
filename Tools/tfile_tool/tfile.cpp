@@ -74,8 +74,12 @@ bool TFile::extractFiles()
             curFileExt = "SEQ";
         else if (curFileData.left(16).compare(QByteArray::fromHex("00000000000000000000000000000000")) == 0) // FIXME: Shitty detection
             curFileExt = "VB";
-        else if (curFileData.mid(8).left(8) == curFileData.left(8)) // RTIM
+        else if (curFileData.mid(8).left(8) == curFileData.left(8))
             curFileExt = "RTIM";
+        else if (curFileData.left(4).compare(QByteArray::fromHex("00000000")) == 0 &&
+                 (curFileData.mid(4, 4).compare(QByteArray::fromHex("12000000")) == 0 ||
+                  curFileData.mid(4, 4).compare(QByteArray::fromHex("10000000")) == 0))
+            curFileExt = "RTMD";
         else
             curFileExt = "DAT";
 
