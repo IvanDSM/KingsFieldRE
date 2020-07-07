@@ -33,6 +33,13 @@ jobs:
         qmake
         make -j4
         cd ..
+
+    - name: Build KFRandomizer
+      run: |
+        cd Tools/KFRandomizer
+        qmake
+        make -j4
+        cd ..
         
     - name: Build tfile_tool
       run: |
@@ -52,6 +59,12 @@ jobs:
       with:
         name: fdat28_tool ubuntu build
         path: Tools/fdat28_tool/fdat28_tool
+
+    - name: Upload KFRandomizer build
+      uses: actions/upload-artifact@v2
+      with:
+        name: KFRandomizer ubuntu build
+        path: Tools/KFRandomizer/KFRandomizer
         
     - name: Upload tfile_tool build
       uses: actions/upload-artifact@v2
@@ -87,6 +100,13 @@ jobs:
         qmake
         make -j4
         cd ..
+
+    - name: Build KFRandomizer
+      run: |
+        cd Tools\KFRandomizer
+        qmake
+        make -j4
+        cd ..
         
     - name: Build tfile_tool
       run: |
@@ -102,19 +122,21 @@ jobs:
         del *.o
         cd ..
         ren release checksum_tool
-        tar czf checksum_tool_win64.tar.gz checksum_tool
         cd ..\fdat28_tool\release
         windeployqt fdat28_tool.exe
         del *.o
         cd ..
         ren release fdat28_tool
-        tar czf fdat28_tool_win64.tar.gz fdat28_tool
+        cd ..\KFRandomizer\release
+        windeployqt KFRandomizer.exe
+        del *.o
+        cd ..
+        ren release KFRandomizer
         cd ..\tfile_tool\release
         windeployqt tfile_tool.exe
         del *.o
         cd ..
         ren release tfile_tool
-        tar czf tfile_tool_win64.tar.gz tfile_tool
         cd ../..
 
     - name: Upload checksum_tool build
@@ -128,6 +150,12 @@ jobs:
       with:
         name: fdat28_tool windows (64-bit) build
         path: Tools\fdat28_tool\fdat28_tool\
+        
+    - name: Upload KFRandomizer build
+      uses: actions/upload-artifact@v2
+      with:
+        name: KFRandomizer windows (64-bit) build
+        path: Tools\KFRandomizer\KFRandomizer\
         
     - name: Upload tfile_tool build
       uses: actions/upload-artifact@v2
