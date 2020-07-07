@@ -11,7 +11,7 @@ The tools are available in the repository, and documentation is available in the
 
 All the tools in KingsFieldRE are written using C++11 and the Qt Framework.
 
-Automated builds for Linux (based on latest Ubuntu) and 64-bit Windows are available on the project's [GitHub Actions page](https://github.com/IvanDSM/KingsFieldRE/actions). Just select the latest run (the first run on the page)! 
+Automated builds for Linux (based on Ubuntu 16.04) and 64-bit Windows are available on the project's [GitHub Actions page](https://github.com/IvanDSM/KingsFieldRE/actions). Just select the latest run (the first run on the page)! 
 
 You will need to be signed into GitHub to download the automated builds due to GitHub limitations. **We do not receive any information about you when you download a build.**
 
