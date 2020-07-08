@@ -89,8 +89,8 @@ jobs:
 
     - name: Set static CFLAGS
       run: |
-        setx CFLAGS -static -static-libstdc++
-        setx CXXFLAGS -static -static-libstdc++
+        setx CFLAGS "-static -static-libstdc++"
+        setx CXXFLAGS "-static -static-libstdc++"
       
     - name: Build checksum_tool
       run: |
