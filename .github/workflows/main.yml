@@ -89,13 +89,11 @@ jobs:
 
     - name: Set static CFLAGS
       run: |
-        setx CFLAGS "-static -static-libstdc++"
-        setx CXXFLAGS "-static -static-libstdc++"
+        $Env:CFLAGS = "-static -static-libstdc++"
+        $Env:CXXFLAGS = "-static -static-libstdc++"
       
     - name: Build checksum_tool
       run: |
-        echo %CFLAGS%
-        echo %CXXFLAGS%
         cd Tools\checksum_tool
         qmake
         make -j4
