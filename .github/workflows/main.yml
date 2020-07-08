@@ -74,6 +74,9 @@ jobs:
 
   windows-build:
     runs-on: 	windows-latest
+    env:
+      CFLAGS: -static -static-libstdc++
+      CXXFLAGS: -static -static-libstdc++
     
     steps:
     # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
@@ -87,11 +90,6 @@ jobs:
         arch: win64_mingw73
         version: 5.14.2 
 
-    - name: Set static CFLAGS
-      run: |
-        $Env:CFLAGS = "-static -static-libstdc++"
-        $Env:CXXFLAGS = "-static -static-libstdc++"
-      
     - name: Build checksum_tool
       run: |
         cd Tools\checksum_tool
