@@ -75,8 +75,8 @@ jobs:
   windows-build:
     runs-on: 	windows-latest
     env:
-      CFLAGS: -static -static-libstdc++
-      CXXFLAGS: -static -static-libstdc++
+      CFLAGS: -static-libgcc -static-libstdc++
+      CXXFLAGS: -static-libgcc -static-libstdc++
     
     steps:
     # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
