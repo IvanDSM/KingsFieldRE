@@ -74,9 +74,6 @@ jobs:
 
   windows-build:
     runs-on: 	windows-latest
-    env:
-      CFLAGS: -static-libgcc -static-libstdc++
-      CXXFLAGS: -static-libgcc -static-libstdc++
     
     steps:
     # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
@@ -123,21 +120,33 @@ jobs:
         cd Tools\checksum_tool\release
         windeployqt --compiler-runtime checksum_tool.exe
         del *.o
+        cp $env:Qt5_Dir\bin\libgcc_s_seh-1.dll .
+        cp $env:Qt5_Dir\bin\libstdc++-6.dll .
+        cp $env:Qt5_Dir\bin\libwinpthread-1.dll .
         cd ..
         ren release checksum_tool
         cd ..\fdat28_tool\release
         windeployqt --compiler-runtime fdat28_tool.exe
         del *.o
+        cp $env:Qt5_Dir\bin\libgcc_s_seh-1.dll .
+        cp $env:Qt5_Dir\bin\libstdc++-6.dll .
+        cp $env:Qt5_Dir\bin\libwinpthread-1.dll .
         cd ..
         ren release fdat28_tool
         cd ..\KFRandomizer\release
         windeployqt --compiler-runtime KFRandomizer.exe
         del *.o
+        cp $env:Qt5_Dir\bin\libgcc_s_seh-1.dll .
+        cp $env:Qt5_Dir\bin\libstdc++-6.dll .
+        cp $env:Qt5_Dir\bin\libwinpthread-1.dll .
         cd ..
         ren release KFRandomizer
         cd ..\tfile_tool\release
         windeployqt --compiler-runtime tfile_tool.exe
         del *.o
+        cp $env:Qt5_Dir\bin\libgcc_s_seh-1.dll .
+        cp $env:Qt5_Dir\bin\libstdc++-6.dll .
+        cp $env:Qt5_Dir\bin\libwinpthread-1.dll .
         cd ..
         ren release tfile_tool
         cd ../..
