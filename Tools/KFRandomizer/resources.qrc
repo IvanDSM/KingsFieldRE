@@ -1,5 +1,5 @@
 <RCC>
-    <qresource prefix="/res">
-        <file>res/kraken.png</file>
+    <qresource prefix="/">
+        <file>kraken.ico</file>
     </qresource>
 </RCC>

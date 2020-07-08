@@ -33,7 +33,7 @@
   </property>
   <property name="windowIcon">
    <iconset resource="resources.qrc">
-    <normaloff>:/res/res/kraken.png</normaloff>:/res/res/kraken.png</iconset>
+    <normaloff>:/kraken.ico</normaloff>:/kraken.ico</iconset>
   </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QVBoxLayout" name="verticalLayout" stretch="0,0,0,0,0,0,0,0">
@@ -77,7 +77,7 @@ by IvanDSM
 
 Extract FDAT.T from the CD/COM/ folder in your CD
 and replace it with the randomizer's output.
-For replacing FDAT.T in a CD image I recommend using CDmage.
+For replacing FDAT.T in a CD image I recommend using CDmage (must be 1.02.1!).
 
 I know this isn't the easiest method but it's what I can do for now :(
 Reading .bin files turned out to be quite a pain...</string>

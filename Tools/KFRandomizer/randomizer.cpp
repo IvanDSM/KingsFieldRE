@@ -501,8 +501,8 @@ void Randomizer::randomizeItems()
     emit statusUpdate(QDateTime::currentDateTime().time().toString() + ": Randomizing items in map 1 (FDAT 1)...");
 
     bytes_done = 0;
-    fdat1Stream.skipRawData(8);
-    bytes_done += 8;
+    fdat1Stream.skipRawData(4);
+    bytes_done += 4;
     while (bytes_done < fdat1ItemBlockEnd)
     {
         fdat1Stream >> cur_item;
@@ -510,11 +510,11 @@ void Randomizer::randomizeItems()
         {
             fdat1Stream.device()->seek(fdat1Stream.device()->pos() - 1);
             fdat1Stream << getRandomItem();
-            fdat1Stream.skipRawData(11);
+            fdat1Stream.skipRawData(23);
         }
         else
-            fdat1Stream.skipRawData(11);
-        bytes_done += 12;
+            fdat1Stream.skipRawData(23);
+        bytes_done += 24;
     }
 
     /*emit statusUpdate(QDateTime::currentDateTime().time().toString() + ": Randomizing items in map 2 (FDAT 4)...");

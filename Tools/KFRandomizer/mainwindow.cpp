@@ -43,6 +43,9 @@ void MainWindow::on_randomizeButton_clicked()
         randomizer.randomizeItems();
 
     auto fdat = randomizer.getFile();
+
+    QMessageBox::information(this, "Almost done!", "Randomization done!\nYou will now be prompted to save the randomized FDAT.T we just generated.");
+
     QString outFilename = QFileDialog::getSaveFileName(this, "Choose where to save the new FDAT.T file.", QDir::homePath(), "FDAT.T (FDAT.T)");
     if (!outFilename.isEmpty())
     {
@@ -55,6 +58,7 @@ void MainWindow::on_randomizeButton_clicked()
         {
             outFile.write(fdat);
             outFile.close();
+            QMessageBox::information(this, "Done!", "Randomized FDAT.T written!\nNow all you need to do is use a program like CDmage 1.02.1 to replace your CD image's FDAT.T with the one the program generated.\nBe sure to do it on a copy of your original image!");
         }
     }
 }
