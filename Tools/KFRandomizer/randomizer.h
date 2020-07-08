@@ -8,10 +8,10 @@ class Randomizer : public QObject
 {
     Q_OBJECT
 public:
-    explicit Randomizer(QObject *parent = nullptr, QString fileName = "");
+    explicit Randomizer(QObject *parent = nullptr, const QString &fileName = "", const QString &seed = "");
     void randomizeMonsters(bool randomizeItemDrops = false);
     void randomizeItems();
-    void setNoEmptyDrops(bool _noEmptyDrops);
+    void setNoEmptyDrops(const bool &_noEmptyDrops);
     QByteArray &getFile();
 
 signals:

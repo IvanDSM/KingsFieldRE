@@ -5,7 +5,7 @@
 #include <QFile>
 #include <QMessageBox>
 
-Randomizer::Randomizer(QObject *parent, QString fileName) : QObject(parent)
+Randomizer::Randomizer(QObject *parent, const QString &fileName, const QString &seed) : QObject(parent)
 {
     parentWidget = reinterpret_cast<QWidget *>(parent);
     if (fileName.isEmpty())
@@ -42,7 +42,13 @@ Randomizer::Randomizer(QObject *parent, QString fileName) : QObject(parent)
         emit statusUpdate(QDateTime::currentDateTime().time().toString() + ": Copied CD image into memory.");
     }
 
-    rng = QRandomGenerator::securelySeeded();
+    if (!seed.isEmpty())
+    {
+        std::hash<QString> stringHasher;
+        rng = QRandomGenerator(stringHasher(seed));
+    }
+    else
+        rng = QRandomGenerator::securelySeeded();
 }
 
 void Randomizer::randomizeMonsters(bool randomizeItemDrops)
@@ -823,7 +829,7 @@ void Randomizer::randomizeItems()
     fdat25Stream << fdat25Checksum;
 }
 
-void Randomizer::setNoEmptyDrops(bool _noEmptyDrops)
+void Randomizer::setNoEmptyDrops(const bool &_noEmptyDrops)
 {
     noEmptyDrops = _noEmptyDrops;
 }

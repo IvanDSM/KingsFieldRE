@@ -36,7 +36,7 @@
     <normaloff>:/kraken.ico</normaloff>:/kraken.ico</iconset>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <layout class="QVBoxLayout" name="verticalLayout" stretch="0,0,0,0,0,0,0,0">
+   <layout class="QVBoxLayout" name="verticalLayout" stretch="0,0,0,0,0,0,0,0,0">
     <item>
      <widget class="QFrame" name="filePickFrame">
       <property name="frameShape">
@@ -122,6 +122,47 @@ Reading .bin files turned out to be quite a pain...</string>
       <property name="text">
        <string>Randomize items (unfinished, BREAKS THE GAME)</string>
       </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QFrame" name="seedFrame">
+      <property name="frameShape">
+       <enum>QFrame::NoFrame</enum>
+      </property>
+      <property name="frameShadow">
+       <enum>QFrame::Plain</enum>
+      </property>
+      <layout class="QHBoxLayout" name="horizontalLayout_2">
+       <property name="spacing">
+        <number>0</number>
+       </property>
+       <property name="leftMargin">
+        <number>0</number>
+       </property>
+       <property name="topMargin">
+        <number>0</number>
+       </property>
+       <property name="rightMargin">
+        <number>0</number>
+       </property>
+       <property name="bottomMargin">
+        <number>0</number>
+       </property>
+       <item>
+        <widget class="QCheckBox" name="seedCheck">
+         <property name="text">
+          <string>Use custom seed:</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLineEdit" name="seedEdit">
+         <property name="enabled">
+          <bool>false</bool>
+         </property>
+        </widget>
+       </item>
+      </layout>
      </widget>
     </item>
     <item>

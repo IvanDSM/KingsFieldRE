@@ -30,8 +30,12 @@ void MainWindow::on_pickFileButton_clicked()
 void MainWindow::on_randomizeButton_clicked()
 {
     ui->statusView->clear();
+    QString seed = "";
 
-    Randomizer randomizer(this, filename);
+    if (ui->seedCheck->isChecked())
+        seed = ui->seedEdit->text();
+
+    Randomizer randomizer(this, filename, seed);
     connect(&randomizer, &Randomizer::statusUpdate, this, &MainWindow::randomizerStatusUpdate);
     if (ui->itemDropCheck->isChecked() && ui->noEmptyDropsCheck->isChecked())
         randomizer.setNoEmptyDrops(ui->noEmptyDropsCheck->isChecked());
@@ -74,4 +78,12 @@ void MainWindow::on_itemDropCheck_stateChanged(int arg1)
         ui->noEmptyDropsCheck->setEnabled(true);
     else
         ui->noEmptyDropsCheck->setEnabled(false);
+}
+
+void MainWindow::on_seedCheck_stateChanged(int arg1)
+{
+    if (arg1 == Qt::CheckState::Checked)
+        ui->seedEdit->setEnabled(true);
+    else
+        ui->seedEdit->setEnabled(false);
 }

@@ -24,6 +24,8 @@ private slots:
 
     void on_itemDropCheck_stateChanged(int arg1);
 
+    void on_seedCheck_stateChanged(int arg1);
+
 private:
     QString filename = "";
     Ui::MainWindow *ui;
