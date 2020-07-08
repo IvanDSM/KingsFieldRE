@@ -885,7 +885,7 @@ quint8 Randomizer::getRandomMonster()
 
 bool Randomizer::isValidItem(const quint8 &item)
 {
-    if (item == 0x7 || item == 0x8 || item == 0x12 || item == 0x13 || item == 0x14 || item == 0x1b || item == 0x21 || item == 0x28 || item == 0x2e || item == 0x34 || (item > 0x3b && item < 0x43) || item == 0x51 || item == 0x62 || item == 0x6e || item > 0x76)
+    if (item == 0x7 || item == 0x8 || item == 0x12 || item == 0x13 || item == 0x14 || item == 0x1b || item == 0x21 || item == 0x28 || item == 0x2e || item == 0x34 || (item > 0x3b && item < 0x43) || item == 0x46 || item == 0x51 || item == 0x62 || item == 0x6e || item > 0x76)
         return false;
 
     return true;
