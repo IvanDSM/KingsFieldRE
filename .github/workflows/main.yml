@@ -118,22 +118,22 @@ jobs:
     - name: Deploy all tools
       run : |
         cd Tools\checksum_tool\release
-        windeployqt checksum_tool.exe
+        windeployqt --compiler-runtime checksum_tool.exe
         del *.o
         cd ..
         ren release checksum_tool
         cd ..\fdat28_tool\release
-        windeployqt fdat28_tool.exe
+        windeployqt --compiler-runtime fdat28_tool.exe
         del *.o
         cd ..
         ren release fdat28_tool
         cd ..\KFRandomizer\release
-        windeployqt KFRandomizer.exe
+        windeployqt --compiler-runtime KFRandomizer.exe
         del *.o
         cd ..
         ren release KFRandomizer
         cd ..\tfile_tool\release
-        windeployqt tfile_tool.exe
+        windeployqt --compiler-runtime tfile_tool.exe
         del *.o
         cd ..
         ren release tfile_tool
