@@ -34,6 +34,7 @@ private:
     QWidget *parentWidget = nullptr;
     quint8 getRandomItem();
     quint8 getRandomMonster();
+    bool isValidItem(const quint8 &item);
 };
 
 #endif // RANDOMIZER_H

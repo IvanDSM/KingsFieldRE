@@ -506,14 +506,14 @@ void Randomizer::randomizeItems()
     while (bytes_done < fdat1ItemBlockEnd)
     {
         fdat1Stream >> cur_item;
-        if (cur_item < 0x77)
+        if (isValidItem(cur_item))
         {
             fdat1Stream.device()->seek(fdat1Stream.device()->pos() - 1);
             fdat1Stream << getRandomItem();
             fdat1Stream.skipRawData(11);
         }
         else
-            fdat1Stream.skipRawData(12);
+            fdat1Stream.skipRawData(11);
         bytes_done += 12;
     }
 
@@ -866,7 +866,7 @@ quint8 Randomizer::getRandomItem()
     quint8 item = 0;
 
     // Loop to get rid of invalid items
-    while ((item == 0 && noEmptyDrops) || item == 0x7 || item == 0x8 || item == 0x12 || item == 0x13 || item == 0x14 || item == 0x1b || item == 0x21 || item == 0x28 || item == 0x2e || item == 0x34 || (item > 0x3b && item < 0x43) || item == 0x51 || item == 0x62 || item == 0x6e || item > 0x76)
+    while ((item == 0 && noEmptyDrops) || !isValidItem(item))
         item = rng.generate() % 119;
 
     return item;
@@ -875,4 +875,12 @@ quint8 Randomizer::getRandomItem()
 quint8 Randomizer::getRandomMonster()
 {
     return rng.generate() % 31;
+}
+
+bool Randomizer::isValidItem(const quint8 &item)
+{
+    if (item == 0x7 || item == 0x8 || item == 0x12 || item == 0x13 || item == 0x14 || item == 0x1b || item == 0x21 || item == 0x28 || item == 0x2e || item == 0x34 || (item > 0x3b && item < 0x43) || item == 0x51 || item == 0x62 || item == 0x6e || item > 0x76)
+        return false;
+
+    return true;
 }
