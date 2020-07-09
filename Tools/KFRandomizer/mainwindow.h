@@ -26,6 +26,8 @@ private slots:
 
     void on_seedCheck_stateChanged(int arg1);
 
+    void on_manualButton_clicked();
+
 private:
     QString filename = "";
     Ui::MainWindow *ui;

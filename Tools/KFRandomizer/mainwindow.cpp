@@ -1,7 +1,8 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
-#include <QFileDialog>
 #include "randomizer.h"
+#include <QDesktopServices>
+#include <QFileDialog>
 #include <QMessageBox>
 
 MainWindow::MainWindow(QWidget *parent)
@@ -86,4 +87,9 @@ void MainWindow::on_seedCheck_stateChanged(int arg1)
         ui->seedEdit->setEnabled(true);
     else
         ui->seedEdit->setEnabled(false);
+}
+
+void MainWindow::on_manualButton_clicked()
+{
+    QDesktopServices::openUrl(QUrl("https://github.com/IvanDSM/KingsFieldRE/blob/master/Tools/KFRandomizer/README.md"));
 }

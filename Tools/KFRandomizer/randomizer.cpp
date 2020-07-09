@@ -504,6 +504,7 @@ void Randomizer::randomizeItems()
 
     quint64 bytes_done;
     quint8 cur_item;
+
     emit statusUpdate(QDateTime::currentDateTime().time().toString() + ": Randomizing items in map 1 (FDAT 1)...");
 
     bytes_done = 0;
@@ -523,157 +524,157 @@ void Randomizer::randomizeItems()
         bytes_done += 24;
     }
 
-    /*emit statusUpdate(QDateTime::currentDateTime().time().toString() + ": Randomizing items in map 2 (FDAT 4)...");
+    emit statusUpdate(QDateTime::currentDateTime().time().toString() + ": Randomizing items in map 2 (FDAT 4)...");
 
     bytes_done = 0;
-    fdat4Stream.skipRawData(1);
-    bytes_done++;
+    fdat4Stream.skipRawData(4);
+    bytes_done += 4;
     while (bytes_done < fdat4ItemBlockEnd)
     {
-        fdat4Stream << getRandomMonster();
-        if (randomizeItemDrops)
+        fdat4Stream >> cur_item;
+        if (isValidItem(cur_item))
         {
-            fdat4Stream.skipRawData(4);
+            fdat4Stream.device()->seek(fdat4Stream.device()->pos() - 1);
             fdat4Stream << getRandomItem();
-            fdat4Stream.skipRawData(10);
+            fdat4Stream.skipRawData(23);
         }
         else
-            fdat4Stream.skipRawData(15);
-        bytes_done += 16;
+            fdat4Stream.skipRawData(23);
+        bytes_done += 24;
     }
 
     emit statusUpdate(QDateTime::currentDateTime().time().toString() + ": Randomizing items in map 3 (FDAT 7)...");
 
     bytes_done = 0;
-    fdat7Stream.skipRawData(1);
-    bytes_done++;
+    fdat7Stream.skipRawData(4);
+    bytes_done += 4;
     while (bytes_done < fdat7ItemBlockEnd)
     {
-        fdat7Stream << getRandomMonster();
-        if (randomizeItemDrops)
+        fdat7Stream >> cur_item;
+        if (isValidItem(cur_item))
         {
-            fdat7Stream.skipRawData(4);
+            fdat7Stream.device()->seek(fdat7Stream.device()->pos() - 1);
             fdat7Stream << getRandomItem();
-            fdat7Stream.skipRawData(10);
+            fdat7Stream.skipRawData(23);
         }
         else
-            fdat7Stream.skipRawData(15);
-        bytes_done += 16;
+            fdat7Stream.skipRawData(23);
+        bytes_done += 24;
     }
 
     emit statusUpdate(QDateTime::currentDateTime().time().toString() + ": Randomizing items in map 4 (FDAT 10)...");
 
     bytes_done = 0;
-    fdat10Stream.skipRawData(1);
-    bytes_done++;
+    fdat10Stream.skipRawData(4);
+    bytes_done += 4;
     while (bytes_done < fdat10ItemBlockEnd)
     {
-        fdat10Stream << getRandomMonster();
-        if (randomizeItemDrops)
+        fdat10Stream >> cur_item;
+        if (isValidItem(cur_item))
         {
-            fdat10Stream.skipRawData(4);
+            fdat10Stream.device()->seek(fdat10Stream.device()->pos() - 1);
             fdat10Stream << getRandomItem();
-            fdat10Stream.skipRawData(10);
+            fdat10Stream.skipRawData(23);
         }
         else
-            fdat10Stream.skipRawData(15);
-        bytes_done += 16;
+            fdat10Stream.skipRawData(23);
+        bytes_done += 24;
     }
 
     emit statusUpdate(QDateTime::currentDateTime().time().toString() + ": Randomizing items in map 5 (FDAT 13)...");
 
     bytes_done = 0;
-    fdat13Stream.skipRawData(1);
-    bytes_done++;
+    fdat13Stream.skipRawData(4);
+    bytes_done += 4;
     while (bytes_done < fdat13ItemBlockEnd)
     {
-        fdat13Stream << getRandomMonster();
-        if (randomizeItemDrops)
+        fdat13Stream >> cur_item;
+        if (isValidItem(cur_item))
         {
-            fdat13Stream.skipRawData(4);
+            fdat13Stream.device()->seek(fdat13Stream.device()->pos() - 1);
             fdat13Stream << getRandomItem();
-            fdat13Stream.skipRawData(10);
+            fdat13Stream.skipRawData(23);
         }
         else
-            fdat13Stream.skipRawData(15);
-        bytes_done += 16;
+            fdat13Stream.skipRawData(23);
+        bytes_done += 24;
     }
 
     emit statusUpdate(QDateTime::currentDateTime().time().toString() + ": Randomizing items in map 6 (FDAT 16)...");
 
     bytes_done = 0;
-    fdat16Stream.skipRawData(1);
-    bytes_done++;
+    fdat16Stream.skipRawData(4);
+    bytes_done += 4;
     while (bytes_done < fdat16ItemBlockEnd)
     {
-        fdat16Stream << getRandomMonster();
-        if (randomizeItemDrops)
+        fdat16Stream >> cur_item;
+        if (isValidItem(cur_item))
         {
-            fdat16Stream.skipRawData(4);
+            fdat16Stream.device()->seek(fdat16Stream.device()->pos() - 1);
             fdat16Stream << getRandomItem();
-            fdat16Stream.skipRawData(10);
+            fdat16Stream.skipRawData(23);
         }
         else
-            fdat16Stream.skipRawData(15);
-        bytes_done += 16;
+            fdat16Stream.skipRawData(23);
+        bytes_done += 24;
     }
 
     emit statusUpdate(QDateTime::currentDateTime().time().toString() + ": Randomizing items in map 7 (FDAT 19)...");
 
     bytes_done = 0;
-    fdat19Stream.skipRawData(1);
-    bytes_done++;
+    fdat19Stream.skipRawData(4);
+    bytes_done += 4;
     while (bytes_done < fdat19ItemBlockEnd)
     {
-        fdat19Stream << getRandomMonster();
-        if (randomizeItemDrops)
+        fdat19Stream >> cur_item;
+        if (isValidItem(cur_item))
         {
-            fdat19Stream.skipRawData(4);
+            fdat19Stream.device()->seek(fdat19Stream.device()->pos() - 1);
             fdat19Stream << getRandomItem();
-            fdat19Stream.skipRawData(10);
+            fdat19Stream.skipRawData(23);
         }
         else
-            fdat19Stream.skipRawData(15);
-        bytes_done += 16;
+            fdat19Stream.skipRawData(23);
+        bytes_done += 24;
     }
 
     emit statusUpdate(QDateTime::currentDateTime().time().toString() + ": Randomizing items in map 8 (FDAT 22)...");
 
     bytes_done = 0;
-    fdat22Stream.skipRawData(1);
-    bytes_done++;
+    fdat22Stream.skipRawData(4);
+    bytes_done += 4;
     while (bytes_done < fdat22ItemBlockEnd)
     {
-        fdat22Stream << getRandomMonster();
-        if (randomizeItemDrops)
+        fdat22Stream >> cur_item;
+        if (isValidItem(cur_item))
         {
-            fdat22Stream.skipRawData(4);
+            fdat22Stream.device()->seek(fdat22Stream.device()->pos() - 1);
             fdat22Stream << getRandomItem();
-            fdat22Stream.skipRawData(10);
+            fdat22Stream.skipRawData(23);
         }
         else
-            fdat22Stream.skipRawData(15);
-        bytes_done += 16;
+            fdat22Stream.skipRawData(23);
+        bytes_done += 24;
     }
 
     emit statusUpdate(QDateTime::currentDateTime().time().toString() + ": Randomizing items in map 9 (FDAT 25)...");
 
     bytes_done = 0;
     fdat25Stream.skipRawData(4);
-    bytes_done +=;
+    bytes_done += 4;
     while (bytes_done < fdat25ItemBlockEnd)
     {
-        fdat25Stream << getRandomMonster();
-        if (randomizeItemDrops)
+        fdat25Stream >> cur_item;
+        if (isValidItem(cur_item))
         {
-            fdat25Stream.skipRawData(4);
+            fdat25Stream.device()->seek(fdat25Stream.device()->pos() - 1);
             fdat25Stream << getRandomItem();
-            fdat25Stream.skipRawData(10);
+            fdat25Stream.skipRawData(23);
         }
         else
-            fdat25Stream.skipRawData(15);
-        bytes_done += 16;
-    }*/
+            fdat25Stream.skipRawData(23);
+        bytes_done += 24;
+    }
 
     emit statusUpdate(QDateTime::currentDateTime().time().toString() + ": Calculating checksum for map 1 (FDAT 1)...");
 
@@ -872,8 +873,11 @@ quint8 Randomizer::getRandomItem()
     quint8 item = 0;
 
     // Loop to get rid of invalid items
-    while ((item == 0 && noEmptyDrops) || !isValidItem(item))
+    do
+    {
         item = rng.generate() % 119;
+    }
+    while ((item == 0 && noEmptyDrops) || !isValidItem(item));
 
     return item;
 }

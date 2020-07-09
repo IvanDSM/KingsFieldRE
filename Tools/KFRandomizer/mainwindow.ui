@@ -120,7 +120,7 @@ Reading .bin files turned out to be quite a pain...</string>
     <item>
      <widget class="QCheckBox" name="itemCheck">
       <property name="text">
-       <string>Randomize items (unfinished, BREAKS THE GAME)</string>
+       <string>Randomize items</string>
       </property>
      </widget>
     </item>
@@ -176,13 +176,44 @@ Reading .bin files turned out to be quite a pain...</string>
      </widget>
     </item>
     <item>
-     <widget class="QPushButton" name="randomizeButton">
-      <property name="enabled">
-       <bool>false</bool>
+     <widget class="QFrame" name="buttonsFrame">
+      <property name="frameShape">
+       <enum>QFrame::NoFrame</enum>
       </property>
-      <property name="text">
-       <string>Randomize!</string>
+      <property name="frameShadow">
+       <enum>QFrame::Plain</enum>
       </property>
+      <layout class="QHBoxLayout" name="horizontalLayout_3" stretch="10,0">
+       <property name="leftMargin">
+        <number>0</number>
+       </property>
+       <property name="topMargin">
+        <number>0</number>
+       </property>
+       <property name="rightMargin">
+        <number>0</number>
+       </property>
+       <property name="bottomMargin">
+        <number>0</number>
+       </property>
+       <item>
+        <widget class="QPushButton" name="randomizeButton">
+         <property name="enabled">
+          <bool>false</bool>
+         </property>
+         <property name="text">
+          <string>Randomize!</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="manualButton">
+         <property name="text">
+          <string>Need help? Click here!</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
      </widget>
     </item>
    </layout>
