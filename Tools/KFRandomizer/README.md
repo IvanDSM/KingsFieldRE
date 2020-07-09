@@ -12,28 +12,28 @@ You can probably follow this tutorial under macOS by using Wine for both CDmage 
 ## Getting the latest build of KFRandomizer
 To download the latest build of KFRandomizer, head on over to the project's [GitHub Actions page](https://github.com/IvanDSM/KingsFieldRE/actions). Once you're there, click on the first item in the "All workflows" list. In the image below, the latest build at the time of writing is highlighted in green. Get the build in that position.
 
-[[https://github.com/IvanDSM/KingsFieldRE/blob/master/wiki/kfrandomizer_manual/get_latest_build.png]]
+![GitHub Actions page. Don't mind the message inside the green highlight, what matters is the position!](https://github.com/IvanDSM/KingsFieldRE/blob/master/wiki/kfrandomizer_manual/get_latest_build.png)
 
 Unpack the files in a folder of your choice. After that, run the KFRandomizer executable (KFRandomizer on Linux, KFRandomizer.exe on Windows). You'll get a screen like this:
 
-[[https://github.com/IvanDSM/KingsFieldRE/blob/master/wiki/kfrandomizer_manual/randomizer.png]]
+![Randomizer UI as of writing](https://github.com/IvanDSM/KingsFieldRE/blob/master/wiki/kfrandomizer_manual/randomizer.png)
 
 You will notice the randomizer is asking for an FDAT.T file. This is a file that's inside the King's Field CD. To obtain and replace this file, we'll use CDmage.
 
 ## Getting FDAT.T with CDmage
 First, copy your King's Field CD image somewhere else. This copy will be the image we'll randomize. Next up, open CDmage. You'll be greeted by a screen like the one below:
 
-[[https://github.com/IvanDSM/KingsFieldRE/blob/master/wiki/kfrandomizer_manual/cdmage.png]]
+![CDmage without any file loaded](https://github.com/IvanDSM/KingsFieldRE/blob/master/wiki/kfrandomizer_manual/cdmage.png)
 
 Drag your image's .cue file or open it by going to File -> Open... and you'll get something like this:
 
-[[https://github.com/IvanDSM/KingsFieldRE/blob/master/wiki/kfrandomizer_manual/cdmage_loaded.png]]
+![CDmage with the our image loaded](https://github.com/IvanDSM/KingsFieldRE/blob/master/wiki/kfrandomizer_manual/cdmage_loaded.png)
 
 (If you don't see "Track 1" on the left side, double click "Session 1".)
 
 Double click "Track 1". "CD" and "OP" will appear under it. Double click "CD". "COM" will appear under "CD". Double click "COM". Your CDmage screen should look like this:
 
-[[https://github.com/IvanDSM/KingsFieldRE/blob/master/wiki/kfrandomizer_manual/cdmage_com.png]]
+![CDmage screen with the COM folder open](https://github.com/IvanDSM/KingsFieldRE/blob/master/wiki/kfrandomizer_manual/cdmage_com.png)
 
 Right-click FDAT.T then click "Extract files...". CDmage will ask you what folder to extract. Choose a folder of your choice and hit Extract. Now keep CDmage open and let's head back to the randomizer!
 

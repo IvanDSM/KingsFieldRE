@@ -31,6 +31,8 @@ A badly written prototype of a randomizer for King's Field!
 
 Currently able to replace monsters and their item drops in all maps. Item randomization is being worked on but currently breaks the game if activated.
 
+There is a manual available [here](https://github.com/IvanDSM/KingsFieldRE/blob/master/Tools/KFRandomizer/README.md)!
+
 ![KFRandomizer screenshot](wiki/kfrandomizer.png)
 
 ## tfile_tool
