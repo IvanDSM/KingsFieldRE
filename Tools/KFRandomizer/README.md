@@ -10,9 +10,13 @@ You're going to need a few things to follow this guide:
 You can probably follow this tutorial under macOS by using Wine for both CDmage and a Windows build of KFRandomizer.
 
 ## Getting the latest build of KFRandomizer
-To download the latest build of KFRandomizer, head on over to the project's [GitHub Actions page](https://github.com/IvanDSM/KingsFieldRE/actions). Once you're there, click on the first item in the "All workflows" list. In the image below, the latest build at the time of writing is highlighted in green. Get the build in that position.
+To download the latest build of KFRandomizer, head on over to the project's [GitHub Actions page](https://github.com/IvanDSM/KingsFieldRE/actions). Once you're there, click on the first item in the "All workflows" list. In the image below, the latest build at the time of writing is highlighted in green. Follow the link in that position.
 
 ![GitHub Actions page. Don't mind the message inside the green highlight, what matters is the position!](https://github.com/IvanDSM/KingsFieldRE/blob/master/wiki/kfrandomizer_manual/get_latest_build.png)
+
+You'll arrive at the GitHub Actions page for that run. A variety of tools will be available here, but you just need to download te appropriate build for your system. Select the correct one from the list of builds as highlighted in green in the picture below:
+
+![GitHub Actions page for the latest run. Note the KFRandomizer builds!](https://github.com/IvanDSM/KingsFieldRE/blob/master/wiki/kfrandomizer_manual/actions_build.png)
 
 Unpack the files in a folder of your choice. After that, run the KFRandomizer executable (KFRandomizer on Linux, KFRandomizer.exe on Windows). You'll get a screen like this:
 
