@@ -29,7 +29,7 @@ This tool is a simple single-purpose utility. It receives text files with increa
 ## KFRandomizer
 A badly written prototype of a randomizer for King's Field!
 
-Currently able to replace monsters and their item drops in all maps. Item randomization is being worked on but currently breaks the game if activated.
+KFRandomizer is able to replace monsters (as well as their item drops) and items in all maps. Item randomization is being worked on but currently breaks the game if activated.
 
 There is a manual available [here](https://github.com/IvanDSM/KingsFieldRE/blob/master/Tools/KFRandomizer/README.md)!
 
