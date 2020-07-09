@@ -16,7 +16,7 @@ Automated builds for Linux (based on Ubuntu 16.04) and 64-bit Windows are availa
 You will need to be signed into GitHub to download the automated builds due to GitHub limitations. **We do not receive any information about you when you download a build.**
 
 ## checksum_tool
-This is a very simple command line tool for calculating a file's checksum according to the way the game calculates it for integrity checking. The game's method for calculating a file's checksum is described [in the repository's wiki].(https://github.com/IvanDSM/KingsFieldRE/wiki/File-Checksum-Algorithm).
+This is a very simple command line tool for calculating a file's checksum according to the way the game calculates it for integrity checking. The game's method for calculating a file's checksum is described [in the repository's wiki](https://github.com/IvanDSM/KingsFieldRE/wiki/File-Checksum-Algorithm).
 
 ## fdat28_tool
 This is a graphical tool for interpreting the data contained in FDAT.T's (true) file 28. This file contains data such as weapon stats for each weapon in the game, data for each of the magic spells and the player stats for each achievable level.
