@@ -8,7 +8,7 @@ on:
 
 jobs:
   linux-build:
-    runs-on: ubuntu-16.04
+    runs-on: ubuntu-18.04
 
     steps:
     # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
@@ -35,7 +35,9 @@ jobs:
         cd ..
 
     - name: Build KFModTool
+      continue-on-error: true
       run: |
+      
         cd Tools/KFModTool
         qmake
         make -j2
@@ -68,6 +70,7 @@ jobs:
         path: Tools/fdat28_tool/fdat28_tool
 
     - name: Upload KFModTool build
+      continue-on-error: true
       uses: actions/upload-artifact@v2
       with:
         name: KFModTool ubuntu build
@@ -115,6 +118,7 @@ jobs:
         cd ..
 
     - name: Build KFModTool
+      continue-on-error: true
       run: |
         cd Tools\KFModTool
         qmake
@@ -158,6 +162,7 @@ jobs:
         ren release fdat28_tool
 
     - name: Deploy KFModTool
+      continue-on-error: true
       run : |
         cd ..\KFModTool\release
         windeployqt --compiler-runtime KFModTool.exe
@@ -204,6 +209,7 @@ jobs:
         path: Tools\fdat28_tool\fdat28_tool\
         
     - name: Upload KFModTool build
+      continue-on-error: true
       uses: actions/upload-artifact@v2
       with:
         name: KFModTool windows (64-bit) build
