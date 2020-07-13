@@ -223,7 +223,7 @@ void MapEditWidget::entityInstanceHovered(byte instanceIndex)
 void MapEditWidget::hoveredTileInfo(byte elevation, byte rotation, byte collisionThing, byte zoneDelimiter)
 {
     ui->elevLabel->setText("Elevation: " + QString::number(elevation));
-    ui->rotLabel->setText("Rotation: " + QString::number(rotation));
+    ui->rotLabel->setText("Rotation: " + QString::number(rotation * 90) + "°");
     ui->colThingLabel->setText("Collision Thing: " + QString::number(collisionThing));
     ui->zoneDelimLabel->setText("Zone Delimiter: " + QString::number(zoneDelimiter));
 }
