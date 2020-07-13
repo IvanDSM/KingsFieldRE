@@ -17,7 +17,7 @@
    <iconset resource="resources.qrc">
     <normaloff>:/map_icon.png</normaloff>:/map_icon.png</iconset>
   </property>
-  <layout class="QHBoxLayout" name="horizontalLayout_2" stretch="2,1">
+  <layout class="QHBoxLayout" name="horizontalLayout_2" stretch="5,4">
    <property name="spacing">
     <number>6</number>
    </property>
