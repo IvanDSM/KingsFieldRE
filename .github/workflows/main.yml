@@ -92,7 +92,7 @@ jobs:
     
     steps:
     - name: Set up Git for properly handling symlinks on Windows
-      run: git config core.symlinks true
+      run: git config --global core.symlinks true
 
     - name: Checkout repo
       uses: actions/checkout@v2
