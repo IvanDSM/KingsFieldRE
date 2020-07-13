@@ -61,7 +61,7 @@ public slots:
     void leaveEvent(QEvent *event) override
     {
         QWidget::leaveEvent(event);
-        mousePos = {-1,-1};
+        mousePos = {-2,-2};
         repaint();
     }
 

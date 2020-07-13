@@ -17,7 +17,7 @@ void MapViewer::mousePressEvent(QMouseEvent *event)
 void MapViewer::paintEvent(QPaintEvent *event)
 {
     QWidget::paintEvent(event);
-    QRect window(0, 0, 80, 80);
+    QRect window(-1, -1, 81, 81);
     painter.begin(this);
     painter.setWindow(window);
     drawMap();
@@ -101,6 +101,9 @@ void MapViewer::processMouse(QMouseEvent *event)
 {
     int trueX = qRound((static_cast<float>(event->pos().x()) / size().width()) * 80);
     int trueY = qRound((static_cast<float>(event->pos().y()) / size().height()) * 80);
+
+    if (trueX < 0 || trueX > 79 || trueY < 0 || trueY > 79)
+        return;
 
     mousePos.setX(trueX);
     mousePos.setY(trueY);
