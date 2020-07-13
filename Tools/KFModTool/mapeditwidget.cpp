@@ -402,3 +402,9 @@ void MapEditWidget::on_objectInstanceTable_itemChanged(QTableWidgetItem *item)
     }
     curMap->setChanged();
 }
+
+void MapEditWidget::on_elementCombo_currentIndexChanged(int index)
+{
+    auto elem = static_cast<MapViewer::MapElement>(index);
+    ui->mapViewWidget->setElement(elem);
+}

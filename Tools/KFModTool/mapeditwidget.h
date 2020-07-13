@@ -37,7 +37,9 @@ private slots:
 
     void on_objectInstanceTable_itemChanged(QTableWidgetItem *item);
 
-private:
+    void on_elementCombo_currentIndexChanged(int index);
+
+    private:
     void fillEntityCDCombo();
     byte currentEntityInstance = 255;
     size_t currentObjectInstance = 65536;

@@ -16,6 +16,13 @@ public:
         LAYER_1,
         LAYER_2
     };
+
+    enum class MapElement
+    {
+        MAP_COLLISIONTHING,
+        MAP_ELEV
+    };
+
     explicit MapViewer(QWidget *parent = nullptr) : QWidget(parent)
     {
         setMouseTracking(true);
@@ -24,6 +31,12 @@ public:
     void setDrawZoneDelimiters(bool shouldDraw)
     {
         drawZoneDelimiters = shouldDraw;
+        repaint();
+    }
+
+    void setElement(MapElement element)
+    {
+        curElement = element;
         repaint();
     }
 
@@ -64,6 +77,7 @@ private:
     void processMouse(QMouseEvent *event);
 
     bool drawZoneDelimiters = false;
+    MapElement curElement = MapElement::MAP_COLLISIONTHING;
     MapLayer curLayer = MapLayer::LAYER_1;
     QPainter painter;
     QPoint mousePos = QPoint(39, 39);

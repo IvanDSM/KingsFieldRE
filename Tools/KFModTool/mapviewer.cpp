@@ -47,13 +47,27 @@ void MapViewer::drawMap()
             byte green = 0, blue = 0;
             if (curLayer == MapLayer::LAYER_1)
             {
-                green = mapPtr->getTile(line, column).Layer1CollisionSomething;
+                switch (curElement)
+                {
+                    case MapElement::MAP_ELEV:
+                        green = mapPtr->getTile(line, column).Layer1Elev;
+                        break;
+                    case MapElement::MAP_COLLISIONTHING:
+                        green = mapPtr->getTile(line, column).Layer1CollisionSomething;
+                }
                 if (drawZoneDelimiters)
                     blue = mapPtr->getTile(line, column).Layer1ZoneDelimiter;
             }
             else
             {
-                green = mapPtr->getTile(line, column).Layer2CollisionSomething;
+                switch (curElement)
+                {
+                    case MapElement::MAP_ELEV:
+                        green = mapPtr->getTile(line, column).Layer2Elev;
+                        break;
+                    case MapElement::MAP_COLLISIONTHING:
+                        green = mapPtr->getTile(line, column).Layer2CollisionSomething;
+                }
                 if (drawZoneDelimiters)
                     blue = mapPtr->getTile(line, column).Layer2ZoneDelimiter;
             }
