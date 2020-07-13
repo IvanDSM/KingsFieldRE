@@ -2,7 +2,12 @@
 #define KFTYPES_H
 
 #include <QString>
+
+#if __GNUC__ >= 10
 #include <unordered_map>
+#else
+#include <map>
+#endif
 
 typedef quint8 byte;
 typedef byte undefined;
@@ -259,8 +264,11 @@ namespace KingsField
     };
 
     // Maps
-
+#if __GNUC__ >= 10
     static const std::unordered_map<const EntityMeshID, const QString> entityMeshIdNameMap =
+#else
+    static const std::map<const EntityMeshID, const QString> entityMeshIdNameMap =
+#endif
     {
         {EntityMeshID::AlHunt, "AlHunt"},
         {EntityMeshID::Archer, "Archer"},
@@ -376,7 +384,11 @@ namespace KingsField
         {EntityMeshID::Unused9, "Unused9"}
     };
 
-    static const std::unordered_map<const ItemID, const QString> itemIdNameMap =
+#if __GNUC__ >= 10
+    static const std::unordered_map<const EntityMeshID, const QString> entityMeshIdNameMap =
+#else
+    static const std::map<const ItemID, const QString> itemIdNameMap =
+#endif
     {
         {ItemID::ArmsA, "ArmsA"},
         {ItemID::ArmsDemonsHands, "ArmsDemonsHands"},

@@ -11,10 +11,9 @@ jobs:
     runs-on: ubuntu-18.04
 
     steps:
-    # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
     - name: Checkout repo
       uses: actions/checkout@v2
-    # Install Qt
+
     - name: Install Qt
       uses: jurplel/install-qt-action@v2
       with:
@@ -92,11 +91,12 @@ jobs:
     runs-on: 	windows-latest
     
     steps:
-    # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+    - name: Set up Git for properly handling symlinks on Windows
+      run: git config core.symlinks=true
+
     - name: Checkout repo
       uses: actions/checkout@v2
 
-    # Install Qt
     - name: Install Qt
       uses: jurplel/install-qt-action@v2
       with:
@@ -152,7 +152,7 @@ jobs:
 
     - name: Deploy fdat28_tool
       run : |
-        cd ..\fdat28_tool\release
+        cd fdat28_tool\release
         windeployqt --compiler-runtime fdat28_tool.exe
         del *.o
         cp $env:Qt5_Dir\bin\libgcc_s_seh-1.dll .
@@ -164,7 +164,7 @@ jobs:
     - name: Deploy KFModTool
       continue-on-error: true
       run : |
-        cd ..\KFModTool\release
+        cd KFModTool\release
         windeployqt --compiler-runtime KFModTool.exe
         del *.o
         cp $env:Qt5_Dir\bin\libgcc_s_seh-1.dll .
@@ -175,7 +175,7 @@ jobs:
 
     - name: Deploy KFRandomizer
       run : |
-        cd ..\KFRandomizer\release
+        cd KFRandomizer\release
         windeployqt --compiler-runtime KFRandomizer.exe
         del *.o
         cp $env:Qt5_Dir\bin\libgcc_s_seh-1.dll .
@@ -186,7 +186,7 @@ jobs:
 
     - name: Deploy tfile_tool
       run : |
-        cd ..\tfile_tool\release
+        cd tfile_tool\release
         windeployqt --compiler-runtime tfile_tool.exe
         del *.o
         cp $env:Qt5_Dir\bin\libgcc_s_seh-1.dll .
