@@ -127,7 +127,7 @@ void MapViewer::processMouse(QMouseEvent *event)
             entityIndex++;
         }
 
-        auto tile = mapPtr->getTile(trueY, trueX);
+        auto tile = mapPtr->getTile(trueX, trueY);
         switch(curLayer)
         {
             case MapLayer::LAYER_1:
