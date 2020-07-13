@@ -385,7 +385,7 @@ namespace KingsField
     };
 
 #if __GNUC__ >= 10
-    static const std::unordered_map<const EntityMeshID, const QString> entityMeshIdNameMap =
+    static const std::unordered_map<const ItemID, const QString> itemIdNameMap =
 #else
     static const std::map<const ItemID, const QString> itemIdNameMap =
 #endif
