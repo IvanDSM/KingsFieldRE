@@ -24,28 +24,35 @@ jobs:
       run: |
         cd Tools/checksum_tool
         qmake
-        make -j4
+        make -j2
         cd ..
     
     - name: Build fdat28_tool
       run: |
         cd Tools/fdat28_tool
         qmake
-        make -j4
+        make -j2
+        cd ..
+
+    - name: Build KFModTool
+      run: |
+        cd Tools/KFModTool
+        qmake
+        make -j2
         cd ..
 
     - name: Build KFRandomizer
       run: |
         cd Tools/KFRandomizer
         qmake
-        make -j4
+        make -j2
         cd ..
         
     - name: Build tfile_tool
       run: |
         cd Tools/tfile_tool
         qmake
-        make -j4
+        make -j2
         cd ..
 
     - name: Upload checksum_tool build
@@ -59,6 +66,12 @@ jobs:
       with:
         name: fdat28_tool ubuntu build
         path: Tools/fdat28_tool/fdat28_tool
+
+    - name: Upload KFModTool build
+      uses: actions/upload-artifact@v2
+      with:
+        name: KFModTool ubuntu build
+        path: Tools/KFModTool/KFModTool
 
     - name: Upload KFRandomizer build
       uses: actions/upload-artifact@v2
@@ -91,31 +104,38 @@ jobs:
       run: |
         cd Tools\checksum_tool
         qmake
-        make -j4
+        make -j2
         cd ..
     
     - name: Build fdat28_tool
       run: |
         cd Tools\fdat28_tool
         qmake
-        make -j4
+        make -j2
+        cd ..
+
+    - name: Build KFModTool
+      run: |
+        cd Tools\KFModTool
+        qmake
+        make -j2
         cd ..
 
     - name: Build KFRandomizer
       run: |
         cd Tools\KFRandomizer
         qmake
-        make -j4
+        make -j2
         cd ..
         
     - name: Build tfile_tool
       run: |
         cd Tools\tfile_tool
         qmake
-        make -j4
+        make -j2
         cd ..
 
-    - name: Deploy all tools
+    - name: Deploy checksum_tool
       run : |
         cd Tools\checksum_tool\release
         windeployqt --compiler-runtime checksum_tool.exe
@@ -125,6 +145,9 @@ jobs:
         cp $env:Qt5_Dir\bin\libwinpthread-1.dll .
         cd ..
         ren release checksum_tool
+
+    - name: Deploy fdat28_tool
+      run : |
         cd ..\fdat28_tool\release
         windeployqt --compiler-runtime fdat28_tool.exe
         del *.o
@@ -133,6 +156,20 @@ jobs:
         cp $env:Qt5_Dir\bin\libwinpthread-1.dll .
         cd ..
         ren release fdat28_tool
+
+    - name: Deploy KFModTool
+      run : |
+        cd ..\KFModTool\release
+        windeployqt --compiler-runtime KFModTool.exe
+        del *.o
+        cp $env:Qt5_Dir\bin\libgcc_s_seh-1.dll .
+        cp $env:Qt5_Dir\bin\libstdc++-6.dll .
+        cp $env:Qt5_Dir\bin\libwinpthread-1.dll .
+        cd ..
+        ren release KFModTool
+
+    - name: Deploy KFRandomizer
+      run : |
         cd ..\KFRandomizer\release
         windeployqt --compiler-runtime KFRandomizer.exe
         del *.o
@@ -141,6 +178,9 @@ jobs:
         cp $env:Qt5_Dir\bin\libwinpthread-1.dll .
         cd ..
         ren release KFRandomizer
+
+    - name: Deploy tfile_tool
+      run : |
         cd ..\tfile_tool\release
         windeployqt --compiler-runtime tfile_tool.exe
         del *.o
@@ -162,6 +202,12 @@ jobs:
       with:
         name: fdat28_tool windows (64-bit) build
         path: Tools\fdat28_tool\fdat28_tool\
+        
+    - name: Upload KFModTool build
+      uses: actions/upload-artifact@v2
+      with:
+        name: KFModTool windows (64-bit) build
+        path: Tools\KFModTool\KFModTool\
         
     - name: Upload KFRandomizer build
       uses: actions/upload-artifact@v2
