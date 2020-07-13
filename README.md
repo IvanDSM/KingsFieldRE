@@ -26,12 +26,17 @@ This is a graphical tool for interpreting the data contained in FDAT.T's (true) 
 ## HexOffsetFinder
 This tool is a simple single-purpose utility. It receives text files with increasingly ordered hexadecimal values (such as the ones in the Notes folder), finds the offsets between the values and prints out a sorted list of them. This tool is used to find the size of newly found structures.
 
+## KFModTool
+Very early modding tool for King's Field. I do not recommend using this at all yet.
+
+Useful for messing with the enemy/object data in maps. Nothing else can be done so far.
+
 ## KFRandomizer
 A badly written prototype of a randomizer for King's Field!
 
 KFRandomizer is able to replace monsters (as well as their item drops) and items in all maps (the screenshot below is of an old build). Item randomization is being worked on but currently breaks the game if activated.
 
-There is a manual available [here](https://github.com/IvanDSM/KingsFieldRE/blob/master/Tools/KFRandomizer/README.md)!
+There is a manual available [here](https://github.com/IvanDSM/KingsFieldRE/blob/master/Tools/KFRandomizer/README.md) and ImJecht has made [a tutorial on how to set up and use it](https://youtu.be/VHVXxpg4R5I)!
 
 ![KFRandomizer screenshot](wiki/kfrandomizer.png)
 

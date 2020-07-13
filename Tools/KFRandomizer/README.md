@@ -9,8 +9,13 @@ You're going to need a few things to follow this guide:
 
 You can probably follow this tutorial under macOS by using Wine for both CDmage and a Windows build of KFRandomizer.
 
+ImJecht has made a pretty straightforward video on how to set up and use the randomizer [here](https://youtu.be/VHVXxpg4R5I)! Though he used Windows for the video, it's relatively easy to follow along on Linux given you know how to get CDmage working under Wine.
+
 ## Getting the latest build of KFRandomizer
-To download the latest build of KFRandomizer, head on over to the project's [GitHub Actions page](https://github.com/IvanDSM/KingsFieldRE/actions). Once you're there, click on the first item in the "All workflows" list. In the image below, the latest build at the time of writing is highlighted in green. Follow the link in that position.
+
+Note: To download the project's automatic builds, you will need a GitHub account! It's really easy to make one, so don't worry if you don't have one yet.
+
+To download the latest build of KFRandomizer, head on over to the project's [GitHub Actions page](https://github.com/IvanDSM/KingsFieldRE/actions). Once you're there, click on the first item in the "All workflows" list. In the image below, the latest build at the time of writing is highlighted in green. Follow the link in that position. 
 
 ![GitHub Actions page. Don't mind the message inside the green highlight, what matters is the position!](https://github.com/IvanDSM/KingsFieldRE/blob/master/wiki/kfrandomizer_manual/get_latest_build.png)
 
