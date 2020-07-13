@@ -54,6 +54,7 @@ public:
 
 signals:
     void entityInstanceHovered(byte instance);
+    void hoveredTileInfo(byte elevation, byte rotation, byte collisionThing, byte zoneDelimiter);
     void objectInstanceHovered(size_t instance);
 
 public slots:

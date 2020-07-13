@@ -27,6 +27,8 @@ private slots:
 
     void entityInstanceHovered(byte instanceIndex);
 
+    void hoveredTileInfo(byte elevation, byte rotation, byte collisionThing, byte zoneDelimiter);
+
     void objectInstanceHovered(size_t instanceIndex);
 
     void on_zoneDelimCheck_stateChanged(int arg1);
@@ -39,7 +41,7 @@ private slots:
 
     void on_elementCombo_currentIndexChanged(int index);
 
-    private:
+private:
     void fillEntityCDCombo();
     byte currentEntityInstance = 255;
     size_t currentObjectInstance = 65536;

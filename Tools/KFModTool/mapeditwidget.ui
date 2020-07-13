@@ -86,6 +86,59 @@
        </widget>
       </item>
       <item>
+       <widget class="QLabel" name="entityCDWarning">
+        <property name="text">
+         <string>Most of the map work has been done by TheStolenBattenberg.</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignCenter</set>
+        </property>
+        <property name="wordWrap">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QFrame" name="tileInfoFrame">
+        <property name="frameShape">
+         <enum>QFrame::NoFrame</enum>
+        </property>
+        <property name="frameShadow">
+         <enum>QFrame::Plain</enum>
+        </property>
+        <layout class="QGridLayout" name="gridLayout_3">
+         <item row="0" column="0">
+          <widget class="QLabel" name="elevLabel">
+           <property name="text">
+            <string>Elevation: --</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="1">
+          <widget class="QLabel" name="rotLabel">
+           <property name="text">
+            <string>Rotation: --</string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="0">
+          <widget class="QLabel" name="colThingLabel">
+           <property name="text">
+            <string>Collision Thing: --</string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="1">
+          <widget class="QLabel" name="zoneDelimLabel">
+           <property name="text">
+            <string>Zone Delimiter: --</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+      </item>
+      <item>
        <widget class="QFrame" name="layerFrame">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
@@ -175,19 +228,6 @@
           </widget>
          </item>
         </layout>
-       </widget>
-      </item>
-      <item>
-       <widget class="QLabel" name="entityCDWarning">
-        <property name="text">
-         <string>Most of the map work has been done by TheStolenBattenberg.</string>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignCenter</set>
-        </property>
-        <property name="wordWrap">
-         <bool>true</bool>
-        </property>
        </widget>
       </item>
       <item>

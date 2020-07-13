@@ -10,6 +10,8 @@ MapEditWidget::MapEditWidget(QWidget *parent) :
 
     connect(ui->mapViewWidget, &MapViewer::entityInstanceHovered,
             this, &MapEditWidget::entityInstanceHovered);
+    connect(ui->mapViewWidget, &MapViewer::hoveredTileInfo,
+            this, &MapEditWidget::hoveredTileInfo);
     connect(ui->mapViewWidget, &MapViewer::objectInstanceHovered,
             this, &MapEditWidget::objectInstanceHovered);
 }
@@ -216,6 +218,14 @@ void MapEditWidget::entityInstanceHovered(byte instanceIndex)
     ui->entityInstanceTable->setItem(0, 15, item15);
 
     ui->entityCDCombo->setCurrentIndex(instance.EntityClass);
+}
+
+void MapEditWidget::hoveredTileInfo(byte elevation, byte rotation, byte collisionThing, byte zoneDelimiter)
+{
+    ui->elevLabel->setText("Elevation: " + QString::number(elevation));
+    ui->rotLabel->setText("Rotation: " + QString::number(rotation));
+    ui->colThingLabel->setText("Collision Thing: " + QString::number(collisionThing));
+    ui->zoneDelimLabel->setText("Zone Delimiter: " + QString::number(zoneDelimiter));
 }
 
 void MapEditWidget::objectInstanceHovered(size_t instanceIndex)

@@ -2,10 +2,10 @@
 #include <QDataStream>
 
 Map::Map(TFile &fdatTFile, unsigned int index, const QString &name): fdat(fdatTFile),  mapIndex(index),
-    mapName(name),
     map1(fdat.getFile(index * 3)),
     map2(fdat.getFile(index * 3 + 1)),
-    map3(fdat.getFile(index * 3 + 2))
+    map3(fdat.getFile(index * 3 + 2)),
+    mapName(name)
 {
     QDataStream map1Stream(map1);
     map1Stream.skipRawData(4);

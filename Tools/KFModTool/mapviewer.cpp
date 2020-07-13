@@ -105,26 +105,43 @@ void MapViewer::processMouse(QMouseEvent *event)
     mousePos.setX(trueX);
     mousePos.setY(trueY);
 
-    size_t entityIndex = 0;
-    for (auto entityInstance : mapPtr->getEntityInstances())
+    if (event->buttons() != Qt::NoButton)
     {
-        if (trueX == entityInstance.WEXTilePos && trueY == entityInstance.NSYTilePos &&
-            ((entityInstance.Layer == 1 && curLayer == MapLayer::LAYER_1) ||
-             (entityInstance.Layer == 2 && curLayer == MapLayer::LAYER_2)) &&
-            event->buttons() != Qt::NoButton)
-            emit entityInstanceHovered(entityIndex);
-        entityIndex++;
-    }
+        size_t entityIndex = 0;
+        for (auto entityInstance : mapPtr->getEntityInstances())
+        {
+            if (trueX == entityInstance.WEXTilePos && trueY == entityInstance.NSYTilePos &&
+                    ((entityInstance.Layer == 1 && curLayer == MapLayer::LAYER_1) ||
+                     (entityInstance.Layer == 2 && curLayer == MapLayer::LAYER_2)))
+                emit entityInstanceHovered(entityIndex);
+            entityIndex++;
+        }
 
-    entityIndex = 0;
-    for (auto objInstance : mapPtr->getObjectInstanceDeclarations())
-    {
-        if (trueX == objInstance.WEXTilePos && trueY == objInstance.NSYTilePos &&
-            ((objInstance.TileLayer == 1 && curLayer == MapLayer::LAYER_1) ||
-             (objInstance.TileLayer == 2 && curLayer == MapLayer::LAYER_2)) &&
-            event->buttons() != Qt::NoButton)
-            emit objectInstanceHovered(entityIndex);
-        entityIndex++;
+        entityIndex = 0;
+        for (auto objInstance : mapPtr->getObjectInstanceDeclarations())
+        {
+            if (trueX == objInstance.WEXTilePos && trueY == objInstance.NSYTilePos &&
+                    ((objInstance.TileLayer == 1 && curLayer == MapLayer::LAYER_1) ||
+                     (objInstance.TileLayer == 2 && curLayer == MapLayer::LAYER_2)))
+                emit objectInstanceHovered(entityIndex);
+            entityIndex++;
+        }
+
+        auto tile = mapPtr->getTile(trueY, trueX);
+        switch(curLayer)
+        {
+            case MapLayer::LAYER_1:
+                emit hoveredTileInfo(tile.Layer1Elev,
+                                     tile.Layer1Rotation,
+                                     tile.Layer1CollisionSomething,
+                                     tile.Layer1ZoneDelimiter);
+                break;
+            case MapLayer::LAYER_2:
+                emit hoveredTileInfo(tile.Layer2Elev,
+                                     tile.Layer2Rotation,
+                                     tile.Layer2CollisionSomething,
+                                     tile.Layer2ZoneDelimiter);
+        }
     }
 
     repaint();
