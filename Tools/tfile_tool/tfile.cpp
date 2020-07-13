@@ -89,7 +89,8 @@ bool TFile::extractFiles()
         if (prettyNameIt != prettyMap.end())
             prettyName = "_" + prettyNameIt->second;
 
-        // FIXME: The way we're making the current filename is kind of ugly and probably slow! There has to be a better way to do this.
+        // FIXME: The way we're making the current filename is kind of ugly and probably slow!
+        // There has to be a better way to do this.
 
         curFileName = outputDir.path() + QDir::separator();
 
@@ -131,6 +132,19 @@ QString TFile::getFilename()
     return fileName;
 }
 
+QByteArray TFile::getFile(unsigned int trueFileNumber) const
+{
+    QByteArray desiredFile;
+
+    if (trueFileNumber >= 0 && trueFileNumber < getTrueNumFiles())
+    {
+        desiredFile = file.mid(fileOffsets[trueFileNumber],
+                               fileOffsets[trueFileNumber + 1] - fileOffsets[trueFileNumber]);
+    }
+
+    return desiredFile;
+}
+
 std::vector<unsigned int> TFile::getFileOffsets()
 {
     // FIXME: This is ugly, remake this when it's not 6 in the morning.
@@ -158,9 +172,17 @@ unsigned int TFile::getNumFiles()
     return nFiles;
 }
 
-unsigned int TFile::getTrueNumFiles()
+unsigned int TFile::getTrueNumFiles() const
 {
     return fileOffsets.size();
+}
+
+void TFile::writeFile(const QByteArray &newFile, int index)
+{
+    if (index >= getTrueNumFiles())
+        return;
+    for (int pos = 0; pos < newFile.size(); pos++)
+        file[fileOffsets[index] + pos] = newFile[pos];
 }
 
 void TFile::writeFileMap()
@@ -181,4 +203,6 @@ void TFile::writeFileMap()
         for (auto mapping : fileMap)
             mapWriteStream << mapping.first << "," << mapping.second << "\n";
     }
+
+
 }

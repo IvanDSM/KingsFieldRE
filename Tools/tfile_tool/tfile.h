@@ -30,6 +30,13 @@ public:
     QString getFilename();
 
     /*!
+     * \brief Returns a QByteArray that contains the desired file.
+     * \param trueFileNumber True file number for the desired file.
+     * \return File as a QByteArray, empty if given an invalid file number.
+     */
+    QByteArray getFile(unsigned int trueFileNumber) const;
+
+    /*!
      * \brief Retrieves the vector of de-duplicated file offsets before multiplying.
      * \return Vector of de-duplicated file offsets with no multiplication.
      */
@@ -57,7 +64,19 @@ public:
      * \brief Retrieves the number of actual files in the T file, with duplicates removed.
      * \return True number of files in the T file, with no duplicates.
      */
-    unsigned int getTrueNumFiles();
+    unsigned int getTrueNumFiles() const;
+
+    QByteArray getTFile() const
+    {
+        return file;
+    }
+
+    /*!
+     * \brief Writes a file to the T file. Currently super unsafe! Does not verify the checksum!
+     * \param newFile The file to be written.
+     * \param index The TRUE index of the file.
+     */
+    void writeFile(const QByteArray &newFile, int index);
 
     /*!
      * \brief Writes the T file's file map to a csv file.

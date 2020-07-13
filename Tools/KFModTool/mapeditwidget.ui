@@ -1,0 +1,761 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MapEditWidget</class>
+ <widget class="QWidget" name="MapEditWidget">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>640</width>
+    <height>480</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Map Editor</string>
+  </property>
+  <property name="windowIcon">
+   <iconset resource="resources.qrc">
+    <normaloff>:/map_icon.png</normaloff>:/map_icon.png</iconset>
+  </property>
+  <layout class="QHBoxLayout" name="horizontalLayout_2" stretch="6,0">
+   <property name="sizeConstraint">
+    <enum>QLayout::SetDefaultConstraint</enum>
+   </property>
+   <property name="leftMargin">
+    <number>0</number>
+   </property>
+   <property name="topMargin">
+    <number>0</number>
+   </property>
+   <property name="rightMargin">
+    <number>0</number>
+   </property>
+   <property name="bottomMargin">
+    <number>0</number>
+   </property>
+   <item>
+    <widget class="QFrame" name="mapFrame">
+     <property name="frameShape">
+      <enum>QFrame::NoFrame</enum>
+     </property>
+     <property name="frameShadow">
+      <enum>QFrame::Raised</enum>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout_2">
+      <property name="leftMargin">
+       <number>0</number>
+      </property>
+      <property name="topMargin">
+       <number>0</number>
+      </property>
+      <property name="rightMargin">
+       <number>0</number>
+      </property>
+      <property name="bottomMargin">
+       <number>0</number>
+      </property>
+      <item>
+       <widget class="MapViewer" name="mapViewWidget" native="true">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+          <horstretch>1</horstretch>
+          <verstretch>2</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>160</width>
+          <height>160</height>
+         </size>
+        </property>
+        <property name="baseSize">
+         <size>
+          <width>0</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="cursor">
+         <cursorShape>BlankCursor</cursorShape>
+        </property>
+        <property name="autoFillBackground">
+         <bool>false</bool>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QFrame" name="layerFrame">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="frameShape">
+         <enum>QFrame::NoFrame</enum>
+        </property>
+        <property name="frameShadow">
+         <enum>QFrame::Plain</enum>
+        </property>
+        <layout class="QHBoxLayout" name="horizontalLayout">
+         <property name="leftMargin">
+          <number>0</number>
+         </property>
+         <property name="topMargin">
+          <number>0</number>
+         </property>
+         <property name="rightMargin">
+          <number>0</number>
+         </property>
+         <property name="bottomMargin">
+          <number>0</number>
+         </property>
+         <item>
+          <widget class="QRadioButton" name="layer1Radio">
+           <property name="text">
+            <string>Layer 1</string>
+           </property>
+           <property name="checked">
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QRadioButton" name="layer2Radio">
+           <property name="text">
+            <string>Layer 2</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLabel" name="entityCDWarning">
+        <property name="text">
+         <string>Most of the map work has been done by TheStolenBattenberg.</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignCenter</set>
+        </property>
+        <property name="wordWrap">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QCheckBox" name="zoneDelimCheck">
+        <property name="text">
+         <string>Draw zone delimiters</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QFrame" name="infoFrame">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="frameShape">
+      <enum>QFrame::NoFrame</enum>
+     </property>
+     <property name="frameShadow">
+      <enum>QFrame::Raised</enum>
+     </property>
+     <layout class="QGridLayout" name="gridLayout_2" columnstretch="0,0">
+      <item row="0" column="0">
+       <widget class="QGroupBox" name="entityInstanceGroup">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="title">
+         <string>Current Entity Instance</string>
+        </property>
+        <layout class="QGridLayout" name="gridLayout">
+         <item row="1" column="0">
+          <widget class="QTableWidget" name="entityInstanceTable">
+           <row>
+            <property name="text">
+             <string>Unknown 0</string>
+            </property>
+           </row>
+           <row>
+            <property name="text">
+             <string>Entity Class</string>
+            </property>
+           </row>
+           <row>
+            <property name="text">
+             <string>Unknown 2</string>
+            </property>
+           </row>
+           <row>
+            <property name="text">
+             <string>X Tile Position</string>
+            </property>
+           </row>
+           <row>
+            <property name="text">
+             <string>Y Tile Position</string>
+            </property>
+           </row>
+           <row>
+            <property name="text">
+             <string>Unknown 5</string>
+            </property>
+           </row>
+           <row>
+            <property name="text">
+             <string>Dropped Item ID</string>
+            </property>
+           </row>
+           <row>
+            <property name="text">
+             <string>Layer</string>
+            </property>
+           </row>
+           <row>
+            <property name="text">
+             <string>Unknown 8</string>
+            </property>
+           </row>
+           <row>
+            <property name="text">
+             <string>Unknown 9</string>
+            </property>
+           </row>
+           <row>
+            <property name="text">
+             <string>Unknown A</string>
+            </property>
+           </row>
+           <row>
+            <property name="text">
+             <string>Unknown B</string>
+            </property>
+           </row>
+           <row>
+            <property name="text">
+             <string>Unknown C</string>
+            </property>
+           </row>
+           <row>
+            <property name="text">
+             <string>Unknown D</string>
+            </property>
+           </row>
+           <row>
+            <property name="text">
+             <string>Unknown E</string>
+            </property>
+           </row>
+           <row>
+            <property name="text">
+             <string>Unknown F</string>
+            </property>
+           </row>
+           <column>
+            <property name="text">
+             <string>Value</string>
+            </property>
+           </column>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+      </item>
+      <item row="2" column="0">
+       <widget class="QGroupBox" name="entityClassGroup">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="title">
+         <string>Entity Classes</string>
+        </property>
+        <layout class="QVBoxLayout" name="verticalLayout">
+         <item>
+          <widget class="QComboBox" name="entityCDCombo"/>
+         </item>
+         <item>
+          <widget class="QTableWidget" name="entityCDTable">
+           <row>
+            <property name="text">
+             <string>MeshID</string>
+            </property>
+           </row>
+           <row>
+            <property name="text">
+             <string>FourOrForty</string>
+            </property>
+           </row>
+           <row>
+            <property name="text">
+             <string>Unknown 02</string>
+            </property>
+           </row>
+           <row>
+            <property name="text">
+             <string>Unknown 03</string>
+            </property>
+           </row>
+           <row>
+            <property name="text">
+             <string>Unknown 04</string>
+            </property>
+           </row>
+           <row>
+            <property name="text">
+             <string>Unknown 05</string>
+            </property>
+           </row>
+           <row>
+            <property name="text">
+             <string>Unknown 06</string>
+            </property>
+           </row>
+           <row>
+            <property name="text">
+             <string>Unknown 07</string>
+            </property>
+           </row>
+           <row>
+            <property name="text">
+             <string>Unknown 08</string>
+            </property>
+           </row>
+           <row>
+            <property name="text">
+             <string>Unknown 09</string>
+            </property>
+           </row>
+           <row>
+            <property name="text">
+             <string>Unknown 0A</string>
+            </property>
+           </row>
+           <row>
+            <property name="text">
+             <string>Unknown 0B</string>
+            </property>
+           </row>
+           <row>
+            <property name="text">
+             <string>Unknown 0C</string>
+            </property>
+           </row>
+           <row>
+            <property name="text">
+             <string>Unknown 0D</string>
+            </property>
+           </row>
+           <row>
+            <property name="text">
+             <string>Unknown 0E</string>
+            </property>
+           </row>
+           <row>
+            <property name="text">
+             <string>Unknown 0F</string>
+            </property>
+           </row>
+           <row>
+            <property name="text">
+             <string>Unknown 10</string>
+            </property>
+           </row>
+           <row>
+            <property name="text">
+             <string>Unknown 11</string>
+            </property>
+           </row>
+           <row>
+            <property name="text">
+             <string>Unknown 12</string>
+            </property>
+           </row>
+           <row>
+            <property name="text">
+             <string>Unknown 13</string>
+            </property>
+           </row>
+           <row>
+            <property name="text">
+             <string>Unknown 14</string>
+            </property>
+           </row>
+           <row>
+            <property name="text">
+             <string>Unknown 15</string>
+            </property>
+           </row>
+           <row>
+            <property name="text">
+             <string>Unknown 16</string>
+            </property>
+           </row>
+           <row>
+            <property name="text">
+             <string>Unknown 17</string>
+            </property>
+           </row>
+           <row>
+            <property name="text">
+             <string>Unknown 18</string>
+            </property>
+           </row>
+           <row>
+            <property name="text">
+             <string>Unknown 19</string>
+            </property>
+           </row>
+           <row>
+            <property name="text">
+             <string>HP</string>
+            </property>
+           </row>
+           <row>
+            <property name="text">
+             <string>Unknown 1C</string>
+            </property>
+           </row>
+           <row>
+            <property name="text">
+             <string>Unknown 1D</string>
+            </property>
+           </row>
+           <row>
+            <property name="text">
+             <string>Experience Gain</string>
+            </property>
+           </row>
+           <row>
+            <property name="text">
+             <string>Slash Def</string>
+            </property>
+           </row>
+           <row>
+            <property name="text">
+             <string>Chop Def</string>
+            </property>
+           </row>
+           <row>
+            <property name="text">
+             <string>Stab Def</string>
+            </property>
+           </row>
+           <row>
+            <property name="text">
+             <string>Holy Magic Def</string>
+            </property>
+           </row>
+           <row>
+            <property name="text">
+             <string>Fire Magic Def</string>
+            </property>
+           </row>
+           <row>
+            <property name="text">
+             <string>Earth Magic Def</string>
+            </property>
+           </row>
+           <row>
+            <property name="text">
+             <string>Wind Magic Def</string>
+            </property>
+           </row>
+           <row>
+            <property name="text">
+             <string>Water Magic Def</string>
+            </property>
+           </row>
+           <row>
+            <property name="text">
+             <string>Unknown 30</string>
+            </property>
+           </row>
+           <row>
+            <property name="text">
+             <string>Unknown 31</string>
+            </property>
+           </row>
+           <row>
+            <property name="text">
+             <string>Scale</string>
+            </property>
+           </row>
+           <row>
+            <property name="text">
+             <string>Unknown 34</string>
+            </property>
+           </row>
+           <row>
+            <property name="text">
+             <string>Unknown 35</string>
+            </property>
+           </row>
+           <row>
+            <property name="text">
+             <string>Unknown 36</string>
+            </property>
+           </row>
+           <row>
+            <property name="text">
+             <string>Unknown 37</string>
+            </property>
+           </row>
+           <row>
+            <property name="text">
+             <string>SomePointers[0]</string>
+            </property>
+           </row>
+           <row>
+            <property name="text">
+             <string>SomePointers[1]</string>
+            </property>
+           </row>
+           <row>
+            <property name="text">
+             <string>SomePointers[2]</string>
+            </property>
+           </row>
+           <row>
+            <property name="text">
+             <string>SomePointers[3]</string>
+            </property>
+           </row>
+           <row>
+            <property name="text">
+             <string>SomePointers[4]</string>
+            </property>
+           </row>
+           <row>
+            <property name="text">
+             <string>SomePointers[5]</string>
+            </property>
+           </row>
+           <row>
+            <property name="text">
+             <string>SomePointers[6]</string>
+            </property>
+           </row>
+           <row>
+            <property name="text">
+             <string>SomePointers[7]</string>
+            </property>
+           </row>
+           <row>
+            <property name="text">
+             <string>SomePointers[8]</string>
+            </property>
+           </row>
+           <row>
+            <property name="text">
+             <string>SomePointers[9]</string>
+            </property>
+           </row>
+           <row>
+            <property name="text">
+             <string>SomePointers[10]</string>
+            </property>
+           </row>
+           <row>
+            <property name="text">
+             <string>SomePointers[11]</string>
+            </property>
+           </row>
+           <row>
+            <property name="text">
+             <string>SomePointers[12]</string>
+            </property>
+           </row>
+           <row>
+            <property name="text">
+             <string>SomePointers[13]</string>
+            </property>
+           </row>
+           <row>
+            <property name="text">
+             <string>SomePointers[14]</string>
+            </property>
+           </row>
+           <row>
+            <property name="text">
+             <string>SomePointers[16]</string>
+            </property>
+           </row>
+           <column>
+            <property name="text">
+             <string>Value</string>
+            </property>
+           </column>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="QGroupBox" name="objectInstanceGroup">
+        <property name="title">
+         <string>Current Object Instance</string>
+        </property>
+        <layout class="QVBoxLayout" name="verticalLayout_3">
+         <item>
+          <widget class="QTableWidget" name="objectInstanceTable">
+           <row>
+            <property name="text">
+             <string>Tile Layer</string>
+            </property>
+           </row>
+           <row>
+            <property name="text">
+             <string>X Tile Position</string>
+            </property>
+           </row>
+           <row>
+            <property name="text">
+             <string>Y Tile Position</string>
+            </property>
+           </row>
+           <row>
+            <property name="text">
+             <string>Unknown 03</string>
+            </property>
+           </row>
+           <row>
+            <property name="text">
+             <string>Item ID</string>
+            </property>
+           </row>
+           <row>
+            <property name="text">
+             <string>Unknown 05</string>
+            </property>
+           </row>
+           <row>
+            <property name="text">
+             <string>Unknown 06</string>
+            </property>
+           </row>
+           <row>
+            <property name="text">
+             <string>Unknown 07</string>
+            </property>
+           </row>
+           <row>
+            <property name="text">
+             <string>Unknown 08</string>
+            </property>
+           </row>
+           <row>
+            <property name="text">
+             <string>Unknown 09</string>
+            </property>
+           </row>
+           <row>
+            <property name="text">
+             <string>Unknown 0A</string>
+            </property>
+           </row>
+           <row>
+            <property name="text">
+             <string>Unknown 0B</string>
+            </property>
+           </row>
+           <row>
+            <property name="text">
+             <string>Unknown 0C</string>
+            </property>
+           </row>
+           <row>
+            <property name="text">
+             <string>Unknown 0D</string>
+            </property>
+           </row>
+           <row>
+            <property name="text">
+             <string>Unknown 0E</string>
+            </property>
+           </row>
+           <row>
+            <property name="text">
+             <string>Unknown 0F</string>
+            </property>
+           </row>
+           <row>
+            <property name="text">
+             <string>Key ID (?)</string>
+            </property>
+           </row>
+           <row>
+            <property name="text">
+             <string>Unknown 11</string>
+            </property>
+           </row>
+           <row>
+            <property name="text">
+             <string>Instance Contained</string>
+            </property>
+           </row>
+           <row>
+            <property name="text">
+             <string>Unknown 13</string>
+            </property>
+           </row>
+           <row>
+            <property name="text">
+             <string>Unknown 14</string>
+            </property>
+           </row>
+           <row>
+            <property name="text">
+             <string>Unknown 15</string>
+            </property>
+           </row>
+           <row>
+            <property name="text">
+             <string>Unknown 16</string>
+            </property>
+           </row>
+           <row>
+            <property name="text">
+             <string>Unknown 17</string>
+            </property>
+           </row>
+           <column>
+            <property name="text">
+             <string>Value</string>
+            </property>
+           </column>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>MapViewer</class>
+   <extends>QWidget</extends>
+   <header>mapviewer.h</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
+ <resources>
+  <include location="resources.qrc"/>
+ </resources>
+ <connections/>
+</ui>
