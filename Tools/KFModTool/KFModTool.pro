@@ -23,6 +23,7 @@ SOURCES += \
     mapeditwidget.cpp \
     mapviewer.cpp \
     prettynamer.cpp \
+    texture.cpp \
     tfile.cpp
 
 HEADERS += \
@@ -34,6 +35,7 @@ HEADERS += \
     mapeditwidget.h \
     mapviewer.h \
     prettynamer.h \
+    texture.h \
     tfile.h
 
 FORMS += \

@@ -56,7 +56,7 @@ public:
     }
 
 
-    const KingsField::Tile& getTile(size_t line, size_t column) const
+    KingsField::Tile& getTile(size_t line, size_t column)
     {
         if (line < 80 && column < 80)
             return tileMap[line][column];

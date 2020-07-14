@@ -167,6 +167,26 @@ void Map::writeChanges()
     if (!changed)
         return;
 
+    QDataStream map1Stream(&map1, QIODevice::ReadWrite);
+
+    map1Stream.skipRawData(4);
+    for (auto line = 0; line < 80; line++)
+    {
+        for (auto column = 0; column < 80; column++)
+        {
+            map1Stream << tileMap[line][column].Layer1TileID;
+            map1Stream << tileMap[line][column].Layer1Elev;
+            map1Stream << tileMap[line][column].Layer1Rotation;
+            map1Stream << tileMap[line][column].Layer1CollisionSomething;
+            map1Stream << tileMap[line][column].Layer1ZoneDelimiter;
+            map1Stream << tileMap[line][column].Layer2TileID;
+            map1Stream << tileMap[line][column].Layer2Elev;
+            map1Stream << tileMap[line][column].Layer2Rotation;
+            map1Stream << tileMap[line][column].Layer2CollisionSomething;
+            map1Stream << tileMap[line][column].Layer2ZoneDelimiter;
+        }
+    }
+
     QDataStream map2Stream(&map2, QIODevice::ReadWrite);
 
     map2Stream.setByteOrder(QDataStream::LittleEndian);

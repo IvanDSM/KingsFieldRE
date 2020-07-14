@@ -418,3 +418,23 @@ void MapEditWidget::on_elementCombo_currentIndexChanged(int index)
     auto elem = static_cast<MapViewer::MapElement>(index);
     ui->mapViewWidget->setElement(elem);
 }
+
+void MapEditWidget::on_pokeModeButton_clicked()
+{
+    ui->mapViewWidget->setMode(MapViewer::MapViewerMode::MODE_POKE);
+}
+
+void MapEditWidget::on_paintModeButton_clicked()
+{
+    ui->mapViewWidget->setMode(MapViewer::MapViewerMode::MODE_PAINT);
+}
+
+void MapEditWidget::on_brushSpin_valueChanged(int arg1)
+{
+    ui->mapViewWidget->setBrush(static_cast<byte>(arg1));
+}
+
+void MapEditWidget::on_brushElemCombo_currentIndexChanged(int index)
+{
+    ui->mapViewWidget->setBrushElement(static_cast<MapViewer::MapElement>(index));
+}

@@ -20,7 +20,14 @@ public:
     enum class MapElement
     {
         MAP_COLLISIONTHING,
-        MAP_ELEV
+        MAP_ELEV,
+        MAP_ZONEDELIMITER
+    };
+
+    enum class MapViewerMode
+    {
+        MODE_POKE,
+        MODE_PAINT
     };
 
     explicit MapViewer(QWidget *parent = nullptr) : QWidget(parent)
@@ -32,6 +39,16 @@ public:
     {
         drawZoneDelimiters = shouldDraw;
         repaint();
+    }
+
+    void setBrush(byte brush)
+    {
+        curBrush = brush;
+    }
+
+    void setBrushElement(MapElement element)
+    {
+        curBrushElement = element;
     }
 
     void setElement(MapElement element)
@@ -50,6 +67,11 @@ public:
     {
         mapPtr = newMap;
         repaint();
+    }
+
+    void setMode(MapViewerMode mode)
+    {
+        curMode = mode;
     }
 
 signals:
@@ -78,8 +100,11 @@ private:
     void processMouse(QMouseEvent *event);
 
     bool drawZoneDelimiters = false;
+    byte curBrush = 127;
+    MapElement curBrushElement = MapElement::MAP_COLLISIONTHING;
     MapElement curElement = MapElement::MAP_COLLISIONTHING;
     MapLayer curLayer = MapLayer::LAYER_1;
+    MapViewerMode curMode = MapViewerMode::MODE_POKE;
     QPainter painter;
     QPoint mousePos = QPoint(39, 39);
     std::shared_ptr<Map> mapPtr;

@@ -41,6 +41,14 @@ private slots:
 
     void on_elementCombo_currentIndexChanged(int index);
 
+    void on_pokeModeButton_clicked();
+
+    void on_paintModeButton_clicked();
+
+    void on_brushSpin_valueChanged(int arg1);
+
+    void on_brushElemCombo_currentIndexChanged(int index);
+
 private:
     void fillEntityCDCombo();
     byte currentEntityInstance = 255;

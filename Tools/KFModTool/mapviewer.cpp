@@ -110,40 +110,75 @@ void MapViewer::processMouse(QMouseEvent *event)
 
     if (event->buttons() != Qt::NoButton)
     {
-        size_t entityIndex = 0;
-        for (auto entityInstance : mapPtr->getEntityInstances())
+        if (curMode == MapViewerMode::MODE_POKE)
         {
-            if (trueX == entityInstance.WEXTilePos && trueY == entityInstance.NSYTilePos &&
+            size_t entityIndex = 0;
+            for (auto entityInstance : mapPtr->getEntityInstances())
+            {
+                if (trueX == entityInstance.WEXTilePos && trueY == entityInstance.NSYTilePos &&
                     ((entityInstance.Layer == 1 && curLayer == MapLayer::LAYER_1) ||
                      (entityInstance.Layer == 2 && curLayer == MapLayer::LAYER_2)))
-                emit entityInstanceHovered(entityIndex);
-            entityIndex++;
-        }
+                    emit entityInstanceHovered(entityIndex);
+                entityIndex++;
+            }
 
-        entityIndex = 0;
-        for (auto objInstance : mapPtr->getObjectInstanceDeclarations())
-        {
-            if (trueX == objInstance.WEXTilePos && trueY == objInstance.NSYTilePos &&
+            entityIndex = 0;
+            for (auto objInstance : mapPtr->getObjectInstanceDeclarations())
+            {
+                if (trueX == objInstance.WEXTilePos && trueY == objInstance.NSYTilePos &&
                     ((objInstance.TileLayer == 1 && curLayer == MapLayer::LAYER_1) ||
                      (objInstance.TileLayer == 2 && curLayer == MapLayer::LAYER_2)))
-                emit objectInstanceHovered(entityIndex);
-            entityIndex++;
-        }
+                    emit objectInstanceHovered(entityIndex);
+                entityIndex++;
+            }
 
-        auto tile = mapPtr->getTile(trueX, trueY);
-        switch(curLayer)
+            auto tile = mapPtr->getTile(trueX, trueY);
+            switch(curLayer)
+            {
+                case MapLayer::LAYER_1:
+                    emit hoveredTileInfo(tile.Layer1Elev,
+                                         tile.Layer1Rotation,
+                                         tile.Layer1CollisionSomething,
+                                         tile.Layer1ZoneDelimiter);
+                    break;
+                case MapLayer::LAYER_2:
+                    emit hoveredTileInfo(tile.Layer2Elev,
+                                         tile.Layer2Rotation,
+                                         tile.Layer2CollisionSomething,
+                                         tile.Layer2ZoneDelimiter);
+            }
+        }
+        else if (curMode == MapViewerMode::MODE_PAINT)
         {
-            case MapLayer::LAYER_1:
-                emit hoveredTileInfo(tile.Layer1Elev,
-                                     tile.Layer1Rotation,
-                                     tile.Layer1CollisionSomething,
-                                     tile.Layer1ZoneDelimiter);
-                break;
-            case MapLayer::LAYER_2:
-                emit hoveredTileInfo(tile.Layer2Elev,
-                                     tile.Layer2Rotation,
-                                     tile.Layer2CollisionSomething,
-                                     tile.Layer2ZoneDelimiter);
+            switch(curLayer)
+            {
+                case MapLayer::LAYER_1:
+                    switch(curBrushElement)
+                    {
+                        case MapElement::MAP_COLLISIONTHING:
+                            mapPtr->getTile(trueX, trueY).Layer1CollisionSomething = curBrush;
+                            break;
+                        case MapElement::MAP_ELEV:
+                            mapPtr->getTile(trueX, trueY).Layer1Elev = curBrush;
+                            break;
+                        case MapElement::MAP_ZONEDELIMITER:
+                            mapPtr->getTile(trueX, trueY).Layer1ZoneDelimiter = curBrush;
+                    }
+                    break;
+                case MapLayer::LAYER_2:
+                    switch(curBrushElement)
+                    {
+                        case MapElement::MAP_COLLISIONTHING:
+                            mapPtr->getTile(trueX, trueY).Layer2CollisionSomething = curBrush;
+                            break;
+                        case MapElement::MAP_ELEV:
+                            mapPtr->getTile(trueX, trueY).Layer2Elev = curBrush;
+                            break;
+                        case MapElement::MAP_ZONEDELIMITER:
+                            mapPtr->getTile(trueX, trueY).Layer2ZoneDelimiter = curBrush;
+                    }
+            }
+            mapPtr->setChanged();
         }
     }
 
