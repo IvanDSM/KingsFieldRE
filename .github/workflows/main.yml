@@ -66,36 +66,56 @@ jobs:
         cd Tools/checksum_tool
         ~/linuxdeployqt-continuous-x86_64.AppImage checksum_tool -appimage 
 
+    - name: Deploy fdat28_tool AppImage
+      run: |
+        cd Tools/fdat28_tool
+        ~/linuxdeployqt-continuous-x86_64.AppImage fdat28_tool -appimage 
+
+    - name: Deploy KFModTool AppImage
+      run: |
+        cd Tools/KFModTool
+        ~/linuxdeployqt-continuous-x86_64.AppImage KFModTool -appimage 
+
+    - name: Deploy KFRandomizer AppImage
+      run: |
+        cd Tools/KFRandomizer
+        ~/linuxdeployqt-continuous-x86_64.AppImage KFRandomizer -appimage 
+
+    - name: Deploy tfile_tool AppImage
+      run: |
+        cd Tools/tfile_tool
+        ~/linuxdeployqt-continuous-x86_64.AppImage tfile_tool -appimage 
+
     - name: Upload checksum_tool build
       uses: actions/upload-artifact@v2
       with:
-        name: checksum_tool ubuntu build
-        path: Tools/checksum_tool/checksum_tool.AppImage
+        name: checksum_tool Linux AppImage
+        path: Tools/checksum_tool/checksum_tool*.AppImage
         
     - name: Upload fdat28_tool build
       uses: actions/upload-artifact@v2
       with:
-        name: fdat28_tool ubuntu build
-        path: Tools/fdat28_tool/fdat28_tool
+        name: fdat28_tool Linux AppImage
+        path: Tools/fdat28_tool/fdat28_tool*.AppImage
 
     - name: Upload KFModTool build
       continue-on-error: true
       uses: actions/upload-artifact@v2
       with:
-        name: KFModTool ubuntu build
-        path: Tools/KFModTool/KFModTool
+        name: KFModTool Linux AppImage
+        path: Tools/KFModTool/KFModTool*.AppImage
 
     - name: Upload KFRandomizer build
       uses: actions/upload-artifact@v2
       with:
-        name: KFRandomizer ubuntu build
-        path: Tools/KFRandomizer/KFRandomizer
+        name: KFRandomizer Linux AppImage
+        path: Tools/KFRandomizer/KFRandomizer*.AppImage
         
     - name: Upload tfile_tool build
       uses: actions/upload-artifact@v2
       with:
-        name: tfile_tool ubuntu build
-        path: Tools/tfile_tool/tfile_tool
+        name: tfile_tool Linux AppImage
+        path: Tools/tfile_tool/tfile_tool*.AppImage
 
   windows-build:
     runs-on: 	windows-latest
