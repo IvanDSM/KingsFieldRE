@@ -64,7 +64,7 @@ jobs:
     - name: Deploy checksum_tool AppImage
       run: |
         cd Tools/checksum_tool
-        ~/linuxdeployqt-continuous-x86_64.AppImage -appimage checksum_tool
+        ~/linuxdeployqt-continuous-x86_64.AppImage checksum_tool -appimage 
 
     - name: Upload checksum_tool build
       uses: actions/upload-artifact@v2
