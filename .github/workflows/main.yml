@@ -21,7 +21,7 @@ jobs:
 
     - name: Get linuxdeployqt
       run: | 
-        wget https://github.com/probonopd/linuxdeployqt/releases/download/continuous/linuxdeployqt-continuous-x86_64.AppImage ~/.local/bin
+        wget "https://github.com/probonopd/linuxdeployqt/releases/download/continuous/linuxdeployqt-continuous-x86_64.AppImage" -P ~/.local/bin
         chmod +x ~/.local/bin/linuxdeployqt-continuous-x86_64.AppImage
       
     - name: Build checksum_tool
