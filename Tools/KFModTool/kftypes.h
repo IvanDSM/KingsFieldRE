@@ -565,22 +565,19 @@ namespace KingsField
     };
 
     struct EntityInstance { /* Structure for declarations of entity instances in the map files. */
-        undefined Enabled;
+        undefined field_0x0;
         byte EntityClass;
         undefined field_0x2;
         byte WEXTilePos;
         byte NSYTilePos;
         undefined field_0x5;
-        enum ItemID DroppedItem;
+        ItemID DroppedItem;
         byte Layer;
-        undefined field_0x8;
-        undefined field_0x9;
-        undefined field_0xa;
-        undefined field_0xb;
-        undefined field_0xc;
-        undefined field_0xd;
-        undefined field_0xe;
-        undefined field_0xf;
+        byte TriggerObject;
+        byte ZRotation;
+        short FineWEXPos;
+        short FineNSYPos;
+        short FineZPos;
     };
 
     struct ObjectInstanceDeclaration { /* Structure for declarations of object instances in the map files. */

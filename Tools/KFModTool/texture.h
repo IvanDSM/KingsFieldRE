@@ -9,6 +9,11 @@ class Texture : public QObject
 {
     Q_OBJECT
 public:
+    explicit Texture (QObject *parent = nullptr) : QObject(parent)
+    {
+
+    }
+
     enum class PMode {
         CLUT_4BIT = 0,
         CLUT_8BIT = 1,
@@ -28,6 +33,8 @@ protected:
         quint16 w;
         quint16 h;
         std::vector<QColor> clut;
+
+        CLUT() = default;
 
         CLUT(quint32 _bnum, quint16 _dx, quint16 _dy, quint16 _w, quint16 _h, PMode pColor) : bnum(_bnum),
             dx(_dx), dy(_dy), h(_h)
@@ -64,6 +71,8 @@ protected:
     bool cf;
     CLUT clut;
 
+    // Pixel buffer
+    std::vector<quint8> clutPixelBuffer;
 };
 
 #endif // TEXTURE_H

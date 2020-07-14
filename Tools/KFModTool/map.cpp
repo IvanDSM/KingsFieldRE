@@ -103,7 +103,7 @@ Map::Map(TFile &fdatTFile, unsigned int index, const QString &name): fdat(fdatTF
     {
         KingsField::EntityInstance instance;
         quint8 tempByte;
-        map2Stream >> instance.Enabled;
+        map2Stream >> instance.field_0x0;
         map2Stream >> instance.EntityClass;
         map2Stream >> instance.field_0x2;
         map2Stream >> instance.WEXTilePos;
@@ -114,15 +114,12 @@ Map::Map(TFile &fdatTFile, unsigned int index, const QString &name): fdat(fdatTF
         instance.DroppedItem = KingsField::getItemIDFromByte(tempByte);
         map2Stream >> instance.Layer;
 
-        map2Stream >> instance.field_0x8;
-        map2Stream >> instance.field_0x9;
-        map2Stream >> instance.field_0xa;
-        map2Stream >> instance.field_0xb;
+        map2Stream >> instance.TriggerObject;
+        map2Stream >> instance.ZRotation;
 
-        map2Stream >> instance.field_0xc;
-        map2Stream >> instance.field_0xd;
-        map2Stream >> instance.field_0xe;
-        map2Stream >> instance.field_0xf;
+        map2Stream >> instance.FineWEXPos;
+        map2Stream >> instance.FineNSYPos;
+        map2Stream >> instance.FineZPos;
         entityInstances.push_back(instance);
     }
     map2Stream.skipRawData(4);
@@ -168,6 +165,7 @@ void Map::writeChanges()
         return;
 
     QDataStream map1Stream(&map1, QIODevice::ReadWrite);
+    map1Stream.setByteOrder(QDataStream::LittleEndian);
 
     map1Stream.skipRawData(4);
     for (auto line = 0; line < 80; line++)
@@ -261,7 +259,7 @@ void Map::writeChanges()
 
     for (auto entityInstance : entityInstances)
     {
-        map2Stream << entityInstance.Enabled;
+        map2Stream << entityInstance.field_0x0;
         map2Stream << entityInstance.EntityClass;
         map2Stream << entityInstance.field_0x2;
         map2Stream << entityInstance.WEXTilePos;
@@ -271,15 +269,12 @@ void Map::writeChanges()
         map2Stream << KingsField::getItemIDAsByte(entityInstance.DroppedItem);
         map2Stream << entityInstance.Layer;
 
-        map2Stream << entityInstance.field_0x8;
-        map2Stream << entityInstance.field_0x9;
-        map2Stream << entityInstance.field_0xa;
-        map2Stream << entityInstance.field_0xb;
+        map2Stream << entityInstance.TriggerObject;
+        map2Stream << entityInstance.ZRotation;
 
-        map2Stream << entityInstance.field_0xc;
-        map2Stream << entityInstance.field_0xd;
-        map2Stream << entityInstance.field_0xe;
-        map2Stream << entityInstance.field_0xf;
+        map2Stream << entityInstance.FineWEXPos;
+        map2Stream << entityInstance.FineNSYPos;
+        map2Stream << entityInstance.FineZPos;
     }
 
     map2Stream.skipRawData(4);

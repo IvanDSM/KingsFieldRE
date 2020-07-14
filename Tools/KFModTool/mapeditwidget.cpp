@@ -187,7 +187,7 @@ void MapEditWidget::entityInstanceHovered(byte instanceIndex)
     ui->entityInstanceAddrLabel->setText("Instanced at address " +
                                          QString::number(0x8016c544 + (instanceIndex * 0x7c), 16));
 
-    QTableWidgetItem *item0 = new QTableWidgetItem(QString::number(instance.Enabled));
+    QTableWidgetItem *item0 = new QTableWidgetItem(QString::number(instance.field_0x0));
     ui->entityInstanceTable->setItem(0, 0, item0);
     QTableWidgetItem *item1 = new QTableWidgetItem(QString::number(instance.EntityClass));
     ui->entityInstanceTable->setItem(0, 1, item1);
@@ -203,22 +203,16 @@ void MapEditWidget::entityInstanceHovered(byte instanceIndex)
     ui->entityInstanceTable->setItem(0, 6, item6);
     QTableWidgetItem *item7 = new QTableWidgetItem(QString::number(instance.Layer));
     ui->entityInstanceTable->setItem(0, 7, item7);
-    QTableWidgetItem *item8 = new QTableWidgetItem(QString::number(instance.field_0x8));
+    QTableWidgetItem *item8 = new QTableWidgetItem(QString::number(instance.TriggerObject));
     ui->entityInstanceTable->setItem(0, 8, item8);
-    QTableWidgetItem *item9 = new QTableWidgetItem(QString::number(instance.field_0x9));
+    QTableWidgetItem *item9 = new QTableWidgetItem(QString::number(instance.ZRotation));
     ui->entityInstanceTable->setItem(0, 9, item9);
-    QTableWidgetItem *item10 = new QTableWidgetItem(QString::number(instance.field_0xa));
+    QTableWidgetItem *item10 = new QTableWidgetItem(QString::number(instance.FineWEXPos));
     ui->entityInstanceTable->setItem(0, 10, item10);
-    QTableWidgetItem *item11 = new QTableWidgetItem(QString::number(instance.field_0xb));
+    QTableWidgetItem *item11 = new QTableWidgetItem(QString::number(instance.FineNSYPos));
     ui->entityInstanceTable->setItem(0, 11, item11);
-    QTableWidgetItem *item12 = new QTableWidgetItem(QString::number(instance.field_0xc));
+    QTableWidgetItem *item12 = new QTableWidgetItem(QString::number(instance.FineZPos));
     ui->entityInstanceTable->setItem(0, 12, item12);
-    QTableWidgetItem *item13 = new QTableWidgetItem(QString::number(instance.field_0xd));
-    ui->entityInstanceTable->setItem(0, 13, item13);
-    QTableWidgetItem *item14 = new QTableWidgetItem(QString::number(instance.field_0xe));
-    ui->entityInstanceTable->setItem(0, 14, item14);
-    QTableWidgetItem *item15 = new QTableWidgetItem(QString::number(instance.field_0xf));
-    ui->entityInstanceTable->setItem(0, 15, item15);
 
     ui->entityCDCombo->setCurrentIndex(instance.EntityClass);
 }
@@ -297,7 +291,7 @@ void MapEditWidget::on_entityInstanceTable_itemChanged(QTableWidgetItem *item)
     KingsField::EntityInstance &instance = curMap->getInstance(currentEntityInstance);
     switch(item->row())
     {
-        case (0): instance.Enabled = item->text().toUShort(); break;
+        case (0): instance.field_0x0 = item->text().toUShort(); break;
         case (1): instance.EntityClass = item->text().toUShort(); break;
         case (2): instance.field_0x2 = item->text().toUShort(); break;
         case (3): instance.WEXTilePos = item->text().toUShort(); break;
@@ -305,14 +299,11 @@ void MapEditWidget::on_entityInstanceTable_itemChanged(QTableWidgetItem *item)
         case (5): instance.field_0x5 = item->text().toUShort(); break;
         case (6): instance.DroppedItem = KingsField::getItemIDFromByte(item->text().toUShort()); break;
         case (7): instance.Layer = item->text().toUShort(); break;
-        case (8): instance.field_0x8 = item->text().toUShort(); break;
-        case (9): instance.field_0x9 = item->text().toUShort(); break;
-        case (10): instance.field_0xa = item->text().toUShort(); break;
-        case (11): instance.field_0xb = item->text().toUShort(); break;
-        case (12): instance.field_0xc = item->text().toUShort(); break;
-        case (13): instance.field_0xd = item->text().toUShort(); break;
-        case (14): instance.field_0xe = item->text().toUShort(); break;
-        case (15): instance.field_0xf = item->text().toUShort();
+        case (8): instance.TriggerObject = item->text().toUShort(); break;
+        case (9): instance.ZRotation = item->text().toUShort(); break;
+        case (10): instance.FineWEXPos = item->text().toShort(); break;
+        case (11): instance.FineNSYPos = item->text().toShort(); break;
+        case (12): instance.FineZPos = item->text().toShort();
     }
     curMap->setChanged();
 }

@@ -434,42 +434,27 @@
            </row>
            <row>
             <property name="text">
-             <string>Unknown 8</string>
+             <string>Trigger Object</string>
             </property>
            </row>
            <row>
             <property name="text">
-             <string>Unknown 9</string>
+             <string>Z Rotation</string>
             </property>
            </row>
            <row>
             <property name="text">
-             <string>Unknown A</string>
+             <string>Fine X Position</string>
             </property>
            </row>
            <row>
             <property name="text">
-             <string>Unknown B</string>
+             <string>Fine Y Position</string>
             </property>
            </row>
            <row>
             <property name="text">
-             <string>Unknown C</string>
-            </property>
-           </row>
-           <row>
-            <property name="text">
-             <string>Unknown D</string>
-            </property>
-           </row>
-           <row>
-            <property name="text">
-             <string>Unknown E</string>
-            </property>
-           </row>
-           <row>
-            <property name="text">
-             <string>Unknown F</string>
+             <string>Fine Z Position</string>
             </property>
            </row>
            <column>
@@ -820,7 +805,7 @@
            </row>
            <row>
             <property name="text">
-             <string>SomePointers[16]</string>
+             <string>SomePointers[15]</string>
             </property>
            </row>
            <column>
