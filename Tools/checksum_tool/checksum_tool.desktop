@@ -3,4 +3,4 @@ Type=Application
 Name=checksum_tool (KingsFieldRE)
 Comment=A command line tool for calculating the checksum of a file the FromSoft way.
 Categories=Game;
-Icon=checksum_tool.png
+Icon=checksum_tool
