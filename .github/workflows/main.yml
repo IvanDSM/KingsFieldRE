@@ -18,6 +18,11 @@ jobs:
       uses: jurplel/install-qt-action@v2
       with:
         version: 5.14.2 
+
+    - name: Get linuxdeployqt
+      run: | 
+      wget https://github.com/probonopd/linuxdeployqt/releases/download/continuous/linuxdeployqt-continuous-x86_64.AppImage ~/.local/bin
+      chmod +x ~/.local/bin/linuxdeployqt-continuous-x86_64.AppImage
       
     - name: Build checksum_tool
       run: |
@@ -56,11 +61,16 @@ jobs:
         make -j2
         cd ..
 
+    - name: Deploy checksum_tool AppImage
+      run: |
+        cd Tools/checksum_tool
+        linuxdeployqt-continuous-x86_64.AppImage -appimage checksum_tool
+
     - name: Upload checksum_tool build
       uses: actions/upload-artifact@v2
       with:
         name: checksum_tool ubuntu build
-        path: Tools/checksum_tool/checksum_tool
+        path: Tools/checksum_tool/checksum_tool.AppImage
         
     - name: Upload fdat28_tool build
       uses: actions/upload-artifact@v2
