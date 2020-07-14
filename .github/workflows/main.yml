@@ -21,8 +21,8 @@ jobs:
 
     - name: Get linuxdeployqt
       run: | 
-        wget "https://github.com/probonopd/linuxdeployqt/releases/download/continuous/linuxdeployqt-continuous-x86_64.AppImage" -P ~/.local/bin
-        chmod +x ~/.local/bin/linuxdeployqt-continuous-x86_64.AppImage
+        wget "https://github.com/probonopd/linuxdeployqt/releases/download/continuous/linuxdeployqt-continuous-x86_64.AppImage" -P ~/
+        chmod +x ~/linuxdeployqt-continuous-x86_64.AppImage
       
     - name: Build checksum_tool
       run: |
@@ -64,7 +64,7 @@ jobs:
     - name: Deploy checksum_tool AppImage
       run: |
         cd Tools/checksum_tool
-        linuxdeployqt-continuous-x86_64.AppImage -appimage checksum_tool
+        ~/linuxdeployqt-continuous-x86_64.AppImage -appimage checksum_tool
 
     - name: Upload checksum_tool build
       uses: actions/upload-artifact@v2
