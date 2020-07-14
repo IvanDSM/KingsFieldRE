@@ -121,6 +121,13 @@
           </widget>
          </item>
          <item>
+          <widget class="QRadioButton" name="fillModeButton">
+           <property name="text">
+            <string>Fill</string>
+           </property>
+          </widget>
+         </item>
+         <item>
           <widget class="QLabel" name="brushLabel">
            <property name="text">
             <string>Brush Value:</string>

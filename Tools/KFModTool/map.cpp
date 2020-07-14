@@ -103,7 +103,7 @@ Map::Map(TFile &fdatTFile, unsigned int index, const QString &name): fdat(fdatTF
     {
         KingsField::EntityInstance instance;
         quint8 tempByte;
-        map2Stream >> instance.field_0x0;
+        map2Stream >> instance.Enabled;
         map2Stream >> instance.EntityClass;
         map2Stream >> instance.field_0x2;
         map2Stream >> instance.WEXTilePos;
@@ -261,7 +261,7 @@ void Map::writeChanges()
 
     for (auto entityInstance : entityInstances)
     {
-        map2Stream << entityInstance.field_0x0;
+        map2Stream << entityInstance.Enabled;
         map2Stream << entityInstance.EntityClass;
         map2Stream << entityInstance.field_0x2;
         map2Stream << entityInstance.WEXTilePos;

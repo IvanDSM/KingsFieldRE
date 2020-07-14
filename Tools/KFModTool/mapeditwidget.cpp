@@ -184,7 +184,7 @@ void MapEditWidget::entityInstanceHovered(byte instanceIndex)
     auto instance = curMap->getEntityInstances()[instanceIndex];
     currentEntityInstance = instanceIndex;
 
-    QTableWidgetItem *item0 = new QTableWidgetItem(QString::number(instance.field_0x0));
+    QTableWidgetItem *item0 = new QTableWidgetItem(QString::number(instance.Enabled));
     ui->entityInstanceTable->setItem(0, 0, item0);
     QTableWidgetItem *item1 = new QTableWidgetItem(QString::number(instance.EntityClass));
     ui->entityInstanceTable->setItem(0, 1, item1);
@@ -291,7 +291,7 @@ void MapEditWidget::on_entityInstanceTable_itemChanged(QTableWidgetItem *item)
     KingsField::EntityInstance &instance = curMap->getInstance(currentEntityInstance);
     switch(item->row())
     {
-        case (0): instance.field_0x0 = item->text().toUShort(); break;
+        case (0): instance.Enabled = item->text().toUShort(); break;
         case (1): instance.EntityClass = item->text().toUShort(); break;
         case (2): instance.field_0x2 = item->text().toUShort(); break;
         case (3): instance.WEXTilePos = item->text().toUShort(); break;
@@ -437,4 +437,9 @@ void MapEditWidget::on_brushSpin_valueChanged(int arg1)
 void MapEditWidget::on_brushElemCombo_currentIndexChanged(int index)
 {
     ui->mapViewWidget->setBrushElement(static_cast<MapViewer::MapElement>(index));
+}
+
+void MapEditWidget::on_fillModeButton_clicked()
+{
+    ui->mapViewWidget->setMode(MapViewer::MapViewerMode::MODE_FILL);
 }

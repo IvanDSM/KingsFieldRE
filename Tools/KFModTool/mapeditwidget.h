@@ -49,6 +49,8 @@ private slots:
 
     void on_brushElemCombo_currentIndexChanged(int index);
 
+    void on_fillModeButton_clicked();
+
 private:
     void fillEntityCDCombo();
     byte currentEntityInstance = 255;

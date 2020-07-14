@@ -27,7 +27,8 @@ public:
     enum class MapViewerMode
     {
         MODE_POKE,
-        MODE_PAINT
+        MODE_PAINT,
+        MODE_FILL
     };
 
     explicit MapViewer(QWidget *parent = nullptr) : QWidget(parent)
@@ -89,6 +90,7 @@ public slots:
 
     void mouseMoveEvent(QMouseEvent *event) override;
     void mousePressEvent(QMouseEvent *event) override;
+    void mouseReleaseEvent(QMouseEvent *event);
     void paintEvent(QPaintEvent *event) override;
 
 private:
@@ -96,6 +98,7 @@ private:
     void drawMap();
     void drawMouse();
     void drawObjects();
+    void drawSelection();
 
     void processMouse(QMouseEvent *event);
 
@@ -107,6 +110,7 @@ private:
     MapViewerMode curMode = MapViewerMode::MODE_POKE;
     QPainter painter;
     QPoint mousePos = QPoint(39, 39);
+    QRect selection = QRect(-2,-2,0,0);
     std::shared_ptr<Map> mapPtr;
 
 };

@@ -565,7 +565,7 @@ namespace KingsField
     };
 
     struct EntityInstance { /* Structure for declarations of entity instances in the map files. */
-        undefined field_0x0;
+        undefined Enabled;
         byte EntityClass;
         undefined field_0x2;
         byte WEXTilePos;

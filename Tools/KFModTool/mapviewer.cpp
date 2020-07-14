@@ -14,6 +14,52 @@ void MapViewer::mousePressEvent(QMouseEvent *event)
     processMouse(event);
 }
 
+void MapViewer::mouseReleaseEvent(QMouseEvent *event)
+{
+    QWidget::mouseReleaseEvent(event);
+    auto normalizedSelection = selection.normalized();
+    for (auto line = normalizedSelection.top(); line < normalizedSelection.bottom(); line++)
+        for (auto column = normalizedSelection.left(); column <  normalizedSelection.right(); column++)
+        {
+            KingsField::Tile &tile = mapPtr->getTile(column, line);
+            switch(curBrushElement)
+            {
+                case MapElement::MAP_COLLISIONTHING:
+                    switch (curLayer)
+                    {
+                        case MapLayer::LAYER_1:
+                            tile.Layer1CollisionSomething = curBrush;
+                            break;
+                        case MapLayer::LAYER_2:
+                            tile.Layer2CollisionSomething = curBrush;
+                    }
+                    break;
+                case MapElement::MAP_ELEV:
+                    switch (curLayer)
+                    {
+                        case MapLayer::LAYER_1:
+                            tile.Layer1Elev = curBrush;
+                            break;
+                        case MapLayer::LAYER_2:
+                            tile.Layer2Elev = curBrush;
+                    }
+                    break;
+                case MapElement::MAP_ZONEDELIMITER:
+                    switch (curLayer)
+                    {
+                        case MapLayer::LAYER_1:
+                            tile.Layer1ZoneDelimiter = curBrush;
+                            break;
+                        case MapLayer::LAYER_2:
+                            tile.Layer2ZoneDelimiter = curBrush;
+                    }
+            }
+        }
+
+    selection = QRect(-2, -2, 0, 0);
+    repaint();
+}
+
 void MapViewer::paintEvent(QPaintEvent *event)
 {
     QWidget::paintEvent(event);
@@ -23,6 +69,7 @@ void MapViewer::paintEvent(QPaintEvent *event)
     drawMap();
     drawEntities();
     drawObjects();
+    drawSelection();
     drawMouse();
     painter.end();
 }
@@ -95,6 +142,13 @@ void MapViewer::drawObjects()
             ((objInstance.TileLayer == 1 && curLayer == MapLayer::LAYER_1) ||
              (objInstance.TileLayer == 2 && curLayer == MapLayer::LAYER_2)))
             painter.drawPoint(objInstance.WEXTilePos, objInstance.NSYTilePos);
+}
+
+void MapViewer::drawSelection()
+{
+    QColor curColor(255, 255, 255, 127);
+
+    painter.fillRect(selection, curColor);
 }
 
 void MapViewer::processMouse(QMouseEvent *event)
@@ -179,6 +233,16 @@ void MapViewer::processMouse(QMouseEvent *event)
                     }
             }
             mapPtr->setChanged();
+        }
+        else if (curMode == MapViewerMode::MODE_FILL)
+        {
+            if (selection.x() == -2)
+            {
+                selection.setTopLeft(mousePos);
+                selection.setBottomRight(mousePos);
+            }
+            else
+                selection.setBottomRight(mousePos);
         }
     }
 
