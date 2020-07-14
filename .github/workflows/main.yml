@@ -69,7 +69,7 @@ jobs:
     - name: Upload checksum_tool build
       uses: actions/upload-artifact@v2
       with:
-        name: checksum_tool Linux AppImage
+        name: checksum_tool Linux (64-bit) AppImage
         path: Tools/checksum_tool/checksum_tool*.AppImage
 
     - name: Deploy fdat28_tool AppImage
@@ -80,7 +80,7 @@ jobs:
     - name: Upload fdat28_tool build
       uses: actions/upload-artifact@v2
       with:
-        name: fdat28_tool Linux AppImage
+        name: fdat28_tool Linux (64-bit) AppImage
         path: Tools/fdat28_tool/fdat28_tool*.AppImage
 
     - name: Deploy KFModTool AppImage
@@ -92,7 +92,7 @@ jobs:
       continue-on-error: true
       uses: actions/upload-artifact@v2
       with:
-        name: KFModTool Linux AppImage
+        name: KFModTool Linux (64-bit) AppImage
         path: Tools/KFModTool/KFModTool*.AppImage
 
     - name: Deploy KFRandomizer AppImage
@@ -103,7 +103,7 @@ jobs:
     - name: Upload KFRandomizer build
       uses: actions/upload-artifact@v2
       with:
-        name: KFRandomizer Linux AppImage
+        name: KFRandomizer Linux (64-bit) AppImage
         path: Tools/KFRandomizer/KFRandomizer*.AppImage
 
     - name: Deploy tfile_tool AppImage
@@ -114,7 +114,7 @@ jobs:
     - name: Upload tfile_tool build
       uses: actions/upload-artifact@v2
       with:
-        name: tfile_tool Linux AppImage
+        name: tfile_tool Linux (64-bit) AppImage
         path: Tools/tfile_tool/tfile_tool*.AppImage
 
   windows-build:
@@ -183,7 +183,7 @@ jobs:
     - name: Upload checksum_tool build
       uses: actions/upload-artifact@v2
       with:
-        name: checksum_tool windows (64-bit) build
+        name: checksum_tool Windows (64-bit) build
         path: Tools\checksum_tool\checksum_tool\
 
     - name: Deploy fdat28_tool
@@ -200,7 +200,7 @@ jobs:
     - name: Upload fdat28_tool build
       uses: actions/upload-artifact@v2
       with:
-        name: fdat28_tool windows (64-bit) build
+        name: fdat28_tool Windows (64-bit) build
         path: Tools\fdat28_tool\fdat28_tool\
 
     - name: Deploy KFModTool
@@ -219,7 +219,7 @@ jobs:
       continue-on-error: true
       uses: actions/upload-artifact@v2
       with:
-        name: KFModTool windows (64-bit) build
+        name: KFModTool Windows (64-bit) build
         path: Tools\KFModTool\KFModTool\
 
     - name: Deploy KFRandomizer
@@ -236,7 +236,7 @@ jobs:
     - name: Upload KFRandomizer build
       uses: actions/upload-artifact@v2
       with:
-        name: KFRandomizer windows (64-bit) build
+        name: KFRandomizer Windows (64-bit) build
         path: Tools\KFRandomizer\KFRandomizer\
 
     - name: Deploy tfile_tool
@@ -254,6 +254,6 @@ jobs:
     - name: Upload tfile_tool build
       uses: actions/upload-artifact@v2
       with:
-        name: tfile_tool windows (64-bit) build
+        name: tfile_tool Windows (64-bit) build
         path: Tools\tfile_tool\tfile_tool\
 
