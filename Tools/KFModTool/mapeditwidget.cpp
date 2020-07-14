@@ -184,6 +184,9 @@ void MapEditWidget::entityInstanceHovered(byte instanceIndex)
     auto instance = curMap->getEntityInstances()[instanceIndex];
     currentEntityInstance = instanceIndex;
 
+    ui->entityInstanceAddrLabel->setText("Instanced at address " +
+                                         QString::number(0x8016c544 + (instanceIndex * 0x7c), 16));
+
     QTableWidgetItem *item0 = new QTableWidgetItem(QString::number(instance.Enabled));
     ui->entityInstanceTable->setItem(0, 0, item0);
     QTableWidgetItem *item1 = new QTableWidgetItem(QString::number(instance.EntityClass));
@@ -232,6 +235,9 @@ void MapEditWidget::objectInstanceHovered(size_t instanceIndex)
 {
     auto instance = curMap->getObjectInstanceDeclarations()[instanceIndex];
     currentObjectInstance = instanceIndex;
+
+    ui->objectInstanceAddrLabel->setText("Instanced at address " +
+                                         QString::number(0x80177714 + (instanceIndex * 0x44), 16));
 
     QTableWidgetItem *item0 = new QTableWidgetItem(QString::number(instance.TileLayer));
     ui->objectInstanceTable->setItem(0, 0, item0);
