@@ -84,6 +84,7 @@ public:
     void writeFileMap();
 
 private:
+    bool loaded = true; ///< Whether the T file was successfully loaded.
     QByteArray file; ///< Byte array for the T file
     QByteArray hash; ///< MD5 hash of the file for getting pretty names.
     QDataStream stream; ///< Data stream for reading the file

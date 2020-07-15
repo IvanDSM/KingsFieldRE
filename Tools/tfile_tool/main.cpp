@@ -32,16 +32,23 @@ int main(int argc, char *argv[])
     for (int i = startIndex; i < argc; i++)
     {
         TFile curTFile(argv[i]);
-        qInfo() << curTFile.getFilename();
-        qInfo() << "MD5 hash:" << curTFile.getHash();
-        qInfo() << "Number of files according to T file:" << curTFile.getNumFiles();
-        qInfo() << "Actual number of files: " << curTFile.getTrueNumFiles();
-        qInfo() << "File offsets (original): " << curTFile.getFileOffsets();
-        qInfo() << "File offsets (calculated): " << curTFile.getTrueFileOffsets();
-        if (extract)
+        if (curTFile.getNumFiles() > 0)
         {
-            curTFile.extractFiles();
-            curTFile.writeFileMap();
+            qInfo() << curTFile.getFilename();
+            qInfo() << "MD5 hash:" << curTFile.getHash();
+            qInfo() << "Number of files according to T file:" << curTFile.getNumFiles();
+            qInfo() << "Actual number of files: " << curTFile.getTrueNumFiles();
+            qInfo() << "File offsets (original): " << curTFile.getFileOffsets();
+            qInfo() << "File offsets (calculated): " << curTFile.getTrueFileOffsets();
+            if (extract)
+            {
+                curTFile.extractFiles();
+                curTFile.writeFileMap();
+            }
+        }
+        else
+        {
+            qInfo() << "Unable to open" << argv[i] << "!";
         }
     }
 }
