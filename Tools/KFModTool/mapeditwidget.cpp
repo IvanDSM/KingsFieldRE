@@ -279,6 +279,8 @@ void MapEditWidget::objectInstanceHovered(size_t instanceIndex)
     ui->objectInstanceTable->setItem(0, 21, item21);
     QTableWidgetItem *item22 = new QTableWidgetItem(QString::number(instance.field_0x16));
     ui->objectInstanceTable->setItem(0, 22, item22);
+    QTableWidgetItem *item23 = new QTableWidgetItem(QString::number(instance.field_0x17));
+    ui->objectInstanceTable->setItem(0, 23, item23);
 }
 
 void MapEditWidget::on_zoneDelimCheck_stateChanged(int arg1)
