@@ -35,7 +35,7 @@ TFile::TFile(const QString &filename)
                 trueFileNum++;
             }
 
-            fileMap[fileNum] = trueFileNum;
+            fileMap[fileNum - 1] = trueFileNum - 1;
         }
 
         hash = QCryptographicHash::hash(file, QCryptographicHash::Algorithm::Md5).toHex();
