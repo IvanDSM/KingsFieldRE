@@ -124,7 +124,7 @@ void Randomizer::randomizeMonsters(bool randomizeItemDrops)
     bytes_done++;
     while (bytes_done < fdat1MonsterBlockEnd)
     {
-        fdat1Stream << getRandomMonster();
+        fdat1Stream << getRandomMonster(1);
         if (randomizeItemDrops)
         {
             fdat1Stream.skipRawData(4);
@@ -143,7 +143,7 @@ void Randomizer::randomizeMonsters(bool randomizeItemDrops)
     bytes_done++;
     while (bytes_done < fdat4MonsterBlockEnd)
     {
-        fdat4Stream << getRandomMonster();
+        fdat4Stream << getRandomMonster(2);
         if (randomizeItemDrops)
         {
             fdat4Stream.skipRawData(4);
@@ -162,7 +162,7 @@ void Randomizer::randomizeMonsters(bool randomizeItemDrops)
     bytes_done++;
     while (bytes_done < fdat7MonsterBlockEnd)
     {
-        fdat7Stream << getRandomMonster();
+        fdat7Stream << getRandomMonster(3);
         if (randomizeItemDrops)
         {
             fdat7Stream.skipRawData(4);
@@ -181,7 +181,7 @@ void Randomizer::randomizeMonsters(bool randomizeItemDrops)
     bytes_done++;
     while (bytes_done < fdat10MonsterBlockEnd)
     {
-        fdat10Stream << getRandomMonster();
+        fdat10Stream << getRandomMonster(4);
         if (randomizeItemDrops)
         {
             fdat10Stream.skipRawData(4);
@@ -200,7 +200,7 @@ void Randomizer::randomizeMonsters(bool randomizeItemDrops)
     bytes_done++;
     while (bytes_done < fdat13MonsterBlockEnd)
     {
-        fdat13Stream << getRandomMonster();
+        fdat13Stream << getRandomMonster(5);
         if (randomizeItemDrops)
         {
             fdat13Stream.skipRawData(4);
@@ -219,7 +219,7 @@ void Randomizer::randomizeMonsters(bool randomizeItemDrops)
     bytes_done++;
     while (bytes_done < fdat16MonsterBlockEnd)
     {
-        fdat16Stream << getRandomMonster();
+        fdat16Stream << getRandomMonster(6);
         if (randomizeItemDrops)
         {
             fdat16Stream.skipRawData(4);
@@ -238,7 +238,7 @@ void Randomizer::randomizeMonsters(bool randomizeItemDrops)
     bytes_done++;
     while (bytes_done < fdat19MonsterBlockEnd)
     {
-        fdat19Stream << getRandomMonster();
+        fdat19Stream << getRandomMonster(7);
         if (randomizeItemDrops)
         {
             fdat19Stream.skipRawData(4);
@@ -257,7 +257,7 @@ void Randomizer::randomizeMonsters(bool randomizeItemDrops)
     bytes_done++;
     while (bytes_done < fdat22MonsterBlockEnd)
     {
-        fdat22Stream << getRandomMonster();
+        fdat22Stream << getRandomMonster(8);
         if (randomizeItemDrops)
         {
             fdat22Stream.skipRawData(4);
@@ -276,7 +276,7 @@ void Randomizer::randomizeMonsters(bool randomizeItemDrops)
     bytes_done++;
     while (bytes_done < fdat25MonsterBlockEnd)
     {
-        fdat25Stream << getRandomMonster();
+        fdat25Stream << getRandomMonster(9);
         if (randomizeItemDrops)
         {
             fdat25Stream.skipRawData(4);
@@ -503,7 +503,7 @@ void Randomizer::randomizeItems()
     fdat25Stream >> fdat25ItemBlockEnd;
 
     quint64 bytes_done;
-    quint8 cur_item;
+    quint16 cur_item;
 
     emit statusUpdate(QDateTime::currentDateTime().time().toString() + ": Randomizing items in map 1 (FDAT 1)...");
 
@@ -515,12 +515,12 @@ void Randomizer::randomizeItems()
         fdat1Stream >> cur_item;
         if (isValidItem(cur_item))
         {
-            fdat1Stream.device()->seek(fdat1Stream.device()->pos() - 1);
-            fdat1Stream << getRandomItem();
-            fdat1Stream.skipRawData(23);
+            fdat1Stream.device()->seek(fdat1Stream.device()->pos() - 2);
+            fdat1Stream << static_cast<quint16>(getRandomItem());
+            fdat1Stream.skipRawData(22);
         }
         else
-            fdat1Stream.skipRawData(23);
+            fdat1Stream.skipRawData(22);
         bytes_done += 24;
     }
 
@@ -534,12 +534,12 @@ void Randomizer::randomizeItems()
         fdat4Stream >> cur_item;
         if (isValidItem(cur_item))
         {
-            fdat4Stream.device()->seek(fdat4Stream.device()->pos() - 1);
-            fdat4Stream << getRandomItem();
-            fdat4Stream.skipRawData(23);
+            fdat4Stream.device()->seek(fdat4Stream.device()->pos() - 2);
+            fdat4Stream << static_cast<quint16>(getRandomItem());
+            fdat4Stream.skipRawData(22);
         }
         else
-            fdat4Stream.skipRawData(23);
+            fdat4Stream.skipRawData(22);
         bytes_done += 24;
     }
 
@@ -553,12 +553,12 @@ void Randomizer::randomizeItems()
         fdat7Stream >> cur_item;
         if (isValidItem(cur_item))
         {
-            fdat7Stream.device()->seek(fdat7Stream.device()->pos() - 1);
-            fdat7Stream << getRandomItem();
-            fdat7Stream.skipRawData(23);
+            fdat7Stream.device()->seek(fdat7Stream.device()->pos() - 2);
+            fdat7Stream << static_cast<quint16>(getRandomItem());
+            fdat7Stream.skipRawData(22);
         }
         else
-            fdat7Stream.skipRawData(23);
+            fdat7Stream.skipRawData(22);
         bytes_done += 24;
     }
 
@@ -572,12 +572,12 @@ void Randomizer::randomizeItems()
         fdat10Stream >> cur_item;
         if (isValidItem(cur_item))
         {
-            fdat10Stream.device()->seek(fdat10Stream.device()->pos() - 1);
-            fdat10Stream << getRandomItem();
-            fdat10Stream.skipRawData(23);
+            fdat10Stream.device()->seek(fdat10Stream.device()->pos() - 2);
+            fdat10Stream << static_cast<quint16>(getRandomItem());
+            fdat10Stream.skipRawData(22);
         }
         else
-            fdat10Stream.skipRawData(23);
+            fdat10Stream.skipRawData(22);
         bytes_done += 24;
     }
 
@@ -591,12 +591,12 @@ void Randomizer::randomizeItems()
         fdat13Stream >> cur_item;
         if (isValidItem(cur_item))
         {
-            fdat13Stream.device()->seek(fdat13Stream.device()->pos() - 1);
-            fdat13Stream << getRandomItem();
-            fdat13Stream.skipRawData(23);
+            fdat13Stream.device()->seek(fdat13Stream.device()->pos() - 2);
+            fdat13Stream << static_cast<quint16>(getRandomItem());
+            fdat13Stream.skipRawData(22);
         }
         else
-            fdat13Stream.skipRawData(23);
+            fdat13Stream.skipRawData(22);
         bytes_done += 24;
     }
 
@@ -610,12 +610,12 @@ void Randomizer::randomizeItems()
         fdat16Stream >> cur_item;
         if (isValidItem(cur_item))
         {
-            fdat16Stream.device()->seek(fdat16Stream.device()->pos() - 1);
-            fdat16Stream << getRandomItem();
-            fdat16Stream.skipRawData(23);
+            fdat16Stream.device()->seek(fdat16Stream.device()->pos() - 2);
+            fdat16Stream << static_cast<quint16>(getRandomItem());
+            fdat16Stream.skipRawData(22);
         }
         else
-            fdat16Stream.skipRawData(23);
+            fdat16Stream.skipRawData(22);
         bytes_done += 24;
     }
 
@@ -629,12 +629,12 @@ void Randomizer::randomizeItems()
         fdat19Stream >> cur_item;
         if (isValidItem(cur_item))
         {
-            fdat19Stream.device()->seek(fdat19Stream.device()->pos() - 1);
-            fdat19Stream << getRandomItem();
-            fdat19Stream.skipRawData(23);
+            fdat19Stream.device()->seek(fdat19Stream.device()->pos() - 2);
+            fdat19Stream << static_cast<quint16>(getRandomItem());
+            fdat19Stream.skipRawData(22);
         }
         else
-            fdat19Stream.skipRawData(23);
+            fdat19Stream.skipRawData(22);
         bytes_done += 24;
     }
 
@@ -648,12 +648,12 @@ void Randomizer::randomizeItems()
         fdat22Stream >> cur_item;
         if (isValidItem(cur_item))
         {
-            fdat22Stream.device()->seek(fdat22Stream.device()->pos() - 1);
-            fdat22Stream << getRandomItem();
-            fdat22Stream.skipRawData(23);
+            fdat22Stream.device()->seek(fdat22Stream.device()->pos() - 2);
+            fdat22Stream << static_cast<quint16>(getRandomItem());
+            fdat22Stream.skipRawData(22);
         }
         else
-            fdat22Stream.skipRawData(23);
+            fdat22Stream.skipRawData(22);
         bytes_done += 24;
     }
 
@@ -667,12 +667,12 @@ void Randomizer::randomizeItems()
         fdat25Stream >> cur_item;
         if (isValidItem(cur_item))
         {
-            fdat25Stream.device()->seek(fdat25Stream.device()->pos() - 1);
-            fdat25Stream << getRandomItem();
-            fdat25Stream.skipRawData(23);
+            fdat25Stream.device()->seek(fdat25Stream.device()->pos() - 2);
+            fdat25Stream << static_cast<quint16>(getRandomItem());
+            fdat25Stream.skipRawData(22);
         }
         else
-            fdat25Stream.skipRawData(23);
+            fdat25Stream.skipRawData(22);
         bytes_done += 24;
     }
 
@@ -882,12 +882,71 @@ quint8 Randomizer::getRandomItem()
     return item;
 }
 
-quint8 Randomizer::getRandomMonster()
+quint8 Randomizer::getRandomMonster(quint8 mapId)
 {
-    return rng.generate() % 31;
+    quint8 monster = 255;
+    switch (mapId)
+    {
+        case 1:
+            do
+            {
+                monster = rng.generate() % 31;
+            } while (monster == 255 || (monster > 20 && monster < 26));
+            break;
+        case 2:
+            do
+            {
+                monster = rng.generate() % 30;
+            } while (monster == 255 || (monster > 24 && monster < 29));
+            break;
+        case 3:
+            do
+            {
+                monster = rng.generate() % 32;
+            } while (monster == 255);
+            break;
+        case 4:
+            do
+            {
+                monster = rng.generate() % 37;
+            } while (monster == 255 || (monster > 32 && monster < 36));
+            break;
+        case 5:
+            do
+            {
+                monster = rng.generate() % 32;
+            } while (monster == 255 || (monster > 26 && monster < 29));
+            break;
+        case 6:
+            do
+            {
+                monster = rng.generate() % 35;
+            } while (monster == 255 || (monster > 31 && monster < 34));
+            break;
+        case 7:
+            do
+            {
+                monster = rng.generate() % 30;
+            } while (monster == 255 || (monster > 26 && monster < 29));
+            break;
+        case 8:
+            do
+            {
+                monster = rng.generate() % 13;
+            } while (monster == 255);
+            break;
+        case 9:
+            do
+            {
+                monster = rng.generate() % 31;
+            } while (monster == 255);
+            break;
+    }
+
+    return monster;
 }
 
-bool Randomizer::isValidItem(const quint8 &item)
+bool Randomizer::isValidItem(const quint16 &item)
 {
     if (item == 0x7 || item == 0x8 || item == 0x12 || item == 0x13 || item == 0x14 || item == 0x1b || item == 0x21 || item == 0x28 || item == 0x2e || item == 0x34 || (item > 0x3b && item < 0x43) || item == 0x46 || item == 0x51 || item == 0x62 || item == 0x6e || item > 0x76)
         return false;
