@@ -655,6 +655,8 @@ namespace KingsField
             arrayStream >> field_0x37;
             for (size_t i = 0; i < 16; i++)
                 arrayStream >> SomePointers[i];
+
+            return *this;
         }
 
         operator QByteArray()
