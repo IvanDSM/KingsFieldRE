@@ -66,6 +66,7 @@ void MainWindow::loadFdat()
     addMap(5, "The Big Mine");
     addMap(6, "Necron's Coliseum");
     addMap(7, "Guyra's Lair");
+    addMap(8, "Weird Debug Map");
 }
 
 void MainWindow::on_filesTree_itemDoubleClicked(QTreeWidgetItem *item, int)

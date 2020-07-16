@@ -1,6 +1,7 @@
 #ifndef KFTYPES_H
 #define KFTYPES_H
 
+#include <QDataStream>
 #include <QString>
 
 #if __GNUC__ >= 10
@@ -513,6 +514,44 @@ namespace KingsField
         {ItemID::WeaponSpider, "WeaponSpider"}
     };
 
+    // Functions
+
+    static const QString &getEntityMeshName(EntityMeshID entityMeshId)
+    {
+        if (entityMeshIdNameMap.count(entityMeshId) == 1)
+            return entityMeshIdNameMap.at(entityMeshId);
+
+        return entityMeshIdNameMap.at(EntityMeshID::None);
+    }
+
+    static EntityMeshID getEntityMeshIDFromByte(byte meshId)
+    {
+        return static_cast<EntityMeshID>(meshId);
+    }
+
+    static byte getEntityMeshIDAsByte(EntityMeshID entityMeshId)
+    {
+        return static_cast<byte>(entityMeshId);
+    }
+
+    static const QString &getItemName(ItemID itemId)
+    {
+        if (itemIdNameMap.count(itemId) == 1)
+            return itemIdNameMap.at(itemId);
+
+        return itemIdNameMap.at(ItemID::None);
+    }
+
+    static ItemID getItemIDFromByte(byte itemId)
+    {
+        return static_cast<ItemID>(itemId);
+    }
+
+    static byte getItemIDAsByte(ItemID itemId)
+    {
+        return static_cast<byte>(itemId);
+    }
+
     // Structs
 
     struct EntityClassDeclaration { /* Structure for the entity declarations at the beginning of each map file. */
@@ -562,6 +601,117 @@ namespace KingsField
         undefined field_0x36;
         undefined field_0x37;
         u_int SomePointers[16];
+
+        EntityClassDeclaration& operator= (const QByteArray& array)
+        {
+            QDataStream arrayStream(array);
+            arrayStream.setByteOrder(QDataStream::LittleEndian);
+            quint8 tempByte;
+            arrayStream >> tempByte;
+            MeshID = KingsField::getEntityMeshIDFromByte(tempByte);
+            arrayStream >> FourOrForty;
+            arrayStream >> field_0x2;
+            arrayStream >> field_0x3;
+            arrayStream >> field_0x4;
+            arrayStream >> field_0x5;
+            arrayStream >> field_0x6;
+            arrayStream >> field_0x7;
+            arrayStream >> field_0x8;
+            arrayStream >> field_0x9;
+            arrayStream >> field_0xa;
+            arrayStream >> field_0xb;
+            arrayStream >> field_0xc;
+            arrayStream >> field_0xd;
+            arrayStream >> field_0xe;
+            arrayStream >> field_0xf;
+            arrayStream >> field_0x10;
+            arrayStream >> field_0x11;
+            arrayStream >> field_0x12;
+            arrayStream >> field_0x13;
+            arrayStream >> field_0x14;
+            arrayStream >> field_0x15;
+            arrayStream >> field_0x16;
+            arrayStream >> field_0x17;
+            arrayStream >> field_0x18;
+            arrayStream >> field_0x19;
+            arrayStream >> HP;
+            arrayStream >> field_0x1c;
+            arrayStream >> field_0x1d;
+            arrayStream >> ExperienceGain;
+            arrayStream >> DefSlash;
+            arrayStream >> DefChop;
+            arrayStream >> DefStab;
+            arrayStream >> DefHolyMagic;
+            arrayStream >> DefFireMagic;
+            arrayStream >> DefEarthMagic;
+            arrayStream >> DefWindMagic;
+            arrayStream >> DefWaterMagic;
+            arrayStream >> field_0x30;
+            arrayStream >> field_0x31;
+            arrayStream >> Scale;
+            arrayStream >> field_0x34;
+            arrayStream >> field_0x35;
+            arrayStream >> field_0x36;
+            arrayStream >> field_0x37;
+            for (size_t i = 0; i < 16; i++)
+                arrayStream >> SomePointers[i];
+        }
+
+        operator QByteArray()
+        {
+            QByteArray arrayified;
+            QDataStream arrayStream(&arrayified, QIODevice::ReadWrite);
+            arrayStream.setByteOrder(QDataStream::LittleEndian);
+            arrayStream << KingsField::getEntityMeshIDAsByte(MeshID);
+            arrayStream << FourOrForty;
+            arrayStream << field_0x2;
+            arrayStream << field_0x3;
+            arrayStream << field_0x4;
+            arrayStream << field_0x5;
+            arrayStream << field_0x6;
+            arrayStream << field_0x7;
+            arrayStream << field_0x8;
+            arrayStream << field_0x9;
+            arrayStream << field_0xa;
+            arrayStream << field_0xb;
+            arrayStream << field_0xc;
+            arrayStream << field_0xd;
+            arrayStream << field_0xe;
+            arrayStream << field_0xf;
+            arrayStream << field_0x10;
+            arrayStream << field_0x11;
+            arrayStream << field_0x12;
+            arrayStream << field_0x13;
+            arrayStream << field_0x14;
+            arrayStream << field_0x15;
+            arrayStream << field_0x16;
+            arrayStream << field_0x17;
+            arrayStream << field_0x18;
+            arrayStream << field_0x19;
+            arrayStream << HP;
+            arrayStream << field_0x1c;
+            arrayStream << field_0x1d;
+            arrayStream << ExperienceGain;
+            arrayStream << DefSlash;
+            arrayStream << DefChop;
+            arrayStream << DefStab;
+            arrayStream << DefHolyMagic;
+            arrayStream << DefFireMagic;
+            arrayStream << DefEarthMagic;
+            arrayStream << DefWindMagic;
+            arrayStream << DefWaterMagic;
+            arrayStream << field_0x30;
+            arrayStream << field_0x31;
+            arrayStream << Scale;
+            arrayStream << field_0x34;
+            arrayStream << field_0x35;
+            arrayStream << field_0x36;
+            arrayStream << field_0x37;
+            for (size_t i = 0; i < 16; i++)
+                arrayStream << SomePointers[i];
+
+            return arrayified;
+        }
     };
 
     struct EntityInstance { /* Structure for declarations of entity instances in the map files. */
@@ -620,43 +770,6 @@ namespace KingsField
         byte Layer2ZoneDelimiter; /* Draw this to a texture to get something interesting */
     };
 
-    // Functions
-
-    static const QString &getEntityMeshName(EntityMeshID entityMeshId)
-    {
-        if (entityMeshIdNameMap.count(entityMeshId) == 1)
-            return entityMeshIdNameMap.at(entityMeshId);
-
-        return entityMeshIdNameMap.at(EntityMeshID::None);
-    }
-
-    static EntityMeshID getEntityMeshIDFromByte(byte meshId)
-    {
-        return static_cast<EntityMeshID>(meshId);
-    }
-
-    static byte getEntityMeshIDAsByte(EntityMeshID entityMeshId)
-    {
-        return static_cast<byte>(entityMeshId);
-    }
-
-    static const QString &getItemName(ItemID itemId)
-    {
-        if (itemIdNameMap.count(itemId) == 1)
-            return itemIdNameMap.at(itemId);
-
-        return itemIdNameMap.at(ItemID::None);
-    }
-
-    static ItemID getItemIDFromByte(byte itemId)
-    {
-        return static_cast<ItemID>(itemId);
-    }
-
-    static byte getItemIDAsByte(ItemID itemId)
-    {
-        return static_cast<byte>(itemId);
-    }
 }
 
 

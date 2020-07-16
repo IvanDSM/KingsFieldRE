@@ -51,6 +51,10 @@ private slots:
 
     void on_fillModeButton_clicked();
 
+    void on_entityCDImport_clicked();
+
+    void on_entityCDExport_clicked();
+
 private:
     void fillEntityCDCombo();
     byte currentEntityInstance = 255;

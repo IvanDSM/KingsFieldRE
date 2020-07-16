@@ -366,6 +366,166 @@
       <property name="bottomMargin">
        <number>0</number>
       </property>
+      <item row="0" column="1">
+       <widget class="QGroupBox" name="objectInstanceGroup">
+        <property name="title">
+         <string>Current Object Instance</string>
+        </property>
+        <layout class="QVBoxLayout" name="verticalLayout_3">
+         <property name="leftMargin">
+          <number>0</number>
+         </property>
+         <property name="topMargin">
+          <number>0</number>
+         </property>
+         <property name="rightMargin">
+          <number>0</number>
+         </property>
+         <property name="bottomMargin">
+          <number>0</number>
+         </property>
+         <item>
+          <widget class="QTableWidget" name="objectInstanceTable">
+           <property name="inputMethodHints">
+            <set>Qt::ImhDigitsOnly</set>
+           </property>
+           <row>
+            <property name="text">
+             <string>Tile Layer</string>
+            </property>
+           </row>
+           <row>
+            <property name="text">
+             <string>X Tile Position</string>
+            </property>
+           </row>
+           <row>
+            <property name="text">
+             <string>Y Tile Position</string>
+            </property>
+           </row>
+           <row>
+            <property name="text">
+             <string>Unknown 03</string>
+            </property>
+           </row>
+           <row>
+            <property name="text">
+             <string>Item ID</string>
+            </property>
+           </row>
+           <row>
+            <property name="text">
+             <string>Unknown 05</string>
+            </property>
+           </row>
+           <row>
+            <property name="text">
+             <string>Unknown 06</string>
+            </property>
+           </row>
+           <row>
+            <property name="text">
+             <string>Unknown 07</string>
+            </property>
+           </row>
+           <row>
+            <property name="text">
+             <string>Unknown 08</string>
+            </property>
+           </row>
+           <row>
+            <property name="text">
+             <string>Unknown 09</string>
+            </property>
+           </row>
+           <row>
+            <property name="text">
+             <string>Unknown 0A</string>
+            </property>
+           </row>
+           <row>
+            <property name="text">
+             <string>Unknown 0B</string>
+            </property>
+           </row>
+           <row>
+            <property name="text">
+             <string>Unknown 0C</string>
+            </property>
+           </row>
+           <row>
+            <property name="text">
+             <string>Unknown 0D</string>
+            </property>
+           </row>
+           <row>
+            <property name="text">
+             <string>Unknown 0E</string>
+            </property>
+           </row>
+           <row>
+            <property name="text">
+             <string>Unknown 0F</string>
+            </property>
+           </row>
+           <row>
+            <property name="text">
+             <string>Key ID (?)</string>
+            </property>
+           </row>
+           <row>
+            <property name="text">
+             <string>Unknown 11</string>
+            </property>
+           </row>
+           <row>
+            <property name="text">
+             <string>Instance Contained</string>
+            </property>
+           </row>
+           <row>
+            <property name="text">
+             <string>Unknown 13</string>
+            </property>
+           </row>
+           <row>
+            <property name="text">
+             <string>Unknown 14</string>
+            </property>
+           </row>
+           <row>
+            <property name="text">
+             <string>Unknown 15</string>
+            </property>
+           </row>
+           <row>
+            <property name="text">
+             <string>Unknown 16</string>
+            </property>
+           </row>
+           <row>
+            <property name="text">
+             <string>Unknown 17</string>
+            </property>
+           </row>
+           <column>
+            <property name="text">
+             <string>Value</string>
+            </property>
+           </column>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLabel" name="objectInstanceAddrLabel">
+           <property name="text">
+            <string>Instanced at address </string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+      </item>
       <item row="0" column="0">
        <widget class="QGroupBox" name="entityInstanceGroup">
         <property name="sizePolicy">
@@ -392,6 +552,9 @@
          </property>
          <item>
           <widget class="QTableWidget" name="entityInstanceTable">
+           <property name="inputMethodHints">
+            <set>Qt::ImhDigitsOnly</set>
+           </property>
            <row>
             <property name="text">
              <string>Unknown 0</string>
@@ -503,6 +666,12 @@
          </item>
          <item>
           <widget class="QTableWidget" name="entityCDTable">
+           <property name="contextMenuPolicy">
+            <enum>Qt::DefaultContextMenu</enum>
+           </property>
+           <property name="inputMethodHints">
+            <set>Qt::ImhDigitsOnly</set>
+           </property>
            <row>
             <property name="text">
              <string>MeshID</string>
@@ -815,161 +984,42 @@
            </column>
           </widget>
          </item>
-        </layout>
-       </widget>
-      </item>
-      <item row="0" column="1">
-       <widget class="QGroupBox" name="objectInstanceGroup">
-        <property name="title">
-         <string>Current Object Instance</string>
-        </property>
-        <layout class="QVBoxLayout" name="verticalLayout_3">
-         <property name="leftMargin">
-          <number>0</number>
-         </property>
-         <property name="topMargin">
-          <number>0</number>
-         </property>
-         <property name="rightMargin">
-          <number>0</number>
-         </property>
-         <property name="bottomMargin">
-          <number>0</number>
-         </property>
          <item>
-          <widget class="QTableWidget" name="objectInstanceTable">
-           <row>
-            <property name="text">
-             <string>Tile Layer</string>
-            </property>
-           </row>
-           <row>
-            <property name="text">
-             <string>X Tile Position</string>
-            </property>
-           </row>
-           <row>
-            <property name="text">
-             <string>Y Tile Position</string>
-            </property>
-           </row>
-           <row>
-            <property name="text">
-             <string>Unknown 03</string>
-            </property>
-           </row>
-           <row>
-            <property name="text">
-             <string>Item ID</string>
-            </property>
-           </row>
-           <row>
-            <property name="text">
-             <string>Unknown 05</string>
-            </property>
-           </row>
-           <row>
-            <property name="text">
-             <string>Unknown 06</string>
-            </property>
-           </row>
-           <row>
-            <property name="text">
-             <string>Unknown 07</string>
-            </property>
-           </row>
-           <row>
-            <property name="text">
-             <string>Unknown 08</string>
-            </property>
-           </row>
-           <row>
-            <property name="text">
-             <string>Unknown 09</string>
-            </property>
-           </row>
-           <row>
-            <property name="text">
-             <string>Unknown 0A</string>
-            </property>
-           </row>
-           <row>
-            <property name="text">
-             <string>Unknown 0B</string>
-            </property>
-           </row>
-           <row>
-            <property name="text">
-             <string>Unknown 0C</string>
-            </property>
-           </row>
-           <row>
-            <property name="text">
-             <string>Unknown 0D</string>
-            </property>
-           </row>
-           <row>
-            <property name="text">
-             <string>Unknown 0E</string>
-            </property>
-           </row>
-           <row>
-            <property name="text">
-             <string>Unknown 0F</string>
-            </property>
-           </row>
-           <row>
-            <property name="text">
-             <string>Key ID (?)</string>
-            </property>
-           </row>
-           <row>
-            <property name="text">
-             <string>Unknown 11</string>
-            </property>
-           </row>
-           <row>
-            <property name="text">
-             <string>Instance Contained</string>
-            </property>
-           </row>
-           <row>
-            <property name="text">
-             <string>Unknown 13</string>
-            </property>
-           </row>
-           <row>
-            <property name="text">
-             <string>Unknown 14</string>
-            </property>
-           </row>
-           <row>
-            <property name="text">
-             <string>Unknown 15</string>
-            </property>
-           </row>
-           <row>
-            <property name="text">
-             <string>Unknown 16</string>
-            </property>
-           </row>
-           <row>
-            <property name="text">
-             <string>Unknown 17</string>
-            </property>
-           </row>
-           <column>
-            <property name="text">
-             <string>Value</string>
-            </property>
-           </column>
-          </widget>
-         </item>
-         <item>
-          <widget class="QLabel" name="objectInstanceAddrLabel">
-           <property name="text">
-            <string>Instanced at address </string>
+          <widget class="QFrame" name="entityCDManipulationFrame">
+           <property name="frameShape">
+            <enum>QFrame::NoFrame</enum>
            </property>
+           <property name="frameShadow">
+            <enum>QFrame::Plain</enum>
+           </property>
+           <layout class="QHBoxLayout" name="horizontalLayout_5">
+            <property name="leftMargin">
+             <number>0</number>
+            </property>
+            <property name="topMargin">
+             <number>0</number>
+            </property>
+            <property name="rightMargin">
+             <number>0</number>
+            </property>
+            <property name="bottomMargin">
+             <number>0</number>
+            </property>
+            <item>
+             <widget class="QPushButton" name="entityCDImport">
+              <property name="text">
+               <string>Import...</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="entityCDExport">
+              <property name="text">
+               <string>Export...</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
           </widget>
          </item>
         </layout>

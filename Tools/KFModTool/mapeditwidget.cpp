@@ -1,5 +1,7 @@
 #include "mapeditwidget.h"
 #include "ui_mapeditwidget.h"
+#include <QFileDialog>
+#include <QMessageBox>
 
 MapEditWidget::MapEditWidget(QWidget *parent) :
     QWidget(parent),
@@ -42,6 +44,7 @@ void MapEditWidget::on_layer2Radio_toggled(bool checked)
 
 void MapEditWidget::fillEntityCDCombo()
 {
+    ui->entityCDCombo->clear();
     byte curEntityIndex = 0;
     for (auto entityCD : curMap->getEntityClassDeclarations())
     {
@@ -312,6 +315,9 @@ void MapEditWidget::on_entityInstanceTable_itemChanged(QTableWidgetItem *item)
 
 void MapEditWidget::on_entityCDTable_itemChanged(QTableWidgetItem *item)
 {
+    if (ui->entityCDCombo->currentIndex() == -1)
+        return;
+
     KingsField::EntityClassDeclaration &classDecl = curMap->getClassDeclaration(ui->entityCDCombo->currentIndex());
     switch(item->row())
     {
@@ -441,4 +447,52 @@ void MapEditWidget::on_brushElemCombo_currentIndexChanged(int index)
 void MapEditWidget::on_fillModeButton_clicked()
 {
     ui->mapViewWidget->setMode(MapViewer::MapViewerMode::MODE_FILL);
+}
+
+void MapEditWidget::on_entityCDImport_clicked()
+{
+    auto filename = QFileDialog::getOpenFileName(this, "Import entity class declaration...",
+                                                 QDir::homePath(),
+                                                 "Entity Class Declarations (*.kfmt_ecd)");
+    if (!filename.isEmpty())
+    {
+        QFile file(filename, this);
+        if (!file.open(QIODevice::ReadOnly))
+        {
+            QMessageBox::critical(this, "Failed to open file!",
+                                  "Failed to open " + filename + " for reading!");
+            return;
+        }
+        auto entityCD = file.readAll();
+        file.close();
+        auto index = ui->entityCDCombo->currentIndex();
+        curMap->getClassDeclaration(index) = entityCD;
+        curMap->setChanged();
+        fillEntityCDCombo();
+        on_entityCDCombo_currentIndexChanged(index); // FIXME: Dirty hack. Do something proper.
+    }
+}
+
+void MapEditWidget::on_entityCDExport_clicked()
+{
+    auto filename = QFileDialog::getSaveFileName(this, "Export entity class declaration as...",
+                                                 QDir::homePath(),
+                                                 "Entity Class Declarations (*.kfmt_ecd)");
+    if (!filename.isEmpty())
+    {
+        if (!filename.endsWith(".kfmt_ecd"))
+            filename.append(".kfmt_ecd");
+        QByteArray entityCD = curMap->getClassDeclaration(ui->entityCDCombo->currentIndex());
+        QFile file(filename, this);
+        if (!file.open(QIODevice::ReadWrite))
+        {
+            QMessageBox::critical(this, "Failed to open file!",
+                                  "Failed to open " + filename + " for writing!");
+            return;
+        }
+        file.write(entityCD);
+        file.close();
+        QMessageBox::information(this, "Export successful!",
+                                 "Entity Class Declaration exported successfully!");
+    }
 }
