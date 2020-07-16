@@ -16,6 +16,7 @@ TFile::TFile(const QString &filename)
         fileHandle.close();
         unsigned short offset = 0;
         QBuffer fileBuffer(&file);
+        fileBuffer.open(QIODevice::ReadOnly);
 
         unsigned int fileNum = 0;
         unsigned int trueFileNum = 0;
