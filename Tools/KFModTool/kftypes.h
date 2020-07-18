@@ -1111,29 +1111,59 @@ namespace KingsField
         undefined field_0x18;
         undefined field_0x19;
 
+        friend QDataStream &operator>> (QDataStream &in, Magic& magic)
+        {
+            in >> magic.PlayerHas;
+            in >> magic.ChargeRecoveryTime;
+            in >> magic.field_0x2;
+            in >> magic.field_0x3;
+            in >> magic.field_0x4;
+            in >> magic.field_0x5;
+            in >> magic.field_0x6;
+            in >> magic.field_0x7;
+            in >> magic.SomeDmg1;
+            in >> magic.SomeDmg2;
+            in >> magic.SomeDmg3;
+            in >> magic.FireDmg;
+            in >> magic.EarthDmg;
+            in >> magic.WindDmg;
+            in >> magic.WaterDmg;
+            in >> magic.MPCost;
+            in >> magic.field_0x18;
+            in >> magic.field_0x19;
+
+            return in;
+        }
+
+        friend QDataStream &operator<< (QDataStream &out, Magic& magic)
+        {
+            out << magic.PlayerHas;
+            out << magic.ChargeRecoveryTime;
+            out << magic.field_0x2;
+            out << magic.field_0x3;
+            out << magic.field_0x4;
+            out << magic.field_0x5;
+            out << magic.field_0x6;
+            out << magic.field_0x7;
+            out << magic.SomeDmg1;
+            out << magic.SomeDmg2;
+            out << magic.SomeDmg3;
+            out << magic.FireDmg;
+            out << magic.EarthDmg;
+            out << magic.WindDmg;
+            out << magic.WaterDmg;
+            out << magic.MPCost;
+            out << magic.field_0x18;
+            out << magic.field_0x19;
+
+            return out;
+        }
+
         Magic& operator= (const QByteArray &array)
         {
             QDataStream arrayStream(array);
             arrayStream.setByteOrder(QDataStream::LittleEndian);
 
-            arrayStream >> PlayerHas;
-            arrayStream >> ChargeRecoveryTime;
-            arrayStream >> field_0x2;
-            arrayStream >> field_0x3;
-            arrayStream >> field_0x4;
-            arrayStream >> field_0x5;
-            arrayStream >> field_0x6;
-            arrayStream >> field_0x7;
-            arrayStream >> SomeDmg1;
-            arrayStream >> SomeDmg2;
-            arrayStream >> SomeDmg3;
-            arrayStream >> FireDmg;
-            arrayStream >> EarthDmg;
-            arrayStream >> WindDmg;
-            arrayStream >> WaterDmg;
-            arrayStream >> MPCost;
-            arrayStream >> field_0x18;
-            arrayStream >> field_0x19;
 
             return *this;
         }
@@ -1195,70 +1225,61 @@ namespace KingsField
         undefined field_0x16;
         undefined field_0x17;
 
-        ObjectClassDeclaration& operator= (const QByteArray& array)
-        {
-            QDataStream arrayStream(array);
-            arrayStream.setByteOrder(QDataStream::LittleEndian);
-
-            arrayStream >> field_0x0;
-            arrayStream >> SomeType;
-            arrayStream >> field_0x2;
-            arrayStream >> field_0x3;
-            arrayStream >> CollisionRadius;
-            arrayStream >> field_0x6;
-            arrayStream >> field_0x7;
-            arrayStream >> field_0x8;
-            arrayStream >> field_0x9;
-            arrayStream >> field_0xa;
-            arrayStream >> field_0xb;
-            arrayStream >> field_0xc;
-            arrayStream >> field_0xd;
-            arrayStream >> field_0xe;
-            arrayStream >> field_0xf;
-            arrayStream >> field_0x10;
-            arrayStream >> field_0x11;
-            arrayStream >> field_0x12;
-            arrayStream >> field_0x13;
-            arrayStream >> field_0x14;
-            arrayStream >> field_0x15;
-            arrayStream >> field_0x16;
-            arrayStream >> field_0x17;
-
-            return *this;
+        friend QDataStream &operator>>(QDataStream &in, ObjectClassDeclaration &objClassDecl){
+            in >> objClassDecl.field_0x0;
+            in >> objClassDecl.SomeType;
+            in >> objClassDecl.field_0x2;
+            in >> objClassDecl.field_0x3;
+            in >> objClassDecl.CollisionRadius;
+            in >> objClassDecl.field_0x6;
+            in >> objClassDecl.field_0x7;
+            in >> objClassDecl.field_0x8;
+            in >> objClassDecl.field_0x9;
+            in >> objClassDecl.field_0xa;
+            in >> objClassDecl.field_0xb;
+            in >> objClassDecl.field_0xc;
+            in >> objClassDecl.field_0xd;
+            in >> objClassDecl.field_0xe;
+            in >> objClassDecl.field_0xf;
+            in >> objClassDecl.field_0x10;
+            in >> objClassDecl.field_0x11;
+            in >> objClassDecl.field_0x12;
+            in >> objClassDecl.field_0x13;
+            in >> objClassDecl.field_0x14;
+            in >> objClassDecl.field_0x15;
+            in >> objClassDecl.field_0x16;
+            in >> objClassDecl.field_0x17;
+            return in;
         }
 
-        operator QByteArray()
+        friend QDataStream &operator<<(QDataStream &out, ObjectClassDeclaration &objClassDecl)
         {
-            QByteArray arrayified;
-            QDataStream arrayStream(&arrayified, QIODevice::ReadWrite);
-            arrayStream.setByteOrder(QDataStream::LittleEndian);
-
-            arrayStream << field_0x0;
-            arrayStream << SomeType;
-            arrayStream << field_0x2;
-            arrayStream << field_0x3;
-            arrayStream << CollisionRadius;
-            arrayStream << field_0x6;
-            arrayStream << field_0x7;
-            arrayStream << field_0x8;
-            arrayStream << field_0x9;
-            arrayStream << field_0xa;
-            arrayStream << field_0xb;
-            arrayStream << field_0xc;
-            arrayStream << field_0xd;
-            arrayStream << field_0xe;
-            arrayStream << field_0xf;
-            arrayStream << field_0x10;
-            arrayStream << field_0x11;
-            arrayStream << field_0x12;
-            arrayStream << field_0x13;
-            arrayStream << field_0x14;
-            arrayStream << field_0x15;
-            arrayStream << field_0x16;
-            arrayStream << field_0x17;
-
-            return arrayified;
+            out << objClassDecl.field_0x0;
+            out << objClassDecl.SomeType;
+            out << objClassDecl.field_0x2;
+            out << objClassDecl.field_0x3;
+            out << objClassDecl.CollisionRadius;
+            out << objClassDecl.field_0x6;
+            out << objClassDecl.field_0x7;
+            out << objClassDecl.field_0x8;
+            out << objClassDecl.field_0x9;
+            out << objClassDecl.field_0xa;
+            out << objClassDecl.field_0xb;
+            out << objClassDecl.field_0xc;
+            out << objClassDecl.field_0xd;
+            out << objClassDecl.field_0xe;
+            out << objClassDecl.field_0xf;
+            out << objClassDecl.field_0x10;
+            out << objClassDecl.field_0x11;
+            out << objClassDecl.field_0x12;
+            out << objClassDecl.field_0x13;
+            out << objClassDecl.field_0x14;
+            out << objClassDecl.field_0x15;
+            out << objClassDecl.field_0x16;
+            out << objClassDecl.field_0x17;
+            return out;
         }
+
     };
 
     /*!
@@ -1327,33 +1348,26 @@ namespace KingsField
         quint16 MagPowerPlus;
         quint32 ExpForNextLevel;
 
-        PlayerLvlData& operator= (const QByteArray& array)
+        friend QDataStream &operator>> (QDataStream &in, PlayerLvlData &playerLvlData)
         {
-            QDataStream arrayStream(array);
-            arrayStream.setByteOrder(QDataStream::LittleEndian);
+            in >> playerLvlData.BaseHP;
+            in >> playerLvlData.BaseMP;
+            in >> playerLvlData.StrPowerPlus;
+            in >> playerLvlData.MagPowerPlus;
+            in >> playerLvlData.ExpForNextLevel;
 
-            arrayStream >> BaseHP;
-            arrayStream >> BaseMP;
-            arrayStream >> StrPowerPlus;
-            arrayStream >> MagPowerPlus;
-            arrayStream >> ExpForNextLevel;
-
-            return *this;
+            return in;
         }
 
-        operator QByteArray()
+        friend QDataStream &operator<< (QDataStream &out, PlayerLvlData &playerLvlData)
         {
-            QByteArray arrayified;
-            QDataStream arrayStream(&arrayified, QIODevice::ReadWrite);
-            arrayStream.setByteOrder(QDataStream::LittleEndian);
+            out << playerLvlData.BaseHP;
+            out << playerLvlData.BaseMP;
+            out << playerLvlData.StrPowerPlus;
+            out << playerLvlData.MagPowerPlus;
+            out << playerLvlData.ExpForNextLevel;
 
-            arrayStream << BaseHP;
-            arrayStream << BaseMP;
-            arrayStream << StrPowerPlus;
-            arrayStream << MagPowerPlus;
-            arrayStream << ExpForNextLevel;
-
-            return arrayified;
+            return out;
         }
     };
 
@@ -1477,73 +1491,136 @@ namespace KingsField
         undefined field_0x42;
         undefined field_0x43;
 
-        WeaponStats& operator= (const QByteArray &array)
+        friend QDataStream &operator>> (QDataStream &in, WeaponStats& weaponStat)
         {
-            QDataStream arrayStream(array);
-            arrayStream.setByteOrder(QDataStream::LittleEndian);
+            in >> weaponStat.OffSlash;
+            in >> weaponStat.OffChop;
+            in >> weaponStat.OffStab;
+            in >> weaponStat.OffHolyM;
+            in >> weaponStat.OffFireM;
+            in >> weaponStat.OffEarthM;
+            in >> weaponStat.OffWindM;
+            in >> weaponStat.OffWaterM;
+            in >> weaponStat.field_0x10;
+            in >> weaponStat.field_0x11;
+            in >> weaponStat.field_0x12;
+            in >> weaponStat.field_0x13;
+            in >> weaponStat.field_0x14;
+            in >> weaponStat.field_0x15;
+            in >> weaponStat.field_0x16;
+            in >> weaponStat.field_0x17;
+            in >> weaponStat.field_0x18;
+            in >> weaponStat.field_0x19;
+            in >> weaponStat.field_0x1a;
+            in >> weaponStat.field_0x1b;
+            in >> weaponStat.field_0x1c;
+            in >> weaponStat.field_0x1d;
+            in >> weaponStat.field_0x1e;
+            in >> weaponStat.field_0x1f;
+            in >> weaponStat.field_0x20;
+            in >> weaponStat.field_0x21;
+            in >> weaponStat.field_0x22;
+            in >> weaponStat.field_0x23;
+            in >> weaponStat.field_0x24;
+            in >> weaponStat.field_0x25;
+            in >> weaponStat.field_0x26;
+            in >> weaponStat.field_0x27;
+            in >> weaponStat.field_0x28;
+            in >> weaponStat.field_0x29;
+            in >> weaponStat.field_0x2a;
+            in >> weaponStat.field_0x2b;
+            in >> weaponStat.field_0x2c;
+            in >> weaponStat.field_0x2d;
+            in >> weaponStat.field_0x2e;
+            in >> weaponStat.field_0x2f;
+            in >> weaponStat.field_0x30;
+            in >> weaponStat.field_0x31;
+            in >> weaponStat.field_0x32;
+            in >> weaponStat.field_0x33;
+            in >> weaponStat.field_0x34;
+            in >> weaponStat.field_0x35;
+            in >> weaponStat.field_0x36;
+            in >> weaponStat.field_0x37;
+            in >> weaponStat.field_0x38;
+            in >> weaponStat.field_0x39;
+            in >> weaponStat.field_0x3a;
+            in >> weaponStat.field_0x3b;
+            in >> weaponStat.field_0x3c;
+            in >> weaponStat.field_0x3d;
+            in >> weaponStat.field_0x3e;
+            in >> weaponStat.field_0x3f;
+            in >> weaponStat.field_0x40;
+            in >> weaponStat.field_0x41;
+            in >> weaponStat.field_0x42;
+            in >> weaponStat.field_0x43;
 
-            arrayStream >> OffSlash;
-            arrayStream >> OffChop;
-            arrayStream >> OffStab;
-            arrayStream >> OffHolyM;
-            arrayStream >> OffFireM;
-            arrayStream >> OffEarthM;
-            arrayStream >> OffWindM;
-            arrayStream >> OffWaterM;
-            arrayStream >> field_0x10;
-            arrayStream >> field_0x11;
-            arrayStream >> field_0x12;
-            arrayStream >> field_0x13;
-            arrayStream >> field_0x14;
-            arrayStream >> field_0x15;
-            arrayStream >> field_0x16;
-            arrayStream >> field_0x17;
-            arrayStream >> field_0x18;
-            arrayStream >> field_0x19;
-            arrayStream >> field_0x1a;
-            arrayStream >> field_0x1b;
-            arrayStream >> field_0x1c;
-            arrayStream >> field_0x1d;
-            arrayStream >> field_0x1e;
-            arrayStream >> field_0x1f;
-            arrayStream >> field_0x20;
-            arrayStream >> field_0x21;
-            arrayStream >> field_0x22;
-            arrayStream >> field_0x23;
-            arrayStream >> field_0x24;
-            arrayStream >> field_0x25;
-            arrayStream >> field_0x26;
-            arrayStream >> field_0x27;
-            arrayStream >> field_0x28;
-            arrayStream >> field_0x29;
-            arrayStream >> field_0x2a;
-            arrayStream >> field_0x2b;
-            arrayStream >> field_0x2c;
-            arrayStream >> field_0x2d;
-            arrayStream >> field_0x2e;
-            arrayStream >> field_0x2f;
-            arrayStream >> field_0x30;
-            arrayStream >> field_0x31;
-            arrayStream >> field_0x32;
-            arrayStream >> field_0x33;
-            arrayStream >> field_0x34;
-            arrayStream >> field_0x35;
-            arrayStream >> field_0x36;
-            arrayStream >> field_0x37;
-            arrayStream >> field_0x38;
-            arrayStream >> field_0x39;
-            arrayStream >> field_0x3a;
-            arrayStream >> field_0x3b;
-            arrayStream >> field_0x3c;
-            arrayStream >> field_0x3d;
-            arrayStream >> field_0x3e;
-            arrayStream >> field_0x3f;
-            arrayStream >> field_0x40;
-            arrayStream >> field_0x41;
-            arrayStream >> field_0x42;
-            arrayStream >> field_0x43;
+            return in;
+        }
 
-            return *this;
+        friend QDataStream &operator<< (QDataStream &out, WeaponStats& weaponStat)
+        {
+            out << weaponStat.OffSlash;
+            out << weaponStat.OffChop;
+            out << weaponStat.OffStab;
+            out << weaponStat.OffHolyM;
+            out << weaponStat.OffFireM;
+            out << weaponStat.OffEarthM;
+            out << weaponStat.OffWindM;
+            out << weaponStat.OffWaterM;
+            out << weaponStat.field_0x10;
+            out << weaponStat.field_0x11;
+            out << weaponStat.field_0x12;
+            out << weaponStat.field_0x13;
+            out << weaponStat.field_0x14;
+            out << weaponStat.field_0x15;
+            out << weaponStat.field_0x16;
+            out << weaponStat.field_0x17;
+            out << weaponStat.field_0x18;
+            out << weaponStat.field_0x19;
+            out << weaponStat.field_0x1a;
+            out << weaponStat.field_0x1b;
+            out << weaponStat.field_0x1c;
+            out << weaponStat.field_0x1d;
+            out << weaponStat.field_0x1e;
+            out << weaponStat.field_0x1f;
+            out << weaponStat.field_0x20;
+            out << weaponStat.field_0x21;
+            out << weaponStat.field_0x22;
+            out << weaponStat.field_0x23;
+            out << weaponStat.field_0x24;
+            out << weaponStat.field_0x25;
+            out << weaponStat.field_0x26;
+            out << weaponStat.field_0x27;
+            out << weaponStat.field_0x28;
+            out << weaponStat.field_0x29;
+            out << weaponStat.field_0x2a;
+            out << weaponStat.field_0x2b;
+            out << weaponStat.field_0x2c;
+            out << weaponStat.field_0x2d;
+            out << weaponStat.field_0x2e;
+            out << weaponStat.field_0x2f;
+            out << weaponStat.field_0x30;
+            out << weaponStat.field_0x31;
+            out << weaponStat.field_0x32;
+            out << weaponStat.field_0x33;
+            out << weaponStat.field_0x34;
+            out << weaponStat.field_0x35;
+            out << weaponStat.field_0x36;
+            out << weaponStat.field_0x37;
+            out << weaponStat.field_0x38;
+            out << weaponStat.field_0x39;
+            out << weaponStat.field_0x3a;
+            out << weaponStat.field_0x3b;
+            out << weaponStat.field_0x3c;
+            out << weaponStat.field_0x3d;
+            out << weaponStat.field_0x3e;
+            out << weaponStat.field_0x3f;
+            out << weaponStat.field_0x40;
+            out << weaponStat.field_0x41;
+            out << weaponStat.field_0x42;
+            out << weaponStat.field_0x43;
+
+            return out;
         }
 
         operator QByteArray()

@@ -1,6 +1,6 @@
 #include "kfmttreewidgetitem.h"
 
-KFMTTreeWidgetItem::KFMTTreeWidgetItem(QTreeWidgetItem *parent, Map* kfmtMap) :
+KFMTTreeWidgetItem::KFMTTreeWidgetItem(QTreeWidgetItem *parent, std::shared_ptr<Map> kfmtMap) :
     QTreeWidgetItem(parent, QTreeWidgetItem::UserType),
     mapPtr(kfmtMap)
 {
@@ -8,7 +8,7 @@ KFMTTreeWidgetItem::KFMTTreeWidgetItem(QTreeWidgetItem *parent, Map* kfmtMap) :
     setIcon(0, QIcon(":/map_icon.png"));
 }
 
-KFMTTreeWidgetItem::KFMTTreeWidgetItem(QTreeWidgetItem *parent, GameDB *kfmtDB) :
+KFMTTreeWidgetItem::KFMTTreeWidgetItem(QTreeWidgetItem *parent, std::shared_ptr<GameDB> kfmtDB) :
     QTreeWidgetItem(parent, QTreeWidgetItem::UserType),
     dbPtr(kfmtDB)
 {

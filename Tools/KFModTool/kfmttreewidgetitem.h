@@ -14,8 +14,8 @@ enum class KFMTDataType
 class KFMTTreeWidgetItem : public QTreeWidgetItem
 {
 public:
-    explicit KFMTTreeWidgetItem(QTreeWidgetItem *parent, Map* kfmtMap);
-    explicit KFMTTreeWidgetItem(QTreeWidgetItem *parent, GameDB* kfmtDB);
+    explicit KFMTTreeWidgetItem(QTreeWidgetItem *parent, std::shared_ptr<Map> kfmtMap);
+    explicit KFMTTreeWidgetItem(QTreeWidgetItem *parent, std::shared_ptr<GameDB> kfmtDB);
 
     std::shared_ptr<GameDB> getDB()
     {

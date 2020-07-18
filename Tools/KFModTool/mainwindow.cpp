@@ -47,7 +47,8 @@ void MainWindow::on_actionLoad_files_triggered()
 
 void MainWindow::addMap(const unsigned int &index, const QString &name)
 {
-    KFMTTreeWidgetItem* mapTreeItem = new KFMTTreeWidgetItem(ui->filesTree->itemAt(0,0), new Map(*fdat, index, name));
+    std::shared_ptr<Map> map(new Map(*fdat, index, name));
+    KFMTTreeWidgetItem* mapTreeItem = new KFMTTreeWidgetItem(ui->filesTree->itemAt(0,0), map);
     mapTreeItem->setText(0, "Map " + QString::number(index) + ": " + name);
 
     ui->filesTree->itemAt(0, 0)->addChild(mapTreeItem);
@@ -67,6 +68,9 @@ void MainWindow::loadFdat()
     addMap(6, "Necron's Coliseum");
     addMap(7, "Guyra's Lair");
     addMap(8, "Weird Debug Map");
+
+    gameDB.reset(new GameDB(*fdat));
+    addGameDB();
 }
 
 void MainWindow::on_filesTree_itemDoubleClicked(QTreeWidgetItem *item, int)
@@ -74,21 +78,25 @@ void MainWindow::on_filesTree_itemDoubleClicked(QTreeWidgetItem *item, int)
     if (item->type() == QTreeWidgetItem::UserType)
     {
         auto kfmtItem = reinterpret_cast<KFMTTreeWidgetItem *>(item);
-        auto mapIndex = kfmtItem->getMap()->getIndex();
-        if (openMaps.count(mapIndex))
+        if (kfmtItem->getType() == KFMTDataType::KFMT_MAP)
         {
-            ui->editorTabs->setCurrentIndex(openMaps.at(mapIndex));
+            auto mapIndex = kfmtItem->getMap()->getIndex();
+            if (openMaps.count(mapIndex))
+            {
+                ui->editorTabs->setCurrentIndex(openMaps.at(mapIndex));
+            }
+            else
+            {
+                auto map = kfmtItem->getMap();
+                MapEditWidget* mapEditor = new MapEditWidget(ui->editorTabs);
+                mapEditor->setMap(map);
+                ui->editorTabs->addTab(mapEditor, map->getName());
+                ui->editorTabs->setCurrentIndex(ui->editorTabs->count() - 1);
+                ui->editorTabs->setTabIcon(ui->editorTabs->count() - 1, QIcon(":/map_icon.png"));
+                openMaps[mapIndex] = ui->editorTabs->count() - 1;
+            }
         }
-        else
-        {
-            auto map = kfmtItem->getMap();
-            MapEditWidget* mapEditor = new MapEditWidget(ui->editorTabs);
-            mapEditor->setMap(map);
-            ui->editorTabs->addTab(mapEditor, map->getName());
-            ui->editorTabs->setCurrentIndex(ui->editorTabs->count() - 1);
-            ui->editorTabs->setTabIcon(ui->editorTabs->count() - 1, QIcon(":/map_icon.png"));
-            openMaps[mapIndex] = ui->editorTabs->count() - 1;
-        }
+
     }
 }
 
@@ -114,4 +122,12 @@ void MainWindow::on_actionSave_changes_triggered()
     fdatOut.open(QIODevice::WriteOnly);
     fdatOut.write(fdat->getTFile());
     fdatOut.close();
+}
+
+void MainWindow::addGameDB()
+{
+    KFMTTreeWidgetItem* gameDBTreeItem = new KFMTTreeWidgetItem(ui->filesTree->itemAt(0,0), gameDB);
+    gameDBTreeItem->setText(0, "Game Database");
+
+    ui->filesTree->itemAt(0, 0)->addChild(gameDBTreeItem);
 }

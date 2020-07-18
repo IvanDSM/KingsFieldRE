@@ -17,6 +17,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
     gamedb.cpp \
+    gamedbeditwidget.cpp \
     kfmttreewidgetitem.cpp \
     main.cpp \
     mainwindow.cpp \
@@ -30,6 +31,7 @@ SOURCES += \
 HEADERS += \
     checksum.h \
     gamedb.h \
+    gamedbeditwidget.h \
     kfmttreewidgetitem.h \
     kftypes.h \
     mainwindow.h \
@@ -41,6 +43,7 @@ HEADERS += \
     tfile.h
 
 FORMS += \
+    gamedbeditwidget.ui \
     mainwindow.ui \
     mapeditwidget.ui
 

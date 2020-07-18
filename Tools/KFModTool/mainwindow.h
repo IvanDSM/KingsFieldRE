@@ -32,12 +32,15 @@ private slots:
     void on_actionSave_changes_triggered();
 
 private:
+    void addGameDB();
     void addMap(const unsigned int &index, const QString &name);
     void loadFdat();
 
     std::unordered_map<unsigned int, unsigned int> openMaps;
 
     std::unique_ptr<TFile> fdat = nullptr;
+
+    std::shared_ptr<GameDB> gameDB = nullptr;
     Ui::MainWindow *ui;
 };
 #endif // MAINWINDOW_H
