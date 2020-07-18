@@ -25,7 +25,10 @@ namespace KingsField
 
     // Enums
 
-    enum class EntityMeshID { /* Enum for the entity meshes. */
+    /*!
+     * \brief Enum for the entity meshes in King's Field.
+     */
+    enum class EntityMeshID {
         AlHunt=83,
         Archer=18,
         Baltail=4,
@@ -140,7 +143,39 @@ namespace KingsField
         Unused9=57
     };
 
-    enum class ObjectID { /* Enum for the Item IDs in King's Field */
+    /*!
+     * \brief Enum for the Magic IDs in King's Field.
+     */
+    enum class MagicID
+    {
+        Breath=19,
+        Dispoison=14,
+        EarthHeal=16,
+        EarthWave=2,
+        FireBall=7,
+        FireStorm=9,
+        FireWall=8,
+        Flame=10,
+        Flash=12,
+        Freeze=6,
+        IceStorm=5,
+        Light=18,
+        LightningVolt=11,
+        Meteor=3,
+        MissileShield=17,
+        None=255,
+        ResistFire=15,
+        Seath=13,
+        Stone=1,
+        WaterFall=0,
+        WindCutter=4
+    };
+
+    /*!
+     * \brief Enum for the Item IDs in King's Field.
+     */
+    enum class ObjectID
+    {
         ABrokenSword=264,
         ASoldierOfVerdite=141,
         ArmsA=46,
@@ -371,6 +406,7 @@ namespace KingsField
     };
 
     // Maps
+
 #if __GNUC__ >= 10
     static const std::unordered_map<const EntityMeshID, const QString> entityMeshIdNameMap =
 #else
@@ -492,11 +528,40 @@ namespace KingsField
     };
 
 #if __GNUC__ >= 10
+    static const std::unordered_map<const MagicID, const QString> magicIdNameMap =
+#else
+    static const std::map<const MagicID, const QString> magicIdNameMap =
+#endif
+        {
+            {MagicID::Breath, "Breath"},
+            {MagicID::Dispoison, "Dispoison"},
+            {MagicID::EarthHeal, "Earth Heal"},
+            {MagicID::EarthWave, "Earth Wave"},
+            {MagicID::FireBall, "Fire Ball"},
+            {MagicID::FireStorm, "Fire Storm"},
+            {MagicID::FireWall, "Fire Wall"},
+            {MagicID::Flame, "Flame"},
+            {MagicID::Flash, "Flash"},
+            {MagicID::Freeze, "Freeze"},
+            {MagicID::IceStorm, "Ice Storm"},
+            {MagicID::Light, "Light"},
+            {MagicID::LightningVolt, "Lightning Volt"},
+            {MagicID::Meteor, "Meteor"},
+            {MagicID::MissileShield, "Missile Shield"},
+            {MagicID::None, "None"},
+            {MagicID::ResistFire, "Resist Fire"},
+            {MagicID::Seath, "Seath"},
+            {MagicID::Stone, "Stone"},
+            {MagicID::WaterFall, "Water Fall"},
+            {MagicID::WindCutter, "Wind Cutter"}
+    };
+
+#if __GNUC__ >= 10
     static const std::unordered_map<const ObjectID, const QString> objectIdNameMap =
 #else
     static const std::map<const ObjectID, const QString> objectIdNameMap =
 #endif
-        {
+    {
         {ObjectID::ABrokenSword, "ABrokenSword"},
         {ObjectID::ASoldierOfVerdite, "ASoldierOfVerdite"},
         {ObjectID::ArmsA, "ArmsA"},
@@ -746,6 +811,24 @@ namespace KingsField
         return static_cast<byte>(entityMeshId);
     }
 
+    static const QString &getMagicIDName(MagicID magicId)
+    {
+        if (magicIdNameMap.count(magicId) == 1)
+            return magicIdNameMap.at(magicId);
+
+        return magicIdNameMap.at(MagicID::None);
+    }
+
+    static MagicID getMagicIDFromByte(byte magicId)
+    {
+        return static_cast<MagicID>(magicId);
+    }
+
+    static byte getMagicIDAsByte(MagicID magicId)
+    {
+        return static_cast<byte>(magicId);
+    }
+
     static const QString &getObjectName(ObjectID itemId)
     {
         if (objectIdNameMap.count(itemId) == 1)
@@ -758,6 +841,7 @@ namespace KingsField
     {
         return static_cast<ObjectID>(objectId);
     }
+
     static ObjectID getObjectIDFromUShort(unsigned short objectId)
     {
         return static_cast<ObjectID>(objectId);
@@ -775,7 +859,10 @@ namespace KingsField
 
     // Structs
 
-    struct EntityClassDeclaration { /* Structure for the entity declarations at the beginning of each map file. */
+    /*!
+     * \brief Structure for the entity declarations at the beginning of each map file.
+     */
+    struct EntityClassDeclaration {
         enum EntityMeshID MeshID;
         byte FourOrForty;
         undefined field_0x2;
@@ -937,7 +1024,10 @@ namespace KingsField
         }
     };
 
-    struct EntityInstance { /* Structure for declarations of entity instances in the map files. */
+    /*!
+     * \brief Structure for declarations of entity instances in the map files.
+     */
+    struct EntityInstance {
         undefined field_0x0;
         byte EntityClass;
         undefined field_0x2;
@@ -998,7 +1088,183 @@ namespace KingsField
         }
     };
 
-    struct ObjectInstanceDeclaration { /* Structure for declarations of object instances in the map files. */
+    /*!
+     * \brief Structure for the definition of magic spells.
+     */
+    struct Magic {
+        bool PlayerHas;
+        byte ChargeRecoveryTime;
+        undefined field_0x2;
+        undefined field_0x3;
+        undefined field_0x4;
+        undefined field_0x5;
+        undefined field_0x6;
+        undefined field_0x7;
+        u_short SomeDmg1;
+        u_short SomeDmg2;
+        u_short SomeDmg3;
+        u_short FireDmg;
+        u_short EarthDmg;
+        u_short WindDmg;
+        u_short WaterDmg;
+        u_short MPCost;
+        undefined field_0x18;
+        undefined field_0x19;
+
+        Magic& operator= (const QByteArray &array)
+        {
+            QDataStream arrayStream(array);
+            arrayStream.setByteOrder(QDataStream::LittleEndian);
+
+            arrayStream >> PlayerHas;
+            arrayStream >> ChargeRecoveryTime;
+            arrayStream >> field_0x2;
+            arrayStream >> field_0x3;
+            arrayStream >> field_0x4;
+            arrayStream >> field_0x5;
+            arrayStream >> field_0x6;
+            arrayStream >> field_0x7;
+            arrayStream >> SomeDmg1;
+            arrayStream >> SomeDmg2;
+            arrayStream >> SomeDmg3;
+            arrayStream >> FireDmg;
+            arrayStream >> EarthDmg;
+            arrayStream >> WindDmg;
+            arrayStream >> WaterDmg;
+            arrayStream >> MPCost;
+            arrayStream >> field_0x18;
+            arrayStream >> field_0x19;
+
+            return *this;
+        }
+
+        operator QByteArray()
+        {
+            QByteArray arrayified;
+            QDataStream arrayStream(&arrayified, QIODevice::ReadWrite);
+            arrayStream.setByteOrder(QDataStream::LittleEndian);
+
+            arrayStream << PlayerHas;
+            arrayStream << ChargeRecoveryTime;
+            arrayStream << field_0x2;
+            arrayStream << field_0x3;
+            arrayStream << field_0x4;
+            arrayStream << field_0x5;
+            arrayStream << field_0x6;
+            arrayStream << field_0x7;
+            arrayStream << SomeDmg1;
+            arrayStream << SomeDmg2;
+            arrayStream << SomeDmg3;
+            arrayStream << FireDmg;
+            arrayStream << EarthDmg;
+            arrayStream << WindDmg;
+            arrayStream << WaterDmg;
+            arrayStream << MPCost;
+            arrayStream << field_0x18;
+            arrayStream << field_0x19;
+
+            return arrayified;
+        }
+    };
+
+    /*!
+     * \brief Structure for the object declarations at the database.
+     */
+    struct ObjectClassDeclaration {
+        undefined field_0x0;
+        byte SomeType;
+        undefined field_0x2;
+        undefined field_0x3;
+        u_short CollisionRadius;
+        undefined field_0x6;
+        undefined field_0x7;
+        undefined field_0x8;
+        undefined field_0x9;
+        undefined field_0xa;
+        undefined field_0xb;
+        undefined field_0xc;
+        undefined field_0xd;
+        undefined field_0xe;
+        undefined field_0xf;
+        undefined field_0x10;
+        undefined field_0x11;
+        undefined field_0x12;
+        undefined field_0x13;
+        undefined field_0x14;
+        undefined field_0x15;
+        undefined field_0x16;
+        undefined field_0x17;
+
+        ObjectClassDeclaration& operator= (const QByteArray& array)
+        {
+            QDataStream arrayStream(array);
+            arrayStream.setByteOrder(QDataStream::LittleEndian);
+
+            arrayStream >> field_0x0;
+            arrayStream >> SomeType;
+            arrayStream >> field_0x2;
+            arrayStream >> field_0x3;
+            arrayStream >> CollisionRadius;
+            arrayStream >> field_0x6;
+            arrayStream >> field_0x7;
+            arrayStream >> field_0x8;
+            arrayStream >> field_0x9;
+            arrayStream >> field_0xa;
+            arrayStream >> field_0xb;
+            arrayStream >> field_0xc;
+            arrayStream >> field_0xd;
+            arrayStream >> field_0xe;
+            arrayStream >> field_0xf;
+            arrayStream >> field_0x10;
+            arrayStream >> field_0x11;
+            arrayStream >> field_0x12;
+            arrayStream >> field_0x13;
+            arrayStream >> field_0x14;
+            arrayStream >> field_0x15;
+            arrayStream >> field_0x16;
+            arrayStream >> field_0x17;
+
+            return *this;
+        }
+
+        operator QByteArray()
+        {
+            QByteArray arrayified;
+            QDataStream arrayStream(&arrayified, QIODevice::ReadWrite);
+            arrayStream.setByteOrder(QDataStream::LittleEndian);
+
+            arrayStream << field_0x0;
+            arrayStream << SomeType;
+            arrayStream << field_0x2;
+            arrayStream << field_0x3;
+            arrayStream << CollisionRadius;
+            arrayStream << field_0x6;
+            arrayStream << field_0x7;
+            arrayStream << field_0x8;
+            arrayStream << field_0x9;
+            arrayStream << field_0xa;
+            arrayStream << field_0xb;
+            arrayStream << field_0xc;
+            arrayStream << field_0xd;
+            arrayStream << field_0xe;
+            arrayStream << field_0xf;
+            arrayStream << field_0x10;
+            arrayStream << field_0x11;
+            arrayStream << field_0x12;
+            arrayStream << field_0x13;
+            arrayStream << field_0x14;
+            arrayStream << field_0x15;
+            arrayStream << field_0x16;
+            arrayStream << field_0x17;
+
+            return arrayified;
+        }
+    };
+
+    /*!
+     * \brief Structure for declarations of object instances in the map files.
+     */
+    struct ObjectInstanceDeclaration {
         byte TileLayer;
         byte WEXTilePos;
         byte NSYTilePos;
@@ -1063,19 +1329,305 @@ namespace KingsField
         }
     };
 
-    struct Tile { /* Structure for a tile in King's Field. */
-        byte Layer1TileID;
-        byte Layer1Elev;
-        byte Layer1Rotation; /* 0-3, each step is 90° */
-        byte Layer1CollisionSomething; /* Draw this to a texture to get something interesting */
-        byte Layer1ZoneDelimiter; /* Draw this to a texture to get something interesting */
-        byte Layer2TileID;
-        byte Layer2Elev;
-        byte Layer2Rotation; /* 0-3, each step is 90° */
-        byte Layer2CollisionSomething; /* Draw this to a texture to get something interesting */
-        byte Layer2ZoneDelimiter; /* Draw this to a texture to get something interesting */
+    /*!
+     * \brief Holds HP, MP, Str and Magic Power Differences and Experience for the next level for each level the player can achieve.
+     */
+    struct PlayerLvlData {
+        quint16 BaseHP;
+        quint16 BaseMP;
+        quint16 StrPowerPlus;
+        quint16 MagPowerPlus;
+        quint32 ExpForNextLevel;
+
+        PlayerLvlData& operator= (const QByteArray& array)
+        {
+            QDataStream arrayStream(array);
+            arrayStream.setByteOrder(QDataStream::LittleEndian);
+
+            arrayStream >> BaseHP;
+            arrayStream >> BaseMP;
+            arrayStream >> StrPowerPlus;
+            arrayStream >> MagPowerPlus;
+            arrayStream >> ExpForNextLevel;
+
+            return *this;
+        }
+
+        operator QByteArray()
+        {
+            QByteArray arrayified;
+            QDataStream arrayStream(&arrayified, QIODevice::ReadWrite);
+            arrayStream.setByteOrder(QDataStream::LittleEndian);
+
+            arrayStream << BaseHP;
+            arrayStream << BaseMP;
+            arrayStream << StrPowerPlus;
+            arrayStream << MagPowerPlus;
+            arrayStream << ExpForNextLevel;
+
+            return arrayified;
+        }
     };
 
+    /*!
+     * \brief Structure for a tile in King's Field.
+     */
+    struct Tile {
+        byte Layer1TileID;
+        byte Layer1Elev;
+        byte Layer1Rotation; ///< 0-3, each step is 90°
+        byte Layer1CollisionSomething; ///< Draw this to a texture to get something interesting
+        byte Layer1ZoneDelimiter; ///< Draw this to a texture to get something interesting
+        byte Layer2TileID;
+        byte Layer2Elev;
+        byte Layer2Rotation; ///< 0-3, each step is 90°
+        byte Layer2CollisionSomething; ///< Draw this to a texture to get something interesting
+        byte Layer2ZoneDelimiter; ///< Draw this to a texture to get something interesting
+
+        Tile& operator= (const QByteArray& array)
+        {
+            QDataStream arrayStream(array);
+            arrayStream.setByteOrder(QDataStream::LittleEndian);
+
+            arrayStream >> Layer1TileID;
+            arrayStream >> Layer1Elev;
+            arrayStream >> Layer1Rotation;
+            arrayStream >> Layer1CollisionSomething;
+            arrayStream >> Layer1ZoneDelimiter;
+            arrayStream >> Layer2TileID;
+            arrayStream >> Layer2Elev;
+            arrayStream >> Layer2Rotation;
+            arrayStream >> Layer2CollisionSomething;
+            arrayStream >> Layer2ZoneDelimiter;
+
+            return *this;
+        }
+
+        operator QByteArray()
+        {
+            QByteArray arrayified;
+            QDataStream arrayStream(&arrayified, QIODevice::ReadWrite);
+            arrayStream.setByteOrder(QDataStream::LittleEndian);
+
+            arrayStream << Layer1TileID;
+            arrayStream << Layer1Elev;
+            arrayStream << Layer1Rotation;
+            arrayStream << Layer1CollisionSomething;
+            arrayStream << Layer1ZoneDelimiter;
+            arrayStream << Layer2TileID;
+            arrayStream << Layer2Elev;
+            arrayStream << Layer2Rotation;
+            arrayStream << Layer2CollisionSomething;
+            arrayStream << Layer2ZoneDelimiter;
+
+            return arrayified;
+        }
+    };
+
+    /*!
+     * \brief Stats structure for weapons.
+     */
+    struct WeaponStats {
+        u_short OffSlash;
+        u_short OffChop;
+        u_short OffStab;
+        u_short OffHolyM;
+        u_short OffFireM;
+        u_short OffEarthM;
+        u_short OffWindM;
+        u_short OffWaterM;
+        undefined field_0x10;
+        undefined field_0x11;
+        undefined field_0x12;
+        undefined field_0x13;
+        undefined field_0x14;
+        undefined field_0x15;
+        undefined field_0x16;
+        undefined field_0x17;
+        undefined field_0x18;
+        undefined field_0x19;
+        undefined field_0x1a;
+        undefined field_0x1b;
+        undefined field_0x1c;
+        undefined field_0x1d;
+        undefined field_0x1e;
+        undefined field_0x1f;
+        undefined field_0x20;
+        undefined field_0x21;
+        undefined field_0x22;
+        undefined field_0x23;
+        undefined field_0x24;
+        undefined field_0x25;
+        undefined field_0x26;
+        undefined field_0x27;
+        undefined field_0x28;
+        undefined field_0x29;
+        undefined field_0x2a;
+        undefined field_0x2b;
+        undefined field_0x2c;
+        undefined field_0x2d;
+        undefined field_0x2e;
+        undefined field_0x2f;
+        undefined field_0x30;
+        undefined field_0x31;
+        undefined field_0x32;
+        undefined field_0x33;
+        undefined field_0x34;
+        undefined field_0x35;
+        undefined field_0x36;
+        undefined field_0x37;
+        undefined field_0x38;
+        undefined field_0x39;
+        undefined field_0x3a;
+        undefined field_0x3b;
+        undefined field_0x3c;
+        undefined field_0x3d;
+        undefined field_0x3e;
+        undefined field_0x3f;
+        undefined field_0x40;
+        undefined field_0x41;
+        undefined field_0x42;
+        undefined field_0x43;
+
+        WeaponStats& operator= (const QByteArray &array)
+        {
+            QDataStream arrayStream(array);
+            arrayStream.setByteOrder(QDataStream::LittleEndian);
+
+            arrayStream >> OffSlash;
+            arrayStream >> OffChop;
+            arrayStream >> OffStab;
+            arrayStream >> OffHolyM;
+            arrayStream >> OffFireM;
+            arrayStream >> OffEarthM;
+            arrayStream >> OffWindM;
+            arrayStream >> OffWaterM;
+            arrayStream >> field_0x10;
+            arrayStream >> field_0x11;
+            arrayStream >> field_0x12;
+            arrayStream >> field_0x13;
+            arrayStream >> field_0x14;
+            arrayStream >> field_0x15;
+            arrayStream >> field_0x16;
+            arrayStream >> field_0x17;
+            arrayStream >> field_0x18;
+            arrayStream >> field_0x19;
+            arrayStream >> field_0x1a;
+            arrayStream >> field_0x1b;
+            arrayStream >> field_0x1c;
+            arrayStream >> field_0x1d;
+            arrayStream >> field_0x1e;
+            arrayStream >> field_0x1f;
+            arrayStream >> field_0x20;
+            arrayStream >> field_0x21;
+            arrayStream >> field_0x22;
+            arrayStream >> field_0x23;
+            arrayStream >> field_0x24;
+            arrayStream >> field_0x25;
+            arrayStream >> field_0x26;
+            arrayStream >> field_0x27;
+            arrayStream >> field_0x28;
+            arrayStream >> field_0x29;
+            arrayStream >> field_0x2a;
+            arrayStream >> field_0x2b;
+            arrayStream >> field_0x2c;
+            arrayStream >> field_0x2d;
+            arrayStream >> field_0x2e;
+            arrayStream >> field_0x2f;
+            arrayStream >> field_0x30;
+            arrayStream >> field_0x31;
+            arrayStream >> field_0x32;
+            arrayStream >> field_0x33;
+            arrayStream >> field_0x34;
+            arrayStream >> field_0x35;
+            arrayStream >> field_0x36;
+            arrayStream >> field_0x37;
+            arrayStream >> field_0x38;
+            arrayStream >> field_0x39;
+            arrayStream >> field_0x3a;
+            arrayStream >> field_0x3b;
+            arrayStream >> field_0x3c;
+            arrayStream >> field_0x3d;
+            arrayStream >> field_0x3e;
+            arrayStream >> field_0x3f;
+            arrayStream >> field_0x40;
+            arrayStream >> field_0x41;
+            arrayStream >> field_0x42;
+            arrayStream >> field_0x43;
+
+            return *this;
+        }
+
+        operator QByteArray()
+        {
+            QByteArray arrayified;
+            QDataStream arrayStream(&arrayified, QIODevice::ReadWrite);
+            arrayStream.setByteOrder(QDataStream::LittleEndian);
+
+            arrayStream << OffSlash;
+            arrayStream << OffChop;
+            arrayStream << OffStab;
+            arrayStream << OffHolyM;
+            arrayStream << OffFireM;
+            arrayStream << OffEarthM;
+            arrayStream << OffWindM;
+            arrayStream << OffWaterM;
+            arrayStream << field_0x10;
+            arrayStream << field_0x11;
+            arrayStream << field_0x12;
+            arrayStream << field_0x13;
+            arrayStream << field_0x14;
+            arrayStream << field_0x15;
+            arrayStream << field_0x16;
+            arrayStream << field_0x17;
+            arrayStream << field_0x18;
+            arrayStream << field_0x19;
+            arrayStream << field_0x1a;
+            arrayStream << field_0x1b;
+            arrayStream << field_0x1c;
+            arrayStream << field_0x1d;
+            arrayStream << field_0x1e;
+            arrayStream << field_0x1f;
+            arrayStream << field_0x20;
+            arrayStream << field_0x21;
+            arrayStream << field_0x22;
+            arrayStream << field_0x23;
+            arrayStream << field_0x24;
+            arrayStream << field_0x25;
+            arrayStream << field_0x26;
+            arrayStream << field_0x27;
+            arrayStream << field_0x28;
+            arrayStream << field_0x29;
+            arrayStream << field_0x2a;
+            arrayStream << field_0x2b;
+            arrayStream << field_0x2c;
+            arrayStream << field_0x2d;
+            arrayStream << field_0x2e;
+            arrayStream << field_0x2f;
+            arrayStream << field_0x30;
+            arrayStream << field_0x31;
+            arrayStream << field_0x32;
+            arrayStream << field_0x33;
+            arrayStream << field_0x34;
+            arrayStream << field_0x35;
+            arrayStream << field_0x36;
+            arrayStream << field_0x37;
+            arrayStream << field_0x38;
+            arrayStream << field_0x39;
+            arrayStream << field_0x3a;
+            arrayStream << field_0x3b;
+            arrayStream << field_0x3c;
+            arrayStream << field_0x3d;
+            arrayStream << field_0x3e;
+            arrayStream << field_0x3f;
+            arrayStream << field_0x40;
+            arrayStream << field_0x41;
+            arrayStream << field_0x42;
+            arrayStream << field_0x43;
+
+            return arrayified;
+        }
+    };
 }
 
 

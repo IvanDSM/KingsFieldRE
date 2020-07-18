@@ -6,7 +6,8 @@
 
 enum class KFMTDataType
 {
-    KFMT_MAP
+    KFMT_MAP,
+    KFMT_GAMEDB
 };
 
 class KFMTTreeWidgetItem : public QTreeWidgetItem

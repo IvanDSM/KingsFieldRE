@@ -16,6 +16,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    gamedb.cpp \
     kfmttreewidgetitem.cpp \
     main.cpp \
     mainwindow.cpp \
@@ -28,6 +29,7 @@ SOURCES += \
 
 HEADERS += \
     checksum.h \
+    gamedb.h \
     kfmttreewidgetitem.h \
     kftypes.h \
     mainwindow.h \
