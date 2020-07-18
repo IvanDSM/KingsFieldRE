@@ -8,7 +8,10 @@ KFMTTreeWidgetItem::KFMTTreeWidgetItem(QTreeWidgetItem *parent, Map* kfmtMap) :
     setIcon(0, QIcon(":/map_icon.png"));
 }
 
-std::shared_ptr<Map> KFMTTreeWidgetItem::getMap()
+KFMTTreeWidgetItem::KFMTTreeWidgetItem(QTreeWidgetItem *parent, GameDB *kfmtDB) :
+    QTreeWidgetItem(parent, QTreeWidgetItem::UserType),
+    dbPtr(kfmtDB)
 {
-    return mapPtr;
+    dataType = KFMTDataType::KFMT_GAMEDB;
+    setIcon(0, QIcon(":/db_icon.png"));
 }

@@ -2,6 +2,7 @@
 #define KFMTTREEWIDGETITEM_H
 
 #include <QTreeWidgetItem>
+#include "gamedb.h"
 #include "map.h"
 
 enum class KFMTDataType
@@ -14,7 +15,24 @@ class KFMTTreeWidgetItem : public QTreeWidgetItem
 {
 public:
     explicit KFMTTreeWidgetItem(QTreeWidgetItem *parent, Map* kfmtMap);
-    std::shared_ptr<Map> getMap();
+    explicit KFMTTreeWidgetItem(QTreeWidgetItem *parent, GameDB* kfmtDB);
+
+    std::shared_ptr<GameDB> getDB()
+    {
+        if (dataType == KFMTDataType::KFMT_GAMEDB)
+            return dbPtr;
+        else
+            return nullptr;
+    }
+
+    std::shared_ptr<Map> getMap()
+    {
+        if (dataType == KFMTDataType::KFMT_MAP)
+            return mapPtr;
+        else
+            return nullptr;
+    }
+
     KFMTDataType getType()
     {
         return dataType;
@@ -22,6 +40,7 @@ public:
 
 private:
     KFMTDataType dataType;
+    std::shared_ptr<GameDB> dbPtr;
     std::shared_ptr<Map> mapPtr;
 };
 

@@ -1270,14 +1270,10 @@ namespace KingsField
         byte NSYTilePos;
         undefined field_0x3;
         enum ObjectID ObjectID;
-        undefined field_0x6;
-        undefined field_0x7;
-        undefined field_0x8;
-        undefined field_0x9;
-        undefined field_0xa;
-        undefined field_0xb;
-        undefined field_0xc;
-        undefined field_0xd;
+        short ZRotation;
+        short FineWEXPos;
+        short FineNSYPos;
+        short FineZPos;
         byte Flags[10];
 
         ObjectInstanceDeclaration& operator= (const QByteArray& array)
@@ -1291,14 +1287,10 @@ namespace KingsField
             arrayStream >> field_0x3;
             arrayStream >> tempUShort;
             ObjectID = getObjectIDFromUShort(tempUShort);
-            arrayStream >> field_0x6;
-            arrayStream >> field_0x7;
-            arrayStream >> field_0x8;
-            arrayStream >> field_0x9;
-            arrayStream >> field_0xa;
-            arrayStream >> field_0xb;
-            arrayStream >> field_0xc;
-            arrayStream >> field_0xd;
+            arrayStream >> ZRotation;
+            arrayStream >> FineWEXPos;
+            arrayStream >> FineNSYPos;
+            arrayStream >> FineZPos;
             for (size_t i = 0; i < 10; i++)
                 arrayStream >> Flags[i];
 
@@ -1315,14 +1307,10 @@ namespace KingsField
             arrayStream << NSYTilePos;
             arrayStream << field_0x3;
             arrayStream << getObjectIDAsUShort(ObjectID);
-            arrayStream << field_0x6;
-            arrayStream << field_0x7;
-            arrayStream << field_0x8;
-            arrayStream << field_0x9;
-            arrayStream << field_0xa;
-            arrayStream << field_0xb;
-            arrayStream << field_0xc;
-            arrayStream << field_0xd;
+            arrayStream << ZRotation;
+            arrayStream << FineWEXPos;
+            arrayStream << FineNSYPos;
+            arrayStream << FineZPos;
             for (size_t i = 0; i < 10; i++)
                 arrayStream << Flags[i];
             return arrayified;

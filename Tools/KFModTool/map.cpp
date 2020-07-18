@@ -134,14 +134,10 @@ Map::Map(TFile &fdatTFile, unsigned int index, const QString &name): fdat(fdatTF
         map2Stream >> objInstance.field_0x3;
         map2Stream >> tempUShort;
         objInstance.ObjectID = KingsField::getObjectIDFromUShort(tempUShort);
-        map2Stream >> objInstance.field_0x6;
-        map2Stream >> objInstance.field_0x7;
-        map2Stream >> objInstance.field_0x8;
-        map2Stream >> objInstance.field_0x9;
-        map2Stream >> objInstance.field_0xa;
-        map2Stream >> objInstance.field_0xb;
-        map2Stream >> objInstance.field_0xc;
-        map2Stream >> objInstance.field_0xd;
+        map2Stream >> objInstance.ZRotation;
+        map2Stream >> objInstance.FineWEXPos;
+        map2Stream >> objInstance.FineNSYPos;
+        map2Stream >> objInstance.FineZPos;
         for (size_t i = 0; i < 10; i++)
             map2Stream >> objInstance.Flags[i];
 

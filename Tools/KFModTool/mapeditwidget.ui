@@ -416,42 +416,22 @@
            </row>
            <row>
             <property name="text">
-             <string>Unknown 06</string>
+             <string>Z Rotation</string>
             </property>
            </row>
            <row>
             <property name="text">
-             <string>Unknown 07</string>
+             <string>Fine X Position</string>
             </property>
            </row>
            <row>
             <property name="text">
-             <string>Unknown 08</string>
+             <string>Fine Y Position</string>
             </property>
            </row>
            <row>
             <property name="text">
-             <string>Unknown 09</string>
-            </property>
-           </row>
-           <row>
-            <property name="text">
-             <string>Unknown 0A</string>
-            </property>
-           </row>
-           <row>
-            <property name="text">
-             <string>Unknown 0B</string>
-            </property>
-           </row>
-           <row>
-            <property name="text">
-             <string>Unknown 0C</string>
-            </property>
-           </row>
-           <row>
-            <property name="text">
-             <string>Unknown 0D</string>
+             <string>Fine Z Position</string>
             </property>
            </row>
            <row>
