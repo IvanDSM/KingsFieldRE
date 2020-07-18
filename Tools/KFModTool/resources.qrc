@@ -2,5 +2,6 @@
     <qresource prefix="/">
         <file>tfile_icon.png</file>
         <file>map_icon.png</file>
+        <file>db_icon.png</file>
     </qresource>
 </RCC>
