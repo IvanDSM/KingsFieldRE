@@ -44,6 +44,16 @@ void MapViewer::mouseReleaseEvent(QMouseEvent *event)
                             tile.Layer2Elev = curBrush;
                     }
                     break;
+                case MapElement::MAP_TILEID:
+                    switch (curLayer)
+                    {
+                        case MapLayer::LAYER_1:
+                            tile.Layer1TileID = curBrush;
+                            break;
+                        case MapLayer::LAYER_2:
+                            tile.Layer2TileID = curBrush;
+                    }
+                    break;
                 case MapElement::MAP_ZONEDELIMITER:
                     switch (curLayer)
                     {
@@ -193,13 +203,15 @@ void MapViewer::processMouse(QMouseEvent *event)
                     emit hoveredTileInfo(tile.Layer1Elev,
                                          tile.Layer1Rotation,
                                          tile.Layer1CollisionSomething,
-                                         tile.Layer1ZoneDelimiter);
+                                         tile.Layer1ZoneDelimiter,
+                                         tile.Layer1TileID);
                     break;
                 case MapLayer::LAYER_2:
                     emit hoveredTileInfo(tile.Layer2Elev,
                                          tile.Layer2Rotation,
                                          tile.Layer2CollisionSomething,
-                                         tile.Layer2ZoneDelimiter);
+                                         tile.Layer2ZoneDelimiter,
+                                         tile.Layer2TileID);
             }
         }
         else if (curMode == MapViewerMode::MODE_PAINT)
@@ -215,6 +227,9 @@ void MapViewer::processMouse(QMouseEvent *event)
                         case MapElement::MAP_ELEV:
                             mapPtr->getTile(trueX, trueY).Layer1Elev = curBrush;
                             break;
+                        case MapElement::MAP_TILEID:
+                            mapPtr->getTile(trueX, trueY).Layer1TileID = curBrush;
+                            break;
                         case MapElement::MAP_ZONEDELIMITER:
                             mapPtr->getTile(trueX, trueY).Layer1ZoneDelimiter = curBrush;
                     }
@@ -227,6 +242,9 @@ void MapViewer::processMouse(QMouseEvent *event)
                             break;
                         case MapElement::MAP_ELEV:
                             mapPtr->getTile(trueX, trueY).Layer2Elev = curBrush;
+                            break;
+                        case MapElement::MAP_TILEID:
+                            mapPtr->getTile(trueX, trueY).Layer2TileID = curBrush;
                             break;
                         case MapElement::MAP_ZONEDELIMITER:
                             mapPtr->getTile(trueX, trueY).Layer2ZoneDelimiter = curBrush;

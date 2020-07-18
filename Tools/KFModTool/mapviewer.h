@@ -21,6 +21,7 @@ public:
     {
         MAP_COLLISIONTHING,
         MAP_ELEV,
+        MAP_TILEID,
         MAP_ZONEDELIMITER
     };
 
@@ -77,7 +78,8 @@ public:
 
 signals:
     void entityInstanceHovered(byte instance);
-    void hoveredTileInfo(byte elevation, byte rotation, byte collisionThing, byte zoneDelimiter);
+    void hoveredTileInfo(byte elevation, byte rotation, byte collisionThing, byte zoneDelimiter,
+                         byte tileId);
     void objectInstanceHovered(size_t instance);
 
 public slots:

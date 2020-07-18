@@ -27,7 +27,8 @@ private slots:
 
     void entityInstanceHovered(byte instanceIndex);
 
-    void hoveredTileInfo(byte elevation, byte rotation, byte collisionThing, byte zoneDelimiter);
+    void hoveredTileInfo(byte elevation, byte rotation, byte collisionThing, byte zoneDelimiter,
+                         byte tileId);
 
     void objectInstanceHovered(size_t instanceIndex);
 
