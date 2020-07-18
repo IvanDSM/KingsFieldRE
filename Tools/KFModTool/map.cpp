@@ -111,7 +111,7 @@ Map::Map(TFile &fdatTFile, unsigned int index, const QString &name): fdat(fdatTF
         map2Stream >> instance.NSYTilePos;
         map2Stream >> instance.field_0x5;
         map2Stream >> tempByte;
-        instance.DroppedItem = KingsField::getItemIDFromByte(tempByte);
+        instance.DroppedItem = KingsField::getObjectIDFromByte(tempByte);
         map2Stream >> instance.Layer;
 
         map2Stream >> instance.TriggerObject;
@@ -126,15 +126,14 @@ Map::Map(TFile &fdatTFile, unsigned int index, const QString &name): fdat(fdatTF
     for (auto objectInstance = 0; objectInstance < 350; objectInstance++)
     {
         KingsField::ObjectInstanceDeclaration objInstance;
-        quint8 tempByte;
+        quint16 tempUShort;
 
         map2Stream >> objInstance.TileLayer;
         map2Stream >> objInstance.WEXTilePos;
         map2Stream >> objInstance.NSYTilePos;
         map2Stream >> objInstance.field_0x3;
-        map2Stream >> tempByte;
-        objInstance.ItemID = KingsField::getItemIDFromByte(tempByte);
-        map2Stream >> objInstance.field_0x5;
+        map2Stream >> tempUShort;
+        objInstance.ObjectID = KingsField::getObjectIDFromUShort(tempUShort);
         map2Stream >> objInstance.field_0x6;
         map2Stream >> objInstance.field_0x7;
         map2Stream >> objInstance.field_0x8;
@@ -143,17 +142,8 @@ Map::Map(TFile &fdatTFile, unsigned int index, const QString &name): fdat(fdatTF
         map2Stream >> objInstance.field_0xb;
         map2Stream >> objInstance.field_0xc;
         map2Stream >> objInstance.field_0xd;
-        map2Stream >> objInstance.field_0xe;
-        map2Stream >> objInstance.field_0xf;
-        map2Stream >> tempByte;
-        objInstance.KeyID = KingsField::getItemIDFromByte(tempByte);
-        map2Stream >> objInstance.field_0x11;
-        map2Stream >> objInstance.InstanceContained;
-        map2Stream >> objInstance.field_0x13;
-        map2Stream >> objInstance.field_0x14;
-        map2Stream >> objInstance.field_0x15;
-        map2Stream >> objInstance.field_0x16;
-        map2Stream >> objInstance.field_0x17;
+        for (size_t i = 0; i < 10; i++)
+            map2Stream >> objInstance.Flags[i];
 
         objInstances.push_back(objInstance);
     }
@@ -161,9 +151,6 @@ Map::Map(TFile &fdatTFile, unsigned int index, const QString &name): fdat(fdatTF
 
 void Map::writeChanges()
 {
-    if (!changed)
-        return;
-
     QDataStream map1Stream(&map1, QIODevice::ReadWrite);
     map1Stream.setByteOrder(QDataStream::LittleEndian);
 
@@ -192,119 +179,24 @@ void Map::writeChanges()
 
     for (auto entityCD : entityClassDeclarations)
     {
-        map2Stream << KingsField::getEntityMeshIDAsByte(entityCD.MeshID);
-        map2Stream << entityCD.FourOrForty;
-        map2Stream << entityCD.field_0x2;
-        map2Stream << entityCD.field_0x3;
-        map2Stream << entityCD.field_0x4;
-        map2Stream << entityCD.field_0x5;
-        map2Stream << entityCD.field_0x6;
-        map2Stream << entityCD.field_0x7;
-        map2Stream << entityCD.field_0x8;
-        map2Stream << entityCD.field_0x9;
-        map2Stream << entityCD.field_0xa;
-        map2Stream << entityCD.field_0xb;
-        map2Stream << entityCD.field_0xc;
-        map2Stream << entityCD.field_0xd;
-        map2Stream << entityCD.field_0xe;
-        map2Stream << entityCD.field_0xf;
-        map2Stream << entityCD.field_0x10;
-        map2Stream << entityCD.field_0x11;
-        map2Stream << entityCD.field_0x12;
-        map2Stream << entityCD.field_0x13;
-        map2Stream << entityCD.field_0x14;
-        map2Stream << entityCD.field_0x15;
-        map2Stream << entityCD.field_0x16;
-        map2Stream << entityCD.field_0x17;
-        map2Stream << entityCD.field_0x18;
-        map2Stream << entityCD.field_0x19;
-        map2Stream << entityCD.HP;
-        map2Stream << entityCD.field_0x1c;
-        map2Stream << entityCD.field_0x1d;
-        map2Stream << entityCD.ExperienceGain;
-        map2Stream << entityCD.DefSlash;
-        map2Stream << entityCD.DefChop;
-        map2Stream << entityCD.DefStab;
-        map2Stream << entityCD.DefHolyMagic;
-        map2Stream << entityCD.DefFireMagic;
-        map2Stream << entityCD.DefEarthMagic;
-        map2Stream << entityCD.DefWindMagic;
-        map2Stream << entityCD.DefWaterMagic;
-        map2Stream << entityCD.field_0x30;
-        map2Stream << entityCD.field_0x31;
-        map2Stream << entityCD.Scale;
-        map2Stream << entityCD.field_0x34;
-        map2Stream << entityCD.field_0x35;
-        map2Stream << entityCD.field_0x36;
-        map2Stream << entityCD.field_0x37;
-        map2Stream << entityCD.SomePointers[0];
-        map2Stream << entityCD.SomePointers[1];
-        map2Stream << entityCD.SomePointers[2];
-        map2Stream << entityCD.SomePointers[3];
-        map2Stream << entityCD.SomePointers[4];
-        map2Stream << entityCD.SomePointers[5];
-        map2Stream << entityCD.SomePointers[6];
-        map2Stream << entityCD.SomePointers[7];
-        map2Stream << entityCD.SomePointers[8];
-        map2Stream << entityCD.SomePointers[9];
-        map2Stream << entityCD.SomePointers[10];
-        map2Stream << entityCD.SomePointers[11];
-        map2Stream << entityCD.SomePointers[12];
-        map2Stream << entityCD.SomePointers[13];
-        map2Stream << entityCD.SomePointers[14];
-        map2Stream << entityCD.SomePointers[15];
+        QByteArray classDeclArray = entityCD;
+        map2Stream.writeRawData(classDeclArray, classDeclArray.size());
     }
 
     map2Stream.device()->seek(0x32C8);
 
     for (auto entityInstance : entityInstances)
     {
-        map2Stream << entityInstance.field_0x0;
-        map2Stream << entityInstance.EntityClass;
-        map2Stream << entityInstance.field_0x2;
-        map2Stream << entityInstance.WEXTilePos;
-
-        map2Stream << entityInstance.NSYTilePos;
-        map2Stream << entityInstance.field_0x5;
-        map2Stream << KingsField::getItemIDAsByte(entityInstance.DroppedItem);
-        map2Stream << entityInstance.Layer;
-
-        map2Stream << entityInstance.TriggerObject;
-        map2Stream << entityInstance.ZRotation;
-
-        map2Stream << entityInstance.FineWEXPos;
-        map2Stream << entityInstance.FineNSYPos;
-        map2Stream << entityInstance.FineZPos;
+        QByteArray instanceArray = entityInstance;
+        map2Stream.writeRawData(instanceArray, instanceArray.size());
     }
 
     map2Stream.skipRawData(4);
 
     for (auto objInstance : objInstances)
     {
-        map2Stream << objInstance.TileLayer;
-        map2Stream << objInstance.WEXTilePos;
-        map2Stream << objInstance.NSYTilePos;
-        map2Stream << objInstance.field_0x3;
-        map2Stream << KingsField::getItemIDAsByte(objInstance.ItemID);
-        map2Stream << objInstance.field_0x5;
-        map2Stream << objInstance.field_0x6;
-        map2Stream << objInstance.field_0x7;
-        map2Stream << objInstance.field_0x8;
-        map2Stream << objInstance.field_0x9;
-        map2Stream << objInstance.field_0xa;
-        map2Stream << objInstance.field_0xb;
-        map2Stream << objInstance.field_0xc;
-        map2Stream << objInstance.field_0xd;
-        map2Stream << objInstance.field_0xe;
-        map2Stream << objInstance.field_0xf;
-        map2Stream << KingsField::getItemIDAsByte(objInstance.KeyID);
-        map2Stream << objInstance.field_0x11;
-        map2Stream << objInstance.InstanceContained;
-        map2Stream << objInstance.field_0x13;
-        map2Stream << objInstance.field_0x14;
-        map2Stream << objInstance.field_0x15;
-        map2Stream << objInstance.field_0x16;
-        map2Stream << objInstance.field_0x17;
+        QByteArray objInstanceArray = objInstance;
+        map2Stream.writeRawData(objInstanceArray, objInstanceArray.size());
     }
 
     Checksum::calculateAndWriteChecksum(map1);

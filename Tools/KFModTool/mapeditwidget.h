@@ -55,6 +55,10 @@ private slots:
 
     void on_entityCDExport_clicked();
 
+    void on_entityInstanceImport_clicked();
+
+    void on_entityInstanceExport_clicked();
+
 private:
     void fillEntityCDCombo();
     byte currentEntityInstance = 255;

@@ -138,7 +138,7 @@ void MapViewer::drawObjects()
     painter.setPen(curColor);
 
     for (auto objInstance : mapPtr->getObjectInstanceDeclarations())
-        if (objInstance.ItemID != KingsField::ItemID::None &&
+        if (objInstance.ObjectID != KingsField::ObjectID::None &&
             ((objInstance.TileLayer == 1 && curLayer == MapLayer::LAYER_1) ||
              (objInstance.TileLayer == 2 && curLayer == MapLayer::LAYER_2)))
             painter.drawPoint(objInstance.WEXTilePos, objInstance.NSYTilePos);
