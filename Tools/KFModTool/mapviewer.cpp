@@ -17,57 +17,65 @@ void MapViewer::mousePressEvent(QMouseEvent *event)
 void MapViewer::mouseReleaseEvent(QMouseEvent *event)
 {
     QWidget::mouseReleaseEvent(event);
-    auto normalizedSelection = selection.normalized();
-    for (auto line = normalizedSelection.top(); line < normalizedSelection.bottom(); line++)
-        for (auto column = normalizedSelection.left(); column <  normalizedSelection.right(); column++)
-        {
-            KingsField::Tile &tile = mapPtr->getTile(column, line);
-            switch(curBrushElement)
+    if (curMode == MapViewerMode::MODE_FILL)
+    {
+        auto normalizedSelection = selection.normalized();
+        for (auto line = normalizedSelection.top(); line < normalizedSelection.bottom(); line++)
+            for (auto column = normalizedSelection.left(); column <  normalizedSelection.right(); column++)
             {
-                case MapElement::MAP_COLLISIONTHING:
-                    switch (curLayer)
-                    {
-                        case MapLayer::LAYER_1:
-                            tile.Layer1CollisionSomething = curBrush;
-                            break;
-                        case MapLayer::LAYER_2:
-                            tile.Layer2CollisionSomething = curBrush;
-                    }
-                    break;
-                case MapElement::MAP_ELEV:
-                    switch (curLayer)
-                    {
-                        case MapLayer::LAYER_1:
-                            tile.Layer1Elev = curBrush;
-                            break;
-                        case MapLayer::LAYER_2:
-                            tile.Layer2Elev = curBrush;
-                    }
-                    break;
-                case MapElement::MAP_TILEID:
-                    switch (curLayer)
-                    {
-                        case MapLayer::LAYER_1:
-                            tile.Layer1TileID = curBrush;
-                            break;
-                        case MapLayer::LAYER_2:
-                            tile.Layer2TileID = curBrush;
-                    }
-                    break;
-                case MapElement::MAP_ZONEDELIMITER:
-                    switch (curLayer)
-                    {
-                        case MapLayer::LAYER_1:
-                            tile.Layer1ZoneDelimiter = curBrush;
-                            break;
-                        case MapLayer::LAYER_2:
-                            tile.Layer2ZoneDelimiter = curBrush;
-                    }
+                KingsField::Tile &tile = mapPtr->getTile(column, line);
+                switch(curBrushElement)
+                {
+                    case MapElement::MAP_COLLISIONTHING:
+                        switch (curLayer)
+                        {
+                            case MapLayer::LAYER_1:
+                                tile.Layer1CollisionSomething = curBrush;
+                                break;
+                            case MapLayer::LAYER_2:
+                                tile.Layer2CollisionSomething = curBrush;
+                        }
+                        break;
+                    case MapElement::MAP_ELEV:
+                        switch (curLayer)
+                        {
+                            case MapLayer::LAYER_1:
+                                tile.Layer1Elev = curBrush;
+                                break;
+                            case MapLayer::LAYER_2:
+                                tile.Layer2Elev = curBrush;
+                        }
+                        break;
+                    case MapElement::MAP_TILEID:
+                        switch (curLayer)
+                        {
+                            case MapLayer::LAYER_1:
+                                tile.Layer1TileID = curBrush;
+                                break;
+                            case MapLayer::LAYER_2:
+                                tile.Layer2TileID = curBrush;
+                        }
+                        break;
+                    case MapElement::MAP_ZONEDELIMITER:
+                        switch (curLayer)
+                        {
+                            case MapLayer::LAYER_1:
+                                tile.Layer1ZoneDelimiter = curBrush;
+                                break;
+                            case MapLayer::LAYER_2:
+                                tile.Layer2ZoneDelimiter = curBrush;
+                        }
+                }
             }
-        }
 
-    selection = QRect(-2, -2, 0, 0);
-    repaint();
+        selection = QRect(-2, -2, 0, 0);
+        repaint();
+    }
+    else if (curMode == MapViewerMode::MODE_MOVE)
+    {
+        heldEntities.clear();
+        heldObjects.clear();
+    }
 }
 
 void MapViewer::paintEvent(QPaintEvent *event)
@@ -261,6 +269,10 @@ void MapViewer::processMouse(QMouseEvent *event)
             }
             else
                 selection.setBottomRight(mousePos);
+        }
+        else if (curMode == MapViewerMode::MODE_MOVE)
+        {
+
         }
     }
 

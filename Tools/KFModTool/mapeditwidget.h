@@ -60,6 +60,8 @@ private slots:
 
     void on_entityInstanceExport_clicked();
 
+    void on_moveModeButton_clicked();
+
 private:
     void fillEntityCDCombo();
     byte currentEntityInstance = 255;

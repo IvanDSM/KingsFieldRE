@@ -29,6 +29,7 @@ void MainWindow::on_actionAbout_KFModTool_triggered()
 
 void MainWindow::on_actionLoad_files_triggered()
 {
+#ifndef EMSCRIPTEN
     auto directory = QFileDialog::getExistingDirectory(this, "Select the folder with your King's Field T files.", QDir::homePath());
     if (directory.isEmpty())
         return;
@@ -43,6 +44,16 @@ void MainWindow::on_actionLoad_files_triggered()
     // We don't use C++14 so no make_unique :(
     fdat.reset(new TFile(tfile_dir.filePath("FDAT.T")));
     loadFdat();
+#else
+    auto loadedFdat = [this](const QString &fileName, const QByteArray &fileContent)
+    {
+        fdat.reset(new TFile(fileName, fileContent));
+    };
+
+    QFileDialog::getOpenFileContent("FDAT.T (FDAT.T)",  loadedFdat);
+
+    //loadFdat();
+#endif
 }
 
 void MainWindow::addMap(const unsigned int &index, const QString &name)

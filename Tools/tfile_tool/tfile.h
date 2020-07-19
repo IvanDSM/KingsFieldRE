@@ -9,7 +9,24 @@
 class TFile
 {
 public:
-    explicit TFile(const QString &filename);
+    explicit TFile(const QString &filename) : fileName(filename.mid(filename.lastIndexOf(QRegExp("[\\/]")) + 1))
+    {
+        QFile fileHandle(filename);
+        if (fileHandle.open(QIODevice::ReadOnly))
+        {
+            file = fileHandle.readAll();
+            load();
+        }
+        else
+            nFiles = 0;
+        fileHandle.close();
+    }
+
+    explicit TFile(const QString &filename, const QByteArray &fileContent) : file(fileContent),
+        fileName(filename.mid(filename.lastIndexOf(QRegExp("[\\/]")) + 1))
+    {
+        load();
+    }
 
     /*!
      * \brief Extracts all the T file's contents to the current working directory.
@@ -71,6 +88,7 @@ public:
         return file;
     }
 
+
     /*!
      * \brief Writes a file to the T file. Currently super unsafe! Does not verify the checksum!
      * \param newFile The file to be written.
@@ -84,6 +102,11 @@ public:
     void writeFileMap();
 
 private:
+    /*!
+     * \brief Private function for actually loading from the 'file' member attribute.
+     */
+    void load();
+
     bool loaded = true; ///< Whether the T file was successfully loaded.
     QByteArray file; ///< Byte array for the T file
     QByteArray hash; ///< MD5 hash of the file for getting pretty names.

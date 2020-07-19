@@ -12,11 +12,9 @@
 
 typedef quint8 byte;
 typedef byte undefined;
-#ifdef __GNUC__
-#ifdef __MINGW32__
+#if (defined(__GNUC__) && defined(__MINGW32__)) || defined(EMSCRIPTEN)
 typedef quint16 u_short;
 typedef quint32 u_int;
-#endif
 #endif
 
 

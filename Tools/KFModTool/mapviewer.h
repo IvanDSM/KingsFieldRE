@@ -29,7 +29,8 @@ public:
     {
         MODE_POKE,
         MODE_PAINT,
-        MODE_FILL
+        MODE_FILL,
+        MODE_MOVE
     };
 
     explicit MapViewer(QWidget *parent = nullptr) : QWidget(parent)
@@ -114,7 +115,8 @@ private:
     QPoint mousePos = QPoint(39, 39);
     QRect selection = QRect(-2,-2,0,0);
     std::shared_ptr<Map> mapPtr;
-
+    std::vector<size_t> heldEntities;
+    std::vector<size_t> heldObjects;
 };
 
 #endif // MAPVIEWER_H

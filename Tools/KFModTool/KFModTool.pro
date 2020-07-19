@@ -1,5 +1,12 @@
 QT       += core gui
 
+defined(EMSCRIPTEN)
+{
+	QMAKE_CFLAGS += -s ASYNCIFY=1
+	QMAKE_CXXFLAGS += -s ASYNCIFY=1
+	QMAKE_LFLAGS += -s ASYNCIFY=1
+}
+
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 CONFIG += c++11

@@ -6,47 +6,6 @@
 #include "tfile.h"
 #include "prettynamer.h"
 
-TFile::TFile(const QString &filename)
-{
-    QFile fileHandle(filename);
-    if (fileHandle.open(QIODevice::ReadOnly))
-    {
-        file = fileHandle.readAll();
-        fileName = fileHandle.fileName().mid(fileHandle.fileName().lastIndexOf(QRegExp("[\\/]")) + 1);
-        fileHandle.close();
-        unsigned short offset = 0;
-        QBuffer fileBuffer(&file);
-        fileBuffer.open(QIODevice::ReadOnly);
-
-        unsigned int fileNum = 0;
-        unsigned int trueFileNum = 0;
-
-        stream.setDevice(&fileBuffer);
-        stream.setByteOrder(QDataStream::LittleEndian); // The PSX is little-endian
-        stream >> nFiles;
-        for (unsigned int i = 0; i <= nFiles; i++) // The <= is so that the EOF offset is included.
-        {
-            unsigned int convertedOffset = 0; // Offsets must be multiplied by 2048.
-            stream >> offset;
-            convertedOffset = offset * 2048;
-            fileNum++;
-            if (fileOffsets.empty() || fileOffsets.back() != convertedOffset)
-            {
-                fileOffsets.push_back(convertedOffset);
-                trueFileNum++;
-            }
-
-            fileMap[fileNum - 1] = trueFileNum - 1;
-        }
-
-        hash = QCryptographicHash::hash(file, QCryptographicHash::Algorithm::Md5).toHex();
-        PrettyNamer prettyNamer; ///< Instance of the PrettyNamer class.
-        prettyMap = prettyNamer.getPrettyMap(hash);
-    }
-    else
-        nFiles = 0;
-}
-
 bool TFile::extractFiles()
 {
     QDir outputDir(getFilename().left(getFilename().indexOf('.')));
@@ -205,4 +164,41 @@ void TFile::writeFileMap()
     }
 
 
+}
+
+void TFile::load()
+{
+    if (file.isEmpty())
+        nFiles = 0;
+    else
+    {
+        unsigned short offset = 0;
+        QBuffer fileBuffer(&file);
+        fileBuffer.open(QIODevice::ReadOnly);
+
+        unsigned int fileNum = 0;
+        unsigned int trueFileNum = 0;
+
+        stream.setDevice(&fileBuffer);
+        stream.setByteOrder(QDataStream::LittleEndian); // The PSX is little-endian
+        stream >> nFiles;
+        for (unsigned int i = 0; i <= nFiles; i++) // The <= is so that the EOF offset is included.
+        {
+            unsigned int convertedOffset = 0; // Offsets must be multiplied by 2048.
+            stream >> offset;
+            convertedOffset = offset * 2048;
+            fileNum++;
+            if (fileOffsets.empty() || fileOffsets.back() != convertedOffset)
+            {
+                fileOffsets.push_back(convertedOffset);
+                trueFileNum++;
+            }
+
+            fileMap[fileNum - 1] = trueFileNum - 1;
+        }
+
+        hash = QCryptographicHash::hash(file, QCryptographicHash::Algorithm::Md5).toHex();
+        PrettyNamer prettyNamer; ///< Instance of the PrettyNamer class.
+        prettyMap = prettyNamer.getPrettyMap(hash);
+    }
 }

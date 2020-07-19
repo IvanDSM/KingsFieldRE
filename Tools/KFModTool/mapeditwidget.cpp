@@ -447,6 +447,11 @@ void MapEditWidget::on_fillModeButton_clicked()
     ui->mapViewWidget->setMode(MapViewer::MapViewerMode::MODE_FILL);
 }
 
+void MapEditWidget::on_moveModeButton_clicked()
+{
+    ui->mapViewWidget->setMode(MapViewer::MapViewerMode::MODE_MOVE);
+}
+
 void MapEditWidget::on_entityCDImport_clicked()
 {
     auto filename = QFileDialog::getOpenFileName(this, "Import entity class declaration...",
