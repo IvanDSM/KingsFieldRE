@@ -407,110 +407,10 @@
           <number>0</number>
          </property>
          <item>
-          <widget class="QTableWidget" name="objectInstanceTable">
+          <widget class="QTableView" name="objectInstanceTable">
            <property name="inputMethodHints">
             <set>Qt::ImhDigitsOnly</set>
            </property>
-           <row>
-            <property name="text">
-             <string>Tile Layer</string>
-            </property>
-           </row>
-           <row>
-            <property name="text">
-             <string>X Tile Position</string>
-            </property>
-           </row>
-           <row>
-            <property name="text">
-             <string>Y Tile Position</string>
-            </property>
-           </row>
-           <row>
-            <property name="text">
-             <string>Unknown 03</string>
-            </property>
-           </row>
-           <row>
-            <property name="text">
-             <string>Item ID</string>
-            </property>
-           </row>
-           <row>
-            <property name="text">
-             <string>Z Rotation</string>
-            </property>
-           </row>
-           <row>
-            <property name="text">
-             <string>Fine X Position</string>
-            </property>
-           </row>
-           <row>
-            <property name="text">
-             <string>Fine Y Position</string>
-            </property>
-           </row>
-           <row>
-            <property name="text">
-             <string>Fine Z Position</string>
-            </property>
-           </row>
-           <row>
-            <property name="text">
-             <string>Flags[0]</string>
-            </property>
-           </row>
-           <row>
-            <property name="text">
-             <string>Flags[1]</string>
-            </property>
-           </row>
-           <row>
-            <property name="text">
-             <string>Flags[2]</string>
-            </property>
-           </row>
-           <row>
-            <property name="text">
-             <string>Flags[3]</string>
-            </property>
-           </row>
-           <row>
-            <property name="text">
-             <string>Flags[4]</string>
-            </property>
-           </row>
-           <row>
-            <property name="text">
-             <string>Flags[5]</string>
-            </property>
-           </row>
-           <row>
-            <property name="text">
-             <string>Flags[6]</string>
-            </property>
-           </row>
-           <row>
-            <property name="text">
-             <string>Flags[7]</string>
-            </property>
-           </row>
-           <row>
-            <property name="text">
-             <string>Flags[8]</string>
-            </property>
-           </row>
-           <row>
-            <property name="text">
-             <string>Flags[9]</string>
-            </property>
-           </row>
-           <column>
-            <property name="text">
-             <string>Value</string>
-            </property>
-           </column>
           </widget>
          </item>
          <item>
@@ -559,10 +459,10 @@
             <enum>QAbstractItemView::ScrollPerPixel</enum>
            </property>
            <attribute name="horizontalHeaderVisible">
-            <bool>true</bool>
+            <bool>false</bool>
            </attribute>
            <attribute name="verticalHeaderVisible">
-            <bool>true</bool>
+            <bool>false</bool>
            </attribute>
           </widget>
          </item>

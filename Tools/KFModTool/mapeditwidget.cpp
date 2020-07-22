@@ -1,9 +1,9 @@
 #include "mapeditwidget.h"
-#include "ui_mapeditwidget.h"
-#include <QFileDialog>
-#include <QMessageBox>
 #include "models/entityclasstablemodel.h"
 #include "models/entityinstancetablemodel.h"
+#include "models/objectinstancetablemodel.h"
+#include <QFileDialog>
+#include <QMessageBox>
 
 MapEditWidget::MapEditWidget(QWidget *parent) :
     QWidget(parent),
@@ -24,18 +24,16 @@ MapEditWidget::MapEditWidget(QWidget *parent) :
 
     ui->entityInstanceTable->horizontalHeader()->show();
     ui->entityInstanceTable->verticalHeader()->show();
+
+    ui->objectInstanceTable->horizontalHeader()->show();
+    ui->objectInstanceTable->verticalHeader()->show();
 }
 
-void MapEditWidget::setMap(std::shared_ptr<Map> map)
+void MapEditWidget::setMap(const std::shared_ptr<Map> &map)
 {
     curMap = map;
     ui->mapViewWidget->setMap(map);
     fillEntityCDCombo();
-}
-
-MapEditWidget::~MapEditWidget()
-{
-    delete ui;
 }
 
 void MapEditWidget::on_layer1Radio_toggled(bool checked)
@@ -97,97 +95,20 @@ void MapEditWidget::hoveredTileInfo(byte elevation, byte rotation, byte collisio
 
 void MapEditWidget::objectInstanceHovered(size_t instanceIndex)
 {
-    auto instance = curMap->getObjectInstanceDeclarations()[instanceIndex];
+    KingsField::ObjectInstanceDeclaration &instance = curMap->getObjectInstance(instanceIndex);
     currentObjectInstance = instanceIndex;
 
     auto address = QString::number(0x80177714 + (instanceIndex * 0x44), 16);
     ui->objectInstanceAddrLabel->setText("Instance " + QString::number(instanceIndex) +
                                          ", at address " + address);
 
-    QTableWidgetItem *item0 = new QTableWidgetItem(QString::number(instance.TileLayer));
-    ui->objectInstanceTable->setItem(0, 0, item0);
-    QTableWidgetItem *item1 = new QTableWidgetItem(QString::number(instance.WEXTilePos));
-    ui->objectInstanceTable->setItem(0, 1, item1);
-    QTableWidgetItem *item2 = new QTableWidgetItem(QString::number(instance.NSYTilePos));
-    ui->objectInstanceTable->setItem(0, 2, item2);
-    QTableWidgetItem *item3 = new QTableWidgetItem(QString::number(instance.field_0x3));
-    ui->objectInstanceTable->setItem(0, 3, item3);
-    QTableWidgetItem *item4 = new QTableWidgetItem(QString::number(KingsField::getObjectIDAsUShort(instance.ObjectID))
-                                                   + " ("
-                                                   + KingsField::getObjectName(instance.ObjectID)
-                                                   + ")");
-    ui->objectInstanceTable->setItem(0, 4, item4);
-    QTableWidgetItem *item5 = new QTableWidgetItem(QString::number(instance.ZRotation));
-    ui->objectInstanceTable->setItem(0, 5, item5);
-    QTableWidgetItem *item6 = new QTableWidgetItem(QString::number(instance.FineWEXPos));
-    ui->objectInstanceTable->setItem(0, 6, item6);
-    QTableWidgetItem *item7 = new QTableWidgetItem(QString::number(instance.FineNSYPos));
-    ui->objectInstanceTable->setItem(0, 7, item7);
-    QTableWidgetItem *item8 = new QTableWidgetItem(QString::number(instance.FineZPos));
-    ui->objectInstanceTable->setItem(0, 8, item8);
-    QTableWidgetItem *item9 = new QTableWidgetItem(QString::number(instance.Flags[0]));
-    ui->objectInstanceTable->setItem(0, 9, item9);
-    QTableWidgetItem *item10 = new QTableWidgetItem(QString::number(instance.Flags[1]));
-    ui->objectInstanceTable->setItem(0, 10, item10);
-    QTableWidgetItem *item11 = new QTableWidgetItem(QString::number(instance.Flags[2]));
-    ui->objectInstanceTable->setItem(0, 11, item11);
-    QTableWidgetItem *item12 = new QTableWidgetItem(QString::number(instance.Flags[3]));
-    ui->objectInstanceTable->setItem(0, 12, item12);
-    QTableWidgetItem *item13 = new QTableWidgetItem(QString::number(instance.Flags[4]));
-    ui->objectInstanceTable->setItem(0, 13, item13);
-    QTableWidgetItem *item14 = new QTableWidgetItem(QString::number(instance.Flags[5]));
-    ui->objectInstanceTable->setItem(0, 14, item14);
-    QTableWidgetItem *item15 = new QTableWidgetItem(QString::number(instance.Flags[6]));
-    ui->objectInstanceTable->setItem(0, 15, item15);
-    QTableWidgetItem *item16 = new QTableWidgetItem(QString::number(instance.Flags[7]));
-    ui->objectInstanceTable->setItem(0, 16, item16);
-    QTableWidgetItem *item17 = new QTableWidgetItem(QString::number(instance.Flags[8]));
-    ui->objectInstanceTable->setItem(0, 17, item17);
-    QTableWidgetItem *item18 = new QTableWidgetItem(QString::number(instance.Flags[9]));
-    ui->objectInstanceTable->setItem(0, 18, item18);
+    ui->objectInstanceTable->setModel(new ObjectInstanceTableModel(ui->entityInstanceTable,
+                                                                   instance));
 }
 
 void MapEditWidget::on_zoneDelimCheck_stateChanged(int arg1)
 {
     ui->mapViewWidget->setDrawZoneDelimiters((arg1 == Qt::Checked));
-}
-
-void MapEditWidget::on_entityInstanceTable_itemChanged(QTableWidgetItem *item)
-{
-    curMap->setChanged();
-}
-
-void MapEditWidget::on_entityCDTable_itemChanged(QTableWidgetItem *item)
-{
-    curMap->setChanged();
-}
-
-void MapEditWidget::on_objectInstanceTable_itemChanged(QTableWidgetItem *item)
-{
-    KingsField::ObjectInstanceDeclaration &instance = curMap->getObjectInstance(currentObjectInstance);
-    switch(item->row())
-    {
-        case (0): instance.TileLayer = item->text().toUShort(); break;
-        case (1): instance.WEXTilePos = item->text().toUShort(); break;
-        case (2): instance.NSYTilePos = item->text().toUShort(); break;
-        case (3): instance.field_0x3 = item->text().toUShort(); break;
-        case (4): instance.ObjectID = KingsField::getObjectIDFromUShort(item->text().leftRef(3).toUShort()); break;
-        case (5): instance.ZRotation = item->text().toShort(); break;
-        case (6): instance.FineWEXPos = item->text().toShort(); break;
-        case (7): instance.FineNSYPos = item->text().toShort(); break;
-        case (8): instance.FineZPos = item->text().toShort(); break;
-        case (9): instance.Flags[0] = item->text().toUShort(); break;
-        case (10): instance.Flags[1] = item->text().toUShort(); break;
-        case (11): instance.Flags[2] = item->text().toUShort(); break;
-        case (12): instance.Flags[3] = item->text().toUShort(); break;
-        case (13): instance.Flags[4] = item->text().toUShort(); break;
-        case (14): instance.Flags[5] = item->text().toUShort(); break;
-        case (15): instance.Flags[6] = item->text().toUShort(); break;
-        case (16): instance.Flags[7] = item->text().toUShort(); break;
-        case (17): instance.Flags[8] = item->text().toUShort(); break;
-        case (18): instance.Flags[9] = item->text().toUShort(); break;
-    }
-    curMap->setChanged();
 }
 
 void MapEditWidget::on_elementCombo_currentIndexChanged(int index)

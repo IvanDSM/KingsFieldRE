@@ -1,11 +1,11 @@
 #include "map.h"
 #include <QDataStream>
 
-Map::Map(TFile &fdatTFile, unsigned int index, const QString &name): fdat(fdatTFile),  mapIndex(index),
+Map::Map(TFile &fdatTFile, unsigned int index, QString name): fdat(fdatTFile),  mapIndex(index),
     map1(fdat.getFile(index * 3)),
     map2(fdat.getFile(index * 3 + 1)),
     map3(fdat.getFile(index * 3 + 2)),
-    mapName(name)
+    mapName(std::move(name))
 {
     QDataStream map1Stream(map1);
     map1Stream.skipRawData(4);
@@ -31,7 +31,7 @@ Map::Map(TFile &fdatTFile, unsigned int index, const QString &name): fdat(fdatTF
     map2Stream.skipRawData(4);
     for (auto entityCD = 0; entityCD < 40; entityCD++)
     {
-        KingsField::EntityClassDeclaration declaration;
+        KingsField::EntityClassDeclaration declaration{};
         quint8 tempByte;
         map2Stream >> tempByte;
         declaration.MeshID = KingsField::getEntityMeshIDFromByte(tempByte);
@@ -96,7 +96,7 @@ Map::Map(TFile &fdatTFile, unsigned int index, const QString &name): fdat(fdatTF
     map2Stream.device()->seek(0x32C8);
     for(auto entityInstance = 0; entityInstance < 200; entityInstance++)
     {
-        KingsField::EntityInstance instance;
+        KingsField::EntityInstance instance{};
         quint8 tempByte;
         map2Stream >> instance.field_0x0;
         map2Stream >> instance.EntityClass;
@@ -120,7 +120,7 @@ Map::Map(TFile &fdatTFile, unsigned int index, const QString &name): fdat(fdatTF
     map2Stream.skipRawData(4);
     for (auto objectInstance = 0; objectInstance < 350; objectInstance++)
     {
-        KingsField::ObjectInstanceDeclaration objInstance;
+        KingsField::ObjectInstanceDeclaration objInstance{};
         quint16 tempUShort;
 
         map2Stream >> objInstance.TileLayer;
@@ -133,8 +133,8 @@ Map::Map(TFile &fdatTFile, unsigned int index, const QString &name): fdat(fdatTF
         map2Stream >> objInstance.FineWEXPos;
         map2Stream >> objInstance.FineNSYPos;
         map2Stream >> objInstance.FineZPos;
-        for (size_t i = 0; i < 10; i++)
-            map2Stream >> objInstance.Flags[i];
+        for (unsigned char &Flag : objInstance.Flags)
+            map2Stream >> Flag;
 
         objInstances.push_back(objInstance);
     }

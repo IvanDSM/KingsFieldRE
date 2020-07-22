@@ -109,7 +109,8 @@ void MapViewer::drawMap()
     {
         for (unsigned short column = 0; column < 80; column++)
         {
-            byte green = 0, blue = 0;
+            byte green = 0;
+            byte blue = 0;
             if (curLayer == MapLayer::LAYER_1)
             {
                 switch (curElement)

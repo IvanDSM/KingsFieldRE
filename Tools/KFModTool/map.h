@@ -1,16 +1,16 @@
 #ifndef MAP_H
 #define MAP_H
 
-#include "tfile.h"
 #include "checksum.h"
 #include "kftypes.h"
+#include "tfile.h"
 
 typedef quint8 byte;
 
 class Map
 {
 public:
-    Map(TFile &fdatTFile, unsigned int index, const QString &name);
+    Map(TFile &fdatTFile, unsigned int index, QString name);
 
     const std::vector<KingsField::EntityClassDeclaration> getEntityClassDeclarations() const
     {

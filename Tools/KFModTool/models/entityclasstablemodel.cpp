@@ -138,6 +138,7 @@ QVariant EntityClassTableModel::headerData(int section, Qt::Orientation orientat
                 case 53: return "SomePointers[13]";
                 case 54: return "SomePointers[14]";
                 case 55: return "SomePointers[15]";
+                default: break;
             }
         }
     }

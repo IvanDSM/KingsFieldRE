@@ -9,7 +9,7 @@ class EntityInstanceTableModel : public QAbstractTableModel
     Q_OBJECT
 public:
     explicit EntityInstanceTableModel(QObject *parent,
-                                     KingsField::EntityInstance &entityInstance_) :
+                                      KingsField::EntityInstance &entityInstance_) :
         QAbstractTableModel(parent),
         entityInstance(entityInstance_) {}
 
@@ -30,7 +30,7 @@ public:
 
     QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const override;
 
-    QModelIndex index(int row, int column, const QModelIndex &parent = QModelIndex()) const
+    QModelIndex index(int row, int column, const QModelIndex &parent = QModelIndex()) const override
     {
         Q_UNUSED(parent)
         return createIndex(row, column);
@@ -46,7 +46,7 @@ public:
 
     bool setHeaderData(int section, Qt::Orientation orientation, const QVariant &value, int role = Qt::EditRole) override
     {
-        Q_UNUSED(section) Q_UNUSED(value) Q_UNUSED(role)
+        Q_UNUSED(section) Q_UNUSED(value) Q_UNUSED(role) Q_UNUSED(orientation)
         return false;
     }
 

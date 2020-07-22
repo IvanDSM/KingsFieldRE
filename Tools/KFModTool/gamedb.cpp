@@ -16,7 +16,7 @@ GameDB::GameDB(TFile &fdatTFile) : fdat(fdatTFile), database(fdat.getFile(28))
 
     for (size_t i = 0; i < objClassDeclarationsSize; i++)
     {
-        KingsField::ObjectClassDeclaration objClassDecl;
+        KingsField::ObjectClassDeclaration objClassDecl{};
         dbStream >> objClassDecl;
         objClassDeclarations.push_back(objClassDecl);
     }
@@ -31,7 +31,7 @@ GameDB::GameDB(TFile &fdatTFile) : fdat(fdatTFile), database(fdat.getFile(28))
 
     for (size_t i = 0; i < weaponStatsSize; i++)
     {
-        KingsField::WeaponStats weaponStat;
+        KingsField::WeaponStats weaponStat{};
         dbStream >> weaponStat;
         weaponStats.push_back(weaponStat);
     }
@@ -49,7 +49,7 @@ GameDB::GameDB(TFile &fdatTFile) : fdat(fdatTFile), database(fdat.getFile(28))
 
     for (size_t i = 0; i < lvlDataSize; i++)
     {
-        KingsField::PlayerLvlData level;
+        KingsField::PlayerLvlData level{};
         dbStream >> level;
         lvlData.push_back(level);
     }
@@ -58,7 +58,7 @@ GameDB::GameDB(TFile &fdatTFile) : fdat(fdatTFile), database(fdat.getFile(28))
 
     for (size_t i = 0; i < magicDataSize; i++)
     {
-        KingsField::Magic magic;
+        KingsField::Magic magic{};
         dbStream >> magic;
         magicData.push_back(magic);
     }

@@ -1,17 +1,17 @@
-#ifndef ENTITYCLASSTABLEMODEL_H
-#define ENTITYCLASSTABLEMODEL_H
+#ifndef OBJECTINSTANCETABLEMODEL_H
+#define OBJECTINSTANCETABLEMODEL_H
 
 #include <QAbstractTableModel>
 #include <kftypes.h>
 
-class EntityClassTableModel : public QAbstractTableModel
+class ObjectInstanceTableModel : public QAbstractTableModel
 {
     Q_OBJECT
 public:
-    explicit EntityClassTableModel(QObject *parent,
-                                      KingsField::EntityClassDeclaration &entityClassDecl_) :
+    explicit ObjectInstanceTableModel(QObject *parent,
+                                      KingsField::ObjectInstanceDeclaration &objInstance_) :
         QAbstractTableModel(parent),
-        entityClassDecl(entityClassDecl_) {}
+        objInstance(objInstance_) {}
 
     int columnCount(const QModelIndex &parent) const override
     {
@@ -39,34 +39,19 @@ public:
     int rowCount(const QModelIndex &parent) const override
     {
         Q_UNUSED(parent)
-        return 56;
+        return 19;
     }
 
     bool setData(const QModelIndex &index, const QVariant &value, int role = Qt::EditRole) override;
 
     bool setHeaderData(int section, Qt::Orientation orientation, const QVariant &value, int role = Qt::EditRole) override
     {
-        Q_UNUSED(section) Q_UNUSED(value) Q_UNUSED(role)
+        Q_UNUSED(section) Q_UNUSED(value) Q_UNUSED(role) Q_UNUSED(orientation)
         return false;
     }
 
 private:
-    KingsField::EntityClassDeclaration &entityClassDecl;
-
-    const QString getSomePointer(size_t somePtrIndex) const
-    {
-        if (somePtrIndex < 16)
-        {
-            auto somePtrValue = entityClassDecl.SomePointers[somePtrIndex];
-            if (somePtrValue == static_cast<unsigned int>(-1))
-                return "Null";
-            else
-                return QString::number(somePtrValue)
-                       + " (0x" + QString::number(somePtrValue, 16) +")";
-        }
-
-        return "Ivan screwed up! Report this on GitHub!";
-    }
+    KingsField::ObjectInstanceDeclaration &objInstance;
 };
 
-#endif // ENTITYCLASSTABLEMODEL_H
+#endif // OBJECTINSTANCETABLEMODEL_H

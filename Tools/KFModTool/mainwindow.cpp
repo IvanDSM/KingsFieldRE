@@ -1,7 +1,7 @@
 #include "mainwindow.h"
-#include <QFileDialog>
 #include "map.h"
 #include "mapeditwidget.h"
+#include <QFileDialog>
 
 void MainWindow::on_actionLoad_files_triggered()
 {
@@ -68,14 +68,14 @@ void MainWindow::on_filesTree_itemDoubleClicked(QTreeWidgetItem *item, int)
         if (kfmtItem->getType() == KFMTDataType::KFMT_MAP)
         {
             auto mapIndex = kfmtItem->getMap()->getIndex();
-            if (openMaps.count(mapIndex))
+            if (openMaps.count(mapIndex) != 0u)
             {
                 ui->editorTabs->setCurrentIndex(openMaps.at(mapIndex));
             }
             else
             {
                 auto map = kfmtItem->getMap();
-                MapEditWidget* mapEditor = new MapEditWidget(ui->editorTabs);
+                auto* mapEditor = new MapEditWidget(ui->editorTabs);
                 mapEditor->setMap(map);
                 ui->editorTabs->addTab(mapEditor, map->getName());
                 ui->editorTabs->setCurrentIndex(ui->editorTabs->count() - 1);
@@ -91,7 +91,7 @@ void MainWindow::on_actionSave_changes_triggered()
 {
     for (auto curChild = 0; curChild < ui->filesTree->itemAt(0, 0)->childCount(); curChild++)
     {
-        KFMTTreeWidgetItem *child = reinterpret_cast<KFMTTreeWidgetItem *>(ui->filesTree->itemAt(0,0)->child(curChild));
+        auto *child = reinterpret_cast<KFMTTreeWidgetItem *>(ui->filesTree->itemAt(0,0)->child(curChild));
 
         if (child->getType() == KFMTDataType::KFMT_MAP)
             child->getMap()->writeChanges();

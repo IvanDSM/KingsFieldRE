@@ -54,6 +54,7 @@ QVariant EntityInstanceTableModel::headerData(int section, Qt::Orientation orien
                 case 10: return "Fine X Position";
                 case 11: return "Fine Y Position";
                 case 12: return "Fine Z Position";
+                default: break;
             }
         }
     }

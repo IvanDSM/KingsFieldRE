@@ -4,6 +4,7 @@
 #include <QWidget>
 #include <QTableWidgetItem>
 #include "map.h"
+#include "ui_mapeditwidget.h"
 
 namespace Ui {
     class MapEditWidget;
@@ -15,8 +16,7 @@ class MapEditWidget : public QWidget
 
 public:
     explicit MapEditWidget(QWidget *parent = nullptr);
-    void setMap(std::shared_ptr<Map> map);
-    ~MapEditWidget();
+    void setMap(const std::shared_ptr<Map> &map);
 
 private slots:
     void on_layer1Radio_toggled(bool checked);
@@ -34,11 +34,23 @@ private slots:
 
     void on_zoneDelimCheck_stateChanged(int arg1);
 
-    void on_entityInstanceTable_itemChanged(QTableWidgetItem *item);
+    void on_entityInstanceTable_itemChanged(QTableWidgetItem *item)
+    {
+        Q_UNUSED(item)
+        curMap->setChanged();
+    }
 
-    void on_entityCDTable_itemChanged(QTableWidgetItem *item);
+    void on_entityCDTable_itemChanged(QTableWidgetItem *item)
+    {
+        Q_UNUSED(item)
+        curMap->setChanged();
+    }
 
-    void on_objectInstanceTable_itemChanged(QTableWidgetItem *item);
+    void on_objectInstanceTable_itemChanged(QTableWidgetItem *item)
+    {
+        Q_UNUSED(item)
+        curMap->setChanged();
+    }
 
     void on_elementCombo_currentIndexChanged(int index);
 
@@ -67,7 +79,7 @@ private:
     byte currentEntityInstance = 255;
     size_t currentObjectInstance = 65536;
     std::shared_ptr<Map> curMap;
-    Ui::MapEditWidget *ui;
+    std::unique_ptr<Ui::MapEditWidget> ui;
 };
 
 #endif // MAPDOCKWIDGET_H

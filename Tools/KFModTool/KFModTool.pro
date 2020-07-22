@@ -26,6 +26,7 @@ SOURCES += \
     mapviewer.cpp \
     models/entityclasstablemodel.cpp \
     models/entityinstancetablemodel.cpp \
+    models/objectinstancetablemodel.cpp \
     prettynamer.cpp \
     texture.cpp \
     tfile.cpp
@@ -42,6 +43,7 @@ HEADERS += \
     mapviewer.h \
     models/entityclasstablemodel.h \
     models/entityinstancetablemodel.h \
+    models/objectinstancetablemodel.h \
     prettynamer.h \
     texture.h \
     tfile.h
