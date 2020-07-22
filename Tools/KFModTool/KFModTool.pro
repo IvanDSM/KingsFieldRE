@@ -1,12 +1,5 @@
 QT       += core gui
 
-defined(EMSCRIPTEN)
-{
-	QMAKE_CFLAGS += -s ASYNCIFY=1
-	QMAKE_CXXFLAGS += -s ASYNCIFY=1
-	QMAKE_LFLAGS += -s ASYNCIFY=1
-}
-
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 CONFIG += c++11
@@ -31,6 +24,8 @@ SOURCES += \
     map.cpp \
     mapeditwidget.cpp \
     mapviewer.cpp \
+    models/entityclasstablemodel.cpp \
+    models/entityinstancetablemodel.cpp \
     prettynamer.cpp \
     texture.cpp \
     tfile.cpp
@@ -45,6 +40,8 @@ HEADERS += \
     map.h \
     mapeditwidget.h \
     mapviewer.h \
+    models/entityclasstablemodel.h \
+    models/entityinstancetablemodel.h \
     prettynamer.h \
     texture.h \
     tfile.h

@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>780</width>
+    <width>796</width>
     <height>480</height>
    </rect>
   </property>
@@ -516,7 +516,7 @@
          <item>
           <widget class="QLabel" name="objectInstanceAddrLabel">
            <property name="text">
-            <string>Instanced at address </string>
+            <string>Instance X, at address </string>
            </property>
           </widget>
          </item>
@@ -548,86 +548,28 @@
           <number>0</number>
          </property>
          <item>
-          <widget class="QTableWidget" name="entityInstanceTable">
+          <widget class="QTableView" name="entityInstanceTable">
            <property name="inputMethodHints">
             <set>Qt::ImhDigitsOnly</set>
            </property>
-           <row>
-            <property name="text">
-             <string>Unknown 0</string>
-            </property>
-           </row>
-           <row>
-            <property name="text">
-             <string>Entity Class</string>
-            </property>
-           </row>
-           <row>
-            <property name="text">
-             <string>Unknown 2</string>
-            </property>
-           </row>
-           <row>
-            <property name="text">
-             <string>X Tile Position</string>
-            </property>
-           </row>
-           <row>
-            <property name="text">
-             <string>Y Tile Position</string>
-            </property>
-           </row>
-           <row>
-            <property name="text">
-             <string>Unknown 5</string>
-            </property>
-           </row>
-           <row>
-            <property name="text">
-             <string>Dropped Item ID</string>
-            </property>
-           </row>
-           <row>
-            <property name="text">
-             <string>Layer</string>
-            </property>
-           </row>
-           <row>
-            <property name="text">
-             <string>Trigger Object</string>
-            </property>
-           </row>
-           <row>
-            <property name="text">
-             <string>Z Rotation</string>
-            </property>
-           </row>
-           <row>
-            <property name="text">
-             <string>Fine X Position</string>
-            </property>
-           </row>
-           <row>
-            <property name="text">
-             <string>Fine Y Position</string>
-            </property>
-           </row>
-           <row>
-            <property name="text">
-             <string>Fine Z Position</string>
-            </property>
-           </row>
-           <column>
-            <property name="text">
-             <string>Value</string>
-            </property>
-           </column>
+           <property name="alternatingRowColors">
+            <bool>true</bool>
+           </property>
+           <property name="verticalScrollMode">
+            <enum>QAbstractItemView::ScrollPerPixel</enum>
+           </property>
+           <attribute name="horizontalHeaderVisible">
+            <bool>true</bool>
+           </attribute>
+           <attribute name="verticalHeaderVisible">
+            <bool>true</bool>
+           </attribute>
           </widget>
          </item>
          <item>
           <widget class="QLabel" name="entityInstanceAddrLabel">
            <property name="text">
-            <string>Instanced at address </string>
+            <string>Instance X, at address </string>
            </property>
           </widget>
          </item>
@@ -700,323 +642,19 @@
           <widget class="QComboBox" name="entityCDCombo"/>
          </item>
          <item>
-          <widget class="QTableWidget" name="entityCDTable">
+          <widget class="QTableView" name="entityCDTable">
            <property name="contextMenuPolicy">
             <enum>Qt::DefaultContextMenu</enum>
            </property>
            <property name="inputMethodHints">
             <set>Qt::ImhDigitsOnly</set>
            </property>
-           <row>
-            <property name="text">
-             <string>MeshID</string>
-            </property>
-           </row>
-           <row>
-            <property name="text">
-             <string>FourOrForty</string>
-            </property>
-           </row>
-           <row>
-            <property name="text">
-             <string>Unknown 02</string>
-            </property>
-           </row>
-           <row>
-            <property name="text">
-             <string>Unknown 03</string>
-            </property>
-           </row>
-           <row>
-            <property name="text">
-             <string>Unknown 04</string>
-            </property>
-           </row>
-           <row>
-            <property name="text">
-             <string>Unknown 05</string>
-            </property>
-           </row>
-           <row>
-            <property name="text">
-             <string>Unknown 06</string>
-            </property>
-           </row>
-           <row>
-            <property name="text">
-             <string>Unknown 07</string>
-            </property>
-           </row>
-           <row>
-            <property name="text">
-             <string>Unknown 08</string>
-            </property>
-           </row>
-           <row>
-            <property name="text">
-             <string>Unknown 09</string>
-            </property>
-           </row>
-           <row>
-            <property name="text">
-             <string>Unknown 0A</string>
-            </property>
-           </row>
-           <row>
-            <property name="text">
-             <string>Unknown 0B</string>
-            </property>
-           </row>
-           <row>
-            <property name="text">
-             <string>Unknown 0C</string>
-            </property>
-           </row>
-           <row>
-            <property name="text">
-             <string>Unknown 0D</string>
-            </property>
-           </row>
-           <row>
-            <property name="text">
-             <string>Unknown 0E</string>
-            </property>
-           </row>
-           <row>
-            <property name="text">
-             <string>Unknown 0F</string>
-            </property>
-           </row>
-           <row>
-            <property name="text">
-             <string>Unknown 10</string>
-            </property>
-           </row>
-           <row>
-            <property name="text">
-             <string>Unknown 11</string>
-            </property>
-           </row>
-           <row>
-            <property name="text">
-             <string>Unknown 12</string>
-            </property>
-           </row>
-           <row>
-            <property name="text">
-             <string>Unknown 13</string>
-            </property>
-           </row>
-           <row>
-            <property name="text">
-             <string>Unknown 14</string>
-            </property>
-           </row>
-           <row>
-            <property name="text">
-             <string>Unknown 15</string>
-            </property>
-           </row>
-           <row>
-            <property name="text">
-             <string>Unknown 16</string>
-            </property>
-           </row>
-           <row>
-            <property name="text">
-             <string>Unknown 17</string>
-            </property>
-           </row>
-           <row>
-            <property name="text">
-             <string>Unknown 18</string>
-            </property>
-           </row>
-           <row>
-            <property name="text">
-             <string>Unknown 19</string>
-            </property>
-           </row>
-           <row>
-            <property name="text">
-             <string>HP</string>
-            </property>
-           </row>
-           <row>
-            <property name="text">
-             <string>Unknown 1C</string>
-            </property>
-           </row>
-           <row>
-            <property name="text">
-             <string>Unknown 1D</string>
-            </property>
-           </row>
-           <row>
-            <property name="text">
-             <string>Experience Gain</string>
-            </property>
-           </row>
-           <row>
-            <property name="text">
-             <string>Slash Def</string>
-            </property>
-           </row>
-           <row>
-            <property name="text">
-             <string>Chop Def</string>
-            </property>
-           </row>
-           <row>
-            <property name="text">
-             <string>Stab Def</string>
-            </property>
-           </row>
-           <row>
-            <property name="text">
-             <string>Holy Magic Def</string>
-            </property>
-           </row>
-           <row>
-            <property name="text">
-             <string>Fire Magic Def</string>
-            </property>
-           </row>
-           <row>
-            <property name="text">
-             <string>Earth Magic Def</string>
-            </property>
-           </row>
-           <row>
-            <property name="text">
-             <string>Wind Magic Def</string>
-            </property>
-           </row>
-           <row>
-            <property name="text">
-             <string>Water Magic Def</string>
-            </property>
-           </row>
-           <row>
-            <property name="text">
-             <string>Unknown 30</string>
-            </property>
-           </row>
-           <row>
-            <property name="text">
-             <string>Unknown 31</string>
-            </property>
-           </row>
-           <row>
-            <property name="text">
-             <string>Scale</string>
-            </property>
-           </row>
-           <row>
-            <property name="text">
-             <string>Unknown 34</string>
-            </property>
-           </row>
-           <row>
-            <property name="text">
-             <string>Unknown 35</string>
-            </property>
-           </row>
-           <row>
-            <property name="text">
-             <string>Unknown 36</string>
-            </property>
-           </row>
-           <row>
-            <property name="text">
-             <string>Unknown 37</string>
-            </property>
-           </row>
-           <row>
-            <property name="text">
-             <string>SomePointers[0]</string>
-            </property>
-           </row>
-           <row>
-            <property name="text">
-             <string>SomePointers[1]</string>
-            </property>
-           </row>
-           <row>
-            <property name="text">
-             <string>SomePointers[2]</string>
-            </property>
-           </row>
-           <row>
-            <property name="text">
-             <string>SomePointers[3]</string>
-            </property>
-           </row>
-           <row>
-            <property name="text">
-             <string>SomePointers[4]</string>
-            </property>
-           </row>
-           <row>
-            <property name="text">
-             <string>SomePointers[5]</string>
-            </property>
-           </row>
-           <row>
-            <property name="text">
-             <string>SomePointers[6]</string>
-            </property>
-           </row>
-           <row>
-            <property name="text">
-             <string>SomePointers[7]</string>
-            </property>
-           </row>
-           <row>
-            <property name="text">
-             <string>SomePointers[8]</string>
-            </property>
-           </row>
-           <row>
-            <property name="text">
-             <string>SomePointers[9]</string>
-            </property>
-           </row>
-           <row>
-            <property name="text">
-             <string>SomePointers[10]</string>
-            </property>
-           </row>
-           <row>
-            <property name="text">
-             <string>SomePointers[11]</string>
-            </property>
-           </row>
-           <row>
-            <property name="text">
-             <string>SomePointers[12]</string>
-            </property>
-           </row>
-           <row>
-            <property name="text">
-             <string>SomePointers[13]</string>
-            </property>
-           </row>
-           <row>
-            <property name="text">
-             <string>SomePointers[14]</string>
-            </property>
-           </row>
-           <row>
-            <property name="text">
-             <string>SomePointers[15]</string>
-            </property>
-           </row>
-           <column>
-            <property name="text">
-             <string>Value</string>
-            </property>
-           </column>
+           <property name="alternatingRowColors">
+            <bool>true</bool>
+           </property>
+           <property name="verticalScrollMode">
+            <enum>QAbstractItemView::ScrollPerPixel</enum>
+           </property>
           </widget>
          </item>
          <item>

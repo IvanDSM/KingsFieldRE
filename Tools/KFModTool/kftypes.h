@@ -357,6 +357,7 @@ namespace KingsField
         StoneThing3RENAME_ME=268,
         StoneThingRENAME_ME=266,
         Stool=261,
+        SwingingScythe=200,
         TableWithThingie=257,
         TarnStatue=171,
         TheMagiciansLamp=163,
@@ -367,7 +368,8 @@ namespace KingsField
         WHATTHEFUCKStatue=193,
         WTF=65535,
         WallTorch=279,
-        WallWithSecret=138,
+        WallWithSecret=131,
+        WallWithSecret2=138,
         WallWithSpikeTrap=202,
         WallWriting2=161,
         WallWriting3=162,
@@ -743,6 +745,7 @@ namespace KingsField
         {ObjectID::StoneThing3RENAME_ME, "StoneThing3RENAME_ME"},
         {ObjectID::StoneThingRENAME_ME, "StoneThingRENAME_ME"},
         {ObjectID::Stool, "Stool"},
+        {ObjectID::SwingingScythe, "SwingingScythe"},
         {ObjectID::TableWithThingie, "TableWithThingie"},
         {ObjectID::TarnStatue, "TarnStatue"},
         {ObjectID::TheMagiciansLamp, "TheMagiciansLamp"},
@@ -754,6 +757,7 @@ namespace KingsField
         {ObjectID::WTF, "WTF"},
         {ObjectID::WallTorch, "WallTorch"},
         {ObjectID::WallWithSecret, "WallWithSecret"},
+        {ObjectID::WallWithSecret2, "WallWithSecret2"},
         {ObjectID::WallWithSpikeTrap, "WallWithSpikeTrap"},
         {ObjectID::WallWriting2, "WallWriting2"},
         {ObjectID::WallWriting3, "WallWriting3"},
@@ -879,10 +883,8 @@ namespace KingsField
         undefined field_0xf;
         undefined field_0x10;
         undefined field_0x11;
-        undefined field_0x12;
-        undefined field_0x13;
-        undefined field_0x14;
-        undefined field_0x15;
+        u_short Unknown_x12;
+        u_short Unknown_x14;
         undefined field_0x16;
         undefined field_0x17;
         undefined field_0x18;
@@ -902,10 +904,7 @@ namespace KingsField
         undefined field_0x30;
         undefined field_0x31;
         short Scale;
-        undefined field_0x34;
-        undefined field_0x35;
-        undefined field_0x36;
-        undefined field_0x37;
+        u_int Unknown_x34;
         u_int SomePointers[16];
 
         EntityClassDeclaration& operator= (const QByteArray& array)
@@ -932,10 +931,8 @@ namespace KingsField
             arrayStream >> field_0xf;
             arrayStream >> field_0x10;
             arrayStream >> field_0x11;
-            arrayStream >> field_0x12;
-            arrayStream >> field_0x13;
-            arrayStream >> field_0x14;
-            arrayStream >> field_0x15;
+            arrayStream >> Unknown_x12;
+            arrayStream >> Unknown_x14;
             arrayStream >> field_0x16;
             arrayStream >> field_0x17;
             arrayStream >> field_0x18;
@@ -955,10 +952,7 @@ namespace KingsField
             arrayStream >> field_0x30;
             arrayStream >> field_0x31;
             arrayStream >> Scale;
-            arrayStream >> field_0x34;
-            arrayStream >> field_0x35;
-            arrayStream >> field_0x36;
-            arrayStream >> field_0x37;
+            arrayStream >> Unknown_x34;
             for (size_t i = 0; i < 16; i++)
                 arrayStream >> SomePointers[i];
 
@@ -988,10 +982,8 @@ namespace KingsField
             arrayStream << field_0xf;
             arrayStream << field_0x10;
             arrayStream << field_0x11;
-            arrayStream << field_0x12;
-            arrayStream << field_0x13;
-            arrayStream << field_0x14;
-            arrayStream << field_0x15;
+            arrayStream << Unknown_x12;
+            arrayStream << Unknown_x14;
             arrayStream << field_0x16;
             arrayStream << field_0x17;
             arrayStream << field_0x18;
@@ -1011,10 +1003,7 @@ namespace KingsField
             arrayStream << field_0x30;
             arrayStream << field_0x31;
             arrayStream << Scale;
-            arrayStream << field_0x34;
-            arrayStream << field_0x35;
-            arrayStream << field_0x36;
-            arrayStream << field_0x37;
+            arrayStream << Unknown_x34;
             for (size_t i = 0; i < 16; i++)
                 arrayStream << SomePointers[i];
 

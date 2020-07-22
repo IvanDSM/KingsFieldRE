@@ -52,10 +52,8 @@ Map::Map(TFile &fdatTFile, unsigned int index, const QString &name): fdat(fdatTF
         map2Stream >> declaration.field_0xf;
         map2Stream >> declaration.field_0x10;
         map2Stream >> declaration.field_0x11;
-        map2Stream >> declaration.field_0x12;
-        map2Stream >> declaration.field_0x13;
-        map2Stream >> declaration.field_0x14;
-        map2Stream >> declaration.field_0x15;
+        map2Stream >> declaration.Unknown_x12;
+        map2Stream >> declaration.Unknown_x14;
         map2Stream >> declaration.field_0x16;
         map2Stream >> declaration.field_0x17;
         map2Stream >> declaration.field_0x18;
@@ -75,10 +73,7 @@ Map::Map(TFile &fdatTFile, unsigned int index, const QString &name): fdat(fdatTF
         map2Stream >> declaration.field_0x30;
         map2Stream >> declaration.field_0x31;
         map2Stream >> declaration.Scale;
-        map2Stream >> declaration.field_0x34;
-        map2Stream >> declaration.field_0x35;
-        map2Stream >> declaration.field_0x36;
-        map2Stream >> declaration.field_0x37;
+        map2Stream >> declaration.Unknown_x34;
         map2Stream >> declaration.SomePointers[0];
         map2Stream >> declaration.SomePointers[1];
         map2Stream >> declaration.SomePointers[2];

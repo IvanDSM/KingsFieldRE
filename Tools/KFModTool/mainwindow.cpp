@@ -1,31 +1,7 @@
 #include "mainwindow.h"
-#include "ui_mainwindow.h"
 #include <QFileDialog>
-#include <QMessageBox>
 #include "map.h"
 #include "mapeditwidget.h"
-
-MainWindow::MainWindow(QWidget *parent)
-    : QMainWindow(parent)
-    , ui(new Ui::MainWindow)
-{
-    ui->setupUi(this);
-}
-
-MainWindow::~MainWindow()
-{
-    delete ui;
-}
-
-void MainWindow::on_actionAbout_Qt_triggered()
-{
-    QMessageBox::aboutQt(this);
-}
-
-void MainWindow::on_actionAbout_KFModTool_triggered()
-{
-    QMessageBox::information(this, "TODO", "Implement this about box!");
-}
 
 void MainWindow::on_actionLoad_files_triggered()
 {
@@ -111,11 +87,6 @@ void MainWindow::on_filesTree_itemDoubleClicked(QTreeWidgetItem *item, int)
     }
 }
 
-void MainWindow::on_editorTabs_tabCloseRequested(int index)
-{
-    ui->editorTabs->removeTab(index);
-}
-
 void MainWindow::on_actionSave_changes_triggered()
 {
     for (auto curChild = 0; curChild < ui->filesTree->itemAt(0, 0)->childCount(); curChild++)
@@ -133,6 +104,8 @@ void MainWindow::on_actionSave_changes_triggered()
     fdatOut.open(QIODevice::WriteOnly);
     fdatOut.write(fdat->getTFile());
     fdatOut.close();
+
+    QMessageBox::information(this, "Changes saved successfully!", "Your changes have been saved!");
 }
 
 void MainWindow::addGameDB()
