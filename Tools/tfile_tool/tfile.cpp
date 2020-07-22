@@ -1,10 +1,10 @@
-﻿#include <QBuffer>
+﻿#include "prettynamer.h"
+#include "tfile.h"
+#include <QBuffer>
 #include <QCryptographicHash>
 #include <QDebug>
 #include <QDir>
 #include <QtEndian>
-#include "tfile.h"
-#include "prettynamer.h"
 
 bool TFile::extractFiles()
 {

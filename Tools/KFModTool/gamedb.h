@@ -9,6 +9,12 @@ class GameDB
 public:
     explicit GameDB(TFile &fdatTFile);
 
+    KingsField::Magic &getMagic(byte magicIndex)
+    {
+        if (magicIndex < 63)
+            return magicData.at(magicIndex);
+    }
+
 private:
     TFile &fdat;
 

@@ -1,14 +1,10 @@
 #include "gamedbeditwidget.h"
-#include "ui_gamedbeditwidget.h"
 
-GameDBEditWidget::GameDBEditWidget(QWidget *parent) :
+GameDBEditWidget::GameDBEditWidget(QWidget *parent, std::shared_ptr<GameDB> gameDB_) :
     QWidget(parent),
+    gameDB(gameDB_),
     ui(new Ui::GameDBEditWidget)
 {
     ui->setupUi(this);
-}
-
-GameDBEditWidget::~GameDBEditWidget()
-{
-    delete ui;
+    ui->magicCombo->setCurrentIndex(0);
 }

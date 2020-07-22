@@ -8,6 +8,10 @@
 #include "kfmttreewidgetitem.h"
 #include "ui_mainwindow.h"
 
+QT_BEGIN_NAMESPACE
+namespace Ui { class MainWindow; }
+QT_END_NAMESPACE
+
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
@@ -18,9 +22,8 @@ public:
         , ui(new Ui::MainWindow)
     {
         ui->setupUi(this);
+        std::fill(openMaps.begin(), openMaps.end(), -1);
     }
-
-//    ~MainWindow();
 
 private slots:
     void on_actionAbout_Qt_triggered()
@@ -39,6 +42,7 @@ private slots:
 
     void on_editorTabs_tabCloseRequested(int index)
     {
+        std::replace(openMaps.begin(), openMaps.end(), index, -1);
         ui->editorTabs->removeTab(index);
     }
 
@@ -54,7 +58,8 @@ private:
     void addMap(const unsigned int &index, const QString &name);
     void loadFdat();
 
-    std::unordered_map<unsigned int, unsigned int> openMaps;
+    int openGameDB = -1;
+    std::array<int, 9> openMaps;
 
     std::unique_ptr<TFile> fdat = nullptr;
 

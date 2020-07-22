@@ -6,10 +6,6 @@
 #include "map.h"
 #include "ui_mapeditwidget.h"
 
-namespace Ui {
-    class MapEditWidget;
-}
-
 class MapEditWidget : public QWidget
 {
     Q_OBJECT

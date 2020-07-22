@@ -1,4 +1,5 @@
 #include "mainwindow.h"
+#include "gamedbeditwidget.h"
 #include "map.h"
 #include "mapeditwidget.h"
 #include <QFileDialog>
@@ -68,10 +69,8 @@ void MainWindow::on_filesTree_itemDoubleClicked(QTreeWidgetItem *item, int)
         if (kfmtItem->getType() == KFMTDataType::KFMT_MAP)
         {
             auto mapIndex = kfmtItem->getMap()->getIndex();
-            if (openMaps.count(mapIndex) != 0u)
-            {
+            if (openMaps.at(mapIndex) != -1)
                 ui->editorTabs->setCurrentIndex(openMaps.at(mapIndex));
-            }
             else
             {
                 auto map = kfmtItem->getMap();
@@ -83,7 +82,18 @@ void MainWindow::on_filesTree_itemDoubleClicked(QTreeWidgetItem *item, int)
                 openMaps[mapIndex] = ui->editorTabs->count() - 1;
             }
         }
-
+        else if (kfmtItem->getType() == KFMTDataType::KFMT_GAMEDB)
+        {
+            if (openGameDB != -1)
+                ui->editorTabs->setCurrentIndex(openGameDB);
+            else
+            {
+                auto gameDBEditor = new GameDBEditWidget(ui->editorTabs, kfmtItem->getDB());
+                ui->editorTabs->addTab(gameDBEditor, "Game Database");
+                ui->editorTabs->setCurrentIndex(ui->editorTabs->count() - 1);
+                ui->editorTabs->setTabIcon(ui->editorTabs->count() - 1, QIcon(":/db_icon.png"));
+            }
+        }
     }
 }
 

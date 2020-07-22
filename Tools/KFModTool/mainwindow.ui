@@ -47,6 +47,9 @@
       <property name="tabPosition">
        <enum>QTabWidget::North</enum>
       </property>
+      <property name="documentMode">
+       <bool>false</bool>
+      </property>
       <property name="tabsClosable">
        <bool>false</bool>
       </property>

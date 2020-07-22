@@ -14,6 +14,6 @@ const std::unordered_map<QString, QString> &PrettyNamer::getPrettyMap(const QByt
         md5Hash == "4605a5c590578e857f2e690fba575198"    // VAB.T
         )
         return kfUSPrettyMap;
-    else
-        return emptyMap;
+
+    return emptyMap;
 }

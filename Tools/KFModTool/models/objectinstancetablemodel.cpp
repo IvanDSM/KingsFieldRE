@@ -77,8 +77,8 @@ bool ObjectInstanceTableModel::setData(const QModelIndex &index, const QVariant 
     bool result = false;
     if (!value.toString().isEmpty() && value.isValid() && role == Qt::EditRole && index.row() < rowCount(index) && index.row() >= 0 && index.column() == 0)
     {
-        unsigned int uIntValue = 0;
         int intValue = 0;
+        unsigned int uIntValue = 0;
         switch (index.row())
         {
             case 0:
