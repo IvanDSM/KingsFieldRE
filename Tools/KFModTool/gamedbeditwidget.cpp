@@ -6,5 +6,5 @@ GameDBEditWidget::GameDBEditWidget(QWidget *parent, std::shared_ptr<GameDB> game
     ui(new Ui::GameDBEditWidget)
 {
     ui->setupUi(this);
-    ui->magicCombo->setCurrentIndex(0);
+    ui->magicTable->setModel(new MagicTableModel(ui->magicTable, gameDB->getMagic(0)));
 }

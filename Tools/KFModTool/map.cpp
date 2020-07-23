@@ -197,6 +197,4 @@ void Map::writeChanges()
     fdat.writeFile(map1, static_cast<int>(mapIndex * 3));
     fdat.writeFile(map2, static_cast<int>(mapIndex * 3) + 1);
     fdat.writeFile(map3, static_cast<int>(mapIndex * 3) + 2);
-
-    setChanged(false);
 }

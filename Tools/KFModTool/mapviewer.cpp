@@ -259,7 +259,6 @@ void MapViewer::processMouse(QMouseEvent *event)
                             mapPtr->getTile(trueX, trueY).Layer2ZoneDelimiter = curBrush;
                     }
             }
-            mapPtr->setChanged();
         }
         else if (curMode == MapViewerMode::MODE_FILL)
         {

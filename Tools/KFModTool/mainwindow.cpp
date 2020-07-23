@@ -105,6 +105,8 @@ void MainWindow::on_actionSave_changes_triggered()
 
         if (child->getType() == KFMTDataType::KFMT_MAP)
             child->getMap()->writeChanges();
+        else if (child->getType() == KFMTDataType::KFMT_GAMEDB)
+            child->getDB()->writeChanges();
     }
 
     QDir dir(QFileDialog::getExistingDirectory(this, "Select where to save the changed files",

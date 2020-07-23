@@ -165,7 +165,6 @@ void MapEditWidget::on_entityCDImport_clicked()
         file.close();
         auto index = ui->entityCDCombo->currentIndex();
         curMap->getClassDeclaration(index) = entityCD;
-        curMap->setChanged();
         fillEntityCDCombo();
         ui->entityCDCombo->setCurrentIndex(index);
         on_entityCDCombo_currentIndexChanged(index); // FIXME: Dirty hack. Do something proper.
@@ -217,7 +216,6 @@ void MapEditWidget::on_entityInstanceImport_clicked()
             auto entityInstance = file.readAll();
             file.close();
             curMap->getInstance(currentEntityInstance) = entityInstance;
-            curMap->setChanged();
             entityInstanceHovered(currentEntityInstance); // FIXME: Dirty hack. Do something proper.
         }
     }

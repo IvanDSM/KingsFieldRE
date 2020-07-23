@@ -62,22 +62,11 @@ public:
             return tileMap[line][column];
     }
 
-    bool isChanged() const
-    {
-        return changed;
-    }
-
-    void setChanged(bool _changed = true)
-    {
-        changed = _changed;
-    }
-
     void writeChanges();
 
 private:
     TFile &fdat;
 
-    bool changed = false;
     KingsField::Tile tileMap[80][80];
     unsigned int mapIndex;
     QByteArray map1;

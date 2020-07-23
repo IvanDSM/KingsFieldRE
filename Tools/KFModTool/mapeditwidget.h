@@ -30,24 +30,6 @@ private slots:
 
     void on_zoneDelimCheck_stateChanged(int arg1);
 
-    void on_entityInstanceTable_itemChanged(QTableWidgetItem *item)
-    {
-        Q_UNUSED(item)
-        curMap->setChanged();
-    }
-
-    void on_entityCDTable_itemChanged(QTableWidgetItem *item)
-    {
-        Q_UNUSED(item)
-        curMap->setChanged();
-    }
-
-    void on_objectInstanceTable_itemChanged(QTableWidgetItem *item)
-    {
-        Q_UNUSED(item)
-        curMap->setChanged();
-    }
-
     void on_elementCombo_currentIndexChanged(int index);
 
     void on_pokeModeButton_clicked();

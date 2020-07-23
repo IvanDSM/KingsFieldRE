@@ -15,19 +15,20 @@ public:
             return magicData.at(magicIndex);
     }
 
+    void writeChanges();
+
 private:
     TFile &fdat;
 
-    bool changed = false;
     QByteArray database;
     static const size_t objClassDeclarationsSize = 320;
     static const size_t lvlDataSize = 100;
     static const size_t magicDataSize = 64;
     static const size_t weaponStatsSize = 18;
-    std::vector<KingsField::ObjectClassDeclaration> objClassDeclarations;
-    std::vector<KingsField::PlayerLvlData> lvlData;
-    std::vector<KingsField::Magic> magicData;
-    std::vector<KingsField::WeaponStats> weaponStats;
+    std::array<KingsField::ObjectClassDeclaration, objClassDeclarationsSize> objClassDeclarations;
+    std::array<KingsField::PlayerLvlData, lvlDataSize> lvlData;
+    std::array<KingsField::Magic, magicDataSize> magicData;
+    std::array<KingsField::WeaponStats, weaponStatsSize> weaponStats;
 };
 
 #endif // GAMEDB_H
