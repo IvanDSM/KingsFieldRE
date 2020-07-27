@@ -4,7 +4,9 @@
 #include <QWidget>
 #include "ui_gamedbeditwidget.h"
 #include "gamedb.h"
+#include "models/playerleveldatatablemodel.h"
 #include "models/magictablemodel.h"
+#include "models/objectclasstablemodel.h"
 
 class GameDBEditWidget : public QWidget
 {
@@ -20,7 +22,35 @@ private slots:
                                                      gameDB->getMagic(static_cast<byte>(index))));
     }
 
+    void on_objClassCombo_currentIndexChanged(int index)
+    {
+        ui->objClassTable->setModel(new ObjectClassTableModel(ui->objClassTable,
+                                                              gameDB->getObjClass(static_cast<unsigned short>(index))));
+    }
+
+    void on_levelSpin_valueChanged(int arg1)
+    {
+        ui->levelTable->setModel(new PlayerLevelDataTableModel(ui->levelTable,
+                                                               gameDB->getLevel(static_cast<byte>(arg1 - 1))));
+    }
+
 private:
+    void fillMagicCombo()
+    {
+        for (byte i = 0; i < GameDB::magicDataSize; i++)
+        {
+            ui->magicCombo->addItem(QString::number(i) + " (0x" + QString::number(i) + ") " +
+                                    KingsField::getMagicIDName(KingsField::getMagicIDFromByte(i)));
+        }
+    }
+
+    void fillObjClassCombo()
+    {
+        for (unsigned short i = 0; i < GameDB::objClassDeclarationsSize; i++)
+            ui->objClassCombo->addItem(QString::number(i) + " (0x" + QString::number(i) + ") " +
+                                       KingsField::getObjectName(KingsField::getObjectIDFromUShort(i)));
+    }
+
     std::shared_ptr<GameDB> gameDB;
     Ui::GameDBEditWidget *ui;
 };

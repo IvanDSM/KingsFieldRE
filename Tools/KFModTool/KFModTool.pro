@@ -27,7 +27,9 @@ SOURCES += \
     models/entityclasstablemodel.cpp \
     models/entityinstancetablemodel.cpp \
     models/magictablemodel.cpp \
+    models/objectclasstablemodel.cpp \
     models/objectinstancetablemodel.cpp \
+    models/playerleveldatatablemodel.cpp \
     prettynamer.cpp \
     texture.cpp \
     tfile.cpp
@@ -45,7 +47,9 @@ HEADERS += \
     models/entityclasstablemodel.h \
     models/entityinstancetablemodel.h \
     models/magictablemodel.h \
+    models/objectclasstablemodel.h \
     models/objectinstancetablemodel.h \
+    models/playerleveldatatablemodel.h \
     prettynamer.h \
     texture.h \
     tfile.h

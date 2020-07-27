@@ -1122,7 +1122,7 @@ namespace KingsField
             return in;
         }
 
-        friend QDataStream &operator<< (QDataStream &out, Magic& magic)
+        friend QDataStream &operator<< (QDataStream &out, const Magic& magic)
         {
             out << magic.PlayerHas;
             out << magic.ChargeRecoveryTime;

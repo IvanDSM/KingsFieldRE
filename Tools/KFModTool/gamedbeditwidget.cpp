@@ -6,5 +6,11 @@ GameDBEditWidget::GameDBEditWidget(QWidget *parent, std::shared_ptr<GameDB> game
     ui(new Ui::GameDBEditWidget)
 {
     ui->setupUi(this);
+
     ui->magicTable->setModel(new MagicTableModel(ui->magicTable, gameDB->getMagic(0)));
+    ui->objClassTable->setModel(new ObjectClassTableModel(ui->objClassTable, gameDB->getObjClass(0)));
+    ui->levelTable->setModel(new PlayerLevelDataTableModel(ui->levelTable, gameDB->getLevel(0)));
+
+    fillMagicCombo();
+    fillObjClassCombo();
 }

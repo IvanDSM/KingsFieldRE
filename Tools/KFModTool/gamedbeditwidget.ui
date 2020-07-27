@@ -13,7 +13,7 @@
   <property name="windowTitle">
    <string>Form</string>
   </property>
-  <layout class="QHBoxLayout" name="horizontalLayout">
+  <layout class="QVBoxLayout" name="verticalLayout_2">
    <item>
     <widget class="QTabWidget" name="tabWidget">
      <property name="currentIndex">
@@ -25,323 +25,7 @@
       </attribute>
       <layout class="QVBoxLayout" name="verticalLayout">
        <item>
-        <widget class="QComboBox" name="magicCombo">
-         <item>
-          <property name="text">
-           <string>0 (0x00) Waterfall</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>1 (0x01) Stone</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>2 (0x02) Earth Wave</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>3 (0x03) Meteor</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>4 (0x04) Wind Cutter</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>5 (0x05) Ice Storm</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>6 (0x06) Freeze</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>7 (0x07) Fire Ball</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>8 (0x08) Fire Wall</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>9 (0x09) Fire Storm</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>10 (0x0A) Flame</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>11 (0x0B) Lightning Volt</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>12 (0x0C) Flash</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>13 (0x0D) Seath</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>14 (0x0E) Dispoison</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>15 (0x0F) Resist Fire</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>16 (0x10) Earth Heal</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>17 (0x11) Missile Shield</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>18 (0x12) Light</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>19 (0x13) Breath</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>20 (0x14) Dunno</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>21 (0x15) Dunno</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>22 (0x16) Dunno</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>23 (0x17) Dunno</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>24 (0x18) Dunno</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>25 (0x19) Dunno</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>26 (0x1A) Dunno</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>27 (0x1B) Dunno</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>28 (0x1C) Dunno</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>29 (0x1D) Dunno</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>30 (0x1E) Dunno</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>31 (0x1F) Dunno</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>32 (0x20) Dunno</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>33 (0x21) Dunno</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>34 (0x22) Dunno</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>35 (0x23) Dunno</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>36 (0x24) Dunno</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>37 (0x25) Dunno</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>38 (0x26) Dunno</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>39 (0x27) Dunno</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>40 (0x28) Dunno</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>41 (0x29) Dunno</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>42 (0x2A) Dunno</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>43 (0x2B) Dunno</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>44 (0x2C) Dunno</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>45 (0x2D) Dunno</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>46 (0x2E) Dunno</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>47 (0x2F) Dunno</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>48 (0x30) Dunno</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>49 (0x31) Dunno</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>50 (0x32) Dunno</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>51 (0x33) Dunno</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>52 (0x34) Dunno</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>53 (0x35) Dunno</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>54 (0x36) Dunno</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>55 (0x37) Dunno</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>56 (0x38) Dunno</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>57 (0x39) Dunno</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>58 (0x3A) Dunno</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>59 (0x3B) Dunno</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>60 (0x3C) Dunno</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>61 (0x3D) Dunno</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>62 (0x3E) Dunno</string>
-          </property>
-         </item>
-        </widget>
+        <widget class="QComboBox" name="magicCombo"/>
        </item>
        <item>
         <widget class="QTableView" name="magicTable">
@@ -359,11 +43,37 @@
       <attribute name="title">
        <string>Object Classes</string>
       </attribute>
+      <layout class="QVBoxLayout" name="verticalLayout_3">
+       <item>
+        <widget class="QComboBox" name="objClassCombo"/>
+       </item>
+       <item>
+        <widget class="QTableView" name="objClassTable"/>
+       </item>
+      </layout>
      </widget>
      <widget class="QWidget" name="lvlTab">
       <attribute name="title">
        <string>Player Level Data</string>
       </attribute>
+      <layout class="QVBoxLayout" name="verticalLayout_4">
+       <item>
+        <widget class="QSpinBox" name="levelSpin">
+         <property name="prefix">
+          <string>Level </string>
+         </property>
+         <property name="minimum">
+          <number>1</number>
+         </property>
+         <property name="maximum">
+          <number>99</number>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QTableView" name="levelTable"/>
+       </item>
+      </layout>
      </widget>
      <widget class="QWidget" name="weaponStatTab">
       <attribute name="title">
