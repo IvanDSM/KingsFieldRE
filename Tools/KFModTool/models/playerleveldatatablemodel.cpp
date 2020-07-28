@@ -65,23 +65,23 @@ bool PlayerLevelDataTableModel::setData(const QModelIndex &index, const QVariant
         switch (index.row())
         {
             case 0:
-                playerLvl.BaseHP = qMin(static_cast<quint16>(65536), static_cast<quint16>(value.toUInt()));
+                playerLvl.BaseHP = qMin(static_cast<quint16>(65535), static_cast<quint16>(value.toUInt()));
                 result = true;
                 break;
             case 1:
-                playerLvl.BaseMP = qMin(static_cast<quint16>(65536), static_cast<quint16>(value.toUInt()));
+                playerLvl.BaseMP = qMin(static_cast<quint16>(65535), static_cast<quint16>(value.toUInt()));
                 result = true;
                 break;
             case 2:
-                playerLvl.StrPowerPlus = qMin(static_cast<quint16>(65536), static_cast<quint16>(value.toUInt()));
+                playerLvl.StrPowerPlus = qMin(static_cast<quint16>(65535), static_cast<quint16>(value.toUInt()));
                 result = true;
                 break;
             case 3:
-                playerLvl.MagPowerPlus = qMin(static_cast<quint16>(65536), static_cast<quint16>(value.toUInt()));
+                playerLvl.MagPowerPlus = qMin(static_cast<quint16>(65535), static_cast<quint16>(value.toUInt()));
                 result = true;
                 break;
             case 4:
-                playerLvl.BaseHP = qMin(static_cast<quint16>(4294967296), static_cast<quint16>(value.toUInt()));
+                playerLvl.BaseHP = qMin(static_cast<quint16>(4294967295), static_cast<quint16>(value.toUInt()));
                 result = true;
                 break;
         }
