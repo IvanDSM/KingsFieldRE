@@ -20,22 +20,11 @@ GameDB::GameDB(TFile &fdatTFile) : fdat(fdatTFile), database(fdat.getFile(28))
 
     dbStream >> sectionSize;
 
-    for (quint8 i = 0; i < 3; i++)
-    {
-        quint16 weirdHeaderTemporaryDumpster;
-        dbStream >> weirdHeaderTemporaryDumpster;
-    }
-
     for (size_t i = 0; i < weaponStatsSize; i++)
     {
         KingsField::WeaponStats weaponStat{};
         dbStream >> weaponStat;
         weaponStats.at(i) = weaponStat;
-    }
-
-    {
-        quint16 weirdFooterTemporaryDumpster;
-        dbStream >> weirdFooterTemporaryDumpster;
     }
 
     // Skip this unknown stuff (section 3)
@@ -75,19 +64,9 @@ void GameDB::writeChanges()
 
     dbStream >> sectionSize;
 
-    for (quint8 i = 0; i < 3; i++)
-    {
-        quint16 weirdHeaderTemporaryDumpster;
-        dbStream >> weirdHeaderTemporaryDumpster;
-    }
-
     for (size_t i = 0; i < weaponStatsSize; i++)
         dbStream << weaponStats.at(i);
 
-    {
-        quint16 weirdFooterTemporaryDumpster;
-        dbStream >> weirdFooterTemporaryDumpster;
-    }
 
     // Skip this unknown stuff (section 3)
     dbStream >> sectionSize;

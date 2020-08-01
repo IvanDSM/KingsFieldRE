@@ -1463,6 +1463,12 @@ namespace KingsField
      * \brief Stats structure for weapons.
      */
     struct WeaponStats {
+        undefined Unknown_x00;
+        undefined Unknown_x01;
+        undefined Unknown_x02;
+        undefined Unknown_x03;
+        undefined Unknown_x04;
+        undefined Unknown_x05;
         u_short OffSlash;
         u_short OffChop;
         u_short OffStab;
@@ -1471,10 +1477,16 @@ namespace KingsField
         u_short OffEarthM;
         u_short OffWindM;
         u_short OffWaterM;
-        std::array<undefined, 52> UnknownStuff;
+        std::array<undefined, 46> UnknownStuff;
 
         friend QDataStream &operator>> (QDataStream &in, WeaponStats& weaponStat)
         {
+            in >> weaponStat.Unknown_x00;
+            in >> weaponStat.Unknown_x01;
+            in >> weaponStat.Unknown_x02;
+            in >> weaponStat.Unknown_x03;
+            in >> weaponStat.Unknown_x04;
+            in >> weaponStat.Unknown_x05;
             in >> weaponStat.OffSlash;
             in >> weaponStat.OffChop;
             in >> weaponStat.OffStab;
@@ -1491,6 +1503,12 @@ namespace KingsField
 
         friend QDataStream &operator<< (QDataStream &out, const WeaponStats& weaponStat)
         {
+            out << weaponStat.Unknown_x00;
+            out << weaponStat.Unknown_x01;
+            out << weaponStat.Unknown_x02;
+            out << weaponStat.Unknown_x03;
+            out << weaponStat.Unknown_x04;
+            out << weaponStat.Unknown_x05;
             out << weaponStat.OffSlash;
             out << weaponStat.OffChop;
             out << weaponStat.OffStab;
