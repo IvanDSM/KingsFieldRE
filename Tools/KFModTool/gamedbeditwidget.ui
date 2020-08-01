@@ -79,6 +79,14 @@
       <attribute name="title">
        <string>Weapon Stats</string>
       </attribute>
+      <layout class="QVBoxLayout" name="verticalLayout_5">
+       <item>
+        <widget class="QComboBox" name="weaponCombo"/>
+       </item>
+       <item>
+        <widget class="QTableView" name="weaponTable"/>
+       </item>
+      </layout>
      </widget>
     </widget>
    </item>

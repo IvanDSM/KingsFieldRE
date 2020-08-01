@@ -1,17 +1,17 @@
-#ifndef ENTITYCLASSTABLEMODEL_H
-#define ENTITYCLASSTABLEMODEL_H
+#ifndef WEAPONSTATSTABLEMODEL_H
+#define WEAPONSTATSTABLEMODEL_H
 
 #include <QAbstractTableModel>
 #include <kftypes.h>
 
-class EntityClassTableModel : public QAbstractTableModel
+class WeaponStatsTableModel : public QAbstractTableModel
 {
     Q_OBJECT
 public:
-    explicit EntityClassTableModel(QObject *parent,
-                                   KingsField::EntityClassDeclaration &entityClassDecl_) :
+    WeaponStatsTableModel(QObject *parent,
+                          KingsField::WeaponStats &weaponStats_) :
         QAbstractTableModel(parent),
-        entityClassDecl(entityClassDecl_) {}
+        weaponStats(weaponStats_) {}
 
     int columnCount(const QModelIndex &parent) const override
     {
@@ -39,7 +39,7 @@ public:
     int rowCount(const QModelIndex &parent) const override
     {
         Q_UNUSED(parent)
-        return 56;
+        return 60;
     }
 
     bool setData(const QModelIndex &index, const QVariant &value, int role = Qt::EditRole) override;
@@ -49,24 +49,9 @@ public:
         Q_UNUSED(section) Q_UNUSED(value) Q_UNUSED(role)
         return false;
     }
-
 private:
-    KingsField::EntityClassDeclaration &entityClassDecl;
+    KingsField::WeaponStats &weaponStats;
 
-    const QString getSomePointer(size_t somePtrIndex) const
-    {
-        if (somePtrIndex < 16)
-        {
-            auto somePtrValue = entityClassDecl.SomePointers[somePtrIndex];
-            if (somePtrValue == static_cast<unsigned int>(-1))
-                return "Null";
-            else
-                return QString::number(somePtrValue)
-                       + " (0x" + QString::number(somePtrValue, 16) +")";
-        }
-
-        return "Ivan screwed up! Report this on GitHub!";
-    }
 };
 
-#endif // ENTITYCLASSTABLEMODEL_H
+#endif // WEAPONSTATSTABLEMODEL_H

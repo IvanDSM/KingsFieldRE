@@ -30,6 +30,7 @@ SOURCES += \
     models/objectclasstablemodel.cpp \
     models/objectinstancetablemodel.cpp \
     models/playerleveldatatablemodel.cpp \
+    models/weaponstatstablemodel.cpp \
     prettynamer.cpp \
     texture.cpp \
     tfile.cpp
@@ -50,6 +51,7 @@ HEADERS += \
     models/objectclasstablemodel.h \
     models/objectinstancetablemodel.h \
     models/playerleveldatatablemodel.h \
+    models/weaponstatstablemodel.h \
     prettynamer.h \
     texture.h \
     tfile.h

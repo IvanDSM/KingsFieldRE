@@ -17,7 +17,7 @@ public:
 
     KingsField::Magic &getMagic(byte magicIndex)
     {
-        if (magicIndex < 63)
+        if (magicIndex < magicDataSize)
             return magicData.at(magicIndex);
     }
 
@@ -25,6 +25,12 @@ public:
     {
         if (objClassIndex < objClassDeclarationsSize)
             return objClassDeclarations.at(objClassIndex);
+    }
+
+    KingsField::WeaponStats &getWeaponStats(byte weaponIndex)
+    {
+        if (weaponIndex < weaponStatsSize)
+            return weaponStats.at(weaponIndex);
     }
 
     void writeChanges();

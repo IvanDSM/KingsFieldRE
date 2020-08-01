@@ -859,6 +859,32 @@ namespace KingsField
         return static_cast<unsigned short>(objectId);
     }
 
+    static const QString getWeaponStatsName(byte weaponStatsIndex)
+    {
+        switch(weaponStatsIndex)
+        {
+            case 0: return "Dagger";
+            case 1: return "Short Sword";
+            case 2: return "Knight Sword";
+            case 3: return "Morning Star";
+            case 4: return "Battle Hammer";
+            case 5: return "Bastard Sword";
+            case 6: return "Crescent Axe";
+            case 7: return "A";
+            case 8: return "A";
+            case 9: return "Flame Sword";
+            case 10: return "Shiden";
+            case 11: return "Spider";
+            case 12: return "Ice Blade";
+            case 13: return "Seath's Sword";
+            case 14: return "Moonlight Sword";
+            case 15: return "Dark Slayer";
+            case 16: return "Bow";
+            case 17: return "Arbalest";
+            default: return "ERROR";
+        }
+    }
+
     // Structs
 
     /*!
@@ -1445,58 +1471,7 @@ namespace KingsField
         u_short OffEarthM;
         u_short OffWindM;
         u_short OffWaterM;
-        undefined field_0x10;
-        undefined field_0x11;
-        undefined field_0x12;
-        undefined field_0x13;
-        undefined field_0x14;
-        undefined field_0x15;
-        undefined field_0x16;
-        undefined field_0x17;
-        undefined field_0x18;
-        undefined field_0x19;
-        undefined field_0x1a;
-        undefined field_0x1b;
-        undefined field_0x1c;
-        undefined field_0x1d;
-        undefined field_0x1e;
-        undefined field_0x1f;
-        undefined field_0x20;
-        undefined field_0x21;
-        undefined field_0x22;
-        undefined field_0x23;
-        undefined field_0x24;
-        undefined field_0x25;
-        undefined field_0x26;
-        undefined field_0x27;
-        undefined field_0x28;
-        undefined field_0x29;
-        undefined field_0x2a;
-        undefined field_0x2b;
-        undefined field_0x2c;
-        undefined field_0x2d;
-        undefined field_0x2e;
-        undefined field_0x2f;
-        undefined field_0x30;
-        undefined field_0x31;
-        undefined field_0x32;
-        undefined field_0x33;
-        undefined field_0x34;
-        undefined field_0x35;
-        undefined field_0x36;
-        undefined field_0x37;
-        undefined field_0x38;
-        undefined field_0x39;
-        undefined field_0x3a;
-        undefined field_0x3b;
-        undefined field_0x3c;
-        undefined field_0x3d;
-        undefined field_0x3e;
-        undefined field_0x3f;
-        undefined field_0x40;
-        undefined field_0x41;
-        undefined field_0x42;
-        undefined field_0x43;
+        std::array<undefined, 52> UnknownStuff;
 
         friend QDataStream &operator>> (QDataStream &in, WeaponStats& weaponStat)
         {
@@ -1508,63 +1483,13 @@ namespace KingsField
             in >> weaponStat.OffEarthM;
             in >> weaponStat.OffWindM;
             in >> weaponStat.OffWaterM;
-            in >> weaponStat.field_0x10;
-            in >> weaponStat.field_0x11;
-            in >> weaponStat.field_0x12;
-            in >> weaponStat.field_0x13;
-            in >> weaponStat.field_0x14;
-            in >> weaponStat.field_0x15;
-            in >> weaponStat.field_0x16;
-            in >> weaponStat.field_0x17;
-            in >> weaponStat.field_0x18;
-            in >> weaponStat.field_0x19;
-            in >> weaponStat.field_0x1a;
-            in >> weaponStat.field_0x1b;
-            in >> weaponStat.field_0x1c;
-            in >> weaponStat.field_0x1d;
-            in >> weaponStat.field_0x1e;
-            in >> weaponStat.field_0x1f;
-            in >> weaponStat.field_0x20;
-            in >> weaponStat.field_0x21;
-            in >> weaponStat.field_0x22;
-            in >> weaponStat.field_0x23;
-            in >> weaponStat.field_0x24;
-            in >> weaponStat.field_0x25;
-            in >> weaponStat.field_0x26;
-            in >> weaponStat.field_0x27;
-            in >> weaponStat.field_0x28;
-            in >> weaponStat.field_0x29;
-            in >> weaponStat.field_0x2a;
-            in >> weaponStat.field_0x2b;
-            in >> weaponStat.field_0x2c;
-            in >> weaponStat.field_0x2d;
-            in >> weaponStat.field_0x2e;
-            in >> weaponStat.field_0x2f;
-            in >> weaponStat.field_0x30;
-            in >> weaponStat.field_0x31;
-            in >> weaponStat.field_0x32;
-            in >> weaponStat.field_0x33;
-            in >> weaponStat.field_0x34;
-            in >> weaponStat.field_0x35;
-            in >> weaponStat.field_0x36;
-            in >> weaponStat.field_0x37;
-            in >> weaponStat.field_0x38;
-            in >> weaponStat.field_0x39;
-            in >> weaponStat.field_0x3a;
-            in >> weaponStat.field_0x3b;
-            in >> weaponStat.field_0x3c;
-            in >> weaponStat.field_0x3d;
-            in >> weaponStat.field_0x3e;
-            in >> weaponStat.field_0x3f;
-            in >> weaponStat.field_0x40;
-            in >> weaponStat.field_0x41;
-            in >> weaponStat.field_0x42;
-            in >> weaponStat.field_0x43;
+            for (undefined &unknown : weaponStat.UnknownStuff)
+                in >> unknown;
 
             return in;
         }
 
-        friend QDataStream &operator<< (QDataStream &out, WeaponStats& weaponStat)
+        friend QDataStream &operator<< (QDataStream &out, const WeaponStats& weaponStat)
         {
             out << weaponStat.OffSlash;
             out << weaponStat.OffChop;
@@ -1574,130 +1499,10 @@ namespace KingsField
             out << weaponStat.OffEarthM;
             out << weaponStat.OffWindM;
             out << weaponStat.OffWaterM;
-            out << weaponStat.field_0x10;
-            out << weaponStat.field_0x11;
-            out << weaponStat.field_0x12;
-            out << weaponStat.field_0x13;
-            out << weaponStat.field_0x14;
-            out << weaponStat.field_0x15;
-            out << weaponStat.field_0x16;
-            out << weaponStat.field_0x17;
-            out << weaponStat.field_0x18;
-            out << weaponStat.field_0x19;
-            out << weaponStat.field_0x1a;
-            out << weaponStat.field_0x1b;
-            out << weaponStat.field_0x1c;
-            out << weaponStat.field_0x1d;
-            out << weaponStat.field_0x1e;
-            out << weaponStat.field_0x1f;
-            out << weaponStat.field_0x20;
-            out << weaponStat.field_0x21;
-            out << weaponStat.field_0x22;
-            out << weaponStat.field_0x23;
-            out << weaponStat.field_0x24;
-            out << weaponStat.field_0x25;
-            out << weaponStat.field_0x26;
-            out << weaponStat.field_0x27;
-            out << weaponStat.field_0x28;
-            out << weaponStat.field_0x29;
-            out << weaponStat.field_0x2a;
-            out << weaponStat.field_0x2b;
-            out << weaponStat.field_0x2c;
-            out << weaponStat.field_0x2d;
-            out << weaponStat.field_0x2e;
-            out << weaponStat.field_0x2f;
-            out << weaponStat.field_0x30;
-            out << weaponStat.field_0x31;
-            out << weaponStat.field_0x32;
-            out << weaponStat.field_0x33;
-            out << weaponStat.field_0x34;
-            out << weaponStat.field_0x35;
-            out << weaponStat.field_0x36;
-            out << weaponStat.field_0x37;
-            out << weaponStat.field_0x38;
-            out << weaponStat.field_0x39;
-            out << weaponStat.field_0x3a;
-            out << weaponStat.field_0x3b;
-            out << weaponStat.field_0x3c;
-            out << weaponStat.field_0x3d;
-            out << weaponStat.field_0x3e;
-            out << weaponStat.field_0x3f;
-            out << weaponStat.field_0x40;
-            out << weaponStat.field_0x41;
-            out << weaponStat.field_0x42;
-            out << weaponStat.field_0x43;
+            for (auto unknown : weaponStat.UnknownStuff)
+                out << unknown;
 
             return out;
-        }
-
-        operator QByteArray()
-        {
-            QByteArray arrayified;
-            QDataStream arrayStream(&arrayified, QIODevice::ReadWrite);
-            arrayStream.setByteOrder(QDataStream::LittleEndian);
-
-            arrayStream << OffSlash;
-            arrayStream << OffChop;
-            arrayStream << OffStab;
-            arrayStream << OffHolyM;
-            arrayStream << OffFireM;
-            arrayStream << OffEarthM;
-            arrayStream << OffWindM;
-            arrayStream << OffWaterM;
-            arrayStream << field_0x10;
-            arrayStream << field_0x11;
-            arrayStream << field_0x12;
-            arrayStream << field_0x13;
-            arrayStream << field_0x14;
-            arrayStream << field_0x15;
-            arrayStream << field_0x16;
-            arrayStream << field_0x17;
-            arrayStream << field_0x18;
-            arrayStream << field_0x19;
-            arrayStream << field_0x1a;
-            arrayStream << field_0x1b;
-            arrayStream << field_0x1c;
-            arrayStream << field_0x1d;
-            arrayStream << field_0x1e;
-            arrayStream << field_0x1f;
-            arrayStream << field_0x20;
-            arrayStream << field_0x21;
-            arrayStream << field_0x22;
-            arrayStream << field_0x23;
-            arrayStream << field_0x24;
-            arrayStream << field_0x25;
-            arrayStream << field_0x26;
-            arrayStream << field_0x27;
-            arrayStream << field_0x28;
-            arrayStream << field_0x29;
-            arrayStream << field_0x2a;
-            arrayStream << field_0x2b;
-            arrayStream << field_0x2c;
-            arrayStream << field_0x2d;
-            arrayStream << field_0x2e;
-            arrayStream << field_0x2f;
-            arrayStream << field_0x30;
-            arrayStream << field_0x31;
-            arrayStream << field_0x32;
-            arrayStream << field_0x33;
-            arrayStream << field_0x34;
-            arrayStream << field_0x35;
-            arrayStream << field_0x36;
-            arrayStream << field_0x37;
-            arrayStream << field_0x38;
-            arrayStream << field_0x39;
-            arrayStream << field_0x3a;
-            arrayStream << field_0x3b;
-            arrayStream << field_0x3c;
-            arrayStream << field_0x3d;
-            arrayStream << field_0x3e;
-            arrayStream << field_0x3f;
-            arrayStream << field_0x40;
-            arrayStream << field_0x41;
-            arrayStream << field_0x42;
-            arrayStream << field_0x43;
-
-            return arrayified;
         }
     };
 
@@ -1705,8 +1510,8 @@ namespace KingsField
 
     /*!
      * \brief Rotation coefficient used for converting PS1 format angles from/to degrees.
-     *        To get PS1 format angles from degrees, divide the angle in degrees by the coefficient.
-     *        To get degrees from PS1 format angles, multiplye the angle in PS1 format by the coffiecient.
+     * To get PS1 format angles from degrees, divide the angle in degrees by the coefficient.
+     * To get degrees from PS1 format angles, multiplye the angle in PS1 format by the coffiecient.
      */
     constexpr static const double rotationCoefficient = 360.0 / 4096.0;
 }
