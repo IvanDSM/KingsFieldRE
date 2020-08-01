@@ -1023,11 +1023,32 @@ namespace KingsField
         undefined field_0x5;
         ObjectID DroppedItem;
         byte Layer;
-        byte TriggerObject;
-        byte ZRotation;
+        u_short ZRotation;
         short FineWEXPos;
         short FineNSYPos;
         short FineZPos;
+
+        friend QDataStream &operator>>(QDataStream &in, EntityInstance &instance)
+        {
+            quint8 tempByte;
+            in >> instance.field_0x0;
+            in >> instance.EntityClass;
+            in >> instance.field_0x2;
+            in >> instance.WEXTilePos;
+
+            in >> instance.NSYTilePos;
+            in >> instance.field_0x5;
+            in >> tempByte;
+            instance.DroppedItem = KingsField::getObjectIDFromByte(tempByte);
+            in >> instance.Layer;
+
+            in >> instance.ZRotation;
+
+            in >> instance.FineWEXPos;
+            in >> instance.FineNSYPos;
+            in >> instance.FineZPos;
+            return in;
+        }
 
         EntityInstance& operator= (const QByteArray& array)
         {
@@ -1043,7 +1064,6 @@ namespace KingsField
             arrayStream >> tempByte;
             DroppedItem = getObjectIDFromByte(tempByte);
             arrayStream >> Layer;
-            arrayStream >> TriggerObject;
             arrayStream >> ZRotation;
             arrayStream >> FineWEXPos;
             arrayStream >> FineNSYPos;
@@ -1065,7 +1085,6 @@ namespace KingsField
             arrayStream << field_0x5;
             arrayStream << getObjectIDAsByte(DroppedItem);
             arrayStream << Layer;
-            arrayStream << TriggerObject;
             arrayStream << ZRotation;
             arrayStream << FineWEXPos;
             arrayStream << FineNSYPos;
@@ -1212,7 +1231,8 @@ namespace KingsField
         undefined field_0x16;
         undefined field_0x17;
 
-        friend QDataStream &operator>>(QDataStream &in, ObjectClassDeclaration &objClassDecl){
+        friend QDataStream &operator>>(QDataStream &in, ObjectClassDeclaration &objClassDecl)
+        {
             in >> objClassDecl.field_0x0;
             in >> objClassDecl.SomeType;
             in >> objClassDecl.field_0x2;

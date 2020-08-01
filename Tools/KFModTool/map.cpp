@@ -97,24 +97,7 @@ Map::Map(TFile &fdatTFile, unsigned int index, QString name): fdat(fdatTFile),  
     for(auto entityInstance = 0; entityInstance < 200; entityInstance++)
     {
         KingsField::EntityInstance instance{};
-        quint8 tempByte;
-        map2Stream >> instance.field_0x0;
-        map2Stream >> instance.EntityClass;
-        map2Stream >> instance.field_0x2;
-        map2Stream >> instance.WEXTilePos;
-
-        map2Stream >> instance.NSYTilePos;
-        map2Stream >> instance.field_0x5;
-        map2Stream >> tempByte;
-        instance.DroppedItem = KingsField::getObjectIDFromByte(tempByte);
-        map2Stream >> instance.Layer;
-
-        map2Stream >> instance.TriggerObject;
-        map2Stream >> instance.ZRotation;
-
-        map2Stream >> instance.FineWEXPos;
-        map2Stream >> instance.FineNSYPos;
-        map2Stream >> instance.FineZPos;
+        map2Stream >> instance;
         entityInstances.push_back(instance);
     }
     map2Stream.skipRawData(4);

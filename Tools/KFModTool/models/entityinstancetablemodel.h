@@ -39,7 +39,7 @@ public:
     int rowCount(const QModelIndex &parent) const override
     {
         Q_UNUSED(parent)
-        return 13;
+        return 12;
     }
 
     bool setData(const QModelIndex &index, const QVariant &value, int role = Qt::EditRole) override;
@@ -52,6 +52,7 @@ public:
 
 private:
     KingsField::EntityInstance &entityInstance;
+    constexpr static const double rotationCoefficient = 360.0 / 4096.0;
 };
 
 #endif // ENTITYINSTANCETABLEMODEL_H

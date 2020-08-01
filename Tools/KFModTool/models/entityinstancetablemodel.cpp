@@ -17,13 +17,12 @@ QVariant EntityInstanceTableModel::data(const QModelIndex &index, int role) cons
                                 + KingsField::getObjectName(entityInstance.DroppedItem) + ")");
                 break;
             case 7: result.setValue(QString::number(entityInstance.Layer)); break;
-            case 8: result.setValue(QString::number(entityInstance.TriggerObject)); break;
-            case 9: result.setValue(QString::number(entityInstance.ZRotation) + " ("
-                                + QString::number(entityInstance.ZRotation * 90)
+            case 8: result.setValue(QString::number(entityInstance.ZRotation) + " ("
+                                + QString::number(entityInstance.ZRotation * rotationCoefficient)
                                 + "°)"); break;
-            case 10: result.setValue(QString::number(entityInstance.FineWEXPos)); break;
-            case 11: result.setValue(QString::number(entityInstance.FineNSYPos)); break;
-            case 12: result.setValue(QString::number(entityInstance.FineZPos)); break;
+            case 9: result.setValue(QString::number(entityInstance.FineWEXPos)); break;
+            case 10: result.setValue(QString::number(entityInstance.FineNSYPos)); break;
+            case 11: result.setValue(QString::number(entityInstance.FineZPos)); break;
         }
     }
 
@@ -49,11 +48,10 @@ QVariant EntityInstanceTableModel::headerData(int section, Qt::Orientation orien
                 case 5: return "Unknown 05";
                 case 6: return "Dropped Item";
                 case 7: return "Layer";
-                case 8: return "Trigger Object";
-                case 9: return "Z Rotation";
-                case 10: return "Fine X Position";
-                case 11: return "Fine Y Position";
-                case 12: return "Fine Z Position";
+                case 8: return "Z Rotation";
+                case 9: return "Fine X Position";
+                case 10: return "Fine Y Position";
+                case 11: return "Fine Z Position";
                 default: break;
             }
         }
@@ -137,29 +135,16 @@ bool EntityInstanceTableModel::setData(const QModelIndex &index, const QVariant 
                 }
                 break;
             case 8:
-                uIntValue = value.toUInt();
-                if (uIntValue < 256)
-                {
-                    entityInstance.TriggerObject = static_cast<quint8>(uIntValue);
-                    result = true;
-                }
+                if (value.toString().right(1) == "°" ||
+                    value.toString().right(1) == "º" ||
+                    value.toString().right(1) == "ª")
+                    uIntValue = value.toString().chopped(1).toUInt() / rotationCoefficient;
+                else
+                    uIntValue = value.toUInt() % 4096;
+                entityInstance.ZRotation = static_cast<quint16>(uIntValue);
+                result = true;
                 break;
             case 9:
-                uIntValue = value.toUInt();
-                if (uIntValue >= 90 && uIntValue <= 360)
-                {
-                    if (uIntValue == 360)
-                        uIntValue = 0;
-                    else
-                        uIntValue /= 90;
-                }
-                if (uIntValue < 4)
-                {
-                    entityInstance.ZRotation = static_cast<quint8>(uIntValue);
-                    result = true;
-                }
-                break;
-            case 10:
                 intValue = value.toInt();
                 if (intValue < 65536)
                 {
@@ -167,7 +152,7 @@ bool EntityInstanceTableModel::setData(const QModelIndex &index, const QVariant 
                     result = true;
                 }
                 break;
-            case 11:
+            case 10:
                 intValue = value.toInt();
                 if (intValue < 65536)
                 {
@@ -175,7 +160,7 @@ bool EntityInstanceTableModel::setData(const QModelIndex &index, const QVariant 
                     result = true;
                 }
                 break;
-            case 12:
+            case 11:
                 intValue = value.toInt();
                 if (intValue < 65536)
                 {
