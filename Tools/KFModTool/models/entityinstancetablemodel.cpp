@@ -18,7 +18,7 @@ QVariant EntityInstanceTableModel::data(const QModelIndex &index, int role) cons
                 break;
             case 7: result.setValue(QString::number(entityInstance.Layer)); break;
             case 8: result.setValue(QString::number(entityInstance.ZRotation) + " ("
-                                + QString::number(entityInstance.ZRotation * rotationCoefficient)
+                                + QString::number(entityInstance.ZRotation * KingsField::rotationCoefficient)
                                 + "°)"); break;
             case 9: result.setValue(QString::number(entityInstance.FineWEXPos)); break;
             case 10: result.setValue(QString::number(entityInstance.FineNSYPos)); break;
@@ -138,7 +138,7 @@ bool EntityInstanceTableModel::setData(const QModelIndex &index, const QVariant 
                 if (value.toString().right(1) == "°" ||
                     value.toString().right(1) == "º" ||
                     value.toString().right(1) == "ª")
-                    uIntValue = value.toString().chopped(1).toUInt() / rotationCoefficient;
+                    uIntValue = static_cast<unsigned int>(value.toString().chopped(1).toUInt() / KingsField::rotationCoefficient);
                 else
                     uIntValue = value.toUInt() % 4096;
                 entityInstance.ZRotation = static_cast<quint16>(uIntValue);

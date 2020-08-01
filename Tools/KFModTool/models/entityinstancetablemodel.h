@@ -52,7 +52,6 @@ public:
 
 private:
     KingsField::EntityInstance &entityInstance;
-    constexpr static const double rotationCoefficient = 360.0 / 4096.0;
 };
 
 #endif // ENTITYINSTANCETABLEMODEL_H

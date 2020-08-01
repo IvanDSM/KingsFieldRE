@@ -15,7 +15,8 @@ QVariant ObjectInstanceTableModel::data(const QModelIndex &index, int role) cons
                                     + " ("
                                     + KingsField::getObjectName(objInstance.ObjectID) + ")"); break;
             case 5: result.setValue(QString::number(objInstance.ZRotation) + " (" +
-                                    QString::number(objInstance.ZRotation * 90) + "°)"); break;
+                                    QString::number(objInstance.ZRotation * KingsField::rotationCoefficient) +
+                                    "°)"); break;
             case 6: result.setValue(QString::number(objInstance.FineWEXPos)); break;
             case 7: result.setValue(QString::number(objInstance.FineNSYPos)); break;
             case 8: result.setValue(QString::number(objInstance.FineZPos)); break;
@@ -122,12 +123,14 @@ bool ObjectInstanceTableModel::setData(const QModelIndex &index, const QVariant 
                 }
                 break;
             case 5:
-                intValue = value.toInt();
-                if (intValue > -32768 && intValue < 32767)
-                {
-                    objInstance.ZRotation = static_cast<short>(intValue);
-                    result = true;
-                }
+                if (value.toString().right(1) == "°" ||
+                    value.toString().right(1) == "º" ||
+                    value.toString().right(1) == "ª")
+                    uIntValue = static_cast<unsigned int>(value.toString().chopped(1).toUInt() / KingsField::rotationCoefficient);
+                else
+                    uIntValue = value.toUInt() % 4096;
+                objInstance.ZRotation = static_cast<u_short>(uIntValue);
+                result = true;
                 break;
 
             case 6:

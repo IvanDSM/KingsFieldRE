@@ -1298,7 +1298,7 @@ namespace KingsField
         byte NSYTilePos;
         undefined field_0x3;
         enum ObjectID ObjectID;
-        short ZRotation;
+        u_short ZRotation;
         short FineWEXPos;
         short FineNSYPos;
         short FineZPos;
@@ -1700,6 +1700,15 @@ namespace KingsField
             return arrayified;
         }
     };
+
+    // Constants
+
+    /*!
+     * \brief Rotation coefficient used for converting PS1 format angles from/to degrees.
+     *        To get PS1 format angles from degrees, divide the angle in degrees by the coefficient.
+     *        To get degrees from PS1 format angles, multiplye the angle in PS1 format by the coffiecient.
+     */
+    constexpr static const double rotationCoefficient = 360.0 / 4096.0;
 }
 
 
