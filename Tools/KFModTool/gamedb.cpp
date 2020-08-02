@@ -18,14 +18,16 @@ GameDB::GameDB(TFile &fdatTFile) : fdat(fdatTFile), database(fdat.getFile(28))
         objClassDeclarations.at(i) = objClassDecl;
     }
 
-    dbStream >> sectionSize;
-
     for (size_t i = 0; i < weaponStatsSize; i++)
     {
         KingsField::WeaponStats weaponStat{};
         dbStream >> weaponStat;
         weaponStats.at(i) = weaponStat;
     }
+
+    // Skip 8 bytes after weapon stats array
+    dbStream >> sectionSize;
+    dbStream >> sectionSize;
 
     // Skip this unknown stuff (section 3)
     dbStream >> sectionSize;
