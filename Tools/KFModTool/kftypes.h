@@ -147,6 +147,8 @@ namespace KingsField
     enum class MagicID
     {
         Breath=19,
+        DarkSlayerMagicA=44,
+        DarkSlayerMagicB=45,
         Dispoison=14,
         EarthHeal=16,
         EarthWave=2,
@@ -154,16 +156,27 @@ namespace KingsField
         FireStorm=9,
         FireWall=8,
         Flame=10,
+        FlameSwordMagicA=49,
+        FlameSwordMagicB=50,
         Flash=12,
         Freeze=6,
+        IceBladeMagicA=38,
+        IceBladeMagicB=39,
         IceStorm=5,
         Light=18,
         LightningVolt=11,
         Meteor=3,
         MissileShield=17,
+        MoonlightSwordMagicA=42,
+        MoonlightSwordMagicB=43,
         None=255,
         ResistFire=15,
         Seath=13,
+        SeathsSwordMagicA=40,
+        ShidenMagicA=34,
+        ShidenMagicB=35,
+        SpiderSwordMagicA=51,
+        SpiderSwordMagicB=52,
         Stone=1,
         WaterFall=0,
         WindCutter=4
@@ -195,8 +208,8 @@ namespace KingsField
         BodyIceArmor=30,
         BodyKnightPlate=29,
         BodySeathsArmor=32,
-        Bones2=144,
         Bones=143,
+        Bones2=144,
         Bucket=180,
         CeilingTorch=280,
         Chair=259,
@@ -236,7 +249,8 @@ namespace KingsField
         GoldenThingRENAME_ME=265,
         GreenWallCrossRENAME_ME=205,
         GreenWallTrapdoorMaybe=206,
-        GreenWallWithSecret=214,
+        GreenWallWithSecret1=209,
+        GreenWallWithSecret2=214,
         GreenWallWithSpikeTrap=213,
         Guidepost=189,
         GuyraTeleportCube=231,
@@ -250,8 +264,8 @@ namespace KingsField
         HeadKnightHelm=22,
         HeadLightningHelm=25,
         HeadSeathsHelm=26,
-        ItemAHerb2=119,
         ItemAHerb=110,
+        ItemAHerb2=119,
         ItemAPotion=81,
         ItemARing=98,
         ItemAntidote=75,
@@ -315,8 +329,8 @@ namespace KingsField
         Minecart=177,
         MinersGraveMaybe=151,
         Moon=248,
-        NighttimeSkybox2=249,
         NighttimeSkybox=247,
+        NighttimeSkybox2=249,
         None=255,
         PillarOfWind=157,
         RedFlower=287,
@@ -324,6 +338,8 @@ namespace KingsField
         RhombusKeySlot=184,
         SamuraisGrave=149,
         Savepoint=230,
+        SeathsFountainDoorLeft=133,
+        SeathsFountainDoorRight=134,
         SeathsFountainPillar=191,
         SecretDoor=130,
         Shelf=285,
@@ -342,10 +358,11 @@ namespace KingsField
         SkullKeyWaterObstacle=204,
         SlotForSomethingRENAME_ME=186,
         SmallBed=283,
+        SmallStackOfLogs=286,
         SmallTable=136,
         SmallWeirdPillarRENAME_ME=274,
-        SomeBrokenGrave2=156,
         SomeBrokenGrave=155,
+        SomeBrokenGrave2=156,
         SomeDoorHandleRENAME_ME=211,
         SomeGrave=154,
         SquareWell=124,
@@ -358,6 +375,7 @@ namespace KingsField
         StoneThingRENAME_ME=266,
         Stool=261,
         SwingingScythe=200,
+        SwingingSpikeBall=201,
         TableWithThingie=257,
         TarnStatue=171,
         TheMagiciansLamp=163,
@@ -371,9 +389,9 @@ namespace KingsField
         WallWithSecret=131,
         WallWithSecret2=138,
         WallWithSpikeTrap=202,
+        WallWriting=160,
         WallWriting2=161,
         WallWriting3=162,
-        WallWriting=160,
         WaterWell=195,
         WeaponA1=7,
         WeaponA2=8,
@@ -396,7 +414,6 @@ namespace KingsField
         WeaponShiden=10,
         WeaponShortSword=1,
         WeaponSpider=11,
-        WeirdAsFuckObjectTile=131,
         WeirdPillarRENAME_ME=273,
         WhitePinkFlower=288,
         WoodenChestBody=121,
@@ -534,26 +551,39 @@ namespace KingsField
 #endif
         {
             {MagicID::Breath, "Breath"},
+            {MagicID::DarkSlayerMagicA, "DarkSlayerMagicA"},
+            {MagicID::DarkSlayerMagicB, "DarkSlayerMagicB"},
             {MagicID::Dispoison, "Dispoison"},
-            {MagicID::EarthHeal, "Earth Heal"},
-            {MagicID::EarthWave, "Earth Wave"},
-            {MagicID::FireBall, "Fire Ball"},
-            {MagicID::FireStorm, "Fire Storm"},
-            {MagicID::FireWall, "Fire Wall"},
+            {MagicID::EarthHeal, "EarthHeal"},
+            {MagicID::EarthWave, "EarthWave"},
+            {MagicID::FireBall, "FireBall"},
+            {MagicID::FireStorm, "FireStorm"},
+            {MagicID::FireWall, "FireWall"},
             {MagicID::Flame, "Flame"},
+            {MagicID::FlameSwordMagicA, "FlameSwordMagicA"},
+            {MagicID::FlameSwordMagicB, "FlameSwordMagicB"},
             {MagicID::Flash, "Flash"},
             {MagicID::Freeze, "Freeze"},
-            {MagicID::IceStorm, "Ice Storm"},
+            {MagicID::IceBladeMagicA, "IceBladeMagicA"},
+            {MagicID::IceBladeMagicB, "IceBladeMagicB"},
+            {MagicID::IceStorm, "IceStorm"},
             {MagicID::Light, "Light"},
-            {MagicID::LightningVolt, "Lightning Volt"},
+            {MagicID::LightningVolt, "LightningVolt"},
             {MagicID::Meteor, "Meteor"},
-            {MagicID::MissileShield, "Missile Shield"},
+            {MagicID::MissileShield, "MissileShield"},
+            {MagicID::MoonlightSwordMagicA, "MoonlightSwordMagicA"},
+            {MagicID::MoonlightSwordMagicB, "MoonlightSwordMagicB"},
             {MagicID::None, "None"},
-            {MagicID::ResistFire, "Resist Fire"},
+            {MagicID::ResistFire, "ResistFire"},
             {MagicID::Seath, "Seath"},
+            {MagicID::SeathsSwordMagicA, "SeathsSwordMagicA"},
+            {MagicID::ShidenMagicA, "ShidenMagicA"},
+            {MagicID::ShidenMagicB, "ShidenMagicB"},
+            {MagicID::SpiderSwordMagicA, "SpiderSwordMagicA"},
+            {MagicID::SpiderSwordMagicB, "SpiderSwordMagicB"},
             {MagicID::Stone, "Stone"},
-            {MagicID::WaterFall, "Water Fall"},
-            {MagicID::WindCutter, "Wind Cutter"}
+            {MagicID::WaterFall, "WaterFall"},
+            {MagicID::WindCutter, "WindCutter"}
     };
 
 #if __GNUC__ >= 10
@@ -562,235 +592,239 @@ namespace KingsField
     static const std::map<const ObjectID, const QString> objectIdNameMap =
 #endif
     {
-        {ObjectID::ABrokenSword, "ABrokenSword"},
-        {ObjectID::ASoldierOfVerdite, "ASoldierOfVerdite"},
-        {ObjectID::ArmsA, "ArmsA"},
-        {ObjectID::ArmsDemonsHands, "ArmsDemonsHands"},
-        {ObjectID::ArmsIronGloves, "ArmsIronGloves"},
-        {ObjectID::ArmsRuinousGloves, "ArmsRuinousGloves"},
-        {ObjectID::ArmsSilverArms, "ArmsSilverArms"},
-        {ObjectID::ArmsStoneHands, "ArmsStoneHands"},
-        {ObjectID::Barrel, "Barrel"},
-        {ObjectID::Bed, "Bed"},
-        {ObjectID::BigGreyDoorLeft, "BigGreyDoorLeft"},
-        {ObjectID::BigGreyDoorRight, "BigGreyDoorRight"},
-        {ObjectID::BigRoughStoneDoor, "BigRoughStoneDoor"},
-        {ObjectID::BigStoneDoor, "BigStoneDoor"},
-        {ObjectID::BigWallTileRENAME_ME, "BigWallTileRENAME_ME"},
-        {ObjectID::BodyA, "BodyA"},
-        {ObjectID::BodyBreastPlate, "BodyBreastPlate"},
-        {ObjectID::BodyDarkArmor, "BodyDarkArmor"},
-        {ObjectID::BodyIceArmor, "BodyIceArmor"},
-        {ObjectID::BodyKnightPlate, "BodyKnightPlate"},
-        {ObjectID::BodySeathsArmor, "BodySeathsArmor"},
-        {ObjectID::Bones2, "Bones2"},
-        {ObjectID::Bones, "Bones"},
-        {ObjectID::Bucket, "Bucket"},
-        {ObjectID::CeilingTorch, "CeilingTorch"},
-        {ObjectID::Chair, "Chair"},
-        {ObjectID::ColosseumDoor, "ColosseumDoor"},
-        {ObjectID::CopperKnightStatue, "CopperKnightStatue"},
-        {ObjectID::CrossFeetTable, "CrossFeetTable"},
-        {ObjectID::DaytimeSkybox, "DaytimeSkybox"},
-        {ObjectID::DeadCrystalMiner, "DeadCrystalMiner"},
-        {ObjectID::DeadDudeRENAME_ME, "DeadDudeRENAME_ME"},
-        {ObjectID::DemonLordFromMadScientistTube, "DemonLordFromMadScientistTube"},
-        {ObjectID::DemonLordStatue, "DemonLordStatue"},
-        {ObjectID::DragonGrass, "DragonGrass"},
-        {ObjectID::DragonStoneSlot, "DragonStoneSlot"},
-        {ObjectID::DrawbridgeSwitch, "DrawbridgeSwitch"},
-        {ObjectID::DummyItem1, "DummyItem1"},
-        {ObjectID::DummyItem2, "DummyItem2"},
-        {ObjectID::DummyItem3, "DummyItem3"},
-        {ObjectID::DummyItem4, "DummyItem4"},
-        {ObjectID::DummyItem5, "DummyItem5"},
-        {ObjectID::DummyItem6, "DummyItem6"},
-        {ObjectID::DummyItem7, "DummyItem7"},
-        {ObjectID::EarthElementalStatue, "EarthElementalStatue"},
-        {ObjectID::ElfsGrave, "ElfsGrave"},
-        {ObjectID::EquipItemAmuletOfMist, "EquipItemAmuletOfMist"},
-        {ObjectID::EquipItemEarthRing, "EquipItemEarthRing"},
-        {ObjectID::EquipItemLightwaveRing, "EquipItemLightwaveRing"},
-        {ObjectID::EquipItemPsycprosCollar, "EquipItemPsycprosCollar"},
-        {ObjectID::EquipItemScorpionsBracelet, "EquipItemScorpionsBracelet"},
-        {ObjectID::EquipItemSeathsBracelet, "EquipItemSeathsBracelet"},
-        {ObjectID::EquipItemSeathsTear, "EquipItemSeathsTear"},
-        {ObjectID::FeetA, "FeetA"},
-        {ObjectID::FeetDeathWalkers, "FeetDeathWalkers"},
-        {ObjectID::FeetIronBoots, "FeetIronBoots"},
-        {ObjectID::FeetLegGuarders, "FeetLegGuarders"},
-        {ObjectID::FeetRuinousBoots, "FeetRuinousBoots"},
-        {ObjectID::FeetSilverBoots, "FeetSilverBoots"},
-        {ObjectID::GoldenThingRENAME_ME, "GoldenThingRENAME_ME"},
-        {ObjectID::GreenWallCrossRENAME_ME, "GreenWallCrossRENAME_ME"},
-        {ObjectID::GreenWallTrapdoorMaybe, "GreenWallTrapdoorMaybe"},
-        {ObjectID::GreenWallWithSecret, "GreenWallWithSecret"},
-        {ObjectID::GreenWallWithSpikeTrap, "GreenWallWithSpikeTrap"},
-        {ObjectID::Guidepost, "Guidepost"},
-        {ObjectID::GuyraTeleportCube, "GuyraTeleportCube"},
-        {ObjectID::HarvineCastleSign, "HarvineCastleSign"},
-        {ObjectID::HarvinesCastleDoor, "HarvinesCastleDoor"},
-        {ObjectID::HarvinesThrone, "HarvinesThrone"},
-        {ObjectID::HeadA, "HeadA"},
-        {ObjectID::HeadBloodCrown, "HeadBloodCrown"},
-        {ObjectID::HeadGreatHelm, "HeadGreatHelm"},
-        {ObjectID::HeadIronMask, "HeadIronMask"},
-        {ObjectID::HeadKnightHelm, "HeadKnightHelm"},
-        {ObjectID::HeadLightningHelm, "HeadLightningHelm"},
-        {ObjectID::HeadSeathsHelm, "HeadSeathsHelm"},
-        {ObjectID::ItemAHerb2, "ItemAHerb2"},
-        {ObjectID::ItemAHerb, "ItemAHerb"},
-        {ObjectID::ItemAPotion, "ItemAPotion"},
-        {ObjectID::ItemARing, "ItemARing"},
-        {ObjectID::ItemAntidote, "ItemAntidote"},
-        {ObjectID::ItemArrowForTheBow, "ItemArrowForTheBow"},
-        {ObjectID::ItemBloodStone, "ItemBloodStone"},
-        {ObjectID::ItemBluePotion, "ItemBluePotion"},
-        {ObjectID::ItemCrystal, "ItemCrystal"},
-        {ObjectID::ItemCrystalFlask, "ItemCrystalFlask"},
-        {ObjectID::ItemCrystalShard, "ItemCrystalShard"},
-        {ObjectID::ItemDarkCrystal, "ItemDarkCrystal"},
-        {ObjectID::ItemDemonsPick, "ItemDemonsPick"},
-        {ObjectID::ItemDragonCrystal, "ItemDragonCrystal"},
-        {ObjectID::ItemDragonStone, "ItemDragonStone"},
-        {ObjectID::ItemEarthCrystal, "ItemEarthCrystal"},
-        {ObjectID::ItemEarthHerb, "ItemEarthHerb"},
-        {ObjectID::ItemElfsBolt, "ItemElfsBolt"},
-        {ObjectID::ItemElfsKey, "ItemElfsKey"},
-        {ObjectID::ItemFigureOfSeath, "ItemFigureOfSeath"},
-        {ObjectID::ItemFireCrystal, "ItemFireCrystal"},
-        {ObjectID::ItemGoldCoin, "ItemGoldCoin"},
-        {ObjectID::ItemGoldKey, "ItemGoldKey"},
-        {ObjectID::ItemGoldPotion, "ItemGoldPotion"},
-        {ObjectID::ItemGreenPotion, "ItemGreenPotion"},
-        {ObjectID::ItemGroundBell, "ItemGroundBell"},
-        {ObjectID::ItemHarvinesFlute, "ItemHarvinesFlute"},
-        {ObjectID::ItemHarvinesKey, "ItemHarvinesKey"},
-        {ObjectID::ItemJailKey, "ItemJailKey"},
-        {ObjectID::ItemLightCrystal, "ItemLightCrystal"},
-        {ObjectID::ItemMagiciansKey, "ItemMagiciansKey"},
-        {ObjectID::ItemMinersMap, "ItemMinersMap"},
-        {ObjectID::ItemMoonGate, "ItemMoonGate"},
-        {ObjectID::ItemMoonKey, "ItemMoonKey"},
-        {ObjectID::ItemMoonStone, "ItemMoonStone"},
-        {ObjectID::ItemNecronsMap, "ItemNecronsMap"},
-        {ObjectID::ItemPhantomRod, "ItemPhantomRod"},
-        {ObjectID::ItemPiratesKey, "ItemPiratesKey"},
-        {ObjectID::ItemPiratesMap, "ItemPiratesMap"},
-        {ObjectID::ItemRedPotion, "ItemRedPotion"},
-        {ObjectID::ItemRhombusKey, "ItemRhombusKey"},
-        {ObjectID::ItemSeathsPlume, "ItemSeathsPlume"},
-        {ObjectID::ItemShrineKey, "ItemShrineKey"},
-        {ObjectID::ItemSilverKey, "ItemSilverKey"},
-        {ObjectID::ItemSkullKey, "ItemSkullKey"},
-        {ObjectID::ItemStarGate, "ItemStarGate"},
-        {ObjectID::ItemStarKey, "ItemStarKey"},
-        {ObjectID::ItemSunGate, "ItemSunGate"},
-        {ObjectID::ItemSunKey, "ItemSunKey"},
-        {ObjectID::ItemTruthGlass, "ItemTruthGlass"},
-        {ObjectID::ItemVerdite, "ItemVerdite"},
-        {ObjectID::ItemWaterCrystal, "ItemWaterCrystal"},
-        {ObjectID::ItemWindCrystal, "ItemWindCrystal"},
-        {ObjectID::JailDoor, "JailDoor"},
-        {ObjectID::KnockerDoorLeft, "KnockerDoorLeft"},
-        {ObjectID::KnockerDoorRight, "KnockerDoorRight"},
-        {ObjectID::Lantern, "Lantern"},
-        {ObjectID::LoadArea, "LoadArea"},
-        {ObjectID::MadScientistBox, "MadScientistBox"},
-        {ObjectID::MadScientistLightCrystalMachine, "MadScientistLightCrystalMachine"},
-        {ObjectID::MadScientistTube, "MadScientistTube"},
-        {ObjectID::MineSign, "MineSign"},
-        {ObjectID::Minecart, "Minecart"},
-        {ObjectID::MinersGraveMaybe, "MinersGraveMaybe"},
-        {ObjectID::Moon, "Moon"},
-        {ObjectID::NighttimeSkybox2, "NighttimeSkybox2"},
-        {ObjectID::NighttimeSkybox, "NighttimeSkybox"},
-        {ObjectID::None, "None"},
-        {ObjectID::PillarOfWind, "PillarOfWind"},
-        {ObjectID::RedFlower, "RedFlower"},
-        {ObjectID::RhombusKeyDoor, "RhombusKeyDoor"},
-        {ObjectID::RhombusKeySlot, "RhombusKeySlot"},
-        {ObjectID::SamuraisGrave, "SamuraisGrave"},
-        {ObjectID::Savepoint, "Savepoint"},
-        {ObjectID::SeathsFountainPillar, "SeathsFountainPillar"},
-        {ObjectID::SecretDoor, "SecretDoor"},
-        {ObjectID::Shelf, "Shelf"},
-        {ObjectID::ShieldA, "ShieldA"},
-        {ObjectID::ShieldCrystalGuard, "ShieldCrystalGuard"},
-        {ObjectID::ShieldLargeShield, "ShieldLargeShield"},
-        {ObjectID::ShieldLeatherShield, "ShieldLeatherShield"},
-        {ObjectID::ShieldMoonGuard, "ShieldMoonGuard"},
-        {ObjectID::ShieldSeathsShield, "ShieldSeathsShield"},
-        {ObjectID::ShieldSkullShield, "ShieldSkullShield"},
-        {ObjectID::ShovelAndHammer, "ShovelAndHammer"},
-        {ObjectID::ShrineKeySlot, "ShrineKeySlot"},
-        {ObjectID::Sign, "Sign"},
-        {ObjectID::SimpleStoolMaybeRENAME_ME, "SimpleStoolMaybeRENAME_ME"},
-        {ObjectID::SkullKeySlot, "SkullKeySlot"},
-        {ObjectID::SkullKeyWaterObstacle, "SkullKeyWaterObstacle"},
-        {ObjectID::SlotForSomethingRENAME_ME, "SlotForSomethingRENAME_ME"},
-        {ObjectID::SmallBed, "SmallBed"},
-        {ObjectID::SmallTable, "SmallTable"},
-        {ObjectID::SmallWeirdPillarRENAME_ME, "SmallWeirdPillarRENAME_ME"},
-        {ObjectID::SomeBrokenGrave2, "SomeBrokenGrave2"},
-        {ObjectID::SomeBrokenGrave, "SomeBrokenGrave"},
-        {ObjectID::SomeDoorHandleRENAME_ME, "SomeDoorHandleRENAME_ME"},
-        {ObjectID::SomeGrave, "SomeGrave"},
-        {ObjectID::SquareWell, "SquareWell"},
-        {ObjectID::StoneChestBody, "StoneChestBody"},
-        {ObjectID::StoneChestLid, "StoneChestLid"},
-        {ObjectID::StoneGobletWithLavaRENAME_ME, "StoneGobletWithLavaRENAME_ME"},
-        {ObjectID::StonePillar, "StonePillar"},
-        {ObjectID::StoneThing2RENAME_ME, "StoneThing2RENAME_ME"},
-        {ObjectID::StoneThing3RENAME_ME, "StoneThing3RENAME_ME"},
-        {ObjectID::StoneThingRENAME_ME, "StoneThingRENAME_ME"},
-        {ObjectID::Stool, "Stool"},
-        {ObjectID::SwingingScythe, "SwingingScythe"},
-        {ObjectID::TableWithThingie, "TableWithThingie"},
-        {ObjectID::TarnStatue, "TarnStatue"},
-        {ObjectID::TheMagiciansLamp, "TheMagiciansLamp"},
-        {ObjectID::TheSoldiersGrave, "TheSoldiersGrave"},
-        {ObjectID::ThreeStones, "ThreeStones"},
-        {ObjectID::TinyXFeetTable, "TinyXFeetTable"},
-        {ObjectID::Tree, "Tree"},
-        {ObjectID::WHATTHEFUCKStatue, "WHATTHEFUCKStatue"},
-        {ObjectID::WTF, "WTF"},
-        {ObjectID::WallTorch, "WallTorch"},
-        {ObjectID::WallWithSecret, "WallWithSecret"},
-        {ObjectID::WallWithSecret2, "WallWithSecret2"},
-        {ObjectID::WallWithSpikeTrap, "WallWithSpikeTrap"},
-        {ObjectID::WallWriting2, "WallWriting2"},
-        {ObjectID::WallWriting3, "WallWriting3"},
-        {ObjectID::WallWriting, "WallWriting"},
-        {ObjectID::WaterWell, "WaterWell"},
-        {ObjectID::WeaponA1, "WeaponA1"},
-        {ObjectID::WeaponA2, "WeaponA2"},
-        {ObjectID::WeaponA3, "WeaponA3"},
-        {ObjectID::WeaponA4, "WeaponA4"},
-        {ObjectID::WeaponA5, "WeaponA5"},
-        {ObjectID::WeaponArbalest, "WeaponArbalest"},
-        {ObjectID::WeaponBastardSword, "WeaponBastardSword"},
-        {ObjectID::WeaponBattleHammer, "WeaponBattleHammer"},
-        {ObjectID::WeaponBow, "WeaponBow"},
-        {ObjectID::WeaponCrescentAxe, "WeaponCrescentAxe"},
-        {ObjectID::WeaponDagger, "WeaponDagger"},
-        {ObjectID::WeaponDarkSlayer, "WeaponDarkSlayer"},
-        {ObjectID::WeaponFlameSword, "WeaponFlameSword"},
-        {ObjectID::WeaponIceBlade, "WeaponIceBlade"},
-        {ObjectID::WeaponKnightSword, "WeaponKnightSword"},
-        {ObjectID::WeaponMoonlightSword, "WeaponMoonlightSword"},
-        {ObjectID::WeaponMorningStar, "WeaponMorningStar"},
-        {ObjectID::WeaponSeathsSword, "WeaponSeathsSword"},
-        {ObjectID::WeaponShiden, "WeaponShiden"},
-        {ObjectID::WeaponShortSword, "WeaponShortSword"},
-        {ObjectID::WeaponSpider, "WeaponSpider"},
-        {ObjectID::WeirdAsFuckObjectTile, "WeirdAsFuckObjectTile"},
-        {ObjectID::WeirdPillarRENAME_ME, "WeirdPillarRENAME_ME"},
-        {ObjectID::WhitePinkFlower, "WhitePinkFlower"},
-        {ObjectID::WoodenChestBody, "WoodenChestBody"},
-        {ObjectID::WoodenChestLid, "WoodenChestLid"},
-        {ObjectID::WoodenThingRENAME_ME, "WoodenThingRENAME_ME"},
-        {ObjectID::XFeetTable, "XFeetTable"}
+            {ObjectID::ABrokenSword, "ABrokenSword"},
+            {ObjectID::ASoldierOfVerdite, "ASoldierOfVerdite"},
+            {ObjectID::ArmsA, "ArmsA"},
+            {ObjectID::ArmsDemonsHands, "ArmsDemonsHands"},
+            {ObjectID::ArmsIronGloves, "ArmsIronGloves"},
+            {ObjectID::ArmsRuinousGloves, "ArmsRuinousGloves"},
+            {ObjectID::ArmsSilverArms, "ArmsSilverArms"},
+            {ObjectID::ArmsStoneHands, "ArmsStoneHands"},
+            {ObjectID::Barrel, "Barrel"},
+            {ObjectID::Bed, "Bed"},
+            {ObjectID::BigGreyDoorLeft, "BigGreyDoorLeft"},
+            {ObjectID::BigGreyDoorRight, "BigGreyDoorRight"},
+            {ObjectID::BigRoughStoneDoor, "BigRoughStoneDoor"},
+            {ObjectID::BigStoneDoor, "BigStoneDoor"},
+            {ObjectID::BigWallTileRENAME_ME, "BigWallTileRENAME_ME"},
+            {ObjectID::BodyA, "BodyA"},
+            {ObjectID::BodyBreastPlate, "BodyBreastPlate"},
+            {ObjectID::BodyDarkArmor, "BodyDarkArmor"},
+            {ObjectID::BodyIceArmor, "BodyIceArmor"},
+            {ObjectID::BodyKnightPlate, "BodyKnightPlate"},
+            {ObjectID::BodySeathsArmor, "BodySeathsArmor"},
+            {ObjectID::Bones, "Bones"},
+            {ObjectID::Bones2, "Bones2"},
+            {ObjectID::Bucket, "Bucket"},
+            {ObjectID::CeilingTorch, "CeilingTorch"},
+            {ObjectID::Chair, "Chair"},
+            {ObjectID::ColosseumDoor, "ColosseumDoor"},
+            {ObjectID::CopperKnightStatue, "CopperKnightStatue"},
+            {ObjectID::CrossFeetTable, "CrossFeetTable"},
+            {ObjectID::DaytimeSkybox, "DaytimeSkybox"},
+            {ObjectID::DeadCrystalMiner, "DeadCrystalMiner"},
+            {ObjectID::DeadDudeRENAME_ME, "DeadDudeRENAME_ME"},
+            {ObjectID::DemonLordFromMadScientistTube, "DemonLordFromMadScientistTube"},
+            {ObjectID::DemonLordStatue, "DemonLordStatue"},
+            {ObjectID::DragonGrass, "DragonGrass"},
+            {ObjectID::DragonStoneSlot, "DragonStoneSlot"},
+            {ObjectID::DrawbridgeSwitch, "DrawbridgeSwitch"},
+            {ObjectID::DummyItem1, "DummyItem1"},
+            {ObjectID::DummyItem2, "DummyItem2"},
+            {ObjectID::DummyItem3, "DummyItem3"},
+            {ObjectID::DummyItem4, "DummyItem4"},
+            {ObjectID::DummyItem5, "DummyItem5"},
+            {ObjectID::DummyItem6, "DummyItem6"},
+            {ObjectID::DummyItem7, "DummyItem7"},
+            {ObjectID::EarthElementalStatue, "EarthElementalStatue"},
+            {ObjectID::ElfsGrave, "ElfsGrave"},
+            {ObjectID::EquipItemAmuletOfMist, "EquipItemAmuletOfMist"},
+            {ObjectID::EquipItemEarthRing, "EquipItemEarthRing"},
+            {ObjectID::EquipItemLightwaveRing, "EquipItemLightwaveRing"},
+            {ObjectID::EquipItemPsycprosCollar, "EquipItemPsycprosCollar"},
+            {ObjectID::EquipItemScorpionsBracelet, "EquipItemScorpionsBracelet"},
+            {ObjectID::EquipItemSeathsBracelet, "EquipItemSeathsBracelet"},
+            {ObjectID::EquipItemSeathsTear, "EquipItemSeathsTear"},
+            {ObjectID::FeetA, "FeetA"},
+            {ObjectID::FeetDeathWalkers, "FeetDeathWalkers"},
+            {ObjectID::FeetIronBoots, "FeetIronBoots"},
+            {ObjectID::FeetLegGuarders, "FeetLegGuarders"},
+            {ObjectID::FeetRuinousBoots, "FeetRuinousBoots"},
+            {ObjectID::FeetSilverBoots, "FeetSilverBoots"},
+            {ObjectID::GoldenThingRENAME_ME, "GoldenThingRENAME_ME"},
+            {ObjectID::GreenWallCrossRENAME_ME, "GreenWallCrossRENAME_ME"},
+            {ObjectID::GreenWallTrapdoorMaybe, "GreenWallTrapdoorMaybe"},
+            {ObjectID::GreenWallWithSecret1, "GreenWallWithSecret1"},
+            {ObjectID::GreenWallWithSecret2, "GreenWallWithSecret2"},
+            {ObjectID::GreenWallWithSpikeTrap, "GreenWallWithSpikeTrap"},
+            {ObjectID::Guidepost, "Guidepost"},
+            {ObjectID::GuyraTeleportCube, "GuyraTeleportCube"},
+            {ObjectID::HarvineCastleSign, "HarvineCastleSign"},
+            {ObjectID::HarvinesCastleDoor, "HarvinesCastleDoor"},
+            {ObjectID::HarvinesThrone, "HarvinesThrone"},
+            {ObjectID::HeadA, "HeadA"},
+            {ObjectID::HeadBloodCrown, "HeadBloodCrown"},
+            {ObjectID::HeadGreatHelm, "HeadGreatHelm"},
+            {ObjectID::HeadIronMask, "HeadIronMask"},
+            {ObjectID::HeadKnightHelm, "HeadKnightHelm"},
+            {ObjectID::HeadLightningHelm, "HeadLightningHelm"},
+            {ObjectID::HeadSeathsHelm, "HeadSeathsHelm"},
+            {ObjectID::ItemAHerb, "ItemAHerb"},
+            {ObjectID::ItemAHerb2, "ItemAHerb2"},
+            {ObjectID::ItemAPotion, "ItemAPotion"},
+            {ObjectID::ItemARing, "ItemARing"},
+            {ObjectID::ItemAntidote, "ItemAntidote"},
+            {ObjectID::ItemArrowForTheBow, "ItemArrowForTheBow"},
+            {ObjectID::ItemBloodStone, "ItemBloodStone"},
+            {ObjectID::ItemBluePotion, "ItemBluePotion"},
+            {ObjectID::ItemCrystal, "ItemCrystal"},
+            {ObjectID::ItemCrystalFlask, "ItemCrystalFlask"},
+            {ObjectID::ItemCrystalShard, "ItemCrystalShard"},
+            {ObjectID::ItemDarkCrystal, "ItemDarkCrystal"},
+            {ObjectID::ItemDemonsPick, "ItemDemonsPick"},
+            {ObjectID::ItemDragonCrystal, "ItemDragonCrystal"},
+            {ObjectID::ItemDragonStone, "ItemDragonStone"},
+            {ObjectID::ItemEarthCrystal, "ItemEarthCrystal"},
+            {ObjectID::ItemEarthHerb, "ItemEarthHerb"},
+            {ObjectID::ItemElfsBolt, "ItemElfsBolt"},
+            {ObjectID::ItemElfsKey, "ItemElfsKey"},
+            {ObjectID::ItemFigureOfSeath, "ItemFigureOfSeath"},
+            {ObjectID::ItemFireCrystal, "ItemFireCrystal"},
+            {ObjectID::ItemGoldCoin, "ItemGoldCoin"},
+            {ObjectID::ItemGoldKey, "ItemGoldKey"},
+            {ObjectID::ItemGoldPotion, "ItemGoldPotion"},
+            {ObjectID::ItemGreenPotion, "ItemGreenPotion"},
+            {ObjectID::ItemGroundBell, "ItemGroundBell"},
+            {ObjectID::ItemHarvinesFlute, "ItemHarvinesFlute"},
+            {ObjectID::ItemHarvinesKey, "ItemHarvinesKey"},
+            {ObjectID::ItemJailKey, "ItemJailKey"},
+            {ObjectID::ItemLightCrystal, "ItemLightCrystal"},
+            {ObjectID::ItemMagiciansKey, "ItemMagiciansKey"},
+            {ObjectID::ItemMinersMap, "ItemMinersMap"},
+            {ObjectID::ItemMoonGate, "ItemMoonGate"},
+            {ObjectID::ItemMoonKey, "ItemMoonKey"},
+            {ObjectID::ItemMoonStone, "ItemMoonStone"},
+            {ObjectID::ItemNecronsMap, "ItemNecronsMap"},
+            {ObjectID::ItemPhantomRod, "ItemPhantomRod"},
+            {ObjectID::ItemPiratesKey, "ItemPiratesKey"},
+            {ObjectID::ItemPiratesMap, "ItemPiratesMap"},
+            {ObjectID::ItemRedPotion, "ItemRedPotion"},
+            {ObjectID::ItemRhombusKey, "ItemRhombusKey"},
+            {ObjectID::ItemSeathsPlume, "ItemSeathsPlume"},
+            {ObjectID::ItemShrineKey, "ItemShrineKey"},
+            {ObjectID::ItemSilverKey, "ItemSilverKey"},
+            {ObjectID::ItemSkullKey, "ItemSkullKey"},
+            {ObjectID::ItemStarGate, "ItemStarGate"},
+            {ObjectID::ItemStarKey, "ItemStarKey"},
+            {ObjectID::ItemSunGate, "ItemSunGate"},
+            {ObjectID::ItemSunKey, "ItemSunKey"},
+            {ObjectID::ItemTruthGlass, "ItemTruthGlass"},
+            {ObjectID::ItemVerdite, "ItemVerdite"},
+            {ObjectID::ItemWaterCrystal, "ItemWaterCrystal"},
+            {ObjectID::ItemWindCrystal, "ItemWindCrystal"},
+            {ObjectID::JailDoor, "JailDoor"},
+            {ObjectID::KnockerDoorLeft, "KnockerDoorLeft"},
+            {ObjectID::KnockerDoorRight, "KnockerDoorRight"},
+            {ObjectID::Lantern, "Lantern"},
+            {ObjectID::LoadArea, "LoadArea"},
+            {ObjectID::MadScientistBox, "MadScientistBox"},
+            {ObjectID::MadScientistLightCrystalMachine, "MadScientistLightCrystalMachine"},
+            {ObjectID::MadScientistTube, "MadScientistTube"},
+            {ObjectID::MineSign, "MineSign"},
+            {ObjectID::Minecart, "Minecart"},
+            {ObjectID::MinersGraveMaybe, "MinersGraveMaybe"},
+            {ObjectID::Moon, "Moon"},
+            {ObjectID::NighttimeSkybox, "NighttimeSkybox"},
+            {ObjectID::NighttimeSkybox2, "NighttimeSkybox2"},
+            {ObjectID::None, "None"},
+            {ObjectID::PillarOfWind, "PillarOfWind"},
+            {ObjectID::RedFlower, "RedFlower"},
+            {ObjectID::RhombusKeyDoor, "RhombusKeyDoor"},
+            {ObjectID::RhombusKeySlot, "RhombusKeySlot"},
+            {ObjectID::SamuraisGrave, "SamuraisGrave"},
+            {ObjectID::Savepoint, "Savepoint"},
+            {ObjectID::SeathsFountainDoorLeft, "SeathsFountainDoorLeft"},
+            {ObjectID::SeathsFountainDoorRight, "SeathsFountainDoorRight"},
+            {ObjectID::SeathsFountainPillar, "SeathsFountainPillar"},
+            {ObjectID::SecretDoor, "SecretDoor"},
+            {ObjectID::Shelf, "Shelf"},
+            {ObjectID::ShieldA, "ShieldA"},
+            {ObjectID::ShieldCrystalGuard, "ShieldCrystalGuard"},
+            {ObjectID::ShieldLargeShield, "ShieldLargeShield"},
+            {ObjectID::ShieldLeatherShield, "ShieldLeatherShield"},
+            {ObjectID::ShieldMoonGuard, "ShieldMoonGuard"},
+            {ObjectID::ShieldSeathsShield, "ShieldSeathsShield"},
+            {ObjectID::ShieldSkullShield, "ShieldSkullShield"},
+            {ObjectID::ShovelAndHammer, "ShovelAndHammer"},
+            {ObjectID::ShrineKeySlot, "ShrineKeySlot"},
+            {ObjectID::Sign, "Sign"},
+            {ObjectID::SimpleStoolMaybeRENAME_ME, "SimpleStoolMaybeRENAME_ME"},
+            {ObjectID::SkullKeySlot, "SkullKeySlot"},
+            {ObjectID::SkullKeyWaterObstacle, "SkullKeyWaterObstacle"},
+            {ObjectID::SlotForSomethingRENAME_ME, "SlotForSomethingRENAME_ME"},
+            {ObjectID::SmallBed, "SmallBed"},
+            {ObjectID::SmallStackOfLogs, "SmallStackOfLogs"},
+            {ObjectID::SmallTable, "SmallTable"},
+            {ObjectID::SmallWeirdPillarRENAME_ME, "SmallWeirdPillarRENAME_ME"},
+            {ObjectID::SomeBrokenGrave, "SomeBrokenGrave"},
+            {ObjectID::SomeBrokenGrave2, "SomeBrokenGrave2"},
+            {ObjectID::SomeDoorHandleRENAME_ME, "SomeDoorHandleRENAME_ME"},
+            {ObjectID::SomeGrave, "SomeGrave"},
+            {ObjectID::SquareWell, "SquareWell"},
+            {ObjectID::StoneChestBody, "StoneChestBody"},
+            {ObjectID::StoneChestLid, "StoneChestLid"},
+            {ObjectID::StoneGobletWithLavaRENAME_ME, "StoneGobletWithLavaRENAME_ME"},
+            {ObjectID::StonePillar, "StonePillar"},
+            {ObjectID::StoneThing2RENAME_ME, "StoneThing2RENAME_ME"},
+            {ObjectID::StoneThing3RENAME_ME, "StoneThing3RENAME_ME"},
+            {ObjectID::StoneThingRENAME_ME, "StoneThingRENAME_ME"},
+            {ObjectID::Stool, "Stool"},
+            {ObjectID::SwingingScythe, "SwingingScythe"},
+            {ObjectID::SwingingSpikeBall, "SwingingSpikeBall"},
+            {ObjectID::TableWithThingie, "TableWithThingie"},
+            {ObjectID::TarnStatue, "TarnStatue"},
+            {ObjectID::TheMagiciansLamp, "TheMagiciansLamp"},
+            {ObjectID::TheSoldiersGrave, "TheSoldiersGrave"},
+            {ObjectID::ThreeStones, "ThreeStones"},
+            {ObjectID::TinyXFeetTable, "TinyXFeetTable"},
+            {ObjectID::Tree, "Tree"},
+            {ObjectID::WHATTHEFUCKStatue, "WHATTHEFUCKStatue"},
+            {ObjectID::WTF, "WTF"},
+            {ObjectID::WallTorch, "WallTorch"},
+            {ObjectID::WallWithSecret, "WallWithSecret"},
+            {ObjectID::WallWithSecret2, "WallWithSecret2"},
+            {ObjectID::WallWithSpikeTrap, "WallWithSpikeTrap"},
+            {ObjectID::WallWriting, "WallWriting"},
+            {ObjectID::WallWriting2, "WallWriting2"},
+            {ObjectID::WallWriting3, "WallWriting3"},
+            {ObjectID::WaterWell, "WaterWell"},
+            {ObjectID::WeaponA1, "WeaponA1"},
+            {ObjectID::WeaponA2, "WeaponA2"},
+            {ObjectID::WeaponA3, "WeaponA3"},
+            {ObjectID::WeaponA4, "WeaponA4"},
+            {ObjectID::WeaponA5, "WeaponA5"},
+            {ObjectID::WeaponArbalest, "WeaponArbalest"},
+            {ObjectID::WeaponBastardSword, "WeaponBastardSword"},
+            {ObjectID::WeaponBattleHammer, "WeaponBattleHammer"},
+            {ObjectID::WeaponBow, "WeaponBow"},
+            {ObjectID::WeaponCrescentAxe, "WeaponCrescentAxe"},
+            {ObjectID::WeaponDagger, "WeaponDagger"},
+            {ObjectID::WeaponDarkSlayer, "WeaponDarkSlayer"},
+            {ObjectID::WeaponFlameSword, "WeaponFlameSword"},
+            {ObjectID::WeaponIceBlade, "WeaponIceBlade"},
+            {ObjectID::WeaponKnightSword, "WeaponKnightSword"},
+            {ObjectID::WeaponMoonlightSword, "WeaponMoonlightSword"},
+            {ObjectID::WeaponMorningStar, "WeaponMorningStar"},
+            {ObjectID::WeaponSeathsSword, "WeaponSeathsSword"},
+            {ObjectID::WeaponShiden, "WeaponShiden"},
+            {ObjectID::WeaponShortSword, "WeaponShortSword"},
+            {ObjectID::WeaponSpider, "WeaponSpider"},
+            {ObjectID::WeirdPillarRENAME_ME, "WeirdPillarRENAME_ME"},
+            {ObjectID::WhitePinkFlower, "WhitePinkFlower"},
+            {ObjectID::WoodenChestBody, "WoodenChestBody"},
+            {ObjectID::WoodenChestLid, "WoodenChestLid"},
+            {ObjectID::WoodenThingRENAME_ME, "WoodenThingRENAME_ME"},
+            {ObjectID::XFeetTable, "XFeetTable"}
     };
 
     // Functions
@@ -1405,6 +1439,35 @@ namespace KingsField
     };
 
     /*!
+     * \brief Standard PS1 short vector structure.
+     */
+    struct SVECTOR {
+        short vx;
+        short vy;
+        short vz;
+        short pad;
+
+        friend QDataStream &operator>> (QDataStream &in, SVECTOR& sVec)
+        {
+            in >> sVec.vx;
+            in >> sVec.vy;
+            in >> sVec.vz;
+            in >> sVec.pad;
+            return in;
+        }
+
+        friend QDataStream &operator<< (QDataStream &out, const SVECTOR &sVec)
+        {
+            out << sVec.vx;
+            out << sVec.vy;
+            out << sVec.vz;
+            out << sVec.pad;
+
+            return out;
+        }
+    };
+
+    /*!
      * \brief Structure for a tile in King's Field.
      */
     struct Tile {
@@ -1463,12 +1526,12 @@ namespace KingsField
      * \brief Stats structure for weapons.
      */
     struct WeaponStats {
-        undefined Unknown_x00;
-        undefined Unknown_x01;
-        undefined Unknown_x02;
-        undefined Unknown_x03;
-        undefined Unknown_x04;
-        undefined Unknown_x05;
+        byte Unknown_x00;
+        byte Unknown_x01;
+        byte Unknown_x02;
+        MagicID Spell1;
+        MagicID Spell2;
+        byte Unknown_x05;
         u_short OffSlash;
         u_short OffChop;
         u_short OffStab;
@@ -1477,15 +1540,34 @@ namespace KingsField
         u_short OffEarthM;
         u_short OffWindM;
         u_short OffWaterM;
-        std::array<undefined, 46> UnknownStuff;
+        u_short HPRestoreTimer;
+        u_short MPRestoreTimer;
+        short Unknown_x1a;
+        u_short Unknown_x1c;
+        u_short Unknown_x1e;
+        u_short Unknown_x20;
+        u_short Unknown_x22;
+        short Unknown_x24;
+        u_short Unknown_x26;
+        u_short Unknown_x28;
+        u_short Unknown_x2a;
+        u_short Unknown_x2c;
+        u_short Unknown_x2e;
+        u_short Unknown_x30;
+        short Unknown_x32;
+        struct SVECTOR Position;
+        struct SVECTOR SomeVec;
 
         friend QDataStream &operator>> (QDataStream &in, WeaponStats& weaponStat)
         {
+            quint8 tempByte;
             in >> weaponStat.Unknown_x00;
             in >> weaponStat.Unknown_x01;
             in >> weaponStat.Unknown_x02;
-            in >> weaponStat.Unknown_x03;
-            in >> weaponStat.Unknown_x04;
+            in >> tempByte;
+            weaponStat.Spell1 = KingsField::getMagicIDFromByte(tempByte);
+            in >> tempByte;
+            weaponStat.Spell2 = KingsField::getMagicIDFromByte(tempByte);
             in >> weaponStat.Unknown_x05;
             in >> weaponStat.OffSlash;
             in >> weaponStat.OffChop;
@@ -1495,8 +1577,23 @@ namespace KingsField
             in >> weaponStat.OffEarthM;
             in >> weaponStat.OffWindM;
             in >> weaponStat.OffWaterM;
-            for (undefined &unknown : weaponStat.UnknownStuff)
-                in >> unknown;
+            in >> weaponStat.HPRestoreTimer;
+            in >> weaponStat.MPRestoreTimer;
+            in >> weaponStat.Unknown_x1a;
+            in >> weaponStat.Unknown_x1c;
+            in >> weaponStat.Unknown_x1e;
+            in >> weaponStat.Unknown_x20;
+            in >> weaponStat.Unknown_x22;
+            in >> weaponStat.Unknown_x24;
+            in >> weaponStat.Unknown_x26;
+            in >> weaponStat.Unknown_x28;
+            in >> weaponStat.Unknown_x2a;
+            in >> weaponStat.Unknown_x2c;
+            in >> weaponStat.Unknown_x2e;
+            in >> weaponStat.Unknown_x30;
+            in >> weaponStat.Unknown_x32;
+            in >> weaponStat.Position;
+            in >> weaponStat.SomeVec;
 
             return in;
         }
@@ -1506,8 +1603,8 @@ namespace KingsField
             out << weaponStat.Unknown_x00;
             out << weaponStat.Unknown_x01;
             out << weaponStat.Unknown_x02;
-            out << weaponStat.Unknown_x03;
-            out << weaponStat.Unknown_x04;
+            out << KingsField::getMagicIDAsByte(weaponStat.Spell1);
+            out << KingsField::getMagicIDAsByte(weaponStat.Spell2);
             out << weaponStat.Unknown_x05;
             out << weaponStat.OffSlash;
             out << weaponStat.OffChop;
@@ -1517,8 +1614,23 @@ namespace KingsField
             out << weaponStat.OffEarthM;
             out << weaponStat.OffWindM;
             out << weaponStat.OffWaterM;
-            for (auto unknown : weaponStat.UnknownStuff)
-                out << unknown;
+            out << weaponStat.HPRestoreTimer;
+            out << weaponStat.MPRestoreTimer;
+            out << weaponStat.Unknown_x1a;
+            out << weaponStat.Unknown_x1c;
+            out << weaponStat.Unknown_x1e;
+            out << weaponStat.Unknown_x20;
+            out << weaponStat.Unknown_x22;
+            out << weaponStat.Unknown_x24;
+            out << weaponStat.Unknown_x26;
+            out << weaponStat.Unknown_x28;
+            out << weaponStat.Unknown_x2a;
+            out << weaponStat.Unknown_x2c;
+            out << weaponStat.Unknown_x2e;
+            out << weaponStat.Unknown_x30;
+            out << weaponStat.Unknown_x32;
+            out << weaponStat.Position;
+            out << weaponStat.SomeVec;
 
             return out;
         }

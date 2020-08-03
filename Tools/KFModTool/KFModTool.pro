@@ -54,7 +54,8 @@ HEADERS += \
     models/weaponstatstablemodel.h \
     prettynamer.h \
     texture.h \
-    tfile.h
+    tfile.h \
+    utilities.h
 
 FORMS += \
     gamedbeditwidget.ui \
