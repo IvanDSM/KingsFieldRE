@@ -18,8 +18,11 @@ GameDB::GameDB(TFile &fdatTFile) : fdat(fdatTFile), database(fdat.getFile(28))
         objClassDeclarations.at(i) = objClassDecl;
     }
 
+    dbStream >> sectionSize;
+
     for (size_t i = 0; i < weaponStatsSize; i++)
     {
+        std::cerr << "at " << dbStream.device()->pos() << '\n';
         KingsField::WeaponStats weaponStat{};
         dbStream >> weaponStat;
         weaponStats.at(i) = weaponStat;
