@@ -16,6 +16,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    aboutdialog.cpp \
     gamedb.cpp \
     gamedbeditwidget.cpp \
     kfmttreewidgetitem.cpp \
@@ -36,6 +37,7 @@ SOURCES += \
     tfile.cpp
 
 HEADERS += \
+    aboutdialog.h \
     checksum.h \
     gamedb.h \
     gamedbeditwidget.h \
@@ -58,6 +60,7 @@ HEADERS += \
     utilities.h
 
 FORMS += \
+    aboutdialog.ui \
     gamedbeditwidget.ui \
     mainwindow.ui \
     mapeditwidget.ui

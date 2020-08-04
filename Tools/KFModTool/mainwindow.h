@@ -7,6 +7,7 @@
 #include <tfile.h>
 #include "kfmttreewidgetitem.h"
 #include "ui_mainwindow.h"
+#include "aboutdialog.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -33,7 +34,8 @@ private slots:
 
     void on_actionAbout_KFModTool_triggered()
     {
-        QMessageBox::information(this, "TODO", "Implement this about box!");
+        AboutDialog about;
+        about.exec();
     }
 
     void on_actionLoad_files_triggered();
