@@ -30,13 +30,6 @@ jobs:
         qmake
         make -j2
         cd ..
-    
-    - name: Build fdat28_tool
-      run: |
-        cd Tools/fdat28_tool
-        qmake
-        make -j2
-        cd ..
 
     - name: Build KFModTool
       continue-on-error: true
@@ -71,17 +64,6 @@ jobs:
       with:
         name: checksum_tool Linux (64-bit) AppImage
         path: Tools/checksum_tool/checksum_tool*.AppImage
-
-    - name: Deploy fdat28_tool AppImage
-      run: |
-        cd Tools/fdat28_tool
-        ~/linuxdeployqt-continuous-x86_64.AppImage fdat28_tool -appimage 
-        
-    - name: Upload fdat28_tool build
-      uses: actions/upload-artifact@v2
-      with:
-        name: fdat28_tool Linux (64-bit) AppImage
-        path: Tools/fdat28_tool/fdat28_tool*.AppImage
 
     - name: Deploy KFModTool AppImage
       run: |
@@ -139,13 +121,6 @@ jobs:
         qmake
         make -j2
         cd ..
-    
-    - name: Build fdat28_tool
-      run: |
-        cd Tools\fdat28_tool
-        qmake
-        make -j2
-        cd ..
 
     - name: Build KFModTool
       continue-on-error: true
@@ -185,23 +160,6 @@ jobs:
       with:
         name: checksum_tool Windows (64-bit) build
         path: Tools\checksum_tool\checksum_tool\
-
-    - name: Deploy fdat28_tool
-      run : |
-        cd Tools\fdat28_tool\release
-        windeployqt --compiler-runtime fdat28_tool.exe
-        del *.o
-        cp $env:Qt5_Dir\bin\libgcc_s_seh-1.dll .
-        cp $env:Qt5_Dir\bin\libstdc++-6.dll .
-        cp $env:Qt5_Dir\bin\libwinpthread-1.dll .
-        cd ..
-        ren release fdat28_tool
-        
-    - name: Upload fdat28_tool build
-      uses: actions/upload-artifact@v2
-      with:
-        name: fdat28_tool Windows (64-bit) build
-        path: Tools\fdat28_tool\fdat28_tool\
 
     - name: Deploy KFModTool
       continue-on-error: true
