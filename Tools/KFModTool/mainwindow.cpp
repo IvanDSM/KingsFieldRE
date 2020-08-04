@@ -112,17 +112,23 @@ void MainWindow::on_actionSave_changes_triggered()
             child->getDB()->writeChanges();
     }
 
-    QDir dir(QFileDialog::getExistingDirectory(this, "Select where to save the changed files",
-                                               QDir::homePath()));
+    auto dirPath = QFileDialog::getExistingDirectory(this, "Select where to save the changed files",
+                                               QDir::homePath());
 
-    if (dir.path() == curSourceDirectory)
+    if (dirPath.isEmpty())
+        return;
+
+    if (dirPath == curSourceDirectory)
     {
         auto answer = QMessageBox::question(this, "You're about to overwrite your files!",
-                              "You just chose the same directory as your source files. Are you sure you want to overwrite them?");
+                                            "You just chose the same directory as your source files. Are you sure you want to overwrite them?");
 
         if (answer != QMessageBox::Yes)
             return;
     }
+
+    QDir dir(dirPath);
+
 
     QFile fdatOut(dir.filePath("FDAT.T"));
     fdatOut.open(QIODevice::WriteOnly);
