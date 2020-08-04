@@ -22,7 +22,6 @@ GameDB::GameDB(TFile &fdatTFile) : fdat(fdatTFile), database(fdat.getFile(28))
 
     for (size_t i = 0; i < weaponStatsSize; i++)
     {
-        std::cerr << "at " << dbStream.device()->pos() << '\n';
         KingsField::WeaponStats weaponStat{};
         dbStream >> weaponStat;
         weaponStats.at(i) = weaponStat;
@@ -70,8 +69,13 @@ void GameDB::writeChanges()
     dbStream >> sectionSize;
 
     for (size_t i = 0; i < weaponStatsSize; i++)
+    {
         dbStream << weaponStats.at(i);
+    }
 
+    // Skip 8 bytes after weapon stats array
+    dbStream >> sectionSize;
+    dbStream >> sectionSize;
 
     // Skip this unknown stuff (section 3)
     dbStream >> sectionSize;
