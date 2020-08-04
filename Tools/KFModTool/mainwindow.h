@@ -59,6 +59,7 @@ private:
     void loadFdat();
 
     int openGameDB = -1;
+    QString curSourceDirectory;
     std::array<int, 9> openMaps;
 
     std::unique_ptr<TFile> fdat = nullptr;

@@ -18,8 +18,11 @@ void MainWindow::on_actionLoad_files_triggered()
         return;
     }
 
+    curSourceDirectory = directory;
+
     // We don't use C++14 so no make_unique :(
     fdat.reset(new TFile(tfile_dir.filePath("FDAT.T")));
+
     loadFdat();
 #else
     auto loadedFdat = [this](const QString &fileName, const QByteArray &fileContent)
@@ -111,6 +114,15 @@ void MainWindow::on_actionSave_changes_triggered()
 
     QDir dir(QFileDialog::getExistingDirectory(this, "Select where to save the changed files",
                                                QDir::homePath()));
+
+    if (dir.path() == curSourceDirectory)
+    {
+        auto answer = QMessageBox::question(this, "You're about to overwrite your files!",
+                              "You just chose the same directory as your source files. Are you sure you want to overwrite them?");
+
+        if (answer != QMessageBox::Yes)
+            return;
+    }
 
     QFile fdatOut(dir.filePath("FDAT.T"));
     fdatOut.open(QIODevice::WriteOnly);
