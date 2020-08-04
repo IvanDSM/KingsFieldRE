@@ -83,7 +83,7 @@ QVariant WeaponStatsTableModel::headerData(int section, Qt::Orientation orientat
                 case 13: return "Water Magic Offense";
                 case 14: return "HP Restore Timer";
                 case 15: return "MP Restore Timer";
-                case 16: return "Unknown 1A";
+                case 16: return "Attack Range";
                 case 17: return "Unknown 1C";
                 case 18: return "Unknown 1E";
                 case 19: return "Unknown 20";
