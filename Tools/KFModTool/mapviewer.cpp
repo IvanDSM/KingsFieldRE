@@ -46,6 +46,16 @@ void MapViewer::mouseReleaseEvent(QMouseEvent *event)
                                 tile.Layer2Elev = curBrush;
                         }
                         break;
+                    case MapElement::MAP_ROTATION:
+                        switch (curLayer)
+                        {
+                            case MapLayer::LAYER_1:
+                                tile.Layer1Rotation = curBrush;
+                                break;
+                            case MapLayer::LAYER_2:
+                                tile.Layer2Rotation = curBrush;
+                        }
+                        break;
                     case MapElement::MAP_TILEID:
                         switch (curLayer)
                         {
@@ -236,6 +246,9 @@ void MapViewer::processMouse(QMouseEvent *event)
                         case MapElement::MAP_ELEV:
                             mapPtr->getTile(trueX, trueY).Layer1Elev = curBrush;
                             break;
+                        case MapElement::MAP_ROTATION:
+                            mapPtr->getTile(trueX, trueY).Layer1Rotation = curBrush;
+                            break;
                         case MapElement::MAP_TILEID:
                             mapPtr->getTile(trueX, trueY).Layer1TileID = curBrush;
                             break;
@@ -251,6 +264,9 @@ void MapViewer::processMouse(QMouseEvent *event)
                             break;
                         case MapElement::MAP_ELEV:
                             mapPtr->getTile(trueX, trueY).Layer2Elev = curBrush;
+                            break;
+                        case MapElement::MAP_ROTATION:
+                            mapPtr->getTile(trueX, trueY).Layer2Rotation = curBrush;
                             break;
                         case MapElement::MAP_TILEID:
                             mapPtr->getTile(trueX, trueY).Layer2TileID = curBrush;

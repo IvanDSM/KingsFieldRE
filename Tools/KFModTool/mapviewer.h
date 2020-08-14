@@ -21,6 +21,7 @@ public:
     {
         MAP_COLLISIONTHING,
         MAP_ELEV,
+        MAP_ROTATION,
         MAP_TILEID,
         MAP_ZONEDELIMITER
     };

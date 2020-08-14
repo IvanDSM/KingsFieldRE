@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>796</width>
+    <width>829</width>
     <height>480</height>
    </rect>
   </property>
@@ -167,6 +167,11 @@
            <item>
             <property name="text">
              <string>Elevation</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>Rotation</string>
             </property>
            </item>
            <item>

@@ -86,7 +86,7 @@ void MapEditWidget::hoveredTileInfo(byte elevation, byte rotation, byte collisio
                                     byte zoneDelimiter, byte tileId)
 {
     ui->elevLabel->setText("Elevation: " + QString::number(elevation));
-    ui->rotLabel->setText("Rotation: " + QString::number(rotation * 90) + "°");
+    ui->rotLabel->setText("Rotation: " + QString::number(rotation) + " (" + QString::number(rotation * 90) + "°)");
     ui->colThingLabel->setText("Collision Thing: " + QString::number(collisionThing));
     ui->zoneDelimLabel->setText("Zone Delimiter: " + QString::number(zoneDelimiter));
     ui->tileIdLabel->setText("Tile ID: " + QString::number(tileId));
@@ -134,7 +134,12 @@ void MapEditWidget::on_brushSpin_valueChanged(int arg1)
 
 void MapEditWidget::on_brushElemCombo_currentIndexChanged(int index)
 {
-    ui->mapViewWidget->setBrushElement(static_cast<MapViewer::MapElement>(index));
+    auto newElem = static_cast<MapViewer::MapElement>(index);
+    if (newElem == MapViewer::MapElement::MAP_ROTATION)
+        ui->brushSpin->setMaximum(3);
+    else
+        ui->brushSpin->setMaximum(255);
+    ui->mapViewWidget->setBrushElement(newElem);
 }
 
 void MapEditWidget::on_fillModeButton_clicked()
