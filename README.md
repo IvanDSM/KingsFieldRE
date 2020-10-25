@@ -27,6 +27,8 @@ This tool is a simple single-purpose utility. It receives text files with increa
 ## KFModTool
 Very early modding tool for King's Field. Breaks often, so be careful!
 
+![KFModTool screenshot](wiki/kfmodtool.png)
+
 * VERY ROUGH map editing, including editing entity classes and instances as well as object instances.
 * Game Database editing, enabling you to modify spell attributes, player level data, object class data and weapon stats.
 
