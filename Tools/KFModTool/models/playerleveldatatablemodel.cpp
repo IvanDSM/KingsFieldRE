@@ -81,7 +81,7 @@ bool PlayerLevelDataTableModel::setData(const QModelIndex &index, const QVariant
                 result = true;
                 break;
             case 4:
-                playerLvl.BaseHP = qMin(static_cast<quint16>(4294967295), static_cast<quint16>(value.toUInt()));
+                playerLvl.ExpForNextLevel = qMin(static_cast<quint16>(4294967295), static_cast<quint16>(value.toUInt()));
                 result = true;
                 break;
         }
