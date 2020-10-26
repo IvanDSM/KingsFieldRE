@@ -1035,103 +1035,50 @@ namespace KingsField
             return in;
         }
 
-        EntityClassDeclaration& operator= (const QByteArray& array)
+        friend QDataStream &operator<<(QDataStream &out, const EntityClassDeclaration &classDecl)
         {
-            QDataStream arrayStream(array);
-            arrayStream.setByteOrder(QDataStream::LittleEndian);
-            quint8 tempByte;
-            arrayStream >> tempByte;
-            MeshID = KingsField::getEntityMeshIDFromByte(tempByte);
-            arrayStream >> FourOrForty;
-            arrayStream >> field_0x2;
-            arrayStream >> field_0x3;
-            arrayStream >> field_0x4;
-            arrayStream >> field_0x5;
-            arrayStream >> field_0x6;
-            arrayStream >> Unknown_x07;
-            arrayStream >> Unknown_x08;
-            arrayStream >> field_0x9;
-            arrayStream >> SpawnDistance;
-            arrayStream >> DespawnDistance;
-            arrayStream >> field_0xc;
-            arrayStream >> field_0xd;
-            arrayStream >> field_0xe;
-            arrayStream >> field_0xf;
-            arrayStream >> field_0x10;
-            arrayStream >> field_0x11;
-            arrayStream >> Unknown_x12;
-            arrayStream >> Unknown_x14;
-            arrayStream >> field_0x16;
-            arrayStream >> field_0x17;
-            arrayStream >> field_0x18;
-            arrayStream >> field_0x19;
-            arrayStream >> HP;
-            arrayStream >> Unknown_x1c;
-            arrayStream >> ExperienceGain;
-            arrayStream >> DefSlash;
-            arrayStream >> DefChop;
-            arrayStream >> DefStab;
-            arrayStream >> DefHolyMagic;
-            arrayStream >> DefFireMagic;
-            arrayStream >> DefEarthMagic;
-            arrayStream >> DefWindMagic;
-            arrayStream >> DefWaterMagic;
-            arrayStream >> GoldSomething;
-            arrayStream >> Scale;
-            arrayStream >> UknBitField34;
+            out << KingsField::getEntityMeshIDAsByte(classDecl.MeshID);
+            out << classDecl.FourOrForty;
+            out << classDecl.field_0x2;
+            out << classDecl.field_0x3;
+            out << classDecl.field_0x4;
+            out << classDecl.field_0x5;
+            out << classDecl.field_0x6;
+            out << classDecl.Unknown_x07;
+            out << classDecl.Unknown_x08;
+            out << classDecl.field_0x9;
+            out << classDecl.SpawnDistance;
+            out << classDecl.DespawnDistance;
+            out << classDecl.field_0xc;
+            out << classDecl.field_0xd;
+            out << classDecl.field_0xe;
+            out << classDecl.field_0xf;
+            out << classDecl.field_0x10;
+            out << classDecl.field_0x11;
+            out << classDecl.Unknown_x12;
+            out << classDecl.Unknown_x14;
+            out << classDecl.field_0x16;
+            out << classDecl.field_0x17;
+            out << classDecl.field_0x18;
+            out << classDecl.field_0x19;
+            out << classDecl.HP;
+            out << classDecl.Unknown_x1c;
+            out << classDecl.ExperienceGain;
+            out << classDecl.DefSlash;
+            out << classDecl.DefChop;
+            out << classDecl.DefStab;
+            out << classDecl.DefHolyMagic;
+            out << classDecl.DefFireMagic;
+            out << classDecl.DefEarthMagic;
+            out << classDecl.DefWindMagic;
+            out << classDecl.DefWaterMagic;
+            out << classDecl.GoldSomething;
+            out << classDecl.Scale;
+            out << classDecl.UknBitField34;
             for (size_t i = 0; i < 16; i++)
-                arrayStream >> SomePointers[i];
+                out << classDecl.SomePointers[i];
 
-            return *this;
-        }
-
-        operator QByteArray()
-        {
-            QByteArray arrayified;
-            QDataStream arrayStream(&arrayified, QIODevice::ReadWrite);
-            arrayStream.setByteOrder(QDataStream::LittleEndian);
-            arrayStream << KingsField::getEntityMeshIDAsByte(MeshID);
-            arrayStream << FourOrForty;
-            arrayStream << field_0x2;
-            arrayStream << field_0x3;
-            arrayStream << field_0x4;
-            arrayStream << field_0x5;
-            arrayStream << field_0x6;
-            arrayStream << Unknown_x07;
-            arrayStream << Unknown_x08;
-            arrayStream << field_0x9;
-            arrayStream << SpawnDistance;
-            arrayStream << DespawnDistance;
-            arrayStream << field_0xc;
-            arrayStream << field_0xd;
-            arrayStream << field_0xe;
-            arrayStream << field_0xf;
-            arrayStream << field_0x10;
-            arrayStream << field_0x11;
-            arrayStream << Unknown_x12;
-            arrayStream << Unknown_x14;
-            arrayStream << field_0x16;
-            arrayStream << field_0x17;
-            arrayStream << field_0x18;
-            arrayStream << field_0x19;
-            arrayStream << HP;
-            arrayStream << Unknown_x1c;
-            arrayStream << ExperienceGain;
-            arrayStream << DefSlash;
-            arrayStream << DefChop;
-            arrayStream << DefStab;
-            arrayStream << DefHolyMagic;
-            arrayStream << DefFireMagic;
-            arrayStream << DefEarthMagic;
-            arrayStream << DefWindMagic;
-            arrayStream << DefWaterMagic;
-            arrayStream << GoldSomething;
-            arrayStream << Scale;
-            arrayStream << UknBitField34;
-            for (size_t i = 0; i < 16; i++)
-                arrayStream << SomePointers[i];
-
-            return arrayified;
+            return out;
         }
     };
 
@@ -1159,62 +1106,34 @@ namespace KingsField
             in >> instance.EntityClass;
             in >> instance.field_0x2;
             in >> instance.WEXTilePos;
-
             in >> instance.NSYTilePos;
             in >> instance.field_0x5;
             in >> tempByte;
             instance.DroppedItem = KingsField::getObjectIDFromByte(tempByte);
             in >> instance.Layer;
-
             in >> instance.ZRotation;
-
             in >> instance.FineWEXPos;
             in >> instance.FineNSYPos;
             in >> instance.FineZPos;
             return in;
         }
 
-        EntityInstance& operator= (const QByteArray& array)
+        friend QDataStream &operator<< (QDataStream &out, const EntityInstance &instance)
         {
-            QDataStream arrayStream(array);
-            arrayStream.setByteOrder(QDataStream::LittleEndian);
-            quint8 tempByte;
-            arrayStream >> field_0x0;
-            arrayStream >> EntityClass;
-            arrayStream >> field_0x2;
-            arrayStream >> WEXTilePos;
-            arrayStream >> NSYTilePos;
-            arrayStream >> field_0x5;
-            arrayStream >> tempByte;
-            DroppedItem = getObjectIDFromByte(tempByte);
-            arrayStream >> Layer;
-            arrayStream >> ZRotation;
-            arrayStream >> FineWEXPos;
-            arrayStream >> FineNSYPos;
-            arrayStream >> FineZPos;
+            out << instance.field_0x0;
+            out << instance.EntityClass;
+            out << instance.field_0x2;
+            out << instance.WEXTilePos;
+            out << instance.NSYTilePos;
+            out << instance.field_0x5;
+            out << getObjectIDAsByte(instance.DroppedItem);
+            out << instance.Layer;
+            out << instance.ZRotation;
+            out << instance.FineWEXPos;
+            out << instance.FineNSYPos;
+            out << instance.FineZPos;
 
-            return *this;
-        }
-
-        operator QByteArray()
-        {
-            QByteArray arrayified;
-            QDataStream arrayStream(&arrayified, QIODevice::ReadWrite);
-            arrayStream.setByteOrder(QDataStream::LittleEndian);
-            arrayStream << field_0x0;
-            arrayStream << EntityClass;
-            arrayStream << field_0x2;
-            arrayStream << WEXTilePos;
-            arrayStream << NSYTilePos;
-            arrayStream << field_0x5;
-            arrayStream << getObjectIDAsByte(DroppedItem);
-            arrayStream << Layer;
-            arrayStream << ZRotation;
-            arrayStream << FineWEXPos;
-            arrayStream << FineNSYPos;
-            arrayStream << FineZPos;
-
-            return arrayified;
+            return out;
         }
     };
 
@@ -1288,43 +1207,6 @@ namespace KingsField
 
             return out;
         }
-
-        Magic& operator= (const QByteArray &array)
-        {
-            QDataStream arrayStream(array);
-            arrayStream.setByteOrder(QDataStream::LittleEndian);
-
-
-            return *this;
-        }
-
-        operator QByteArray()
-        {
-            QByteArray arrayified;
-            QDataStream arrayStream(&arrayified, QIODevice::ReadWrite);
-            arrayStream.setByteOrder(QDataStream::LittleEndian);
-
-            arrayStream << PlayerHas;
-            arrayStream << ChargeRecoveryTime;
-            arrayStream << field_0x2;
-            arrayStream << field_0x3;
-            arrayStream << StatusEffect;
-            arrayStream << field_0x5;
-            arrayStream << field_0x6;
-            arrayStream << field_0x7;
-            arrayStream << SomeDmg1;
-            arrayStream << SomeDmg2;
-            arrayStream << SomeDmg3;
-            arrayStream << FireDmg;
-            arrayStream << EarthDmg;
-            arrayStream << WindDmg;
-            arrayStream << WaterDmg;
-            arrayStream << MPCost;
-            arrayStream << field_0x18;
-            arrayStream << field_0x19;
-
-            return arrayified;
-        }
     };
 
     /*!
@@ -1383,7 +1265,7 @@ namespace KingsField
             return in;
         }
 
-        friend QDataStream &operator<<(QDataStream &out, ObjectClassDeclaration &objClassDecl)
+        friend QDataStream &operator<<(QDataStream &out, const ObjectClassDeclaration &objClassDecl)
         {
             out << objClassDecl.field_0x0;
             out << objClassDecl.SomeType;
@@ -1428,44 +1310,40 @@ namespace KingsField
         short FineZPos;
         byte Flags[10];
 
-        ObjectInstanceDeclaration& operator= (const QByteArray& array)
+        friend QDataStream &operator>>(QDataStream &in, ObjectInstanceDeclaration &objInstance)
         {
-            QDataStream arrayStream(array);
-            arrayStream.setByteOrder(QDataStream::LittleEndian);
             quint16 tempUShort;
-            arrayStream >> TileLayer;
-            arrayStream >> WEXTilePos;
-            arrayStream >> NSYTilePos;
-            arrayStream >> field_0x3;
-            arrayStream >> tempUShort;
-            ObjectID = getObjectIDFromUShort(tempUShort);
-            arrayStream >> ZRotation;
-            arrayStream >> FineWEXPos;
-            arrayStream >> FineNSYPos;
-            arrayStream >> FineZPos;
+            in >> objInstance.TileLayer;
+            in >> objInstance.WEXTilePos;
+            in >> objInstance.NSYTilePos;
+            in >> objInstance.field_0x3;
+            in >> tempUShort;
+            objInstance.ObjectID = getObjectIDFromUShort(tempUShort);
+            in >> objInstance.ZRotation;
+            in >> objInstance.FineWEXPos;
+            in >> objInstance.FineNSYPos;
+            in >> objInstance.FineZPos;
             for (size_t i = 0; i < 10; i++)
-                arrayStream >> Flags[i];
+                in >> objInstance.Flags[i];
 
-            return *this;
+            return in;
         }
 
-        operator QByteArray()
+        friend QDataStream &operator<<(QDataStream &out, const ObjectInstanceDeclaration &objInstance)
         {
-            QByteArray arrayified;
-            QDataStream arrayStream(&arrayified, QIODevice::ReadWrite);
-            arrayStream.setByteOrder(QDataStream::LittleEndian);
-            arrayStream << TileLayer;
-            arrayStream << WEXTilePos;
-            arrayStream << NSYTilePos;
-            arrayStream << field_0x3;
-            arrayStream << getObjectIDAsUShort(ObjectID);
-            arrayStream << ZRotation;
-            arrayStream << FineWEXPos;
-            arrayStream << FineNSYPos;
-            arrayStream << FineZPos;
+            out << objInstance.TileLayer;
+            out << objInstance.WEXTilePos;
+            out << objInstance.NSYTilePos;
+            out << objInstance.field_0x3;
+            out << getObjectIDAsUShort(objInstance.ObjectID);
+            out << objInstance.ZRotation;
+            out << objInstance.FineWEXPos;
+            out << objInstance.FineNSYPos;
+            out << objInstance.FineZPos;
             for (size_t i = 0; i < 10; i++)
-                arrayStream << Flags[i];
-            return arrayified;
+                out << objInstance.Flags[i];
+
+            return out;
         }
     };
 
@@ -1490,7 +1368,7 @@ namespace KingsField
             return in;
         }
 
-        friend QDataStream &operator<< (QDataStream &out, PlayerLvlData &playerLvlData)
+        friend QDataStream &operator<< (QDataStream &out, const PlayerLvlData &playerLvlData)
         {
             out << playerLvlData.BaseHP;
             out << playerLvlData.BaseMP;
@@ -1546,43 +1424,36 @@ namespace KingsField
         byte Layer2CollisionSomething; ///< Draw this to a texture to get something interesting
         byte Layer2ZoneDelimiter; ///< Draw this to a texture to get something interesting
 
-        Tile& operator= (const QByteArray& array)
+        friend QDataStream &operator>> (QDataStream &in, Tile &tile)
         {
-            QDataStream arrayStream(array);
-            arrayStream.setByteOrder(QDataStream::LittleEndian);
+            in >> tile.Layer1TileID;
+            in >> tile.Layer1Elev;
+            in >> tile.Layer1Rotation;
+            in >> tile.Layer1CollisionSomething;
+            in >> tile.Layer1ZoneDelimiter;
+            in >> tile.Layer2TileID;
+            in >> tile.Layer2Elev;
+            in >> tile.Layer2Rotation;
+            in >> tile.Layer2CollisionSomething;
+            in >> tile.Layer2ZoneDelimiter;
 
-            arrayStream >> Layer1TileID;
-            arrayStream >> Layer1Elev;
-            arrayStream >> Layer1Rotation;
-            arrayStream >> Layer1CollisionSomething;
-            arrayStream >> Layer1ZoneDelimiter;
-            arrayStream >> Layer2TileID;
-            arrayStream >> Layer2Elev;
-            arrayStream >> Layer2Rotation;
-            arrayStream >> Layer2CollisionSomething;
-            arrayStream >> Layer2ZoneDelimiter;
-
-            return *this;
+            return in;
         }
 
-        operator QByteArray()
+        friend QDataStream &operator<< (QDataStream &out, const Tile &tile)
         {
-            QByteArray arrayified;
-            QDataStream arrayStream(&arrayified, QIODevice::ReadWrite);
-            arrayStream.setByteOrder(QDataStream::LittleEndian);
+            out << tile.Layer1TileID;
+            out << tile.Layer1Elev;
+            out << tile.Layer1Rotation;
+            out << tile.Layer1CollisionSomething;
+            out << tile.Layer1ZoneDelimiter;
+            out << tile.Layer2TileID;
+            out << tile.Layer2Elev;
+            out << tile.Layer2Rotation;
+            out << tile.Layer2CollisionSomething;
+            out << tile.Layer2ZoneDelimiter;
 
-            arrayStream << Layer1TileID;
-            arrayStream << Layer1Elev;
-            arrayStream << Layer1Rotation;
-            arrayStream << Layer1CollisionSomething;
-            arrayStream << Layer1ZoneDelimiter;
-            arrayStream << Layer2TileID;
-            arrayStream << Layer2Elev;
-            arrayStream << Layer2Rotation;
-            arrayStream << Layer2CollisionSomething;
-            arrayStream << Layer2ZoneDelimiter;
-
-            return arrayified;
+            return out;
         }
     };
 

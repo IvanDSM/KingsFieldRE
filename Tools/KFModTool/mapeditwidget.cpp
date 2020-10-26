@@ -159,6 +159,7 @@ void MapEditWidget::on_entityCDImport_clicked()
                                                  "Entity Class Declarations (*.kfmt_ecd)");
     if (!filename.isEmpty())
     {
+        auto index = ui->entityCDCombo->currentIndex();
         QFile file(filename, this);
         if (!file.open(QIODevice::ReadOnly))
         {
@@ -166,10 +167,9 @@ void MapEditWidget::on_entityCDImport_clicked()
                                   "Failed to open " + filename + " for reading!");
             return;
         }
-        auto entityCD = file.readAll();
+        QDataStream importStream(&file);
+        importStream >> curMap->getClassDeclaration(index);
         file.close();
-        auto index = ui->entityCDCombo->currentIndex();
-        curMap->getClassDeclaration(index) = entityCD;
         fillEntityCDCombo();
         ui->entityCDCombo->setCurrentIndex(index);
         on_entityCDCombo_currentIndexChanged(index); // FIXME: Dirty hack. Do something proper.
@@ -185,7 +185,6 @@ void MapEditWidget::on_entityCDExport_clicked()
     {
         if (!filename.endsWith(".kfmt_ecd"))
             filename.append(".kfmt_ecd");
-        QByteArray entityCD = curMap->getClassDeclaration(ui->entityCDCombo->currentIndex());
         QFile file(filename, this);
         if (!file.open(QIODevice::ReadWrite))
         {
@@ -193,7 +192,8 @@ void MapEditWidget::on_entityCDExport_clicked()
                                   "Failed to open " + filename + " for writing!");
             return;
         }
-        file.write(entityCD);
+        QDataStream exportStream(&file);
+        exportStream << curMap->getClassDeclaration(ui->entityCDCombo->currentIndex());
         file.close();
         QMessageBox::information(this, "Export successful!",
                                  "Entity Class Declaration exported successfully!");
@@ -204,7 +204,7 @@ void MapEditWidget::on_entityInstanceImport_clicked()
 {
     if (currentEntityInstance != 255)
     {
-        QMessageBox::information(this, "Warning!", "Entity instace import/export is buggy!");
+        QMessageBox::information(this, "Warning!", "Entity instance import/export is buggy!");
 
         auto filename = QFileDialog::getOpenFileName(this, "Import entity instance declaration...",
                                                      QDir::homePath(),
@@ -218,9 +218,9 @@ void MapEditWidget::on_entityInstanceImport_clicked()
                                       "Failed to open " + filename + " for reading!");
                 return;
             }
-            auto entityInstance = file.readAll();
+            QDataStream importStream(&file);
+            importStream >> curMap->getInstance(currentEntityInstance);
             file.close();
-            curMap->getInstance(currentEntityInstance) = entityInstance;
             entityInstanceHovered(currentEntityInstance); // FIXME: Dirty hack. Do something proper.
         }
     }
@@ -230,7 +230,7 @@ void MapEditWidget::on_entityInstanceExport_clicked()
 {
     if (currentEntityInstance != 255)
     {
-        QMessageBox::information(this, "Warning!", "Entity instace import/export is buggy!");
+        QMessageBox::information(this, "Warning!", "Entity instance import/export is buggy!");
         auto filename = QFileDialog::getSaveFileName(this, "Export entity instance declaration as...",
                                                      QDir::homePath(),
                                                      "Entity Instance Declarations (*.kfmt_eid)");
@@ -238,7 +238,6 @@ void MapEditWidget::on_entityInstanceExport_clicked()
         {
             if (!filename.endsWith(".kfmt_eid"))
                 filename.append(".kfmt_eid");
-            QByteArray entityInstance = curMap->getInstance(currentEntityInstance);
             QFile file(filename, this);
             if (!file.open(QIODevice::ReadWrite))
             {
@@ -246,7 +245,8 @@ void MapEditWidget::on_entityInstanceExport_clicked()
                                       "Failed to open " + filename + " for writing!");
                 return;
             }
-            file.write(entityInstance);
+            QDataStream exportStream(&file);
+            exportStream << curMap->getInstance(currentEntityInstance);
             file.close();
             QMessageBox::information(this, "Export successful!",
                                      "Entity Instance Declaration exported successfully!");
