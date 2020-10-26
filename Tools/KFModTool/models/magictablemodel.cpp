@@ -11,7 +11,7 @@ QVariant MagicTableModel::data(const QModelIndex &index, int role) const
             case 1: result.setValue(QString::number(spell.ChargeRecoveryTime)); break;
             case 2: result.setValue(QString::number(spell.field_0x2)); break;
             case 3: result.setValue(QString::number(spell.field_0x3)); break;
-            case 4: result.setValue(QString::number(spell.field_0x4)); break;
+            case 4: result.setValue(QString::number(spell.StatusEffect)); break;
             case 5: result.setValue(QString::number(spell.field_0x5)); break;
             case 6: result.setValue(QString::number(spell.field_0x6)); break;
             case 7: result.setValue(QString::number(spell.field_0x7)); break;
@@ -45,7 +45,7 @@ QVariant MagicTableModel::headerData(int section, Qt::Orientation orientation, i
                 case 1: return "Charge Recovery Time";
                 case 2: return "Unknown 02";
                 case 3: return "Unknown 03";
-                case 4: return "Unknown 04";
+                case 4: return "Status Effect";
                 case 5: return "Unknown 05";
                 case 6: return "Unknown 06";
                 case 7: return "Unknown 07";
@@ -114,7 +114,7 @@ bool MagicTableModel::setData(const QModelIndex &index, const QVariant &value, i
                 uIntValue = value.toUInt();
                 if (uIntValue < 256)
                 {
-                    spell.field_0x4 = static_cast<quint8>(uIntValue);
+                    spell.StatusEffect = static_cast<quint8>(uIntValue);
                     result = true;
                 }
                 break;

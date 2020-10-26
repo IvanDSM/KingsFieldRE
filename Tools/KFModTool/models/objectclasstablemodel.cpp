@@ -83,35 +83,40 @@ bool ObjectClassTableModel::setData(const QModelIndex &index, const QVariant &va
     bool result = false;
     if (!value.toString().isEmpty() && value.isValid() && role == Qt::EditRole && index.row() < rowCount(index) && index.row() >= 0 && index.column() == 0)
     {
-        byte byteValue = static_cast<byte>(value.toUInt());
-        u_short uShortValue = static_cast<u_short>(value.toUInt());
+        byte byteValue = static_cast<byte>(qMin(255u, value.toUInt()));
+        u_short uShortValue = static_cast<u_short>(qMin(65535u, value.toUInt()));
         switch (index.row())
         {
-            case 0: objClass.field_0x0 = qMin(static_cast<byte>(255), byteValue); break;
-            case 1: objClass.SomeType = qMin(static_cast<byte>(255), byteValue); break;
-            case 2: objClass.field_0x2 = qMin(static_cast<byte>(255), byteValue); break;
-            case 3: objClass.field_0x3 = qMin(static_cast<byte>(255), byteValue); break;
-            case 4: objClass.CollisionRadius = qMin(static_cast<u_short>(65536), uShortValue); break;
-            case 5: objClass.field_0x6 = qMin(static_cast<byte>(255), byteValue); break;
-            case 6: objClass.field_0x7 = qMin(static_cast<byte>(255), byteValue); break;
-            case 7: objClass.field_0x8 = qMin(static_cast<byte>(255), byteValue); break;
-            case 8: objClass.field_0x9 = qMin(static_cast<byte>(255), byteValue); break;
-            case 9: objClass.field_0xa = qMin(static_cast<byte>(255), byteValue); break;
-            case 10: objClass.field_0xb = qMin(static_cast<byte>(255), byteValue); break;
-            case 11: objClass.field_0xc = qMin(static_cast<byte>(255), byteValue); break;
-            case 12: objClass.field_0xd = qMin(static_cast<byte>(255), byteValue); break;
-            case 13: objClass.field_0xe = qMin(static_cast<byte>(255), byteValue); break;
-            case 14: objClass.field_0xf = qMin(static_cast<byte>(255), byteValue); break;
-            case 15: objClass.field_0x10 = qMin(static_cast<byte>(255), byteValue); break;
-            case 16: objClass.field_0x11 = qMin(static_cast<byte>(255), byteValue); break;
-            case 17: objClass.field_0x12 = qMin(static_cast<byte>(255), byteValue); break;
-            case 18: objClass.field_0x13 = qMin(static_cast<byte>(255), byteValue); break;
-            case 19: objClass.field_0x14 = qMin(static_cast<byte>(255), byteValue); break;
-            case 20: objClass.field_0x15 = qMin(static_cast<byte>(255), byteValue); break;
-            case 21: objClass.field_0x16 = qMin(static_cast<byte>(255), byteValue); break;
-            case 22: objClass.field_0x17 = qMin(static_cast<byte>(255), byteValue); break;
+            case 0: objClass.field_0x0 = byteValue; break;
+            case 1: objClass.SomeType = byteValue; break;
+            case 2: objClass.field_0x2 = byteValue; break;
+            case 3: objClass.field_0x3 = byteValue; break;
+            case 4: objClass.CollisionRadius = uShortValue; break;
+            case 5: objClass.field_0x6 = byteValue; break;
+            case 6: objClass.field_0x7 = byteValue; break;
+            case 7: objClass.field_0x8 = byteValue; break;
+            case 8: objClass.field_0x9 = byteValue; break;
+            case 9: objClass.field_0xa = byteValue; break;
+            case 10: objClass.field_0xb = byteValue; break;
+            case 11: objClass.field_0xc = byteValue; break;
+            case 12: objClass.field_0xd = byteValue; break;
+            case 13: objClass.field_0xe = byteValue; break;
+            case 14: objClass.field_0xf = byteValue; break;
+            case 15: objClass.field_0x10 = byteValue; break;
+            case 16: objClass.field_0x11 = byteValue; break;
+            case 17: objClass.field_0x12 = byteValue; break;
+            case 18: objClass.field_0x13 = byteValue; break;
+            case 19: objClass.field_0x14 = byteValue; break;
+            case 20: objClass.field_0x15 = byteValue; break;
+            case 21: objClass.field_0x16 = byteValue; break;
+            case 22: objClass.field_0x17 = byteValue; break;
         }
+
+        result = true;
     }
+
+    if (result)
+        emit dataChanged(index, index);
 
     return result;
 }

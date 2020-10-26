@@ -39,7 +39,7 @@ public:
     int rowCount(const QModelIndex &parent) const override
     {
         Q_UNUSED(parent)
-        return 56;
+        return 54;
     }
 
     bool setData(const QModelIndex &index, const QVariant &value, int role = Qt::EditRole) override;

@@ -146,12 +146,18 @@ namespace KingsField
      */
     enum class MagicID
     {
+        ArcherArrow=31,
+        ArcherParalyzeArrow=29,
         Breath=19,
         DarkSlayerMagicA=44,
         DarkSlayerMagicB=45,
         Dispoison=14,
+        DoubleFireball=23,
         EarthHeal=16,
         EarthWave=2,
+        EnemyEarthMagic=32,
+        EnemyHomingEarthMagic=33,
+        EnemyLightningVolt=54,
         FireBall=7,
         FireStorm=9,
         FireWall=8,
@@ -170,7 +176,9 @@ namespace KingsField
         MoonlightSwordMagicA=42,
         MoonlightSwordMagicB=43,
         None=255,
+        PsytheCurseOrb=26,
         ResistFire=15,
+        SKnightPoisonBreath=22,
         Seath=13,
         SeathsSwordMagicA=40,
         ShidenMagicA=34,
@@ -178,6 +186,7 @@ namespace KingsField
         SpiderSwordMagicA=51,
         SpiderSwordMagicB=52,
         Stone=1,
+        TarnWindMagic=24,
         WaterFall=0,
         WindCutter=4
     };
@@ -201,7 +210,6 @@ namespace KingsField
         BigGreyDoorRight=127,
         BigRoughStoneDoor=129,
         BigStoneDoor=135,
-        BigWallTileRENAME_ME=203,
         BodyA=33,
         BodyBreastPlate=28,
         BodyDarkArmor=31,
@@ -216,7 +224,7 @@ namespace KingsField
         ColosseumDoor=140,
         CopperKnightStatue=169,
         CrossFeetTable=256,
-        DaytimeSkybox=245,
+        DaytimeSkybox=244,
         DeadCrystalMiner=146,
         DeadDudeRENAME_ME=147,
         DemonLordFromMadScientistTube=275,
@@ -247,8 +255,8 @@ namespace KingsField
         FeetRuinousBoots=51,
         FeetSilverBoots=49,
         GoldenThingRENAME_ME=265,
-        GreenWallCrossRENAME_ME=205,
-        GreenWallTrapdoorMaybe=206,
+        GreenWallFloorTrap=206,
+        GreenWallSecretDoor=205,
         GreenWallWithSecret1=209,
         GreenWallWithSecret2=214,
         GreenWallWithSpikeTrap=213,
@@ -264,6 +272,7 @@ namespace KingsField
         HeadKnightHelm=22,
         HeadLightningHelm=25,
         HeadSeathsHelm=26,
+        InvisibleObject=183,
         ItemAHerb=110,
         ItemAHerb2=119,
         ItemAPotion=81,
@@ -325,10 +334,12 @@ namespace KingsField
         MadScientistBox=173,
         MadScientistLightCrystalMachine=145,
         MadScientistTube=276,
+        MarbleWallFloorTrap=203,
         MineSign=165,
         Minecart=177,
         MinersGraveMaybe=151,
         Moon=248,
+        MountainSkybox=245,
         NighttimeSkybox=247,
         NighttimeSkybox2=249,
         None=255,
@@ -338,14 +349,9 @@ namespace KingsField
         RhombusKeySlot=184,
         SamuraisGrave=149,
         Savepoint=230,
-        SeathsFountainBlueWaterAndWall=196,
-        SeathsFountainBottom=190,
         SeathsFountainDoorLeft=133,
         SeathsFountainDoorRight=134,
-        SeathsFountainGreenWaterAndWall=197,
         SeathsFountainPillar=191,
-        SeathsFountainRedWaterAndWall=198,
-        SeathsFountainStatue=192,
         SecretDoor=130,
         Shelf=285,
         ShieldA=40,
@@ -421,7 +427,6 @@ namespace KingsField
         WeaponSpider=11,
         WeirdPillarRENAME_ME=273,
         WhitePinkFlower=288,
-        WindBridge=164,
         WoodenChestBody=121,
         WoodenChestLid=120,
         WoodenThingRENAME_ME=182,
@@ -556,40 +561,49 @@ namespace KingsField
     static const std::map<const MagicID, const QString> magicIdNameMap =
 #endif
         {
-            {MagicID::Breath, "Breath"},
-            {MagicID::DarkSlayerMagicA, "DarkSlayerMagicA"},
-            {MagicID::DarkSlayerMagicB, "DarkSlayerMagicB"},
-            {MagicID::Dispoison, "Dispoison"},
-            {MagicID::EarthHeal, "EarthHeal"},
-            {MagicID::EarthWave, "EarthWave"},
-            {MagicID::FireBall, "FireBall"},
-            {MagicID::FireStorm, "FireStorm"},
-            {MagicID::FireWall, "FireWall"},
-            {MagicID::Flame, "Flame"},
-            {MagicID::FlameSwordMagicA, "FlameSwordMagicA"},
-            {MagicID::FlameSwordMagicB, "FlameSwordMagicB"},
-            {MagicID::Flash, "Flash"},
-            {MagicID::Freeze, "Freeze"},
-            {MagicID::IceBladeMagicA, "IceBladeMagicA"},
-            {MagicID::IceBladeMagicB, "IceBladeMagicB"},
-            {MagicID::IceStorm, "IceStorm"},
-            {MagicID::Light, "Light"},
-            {MagicID::LightningVolt, "LightningVolt"},
-            {MagicID::Meteor, "Meteor"},
-            {MagicID::MissileShield, "MissileShield"},
-            {MagicID::MoonlightSwordMagicA, "MoonlightSwordMagicA"},
-            {MagicID::MoonlightSwordMagicB, "MoonlightSwordMagicB"},
-            {MagicID::None, "None"},
-            {MagicID::ResistFire, "ResistFire"},
-            {MagicID::Seath, "Seath"},
-            {MagicID::SeathsSwordMagicA, "SeathsSwordMagicA"},
-            {MagicID::ShidenMagicA, "ShidenMagicA"},
-            {MagicID::ShidenMagicB, "ShidenMagicB"},
-            {MagicID::SpiderSwordMagicA, "SpiderSwordMagicA"},
-            {MagicID::SpiderSwordMagicB, "SpiderSwordMagicB"},
-            {MagicID::Stone, "Stone"},
-            {MagicID::WaterFall, "WaterFall"},
-            {MagicID::WindCutter, "WindCutter"}
+        {MagicID::ArcherArrow, "ArcherArrow"},
+        {MagicID::ArcherParalyzeArrow, "ArcherParalyzeArrow"},
+        {MagicID::Breath, "Breath"},
+        {MagicID::DarkSlayerMagicA, "DarkSlayerMagicA"},
+        {MagicID::DarkSlayerMagicB, "DarkSlayerMagicB"},
+        {MagicID::Dispoison, "Dispoison"},
+        {MagicID::DoubleFireball, "DoubleFireball"},
+        {MagicID::EarthHeal, "EarthHeal"},
+        {MagicID::EarthWave, "EarthWave"},
+        {MagicID::EnemyEarthMagic, "EnemyEarthMagic"},
+        {MagicID::EnemyHomingEarthMagic, "EnemyHomingEarthMagic"},
+        {MagicID::EnemyLightningVolt, "EnemyLightningVolt"},
+        {MagicID::FireBall, "FireBall"},
+        {MagicID::FireStorm, "FireStorm"},
+        {MagicID::FireWall, "FireWall"},
+        {MagicID::Flame, "Flame"},
+        {MagicID::FlameSwordMagicA, "FlameSwordMagicA"},
+        {MagicID::FlameSwordMagicB, "FlameSwordMagicB"},
+        {MagicID::Flash, "Flash"},
+        {MagicID::Freeze, "Freeze"},
+        {MagicID::IceBladeMagicA, "IceBladeMagicA"},
+        {MagicID::IceBladeMagicB, "IceBladeMagicB"},
+        {MagicID::IceStorm, "IceStorm"},
+        {MagicID::Light, "Light"},
+        {MagicID::LightningVolt, "LightningVolt"},
+        {MagicID::Meteor, "Meteor"},
+        {MagicID::MissileShield, "MissileShield"},
+        {MagicID::MoonlightSwordMagicA, "MoonlightSwordMagicA"},
+        {MagicID::MoonlightSwordMagicB, "MoonlightSwordMagicB"},
+        {MagicID::None, "None"},
+        {MagicID::PsytheCurseOrb, "PsytheCurseOrb"},
+        {MagicID::ResistFire, "ResistFire"},
+        {MagicID::SKnightPoisonBreath, "SKnightPoisonBreath"},
+        {MagicID::Seath, "Seath"},
+        {MagicID::SeathsSwordMagicA, "SeathsSwordMagicA"},
+        {MagicID::ShidenMagicA, "ShidenMagicA"},
+        {MagicID::ShidenMagicB, "ShidenMagicB"},
+        {MagicID::SpiderSwordMagicA, "SpiderSwordMagicA"},
+        {MagicID::SpiderSwordMagicB, "SpiderSwordMagicB"},
+        {MagicID::Stone, "Stone"},
+        {MagicID::TarnWindMagic, "TarnWindMagic"},
+        {MagicID::WaterFall, "WaterFall"},
+        {MagicID::WindCutter, "WindCutter"}
     };
 
 #if __GNUC__ >= 10
@@ -612,7 +626,6 @@ namespace KingsField
         {ObjectID::BigGreyDoorRight, "BigGreyDoorRight"},
         {ObjectID::BigRoughStoneDoor, "BigRoughStoneDoor"},
         {ObjectID::BigStoneDoor, "BigStoneDoor"},
-        {ObjectID::BigWallTileRENAME_ME, "BigWallTileRENAME_ME"},
         {ObjectID::BodyA, "BodyA"},
         {ObjectID::BodyBreastPlate, "BodyBreastPlate"},
         {ObjectID::BodyDarkArmor, "BodyDarkArmor"},
@@ -658,8 +671,8 @@ namespace KingsField
         {ObjectID::FeetRuinousBoots, "FeetRuinousBoots"},
         {ObjectID::FeetSilverBoots, "FeetSilverBoots"},
         {ObjectID::GoldenThingRENAME_ME, "GoldenThingRENAME_ME"},
-        {ObjectID::GreenWallCrossRENAME_ME, "GreenWallCrossRENAME_ME"},
-        {ObjectID::GreenWallTrapdoorMaybe, "GreenWallTrapdoorMaybe"},
+        {ObjectID::GreenWallFloorTrap, "GreenWallFloorTrap"},
+        {ObjectID::GreenWallSecretDoor, "GreenWallSecretDoor"},
         {ObjectID::GreenWallWithSecret1, "GreenWallWithSecret1"},
         {ObjectID::GreenWallWithSecret2, "GreenWallWithSecret2"},
         {ObjectID::GreenWallWithSpikeTrap, "GreenWallWithSpikeTrap"},
@@ -675,6 +688,7 @@ namespace KingsField
         {ObjectID::HeadKnightHelm, "HeadKnightHelm"},
         {ObjectID::HeadLightningHelm, "HeadLightningHelm"},
         {ObjectID::HeadSeathsHelm, "HeadSeathsHelm"},
+        {ObjectID::InvisibleObject, "InvisibleObject"},
         {ObjectID::ItemAHerb, "ItemAHerb"},
         {ObjectID::ItemAHerb2, "ItemAHerb2"},
         {ObjectID::ItemAPotion, "ItemAPotion"},
@@ -736,10 +750,12 @@ namespace KingsField
         {ObjectID::MadScientistBox, "MadScientistBox"},
         {ObjectID::MadScientistLightCrystalMachine, "MadScientistLightCrystalMachine"},
         {ObjectID::MadScientistTube, "MadScientistTube"},
+        {ObjectID::MarbleWallFloorTrap, "MarbleWallFloorTrap"},
         {ObjectID::MineSign, "MineSign"},
         {ObjectID::Minecart, "Minecart"},
         {ObjectID::MinersGraveMaybe, "MinersGraveMaybe"},
         {ObjectID::Moon, "Moon"},
+        {ObjectID::MountainSkybox, "MountainSkybox"},
         {ObjectID::NighttimeSkybox, "NighttimeSkybox"},
         {ObjectID::NighttimeSkybox2, "NighttimeSkybox2"},
         {ObjectID::None, "None"},
@@ -749,14 +765,9 @@ namespace KingsField
         {ObjectID::RhombusKeySlot, "RhombusKeySlot"},
         {ObjectID::SamuraisGrave, "SamuraisGrave"},
         {ObjectID::Savepoint, "Savepoint"},
-        {ObjectID::SeathsFountainBlueWaterAndWall, "SeathsFountainBlueWaterAndWall"},
-        {ObjectID::SeathsFountainBottom, "SeathsFountainBottom"},
         {ObjectID::SeathsFountainDoorLeft, "SeathsFountainDoorLeft"},
         {ObjectID::SeathsFountainDoorRight, "SeathsFountainDoorRight"},
-        {ObjectID::SeathsFountainGreenWaterAndWall, "SeathsFountainGreenWaterAndWall"},
         {ObjectID::SeathsFountainPillar, "SeathsFountainPillar"},
-        {ObjectID::SeathsFountainRedWaterAndWall, "SeathsFountainRedWaterAndWall"},
-        {ObjectID::SeathsFountainStatue, "SeathsFountainStatue"},
         {ObjectID::SecretDoor, "SecretDoor"},
         {ObjectID::Shelf, "Shelf"},
         {ObjectID::ShieldA, "ShieldA"},
@@ -832,7 +843,6 @@ namespace KingsField
         {ObjectID::WeaponSpider, "WeaponSpider"},
         {ObjectID::WeirdPillarRENAME_ME, "WeirdPillarRENAME_ME"},
         {ObjectID::WhitePinkFlower, "WhitePinkFlower"},
-        {ObjectID::WindBridge, "WindBridge"},
         {ObjectID::WoodenChestBody, "WoodenChestBody"},
         {ObjectID::WoodenChestLid, "WoodenChestLid"},
         {ObjectID::WoodenThingRENAME_ME, "WoodenThingRENAME_ME"},
@@ -937,18 +947,18 @@ namespace KingsField
      * \brief Structure for the entity declarations at the beginning of each map file.
      */
     struct EntityClassDeclaration {
-        enum EntityMeshID MeshID;
+        EntityMeshID MeshID;
         byte FourOrForty;
         undefined field_0x2;
         undefined field_0x3;
         undefined field_0x4;
         undefined field_0x5;
         undefined field_0x6;
-        undefined field_0x7;
-        undefined field_0x8;
+        byte Unknown_x07;
+        byte Unknown_x08;
         undefined field_0x9;
-        undefined field_0xa;
-        undefined field_0xb;
+        byte SpawnDistance;
+        byte DespawnDistance;
         undefined field_0xc;
         undefined field_0xd;
         undefined field_0xe;
@@ -962,8 +972,7 @@ namespace KingsField
         undefined field_0x18;
         undefined field_0x19;
         u_short HP;
-        undefined field_0x1c;
-        undefined field_0x1d;
+        u_short Unknown_x1c;
         u_short ExperienceGain;
         u_short DefSlash;
         u_short DefChop;
@@ -973,11 +982,58 @@ namespace KingsField
         u_short DefEarthMagic;
         u_short DefWindMagic;
         u_short DefWaterMagic;
-        undefined field_0x30;
-        undefined field_0x31;
+        u_short GoldSomething;
         short Scale;
-        u_int Unknown_x34;
+        u_int UknBitField34;
         u_int SomePointers[16];
+
+        friend QDataStream &operator>>(QDataStream &in, EntityClassDeclaration &classDecl)
+        {
+            quint8 tempByte;
+            in >> tempByte;
+            classDecl.MeshID = KingsField::getEntityMeshIDFromByte(tempByte);
+            in >> classDecl.FourOrForty;
+            in >> classDecl.field_0x2;
+            in >> classDecl.field_0x3;
+            in >> classDecl.field_0x4;
+            in >> classDecl.field_0x5;
+            in >> classDecl.field_0x6;
+            in >> classDecl.Unknown_x07;
+            in >> classDecl.Unknown_x08;
+            in >> classDecl.field_0x9;
+            in >> classDecl.SpawnDistance;
+            in >> classDecl.DespawnDistance;
+            in >> classDecl.field_0xc;
+            in >> classDecl.field_0xd;
+            in >> classDecl.field_0xe;
+            in >> classDecl.field_0xf;
+            in >> classDecl.field_0x10;
+            in >> classDecl.field_0x11;
+            in >> classDecl.Unknown_x12;
+            in >> classDecl.Unknown_x14;
+            in >> classDecl.field_0x16;
+            in >> classDecl.field_0x17;
+            in >> classDecl.field_0x18;
+            in >> classDecl.field_0x19;
+            in >> classDecl.HP;
+            in >> classDecl.Unknown_x1c;
+            in >> classDecl.ExperienceGain;
+            in >> classDecl.DefSlash;
+            in >> classDecl.DefChop;
+            in >> classDecl.DefStab;
+            in >> classDecl.DefHolyMagic;
+            in >> classDecl.DefFireMagic;
+            in >> classDecl.DefEarthMagic;
+            in >> classDecl.DefWindMagic;
+            in >> classDecl.DefWaterMagic;
+            in >> classDecl.GoldSomething;
+            in >> classDecl.Scale;
+            in >> classDecl.UknBitField34;
+            for (size_t i = 0; i < 16; i++)
+                in >> classDecl.SomePointers[i];
+
+            return in;
+        }
 
         EntityClassDeclaration& operator= (const QByteArray& array)
         {
@@ -992,11 +1048,11 @@ namespace KingsField
             arrayStream >> field_0x4;
             arrayStream >> field_0x5;
             arrayStream >> field_0x6;
-            arrayStream >> field_0x7;
-            arrayStream >> field_0x8;
+            arrayStream >> Unknown_x07;
+            arrayStream >> Unknown_x08;
             arrayStream >> field_0x9;
-            arrayStream >> field_0xa;
-            arrayStream >> field_0xb;
+            arrayStream >> SpawnDistance;
+            arrayStream >> DespawnDistance;
             arrayStream >> field_0xc;
             arrayStream >> field_0xd;
             arrayStream >> field_0xe;
@@ -1010,8 +1066,7 @@ namespace KingsField
             arrayStream >> field_0x18;
             arrayStream >> field_0x19;
             arrayStream >> HP;
-            arrayStream >> field_0x1c;
-            arrayStream >> field_0x1d;
+            arrayStream >> Unknown_x1c;
             arrayStream >> ExperienceGain;
             arrayStream >> DefSlash;
             arrayStream >> DefChop;
@@ -1021,10 +1076,9 @@ namespace KingsField
             arrayStream >> DefEarthMagic;
             arrayStream >> DefWindMagic;
             arrayStream >> DefWaterMagic;
-            arrayStream >> field_0x30;
-            arrayStream >> field_0x31;
+            arrayStream >> GoldSomething;
             arrayStream >> Scale;
-            arrayStream >> Unknown_x34;
+            arrayStream >> UknBitField34;
             for (size_t i = 0; i < 16; i++)
                 arrayStream >> SomePointers[i];
 
@@ -1043,11 +1097,11 @@ namespace KingsField
             arrayStream << field_0x4;
             arrayStream << field_0x5;
             arrayStream << field_0x6;
-            arrayStream << field_0x7;
-            arrayStream << field_0x8;
+            arrayStream << Unknown_x07;
+            arrayStream << Unknown_x08;
             arrayStream << field_0x9;
-            arrayStream << field_0xa;
-            arrayStream << field_0xb;
+            arrayStream << SpawnDistance;
+            arrayStream << DespawnDistance;
             arrayStream << field_0xc;
             arrayStream << field_0xd;
             arrayStream << field_0xe;
@@ -1061,8 +1115,7 @@ namespace KingsField
             arrayStream << field_0x18;
             arrayStream << field_0x19;
             arrayStream << HP;
-            arrayStream << field_0x1c;
-            arrayStream << field_0x1d;
+            arrayStream << Unknown_x1c;
             arrayStream << ExperienceGain;
             arrayStream << DefSlash;
             arrayStream << DefChop;
@@ -1072,10 +1125,9 @@ namespace KingsField
             arrayStream << DefEarthMagic;
             arrayStream << DefWindMagic;
             arrayStream << DefWaterMagic;
-            arrayStream << field_0x30;
-            arrayStream << field_0x31;
+            arrayStream << GoldSomething;
             arrayStream << Scale;
-            arrayStream << Unknown_x34;
+            arrayStream << UknBitField34;
             for (size_t i = 0; i < 16; i++)
                 arrayStream << SomePointers[i];
 
@@ -1174,7 +1226,7 @@ namespace KingsField
         byte ChargeRecoveryTime;
         undefined field_0x2;
         undefined field_0x3;
-        undefined field_0x4;
+        byte StatusEffect;
         undefined field_0x5;
         undefined field_0x6;
         undefined field_0x7;
@@ -1195,7 +1247,7 @@ namespace KingsField
             in >> magic.ChargeRecoveryTime;
             in >> magic.field_0x2;
             in >> magic.field_0x3;
-            in >> magic.field_0x4;
+            in >> magic.StatusEffect;
             in >> magic.field_0x5;
             in >> magic.field_0x6;
             in >> magic.field_0x7;
@@ -1219,7 +1271,7 @@ namespace KingsField
             out << magic.ChargeRecoveryTime;
             out << magic.field_0x2;
             out << magic.field_0x3;
-            out << magic.field_0x4;
+            out << magic.StatusEffect;
             out << magic.field_0x5;
             out << magic.field_0x6;
             out << magic.field_0x7;
@@ -1256,7 +1308,7 @@ namespace KingsField
             arrayStream << ChargeRecoveryTime;
             arrayStream << field_0x2;
             arrayStream << field_0x3;
-            arrayStream << field_0x4;
+            arrayStream << StatusEffect;
             arrayStream << field_0x5;
             arrayStream << field_0x6;
             arrayStream << field_0x7;
