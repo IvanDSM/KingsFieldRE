@@ -46,7 +46,7 @@ private:
     {
         for (byte i = 0; i < GameDB::magicDataSize; i++)
         {
-            ui->magicCombo->addItem(QString::number(i) + " (0x" + QString::number(i) + ") " +
+            ui->magicCombo->addItem(QString::number(i) + " (0x" + QString::number(i, 16) + ") " +
                                     KingsField::getMagicIDName(KingsField::getMagicIDFromByte(i)));
         }
     }
@@ -54,7 +54,7 @@ private:
     void fillObjClassCombo()
     {
         for (unsigned short i = 0; i < GameDB::objClassDeclarationsSize; i++)
-            ui->objClassCombo->addItem(QString::number(i) + " (0x" + QString::number(i) + ") " +
+            ui->objClassCombo->addItem(QString::number(i) + " (0x" + QString::number(i, 16) + ") " +
                                        KingsField::getObjectName(KingsField::getObjectIDFromUShort(i)));
     }
 
@@ -62,7 +62,7 @@ private:
     {
         for (byte i = 0; i < GameDB::weaponStatsSize; i++)
         {
-            ui->weaponCombo->addItem(QString::number(i) + " (0x" + QString::number(i) + ") " +
+            ui->weaponCombo->addItem(QString::number(i) + " (0x" + QString::number(i, 16) + ") " +
                                      KingsField::getWeaponStatsName(i));
         }
     }
