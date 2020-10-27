@@ -1,0 +1,26 @@
+all states are hexadecimal
+
+confirmed for all:
+02 - taking damage
+03 - dying
+05 - approaching player
+
+entrance kraken body:
+00 - idle?
+04 - melee attack
+15 - do nothing
+
+green slime:
+04 - melee attack
+05 - approaching player
+
+s knight:
+04 - melee attack
+05 - approaching player
+19 - magic attack
+
+skeleton:
+01 - wander
+18 - chop? attack
+1a - in box?
+
