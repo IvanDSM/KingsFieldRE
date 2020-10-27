@@ -24,6 +24,9 @@ WARNING: fdat28_tool has been deprecated. Use KFModTool instead.
 ## HexOffsetFinder
 This tool is a simple single-purpose utility. It receives text files with increasingly ordered hexadecimal values (such as the ones in the Notes folder), finds the offsets between the values and prints out a sorted list of them. This tool is used to find the size of newly found structures.
 
+## KFMiniScripts
+KFMiniScripts is a one file Python module with functions relevant to King's Field (II) reverse engineering. The objective of this tool is to make it easy to replicate smaller parts of game logic for analytical purposes such as route planning or other kinds of estimations.
+
 ## KFModTool
 Very early modding tool for King's Field. Breaks often, so be careful!
 
