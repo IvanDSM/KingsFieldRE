@@ -1086,12 +1086,12 @@ namespace KingsField
      * \brief Structure for declarations of entity instances in the map files.
      */
     struct EntityInstance {
-        undefined field_0x0;
+        byte RespawnMode;
         byte EntityClass;
-        undefined field_0x2;
+        bool NonRandomRotation;
         byte WEXTilePos;
         byte NSYTilePos;
-        undefined field_0x5;
+        byte RespawnChance;
         ObjectID DroppedItem;
         byte Layer;
         u_short ZRotation;
@@ -1102,12 +1102,12 @@ namespace KingsField
         friend QDataStream &operator>>(QDataStream &in, EntityInstance &instance)
         {
             quint8 tempByte;
-            in >> instance.field_0x0;
+            in >> instance.RespawnMode;
             in >> instance.EntityClass;
-            in >> instance.field_0x2;
+            in >> instance.NonRandomRotation;
             in >> instance.WEXTilePos;
             in >> instance.NSYTilePos;
-            in >> instance.field_0x5;
+            in >> instance.RespawnChance;
             in >> tempByte;
             instance.DroppedItem = KingsField::getObjectIDFromByte(tempByte);
             in >> instance.Layer;
@@ -1120,12 +1120,12 @@ namespace KingsField
 
         friend QDataStream &operator<< (QDataStream &out, const EntityInstance &instance)
         {
-            out << instance.field_0x0;
+            out << instance.RespawnMode;
             out << instance.EntityClass;
-            out << instance.field_0x2;
+            out << instance.NonRandomRotation;
             out << instance.WEXTilePos;
             out << instance.NSYTilePos;
-            out << instance.field_0x5;
+            out << instance.RespawnChance;
             out << getObjectIDAsByte(instance.DroppedItem);
             out << instance.Layer;
             out << instance.ZRotation;

@@ -5,14 +5,16 @@ QVariant EntityInstanceTableModel::data(const QModelIndex &index, int role) cons
     QVariant result;
     if (role == Qt::DisplayRole && (index.row() < rowCount(index) && index.row() >= 0 && index.column() == 0))
     {
+        static constexpr std::array<const char *, 2> nonRandomStr = {"Random", "Non-Random"};
         switch (index.row())
         {
-            case 0: result.setValue(QString::number(entityInstance.field_0x0)); break;
+            case 0: result.setValue(QString::number(entityInstance.RespawnMode)); break;
             case 1: result.setValue(QString::number(entityInstance.EntityClass)); break;
-            case 2: result.setValue(QString::number(entityInstance.field_0x2)); break;
+            case 2: result.setValue(QString::number(entityInstance.NonRandomRotation) + " ("
+                                    + nonRandomStr[entityInstance.NonRandomRotation] + ")"); break;
             case 3: result.setValue(QString::number(entityInstance.WEXTilePos)); break;
             case 4: result.setValue(QString::number(entityInstance.NSYTilePos)); break;
-            case 5: result.setValue(QString::number(entityInstance.field_0x5)); break;
+            case 5: result.setValue(QString::number(entityInstance.RespawnChance)); break;
             case 6: result.setValue(QString::number(KingsField::getObjectIDAsByte(entityInstance.DroppedItem)) + " ("
                                 + KingsField::getObjectName(entityInstance.DroppedItem) + ")");
                 break;
@@ -40,12 +42,12 @@ QVariant EntityInstanceTableModel::headerData(int section, Qt::Orientation orien
         {
             switch (section)
             {
-                case 0: return "Unknown 00";
+                case 0: return "Respawn Mode";
                 case 1: return "Entity Class";
-                case 2: return "Unknown 02";
+                case 2: return "Non-Random Z Rot.";
                 case 3: return "X Tile Position";
                 case 4: return "Y Tile Position";
-                case 5: return "Unknown 05";
+                case 5: return "Respawn Chance";
                 case 6: return "Dropped Item";
                 case 7: return "Layer";
                 case 8: return "Z Rotation";
@@ -66,109 +68,35 @@ bool EntityInstanceTableModel::setData(const QModelIndex &index, const QVariant 
 
     if (!value.toString().isEmpty() && value.isValid() && role == Qt::EditRole && index.row() < rowCount(index) && index.row() >= 0 && index.column() == 0)
     {
-        unsigned int uIntValue = 0;
-        int intValue = 0;
+        short shortValue = qMax(-32767, qMin(32767, value.toInt()));
+        u_short uShortValue = qMin(65535u, value.toUInt());
+        byte byteValue = qMin(255u, value.toUInt());
+        bool boolValue = qMin(1u, value.toUInt());
         switch (index.row())
         {
-            case 0:
-                uIntValue = value.toUInt();
-                if (uIntValue < 256)
-                {
-                    entityInstance.field_0x0 = static_cast<quint8>(uIntValue);
-                    result = true;
-                }
-                break;
-            case 1:
-                uIntValue = value.toUInt();
-                if (uIntValue < 256)
-                {
-                    entityInstance.EntityClass = static_cast<quint8>(uIntValue);
-                    result = true;
-                }
-                break;
-            case 2:
-                uIntValue = value.toUInt();
-                if (uIntValue < 256)
-                {
-                    entityInstance.field_0x2 = static_cast<quint8>(uIntValue);
-                    result = true;
-                }
-                break;
-            case 3:
-                uIntValue = value.toUInt();
-                if (uIntValue < 256)
-                {
-                    entityInstance.WEXTilePos = static_cast<quint8>(uIntValue);
-                    result = true;
-                }
-                break;
-            case 4:
-                uIntValue = value.toUInt();
-                if (uIntValue < 256)
-                {
-                    entityInstance.NSYTilePos = static_cast<quint8>(uIntValue);
-                    result = true;
-                }
-                break;
-            case 5:
-                uIntValue = value.toUInt();
-                if (uIntValue < 256)
-                {
-                    entityInstance.field_0x5 = static_cast<quint8>(uIntValue);
-                    result = true;
-                }
-                break;
-            case 6:
-                uIntValue = value.toUInt();
-                if (uIntValue < 256)
-                {
-                    entityInstance.DroppedItem = static_cast<KingsField::ObjectID>(uIntValue);
-                    result = true;
-                }
-                break;
-            case 7:
-                uIntValue = value.toUInt();
-                if (uIntValue == 1 || uIntValue == 2)
-                {
-                    entityInstance.Layer = static_cast<quint8>(uIntValue);
-                    result = true;
-                }
-                break;
+            case 0: entityInstance.RespawnMode = byteValue; break;
+            case 1: entityInstance.EntityClass = byteValue; break;
+            case 2: entityInstance.NonRandomRotation = boolValue; break;
+            case 3: entityInstance.WEXTilePos = byteValue; break;
+            case 4: entityInstance.NSYTilePos = byteValue; break;
+            case 5: entityInstance.RespawnChance = byteValue; break;
+            case 6: entityInstance.DroppedItem = static_cast<KingsField::ObjectID>(uShortValue); break;
+            case 7: entityInstance.Layer = byteValue; break;
             case 8:
-                if (value.toString().right(1) == "°" ||
-                    value.toString().right(1) == "º" ||
+                if (value.toString().right(1) == "°" || value.toString().right(1) == "º" ||
                     value.toString().right(1) == "ª")
-                    uIntValue = static_cast<unsigned int>(value.toString().chopped(1).toUInt() / KingsField::rotationCoefficient);
+                    uShortValue = value.toString().chopped(1).toUInt() / KingsField::rotationCoefficient;
                 else
-                    uIntValue = value.toUInt() % 4096;
-                entityInstance.ZRotation = static_cast<quint16>(uIntValue);
+                    uShortValue = value.toUInt() % 4096;
+                entityInstance.ZRotation = static_cast<quint16>(uShortValue);
                 result = true;
                 break;
-            case 9:
-                intValue = value.toInt();
-                if (intValue < 65536)
-                {
-                    entityInstance.FineWEXPos = static_cast<short>(intValue);
-                    result = true;
-                }
-                break;
-            case 10:
-                intValue = value.toInt();
-                if (intValue < 65536)
-                {
-                    entityInstance.FineNSYPos = static_cast<short>(intValue);
-                    result = true;
-                }
-                break;
-            case 11:
-                intValue = value.toInt();
-                if (intValue < 65536)
-                {
-                    entityInstance.FineZPos = static_cast<short>(intValue);
-                    result = true;
-                }
-                break;
+            case 9: entityInstance.FineWEXPos = shortValue; break;
+            case 10: entityInstance.FineNSYPos = shortValue; break;
+            case 11: entityInstance.FineZPos = shortValue; break;
         }
+
+        result = true;
     }
 
     if (result)
