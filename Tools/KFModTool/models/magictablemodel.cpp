@@ -42,7 +42,7 @@ QVariant MagicTableModel::headerData(int section, Qt::Orientation orientation, i
             switch (section)
             {
                 case 0: return "Player Has";
-                case 1: return "Charge Recovery Time";
+                case 1: return "Mag Stamina Cost";
                 case 2: return "Unknown 02";
                 case 3: return "Unknown 03";
                 case 4: return "Status Effect";

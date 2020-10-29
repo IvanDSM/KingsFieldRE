@@ -9,7 +9,7 @@ QVariant WeaponStatsTableModel::data(const QModelIndex &index, int role) const
         switch (index.row())
         {
             case 0: result.setValue(QString::number(weaponStats.Unknown_x00)); break;
-            case 1: result.setValue(QString::number(weaponStats.Unknown_x01)); break;
+            case 1: result.setValue(QString::number(weaponStats.StrStaminaCost)); break;
             case 2: result.setValue(QString::number(weaponStats.Unknown_x02)); break;
             case 3: result.setValue(QString::number(KingsField::getMagicIDAsByte(weaponStats.Spell1)) +
                                     " (" +
@@ -19,7 +19,7 @@ QVariant WeaponStatsTableModel::data(const QModelIndex &index, int role) const
                                     " (" +
                                     KingsField::getMagicIDName(weaponStats.Spell2) +
                                     ')'); break;
-            case 5: result.setValue(QString::number(weaponStats.Unknown_x05)); break;
+            case 5: result.setValue(QString::number(weaponStats.Spell1ShotAmount)); break;
             case 6: result.setValue(QString::number(weaponStats.OffSlash)); break;
             case 7: result.setValue(QString::number(weaponStats.OffChop)); break;
             case 8: result.setValue(QString::number(weaponStats.OffStab)); break;
@@ -31,11 +31,11 @@ QVariant WeaponStatsTableModel::data(const QModelIndex &index, int role) const
             case 14: result.setValue(QString::number(weaponStats.HPRestoreTimer)); break;
             case 15: result.setValue(QString::number(weaponStats.MPRestoreTimer)); break;
             case 16: result.setValue(QString::number(weaponStats.Unknown_x1a)); break;
-            case 17: result.setValue(QString::number(weaponStats.Unknown_x1c)); break;
+            case 17: result.setValue(QString::number(weaponStats.SwingSpeed)); break;
             case 18: result.setValue(QString::number(weaponStats.Unknown_x1e)); break;
-            case 19: result.setValue(QString::number(weaponStats.Unknown_x20)); break;
-            case 20: result.setValue(QString::number(weaponStats.Unknown_x22)); break;
-            case 21: result.setValue(QString::number(weaponStats.Unknown_x24)); break;
+            case 19: result.setValue(QString::number(weaponStats.Spell1CastStartTime)); break;
+            case 20: result.setValue(QString::number(weaponStats.Spell1CastEndTime)); break;
+            case 21: result.setValue(QString::number(weaponStats.Spell2AnimSpeed)); break;
             case 22: result.setValue(QString::number(weaponStats.Unknown_x26)); break;
             case 23: result.setValue(QString::number(weaponStats.Unknown_x28)); break;
             case 24: result.setValue(QString::number(weaponStats.Unknown_x2a)); break;
@@ -68,27 +68,27 @@ QVariant WeaponStatsTableModel::headerData(int section, Qt::Orientation orientat
             switch (section)
             {
                 case 0: return "Unknown 00";
-                case 1: return "Unknown 01";
+                case 1: return "Str Stamina Cost";
                 case 2: return "Unknown 02";
                 case 3: return "Spell 1";
                 case 4: return "Spell 2";
-                case 5: return "Unknown 05";
+                case 5: return "Spell 1 Shot Amount";
                 case 6: return "Slash Offense";
                 case 7: return "Chop Offense";
                 case 8: return "Stab Offense";
                 case 9: return "Holy Magic Offense";
                 case 10: return "Fire Magic Offense";
                 case 11: return "Earth Magic Offense";
-                case 12: return "Wind Magic OFfense";
+                case 12: return "Wind Magic Offense";
                 case 13: return "Water Magic Offense";
                 case 14: return "HP Restore Timer";
                 case 15: return "MP Restore Timer";
                 case 16: return "Attack Range";
-                case 17: return "Unknown 1C";
+                case 17: return "Swing Speed";
                 case 18: return "Unknown 1E";
-                case 19: return "Unknown 20";
-                case 20: return "Unknown 22";
-                case 21: return "Unknown 24";
+                case 19: return "Spell 1 Cast Start Time";
+                case 20: return "Spell 1 Cast End Time";
+                case 21: return "Spell 2 Animation Speed";
                 case 22: return "Unknown 26";
                 case 23: return "Unknown 28";
                 case 24: return "Unknown 2A";
@@ -120,11 +120,11 @@ bool WeaponStatsTableModel::setData(const QModelIndex &index, const QVariant &va
         switch (index.row())
         {
             case 0: weaponStats.Unknown_x00 = Utilities::clampToByte(uIntValue); break;
-            case 1: weaponStats.Unknown_x01 = Utilities::clampToByte(uIntValue); break;
+            case 1: weaponStats.StrStaminaCost = Utilities::clampToByte(uIntValue); break;
             case 2: weaponStats.Unknown_x02 = Utilities::clampToByte(uIntValue); break;
             case 3: weaponStats.Spell1 = KingsField::getMagicIDFromByte(Utilities::clampToByte(uIntValue)); break;
             case 4: weaponStats.Spell2 = KingsField::getMagicIDFromByte(Utilities::clampToByte(uIntValue)); break;
-            case 5: weaponStats.Unknown_x05 = Utilities::clampToByte(uIntValue); break;
+            case 5: weaponStats.Spell1ShotAmount = Utilities::clampToByte(uIntValue); break;
             case 6: weaponStats.OffSlash = Utilities::clampToUShort(uIntValue); break;
             case 7: weaponStats.OffChop = Utilities::clampToUShort(uIntValue); break;
             case 8: weaponStats.OffStab = Utilities::clampToUShort(uIntValue); break;
@@ -136,11 +136,11 @@ bool WeaponStatsTableModel::setData(const QModelIndex &index, const QVariant &va
             case 14: weaponStats.HPRestoreTimer = Utilities::clampToUShort(uIntValue); break;
             case 15: weaponStats.MPRestoreTimer = Utilities::clampToUShort(uIntValue); break;
             case 16: weaponStats.Unknown_x1a = Utilities::clampToShort(intValue); break;
-            case 17: weaponStats.Unknown_x1c = Utilities::clampToUShort(uIntValue); break;
+            case 17: weaponStats.SwingSpeed = Utilities::clampToUShort(uIntValue); break;
             case 18: weaponStats.Unknown_x1e = Utilities::clampToUShort(uIntValue); break;
-            case 19: weaponStats.Unknown_x20 = Utilities::clampToUShort(uIntValue); break;
-            case 20: weaponStats.Unknown_x22 = Utilities::clampToUShort(uIntValue); break;
-            case 21: weaponStats.Unknown_x24 = Utilities::clampToShort(intValue); break;
+            case 19: weaponStats.Spell1CastStartTime = Utilities::clampToUShort(uIntValue); break;
+            case 20: weaponStats.Spell1CastEndTime = Utilities::clampToUShort(uIntValue); break;
+            case 21: weaponStats.Spell2AnimSpeed = Utilities::clampToShort(intValue); break;
             case 22: weaponStats.Unknown_x26 = Utilities::clampToUShort(uIntValue); break;
             case 23: weaponStats.Unknown_x28 = Utilities::clampToUShort(uIntValue); break;
             case 24: weaponStats.Unknown_x2a = Utilities::clampToUShort(uIntValue); break;
