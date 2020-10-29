@@ -1461,7 +1461,7 @@ namespace KingsField
      * \brief Stats structure for weapons.
      */
     struct WeaponStats {
-        byte Unknown_x00;
+        byte SoundEffect;
         byte StrStaminaCost;
         byte Unknown_x02;
         MagicID Spell1;
@@ -1477,14 +1477,14 @@ namespace KingsField
         u_short OffWaterM;
         u_short HPRestoreTimer;
         u_short MPRestoreTimer;
-        short Unknown_x1a;
+        short AttackRange;
         u_short SwingSpeed;
-        u_short Unknown_x1e;
+        u_short SwingDamageStartTime;
         u_short Spell1CastStartTime;
         u_short Spell1CastEndTime;
         short Spell2AnimSpeed;
         u_short Unknown_x26;
-        u_short Unknown_x28;
+        u_short Spell2DamageStartTime;
         u_short Unknown_x2a;
         u_short Unknown_x2c;
         u_short Unknown_x2e;
@@ -1496,7 +1496,7 @@ namespace KingsField
         friend QDataStream &operator>> (QDataStream &in, WeaponStats& weaponStat)
         {
             quint8 tempByte;
-            in >> weaponStat.Unknown_x00;
+            in >> weaponStat.SoundEffect;
             in >> weaponStat.StrStaminaCost;
             in >> weaponStat.Unknown_x02;
             in >> tempByte;
@@ -1514,14 +1514,14 @@ namespace KingsField
             in >> weaponStat.OffWaterM;
             in >> weaponStat.HPRestoreTimer;
             in >> weaponStat.MPRestoreTimer;
-            in >> weaponStat.Unknown_x1a;
+            in >> weaponStat.AttackRange;
             in >> weaponStat.SwingSpeed;
-            in >> weaponStat.Unknown_x1e;
+            in >> weaponStat.SwingDamageStartTime;
             in >> weaponStat.Spell1CastStartTime;
             in >> weaponStat.Spell1CastEndTime;
             in >> weaponStat.Spell2AnimSpeed;
             in >> weaponStat.Unknown_x26;
-            in >> weaponStat.Unknown_x28;
+            in >> weaponStat.Spell2DamageStartTime;
             in >> weaponStat.Unknown_x2a;
             in >> weaponStat.Unknown_x2c;
             in >> weaponStat.Unknown_x2e;
@@ -1535,7 +1535,7 @@ namespace KingsField
 
         friend QDataStream &operator<< (QDataStream &out, const WeaponStats& weaponStat)
         {
-            out << weaponStat.Unknown_x00;
+            out << weaponStat.SoundEffect;
             out << weaponStat.StrStaminaCost;
             out << weaponStat.Unknown_x02;
             out << KingsField::getMagicIDAsByte(weaponStat.Spell1);
@@ -1551,14 +1551,14 @@ namespace KingsField
             out << weaponStat.OffWaterM;
             out << weaponStat.HPRestoreTimer;
             out << weaponStat.MPRestoreTimer;
-            out << weaponStat.Unknown_x1a;
+            out << weaponStat.AttackRange;
             out << weaponStat.SwingSpeed;
-            out << weaponStat.Unknown_x1e;
+            out << weaponStat.SwingDamageStartTime;
             out << weaponStat.Spell1CastStartTime;
             out << weaponStat.Spell1CastEndTime;
             out << weaponStat.Spell2AnimSpeed;
             out << weaponStat.Unknown_x26;
-            out << weaponStat.Unknown_x28;
+            out << weaponStat.Spell2DamageStartTime;
             out << weaponStat.Unknown_x2a;
             out << weaponStat.Unknown_x2c;
             out << weaponStat.Unknown_x2e;
