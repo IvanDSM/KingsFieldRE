@@ -1,26 +1,50 @@
 all states are hexadecimal
+if an enemy has an empty body it means it's already been checked but we didn't find anything special
 
 confirmed for all:
+01 - wander
 02 - taking damage
 03 - dying
+04 - melee attack
 05 - approaching player
 
 entrance kraken body:
 00 - idle?
-04 - melee attack
 15 - do nothing
 
+big kraken body:
+
+cave magic kraken body:
+19 - magic attack
+
 green slime:
-04 - melee attack
-05 - approaching player
 
 s knight:
-04 - melee attack
-05 - approaching player
 19 - magic attack
 
 skeleton:
 01 - wander
-18 - chop? attack
+17 - swishy attack
+18 - chop (not as in the stat, as in the animation) attack
 1a - in box?
 
+fire elemental:
+0a - doing their thing
+
+soldier: (all attacks are 04 interestingly)
+
+ghost:
+0f - dash (quickly fly to player's general direction)
+
+termite:
+17 - nom nom attack (quick double bite)
+
+archer:
+19 - bow attack (which we know is a magic spell internally)
+
+reik:
+0a - wander
+0b - spinny attack
+
+copper knight:
+19 - all magic attacks
