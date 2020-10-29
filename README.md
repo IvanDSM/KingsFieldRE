@@ -18,14 +18,17 @@ You will need to be signed into GitHub to download the automated builds due to G
 ## checksum_tool
 This is a very simple command line tool for calculating a file's checksum according to the way the game calculates it for integrity checking. The game's method for calculating a file's checksum is described [in the repository's wiki](https://github.com/IvanDSM/KingsFieldRE/wiki/File-Checksum-Algorithm).
 
-## fdat28_tool
-WARNING: fdat28_tool has been deprecated. Use KFModTool instead.
-
 ## HexOffsetFinder
 This tool is a simple single-purpose utility. It receives text files with increasingly ordered hexadecimal values (such as the ones in the Notes folder), finds the offsets between the values and prints out a sorted list of them. This tool is used to find the size of newly found structures.
 
 ## KFMiniScripts
-KFMiniScripts is a one file Python module with functions relevant to King's Field (II) reverse engineering. The objective of this tool is to make it easy to replicate smaller parts of game logic for analytical purposes such as route planning or other kinds of estimations.
+KFMiniScripts is a collection of scripts to aid in reverse engineering King's Field (II) and testing concepts. 
+
+kfminiscripts.py is a Python module with functions relevant to King's Field (II) reverse engineering. The objective of this tool is to make it easy to replicate smaller parts of game logic for analytical purposes such as route planning or other kinds of estimations.
+
+KFPeek.lua is a Lua script for the psxjin emulator that (currently) allows the user to watch entity structure values in real time. The entity indexes match up with the instance IDs in KFModTool. KFPeek **must** be used with the USA version of King's Field (II).
+
+![KFPeek screenshot](wiki/kfpeek.png)
 
 ## KFModTool
 Very early modding tool for King's Field. Breaks often, so be careful!
