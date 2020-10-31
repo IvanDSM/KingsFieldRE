@@ -126,7 +126,7 @@ tile_struct_size = 0xa
 --- Global variables
 cur_entity = 0
 cur_object = 0
-cur_mode = 2
+cur_mode = 0
 draw_player_info = true
 new_value_str = ""
 
