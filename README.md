@@ -26,7 +26,7 @@ KFMiniScripts is a collection of scripts to aid in reverse engineering King's Fi
 
 kfminiscripts.py is a Python module with functions relevant to King's Field (II) reverse engineering. The objective of this tool is to make it easy to replicate smaller parts of game logic for analytical purposes such as route planning or other kinds of estimations.
 
-KFPeek.lua is a Lua script for the psxjin emulator that (currently) allows the user to watch entity structure values in real time. The entity indexes match up with the instance IDs in KFModTool. KFPeek **must** be used with the USA version of King's Field (II).
+KFPeek.lua is a Lua script for the psxjin emulator that (currently) allows the user to watch entity and object values in real time. The entity indexes match up with the instance IDs in KFModTool. KFPeek **must** be used with the USA version of King's Field (II).
 
 ![KFPeek screenshot](wiki/kfpeek.png)
 
