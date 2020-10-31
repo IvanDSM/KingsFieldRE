@@ -35,6 +35,9 @@
          <property name="alternatingRowColors">
           <bool>true</bool>
          </property>
+         <attribute name="horizontalHeaderStretchLastSection">
+          <bool>true</bool>
+         </attribute>
         </widget>
        </item>
       </layout>
@@ -48,7 +51,11 @@
         <widget class="QComboBox" name="objClassCombo"/>
        </item>
        <item>
-        <widget class="QTableView" name="objClassTable"/>
+        <widget class="QTableView" name="objClassTable">
+         <attribute name="horizontalHeaderStretchLastSection">
+          <bool>true</bool>
+         </attribute>
+        </widget>
        </item>
       </layout>
      </widget>
@@ -71,7 +78,11 @@
         </widget>
        </item>
        <item>
-        <widget class="QTableView" name="levelTable"/>
+        <widget class="QTableView" name="levelTable">
+         <attribute name="horizontalHeaderStretchLastSection">
+          <bool>true</bool>
+         </attribute>
+        </widget>
        </item>
       </layout>
      </widget>
@@ -84,7 +95,11 @@
         <widget class="QComboBox" name="weaponCombo"/>
        </item>
        <item>
-        <widget class="QTableView" name="weaponTable"/>
+        <widget class="QTableView" name="weaponTable">
+         <attribute name="horizontalHeaderStretchLastSection">
+          <bool>true</bool>
+         </attribute>
+        </widget>
        </item>
       </layout>
      </widget>

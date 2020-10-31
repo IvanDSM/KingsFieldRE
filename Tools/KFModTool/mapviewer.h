@@ -79,6 +79,7 @@ public:
     }
 
 signals:
+    void curMousePosChanged(qint8 x, qint8 y);
     void entityInstanceHovered(byte instance);
     void hoveredTileInfo(byte elevation, byte rotation, byte collisionThing, byte zoneDelimiter,
                          byte tileId);
@@ -88,7 +89,7 @@ public slots:
     void leaveEvent(QEvent *event) override
     {
         QWidget::leaveEvent(event);
-        mousePos = {-2,-2};
+        setMousePos(-2, -2);
         repaint();
     }
 
@@ -104,6 +105,12 @@ private:
     void drawObjects();
     void drawSelection();
 
+    void setMousePos(qint8 trueX, qint8 trueY)
+    {
+        mousePos.setX(trueX);
+        mousePos.setY(trueY);
+        emit curMousePosChanged(trueX, trueY);
+    }
     void processMouse(QMouseEvent *event);
 
     bool drawZoneDelimiters = false;

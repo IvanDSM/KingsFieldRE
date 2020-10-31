@@ -188,8 +188,7 @@ void MapViewer::processMouse(QMouseEvent *event)
     if (trueX < 0 || trueX > 79 || trueY < 0 || trueY > 79)
         return;
 
-    mousePos.setX(trueX);
-    mousePos.setY(trueY);
+    setMousePos(trueX, trueY);
 
     if (event->buttons() != Qt::NoButton)
     {

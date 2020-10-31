@@ -80,9 +80,9 @@ void MainWindow::on_filesTree_itemDoubleClicked(QTreeWidgetItem *item, int)
                 auto* mapEditor = new MapEditWidget(ui->editorTabs);
                 mapEditor->setMap(map);
                 ui->editorTabs->addTab(mapEditor, map->getName());
-                ui->editorTabs->setCurrentIndex(ui->editorTabs->count() - 1);
-                ui->editorTabs->setTabIcon(ui->editorTabs->count() - 1, QIcon(":/map_icon.png"));
-                openMaps[mapIndex] = ui->editorTabs->count() - 1;
+                ui->editorTabs->setCurrentWidget(mapEditor);
+                ui->editorTabs->setTabIcon(ui->editorTabs->currentIndex(), QIcon(":/map_icon.png"));
+                openMaps[mapIndex] = ui->editorTabs->currentIndex();
             }
         }
         else if (kfmtItem->getType() == KFMTDataType::KFMT_GAMEDB)
@@ -93,8 +93,8 @@ void MainWindow::on_filesTree_itemDoubleClicked(QTreeWidgetItem *item, int)
             {
                 auto gameDBEditor = new GameDBEditWidget(ui->editorTabs, kfmtItem->getDB());
                 ui->editorTabs->addTab(gameDBEditor, "Game Database");
-                ui->editorTabs->setCurrentIndex(ui->editorTabs->count() - 1);
-                ui->editorTabs->setTabIcon(ui->editorTabs->count() - 1, QIcon(":/db_icon.png"));
+                ui->editorTabs->setCurrentWidget(gameDBEditor);
+                ui->editorTabs->setTabIcon(ui->editorTabs->currentIndex(), QIcon(":/db_icon.png"));
             }
         }
     }

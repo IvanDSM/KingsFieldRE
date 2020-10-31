@@ -21,6 +21,8 @@ private slots:
 
     void on_entityCDCombo_currentIndexChanged(int index);
 
+    void curMousePosChanged(qint8 x, qint8 y);
+
     void entityInstanceHovered(byte instanceIndex);
 
     void hoveredTileInfo(byte elevation, byte rotation, byte collisionThing, byte zoneDelimiter,

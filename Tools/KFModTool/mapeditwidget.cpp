@@ -12,6 +12,8 @@ MapEditWidget::MapEditWidget(QWidget *parent) :
     ui->setupUi(this);
     ui->mapViewWidget->setMap(curMap);
 
+    connect(ui->mapViewWidget, &MapViewer::curMousePosChanged,
+            this, &MapEditWidget::curMousePosChanged);
     connect(ui->mapViewWidget, &MapViewer::entityInstanceHovered,
             this, &MapEditWidget::entityInstanceHovered);
     connect(ui->mapViewWidget, &MapViewer::hoveredTileInfo,
@@ -67,6 +69,15 @@ void MapEditWidget::on_entityCDCombo_currentIndexChanged(int index)
 
 }
 
+void MapEditWidget::curMousePosChanged(qint8 x, qint8 y)
+{
+    static const QString baseText = "Current Mouse Position: X: %1 Y: %2";
+    if (x < 0 && y < 0)
+        ui->curMousePos->setText(baseText.arg("--").arg("--"));
+    else
+        ui->curMousePos->setText(baseText.arg(x).arg(y));
+}
+
 void MapEditWidget::entityInstanceHovered(byte instanceIndex)
 {
     KingsField::EntityInstance &instance = curMap->getInstance(instanceIndex);
@@ -80,6 +91,8 @@ void MapEditWidget::entityInstanceHovered(byte instanceIndex)
                                                                    instance));
 
     ui->entityCDCombo->setCurrentIndex(instance.EntityClass);
+
+    ui->infoTabs->setCurrentWidget(ui->entityTab);
 }
 
 void MapEditWidget::hoveredTileInfo(byte elevation, byte rotation, byte collisionThing,
@@ -104,6 +117,8 @@ void MapEditWidget::objectInstanceHovered(size_t instanceIndex)
 
     ui->objectInstanceTable->setModel(new ObjectInstanceTableModel(ui->entityInstanceTable,
                                                                    instance));
+
+    ui->infoTabs->setCurrentWidget(ui->objectTab);
 }
 
 void MapEditWidget::on_zoneDelimCheck_stateChanged(int arg1)
