@@ -63,7 +63,7 @@ void MapEditWidget::fillEntityCDCombo()
 
 void MapEditWidget::on_entityCDCombo_currentIndexChanged(int index)
 {
-    KingsField::EntityClassDeclaration &entityClassDecl = curMap->getClassDeclaration(index);
+    KingsField::EntityClassDeclaration &entityClassDecl = curMap->getEntityClassDeclaration(index);
 
     ui->entityCDTable->setModel(new EntityClassTableModel(ui->entityCDTable, entityClassDecl));
 
@@ -80,7 +80,7 @@ void MapEditWidget::curMousePosChanged(qint8 x, qint8 y)
 
 void MapEditWidget::entityInstanceHovered(byte instanceIndex)
 {
-    KingsField::EntityInstance &instance = curMap->getInstance(instanceIndex);
+    KingsField::EntityInstance &instance = curMap->getEntityInstance(instanceIndex);
     currentEntityInstance = instanceIndex;
 
     auto address = QString::number(0x8016c544 + (instanceIndex * 0x7c), 16);
@@ -183,7 +183,7 @@ void MapEditWidget::on_entityCDImport_clicked()
             return;
         }
         QDataStream importStream(&file);
-        importStream >> curMap->getClassDeclaration(index);
+        importStream >> curMap->getEntityClassDeclaration(index);
         file.close();
         fillEntityCDCombo();
         ui->entityCDCombo->setCurrentIndex(index);
@@ -208,7 +208,7 @@ void MapEditWidget::on_entityCDExport_clicked()
             return;
         }
         QDataStream exportStream(&file);
-        exportStream << curMap->getClassDeclaration(ui->entityCDCombo->currentIndex());
+        exportStream << curMap->getEntityClassDeclaration(ui->entityCDCombo->currentIndex());
         file.close();
         QMessageBox::information(this, "Export successful!",
                                  "Entity Class Declaration exported successfully!");
@@ -234,7 +234,7 @@ void MapEditWidget::on_entityInstanceImport_clicked()
                 return;
             }
             QDataStream importStream(&file);
-            importStream >> curMap->getInstance(currentEntityInstance);
+            importStream >> curMap->getEntityInstance(currentEntityInstance);
             file.close();
             entityInstanceHovered(currentEntityInstance); // FIXME: Dirty hack. Do something proper.
         }
@@ -261,7 +261,7 @@ void MapEditWidget::on_entityInstanceExport_clicked()
                 return;
             }
             QDataStream exportStream(&file);
-            exportStream << curMap->getInstance(currentEntityInstance);
+            exportStream << curMap->getEntityInstance(currentEntityInstance);
             file.close();
             QMessageBox::information(this, "Export successful!",
                                      "Entity Instance Declaration exported successfully!");

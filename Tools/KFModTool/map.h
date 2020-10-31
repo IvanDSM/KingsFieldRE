@@ -2,8 +2,10 @@
 #define MAP_H
 
 #include "checksum.h"
+#include "kfmterror.h"
 #include "kftypes.h"
 #include "tfile.h"
+#include <QMessageBox>
 
 typedef quint8 byte;
 
@@ -12,15 +14,22 @@ class Map
 public:
     Map(TFile &fdatTFile, unsigned int index, QString name);
 
+    KingsField::EntityClassDeclaration &getEntityClassDeclaration(byte classDeclIndex)
+    {
+        try
+        {
+            return entityClassDeclarations[classDeclIndex];
+        }
+        catch (const std::out_of_range &exception)
+        {
+            KFMTError::outOfRange(classDeclIndex, "entity class declaration", exception.what());
+        }
+
+    }
+
     const std::vector<KingsField::EntityClassDeclaration> getEntityClassDeclarations() const
     {
         return entityClassDeclarations;
-    }
-
-    KingsField::EntityClassDeclaration &getClassDeclaration(byte classDeclIndex)
-    {
-        if (classDeclIndex < 40)
-            return entityClassDeclarations[classDeclIndex];
     }
 
     const std::vector<KingsField::EntityInstance> getEntityInstances() const
@@ -28,10 +37,16 @@ public:
         return entityInstances;
     }
 
-    KingsField::EntityInstance &getInstance(byte instanceIndex)
+    KingsField::EntityInstance &getEntityInstance(byte instanceIndex)
     {
-        if (instanceIndex < 200)
+        try
+        {
             return entityInstances[instanceIndex];
+        }
+        catch (const std::out_of_range &exception)
+        {
+            KFMTError::outOfRange(instanceIndex, "entity instance declaration", exception.what());
+        }
     }
 
     const unsigned int &getIndex() const
@@ -46,8 +61,14 @@ public:
 
     KingsField::ObjectInstanceDeclaration &getObjectInstance(size_t instanceIndex)
     {
-        if (instanceIndex < 350)
+        try
+        {
             return objInstances[instanceIndex];
+        }
+        catch (const std::out_of_range &exception)
+        {
+            KFMTError::outOfRange(instanceIndex, "object instance declaration", exception.what());
+        }
     }
 
     const std::vector<KingsField::ObjectInstanceDeclaration> &getObjectInstanceDeclarations() const
@@ -58,8 +79,16 @@ public:
 
     KingsField::Tile& getTile(size_t line, size_t column)
     {
-        if (line < 80 && column < 80)
+        try
+        {
             return tileMap[line][column];
+        }
+        catch (const std::out_of_range &exception)
+        {
+            QString errorMessage = "Tried accessing tile at position X %1 Y %2.\n%3";
+            errorMessage = errorMessage.arg(column).arg(line).arg(exception.what());
+            KFMTError::fatalError(errorMessage);
+        }
     }
 
     void writeChanges();

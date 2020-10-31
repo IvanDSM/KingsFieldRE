@@ -19,6 +19,7 @@ SOURCES += \
     aboutdialog.cpp \
     gamedb.cpp \
     gamedbeditwidget.cpp \
+    kfmterror.cpp \
     kfmttreewidgetitem.cpp \
     main.cpp \
     mainwindow.cpp \
@@ -41,6 +42,7 @@ HEADERS += \
     checksum.h \
     gamedb.h \
     gamedbeditwidget.h \
+    kfmterror.h \
     kfmttreewidgetitem.h \
     kftypes.h \
     mainwindow.h \

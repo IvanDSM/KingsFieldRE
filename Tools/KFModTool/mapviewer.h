@@ -86,13 +86,7 @@ signals:
     void objectInstanceHovered(size_t instance);
 
 public slots:
-    void leaveEvent(QEvent *event) override
-    {
-        QWidget::leaveEvent(event);
-        setMousePos(-2, -2);
-        repaint();
-    }
-
+    void leaveEvent(QEvent *event) override;
     void mouseMoveEvent(QMouseEvent *event) override;
     void mousePressEvent(QMouseEvent *event) override;
     void mouseReleaseEvent(QMouseEvent *event) override;
@@ -112,6 +106,10 @@ private:
         emit curMousePosChanged(trueX, trueY);
     }
     void processMouse(QMouseEvent *event);
+
+    // Convenience
+    std::vector<size_t> entitiesAt(byte x, byte y);
+    std::vector<size_t> objectsAt(byte x, byte y);
 
     bool drawZoneDelimiters = false;
     byte curBrush = 127;

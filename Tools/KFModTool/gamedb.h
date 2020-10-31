@@ -3,6 +3,7 @@
 
 #include "tfile.h"
 #include "kftypes.h"
+#include "kfmterror.h"
 
 class GameDB
 {
@@ -11,26 +12,50 @@ public:
 
     KingsField::PlayerLvlData &getLevel(byte levelIndex)
     {
-        if (levelIndex < lvlDataSize)
+        try
+        {
             return lvlData.at(levelIndex);
+        }
+        catch (const std::out_of_range &exception)
+        {
+            KFMTError::outOfRange(levelIndex, "player level data", exception.what());
+        }
     }
 
     KingsField::Magic &getMagic(byte magicIndex)
     {
-        if (magicIndex < magicDataSize)
+        try
+        {
             return magicData.at(magicIndex);
+        }
+        catch (const std::out_of_range &exception)
+        {
+            KFMTError::outOfRange(magicIndex, "magic data", exception.what());
+        }
     }
 
     KingsField::ObjectClassDeclaration &getObjClass(unsigned short objClassIndex)
     {
-        if (objClassIndex < objClassDeclarationsSize)
+        try
+        {
             return objClassDeclarations.at(objClassIndex);
+        }
+        catch (const std::out_of_range &exception)
+        {
+            KFMTError::outOfRange(objClassIndex, "object class declaration", exception.what());
+        }
     }
 
     KingsField::WeaponStats &getWeaponStats(byte weaponIndex)
     {
-        if (weaponIndex < weaponStatsSize)
+        try
+        {
             return weaponStats.at(weaponIndex);
+        }
+        catch (const std::out_of_range &exception)
+        {
+            KFMTError::outOfRange(weaponIndex, "weapon stats", exception.what());
+        }
     }
 
     void writeChanges();

@@ -23,6 +23,7 @@ public:
         , ui(new Ui::MainWindow)
     {
         ui->setupUi(this);
+        KFMTError::setParent(this);
         std::fill(openMaps.begin(), openMaps.end(), -1);
     }
 

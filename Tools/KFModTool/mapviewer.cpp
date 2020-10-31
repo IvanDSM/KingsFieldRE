@@ -2,6 +2,13 @@
 #include <QMouseEvent>
 #include <iostream>
 
+void MapViewer::leaveEvent(QEvent *event)
+{
+    QWidget::leaveEvent(event);
+    setMousePos(-2, -2);
+    repaint();
+}
+
 void MapViewer::mouseMoveEvent(QMouseEvent *event)
 {
     QWidget::mouseMoveEvent(event);
@@ -194,24 +201,24 @@ void MapViewer::processMouse(QMouseEvent *event)
     {
         if (curMode == MapViewerMode::MODE_POKE)
         {
-            size_t entityIndex = 0;
+            size_t index = 0;
             for (auto entityInstance : mapPtr->getEntityInstances())
             {
                 if (trueX == entityInstance.WEXTilePos && trueY == entityInstance.NSYTilePos &&
                     ((entityInstance.Layer == 1 && curLayer == MapLayer::LAYER_1) ||
                      (entityInstance.Layer == 2 && curLayer == MapLayer::LAYER_2)))
-                    emit entityInstanceHovered(entityIndex);
-                entityIndex++;
+                    emit entityInstanceHovered(index);
+                index++;
             }
 
-            entityIndex = 0;
+            index = 0;
             for (auto objInstance : mapPtr->getObjectInstanceDeclarations())
             {
                 if (trueX == objInstance.WEXTilePos && trueY == objInstance.NSYTilePos &&
                     ((objInstance.TileLayer == 1 && curLayer == MapLayer::LAYER_1) ||
                      (objInstance.TileLayer == 2 && curLayer == MapLayer::LAYER_2)))
-                    emit objectInstanceHovered(entityIndex);
-                entityIndex++;
+                    emit objectInstanceHovered(index);
+                index++;
             }
 
             auto tile = mapPtr->getTile(trueX, trueY);
@@ -277,7 +284,7 @@ void MapViewer::processMouse(QMouseEvent *event)
         }
         else if (curMode == MapViewerMode::MODE_FILL)
         {
-            if (selection.x() == -2)
+            if (selection.x() < 0)
             {
                 selection.setTopLeft(mousePos);
                 selection.setBottomRight(mousePos);
@@ -287,9 +294,62 @@ void MapViewer::processMouse(QMouseEvent *event)
         }
         else if (curMode == MapViewerMode::MODE_MOVE)
         {
-
+            if (event->type() == QEvent::Type::MouseMove)
+            {
+                if (mousePos.x() >= 0 && mousePos.y() >= 0)
+                {
+                    for (auto entity : heldEntities)
+                    {
+                        mapPtr->getEntityInstance(entity).WEXTilePos = mousePos.x();
+                        mapPtr->getEntityInstance(entity).NSYTilePos = mousePos.y();
+                    }
+                    for (auto object : heldObjects)
+                    {
+                        mapPtr->getObjectInstance(object).WEXTilePos = mousePos.x();
+                        mapPtr->getObjectInstance(object).NSYTilePos = mousePos.y();
+                    }
+                }
+            }
+            else if (event->type() == QEvent::Type::MouseButtonPress)
+            {
+                heldEntities = entitiesAt(trueX, trueY);
+                heldObjects = objectsAt(trueX, trueY);
+            }
         }
     }
 
     repaint();
+}
+
+std::vector<size_t> MapViewer::entitiesAt(byte x, byte y)
+{
+    size_t index = 0;
+    std::vector<size_t> entityIndices;
+
+    for (auto entityInstance : mapPtr->getEntityInstances())
+    {
+        if (x == entityInstance.WEXTilePos && y == entityInstance.NSYTilePos &&
+            ((entityInstance.Layer == 1 && curLayer == MapLayer::LAYER_1) ||
+             (entityInstance.Layer == 2 && curLayer == MapLayer::LAYER_2)))
+            entityIndices.push_back(index);
+        index++;
+    }
+
+    return entityIndices;
+}
+
+std::vector<size_t> MapViewer::objectsAt(byte x, byte y)
+{
+    size_t index = 0;
+    std::vector<size_t> objectIndices;
+    for (auto objInstance : mapPtr->getObjectInstanceDeclarations())
+    {
+        if (x == objInstance.WEXTilePos && y == objInstance.NSYTilePos &&
+            ((objInstance.TileLayer == 1 && curLayer == MapLayer::LAYER_1) ||
+             (objInstance.TileLayer == 2 && curLayer == MapLayer::LAYER_2)))
+            objectIndices.push_back(index);
+        index++;
+    }
+
+    return objectIndices;
 }
