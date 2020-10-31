@@ -2,6 +2,15 @@
 #include <QMouseEvent>
 #include <iostream>
 
+#if __GNUC__ < 7
+// Workaround for GCC versions that don't support C++17
+constexpr QColor MapViewer::entityColor;
+constexpr QColor MapViewer::mouseColor;
+constexpr QColor MapViewer::objectColor;
+constexpr QColor MapViewer::selectionColor;
+constexpr QColor MapViewer::vfxColor;
+#endif
+
 void MapViewer::leaveEvent(QEvent *event)
 {
     QWidget::leaveEvent(event);
