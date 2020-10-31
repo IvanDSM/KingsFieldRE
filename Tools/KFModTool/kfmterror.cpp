@@ -23,7 +23,7 @@ void KFMTError::fatalError(const QString & fatalErrorMessage)
 void KFMTError::warning(const QString & warningMessage)
 {
     std::cerr << "Warning: " << warningMessage.toStdString() << '\n';
-    QMessageBox::critical(_KFMTErrorInternal::_KFMTErrorParent, "Warning", warningMessage);
+    QMessageBox::warning(_KFMTErrorInternal::_KFMTErrorParent, "Warning", warningMessage);
 }
 
 void KFMTError::outOfRange(const size_t &index, const QString &arrayName, const std::string exceptionWhat)

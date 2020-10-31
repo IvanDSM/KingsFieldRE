@@ -2,7 +2,7 @@ QT       += core gui
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
-CONFIG += c++11
+CONFIG += c++17
 
 # The following define makes your compiler emit warnings if you use
 # any Qt feature that has been marked deprecated (the exact warnings
@@ -32,6 +32,7 @@ SOURCES += \
     models/objectclasstablemodel.cpp \
     models/objectinstancetablemodel.cpp \
     models/playerleveldatatablemodel.cpp \
+    models/vfxinstancetablemodel.cpp \
     models/weaponstatstablemodel.cpp \
     prettynamer.cpp \
     texture.cpp \
@@ -55,6 +56,7 @@ HEADERS += \
     models/objectclasstablemodel.h \
     models/objectinstancetablemodel.h \
     models/playerleveldatatablemodel.h \
+    models/vfxinstancetablemodel.h \
     models/weaponstatstablemodel.h \
     prettynamer.h \
     texture.h \

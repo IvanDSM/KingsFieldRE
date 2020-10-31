@@ -506,6 +506,9 @@
         <property name="currentIndex">
          <number>0</number>
         </property>
+        <property name="elideMode">
+         <enum>Qt::ElideNone</enum>
+        </property>
         <property name="documentMode">
          <bool>true</bool>
         </property>
@@ -791,6 +794,69 @@
               <widget class="QLabel" name="objectInstanceAddrLabel">
                <property name="text">
                 <string>Instance X, at address </string>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+        <widget class="QWidget" name="vfxTab">
+         <attribute name="title">
+          <string>VFX</string>
+         </attribute>
+         <layout class="QVBoxLayout" name="verticalLayout_9">
+          <property name="spacing">
+           <number>0</number>
+          </property>
+          <property name="leftMargin">
+           <number>0</number>
+          </property>
+          <property name="topMargin">
+           <number>0</number>
+          </property>
+          <property name="rightMargin">
+           <number>0</number>
+          </property>
+          <property name="bottomMargin">
+           <number>0</number>
+          </property>
+          <item>
+           <widget class="QGroupBox" name="objectInstanceGroup_2">
+            <property name="title">
+             <string>Current VFX Instance</string>
+            </property>
+            <layout class="QVBoxLayout" name="verticalLayout_8">
+             <property name="spacing">
+              <number>0</number>
+             </property>
+             <property name="leftMargin">
+              <number>0</number>
+             </property>
+             <property name="topMargin">
+              <number>0</number>
+             </property>
+             <property name="rightMargin">
+              <number>0</number>
+             </property>
+             <property name="bottomMargin">
+              <number>0</number>
+             </property>
+             <item>
+              <widget class="QTableView" name="vfxInstanceTable">
+               <property name="inputMethodHints">
+                <set>Qt::ImhDigitsOnly</set>
+               </property>
+               <attribute name="horizontalHeaderStretchLastSection">
+                <bool>true</bool>
+               </attribute>
+              </widget>
+             </item>
+             <item>
+              <widget class="QLabel" name="vfxInstanceAddrLabel">
+               <property name="text">
+                <string>Instance X</string>
                </property>
               </widget>
              </item>

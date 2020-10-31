@@ -30,6 +30,8 @@ private slots:
 
     void objectInstanceHovered(size_t instanceIndex);
 
+    void vfxInstanceHovered(size_t instanceIndex);
+
     void on_zoneDelimCheck_stateChanged(int arg1);
 
     void on_elementCombo_currentIndexChanged(int index);
@@ -58,6 +60,7 @@ private:
     void fillEntityCDCombo();
     byte currentEntityInstance = 255;
     size_t currentObjectInstance = 65536;
+    KingsField::VFXInstanceDeclaration *currentVFXInstance = nullptr;
     std::shared_ptr<Map> curMap;
     std::unique_ptr<Ui::MapEditWidget> ui;
 };

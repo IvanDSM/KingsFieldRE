@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Dialog</string>
+   <string>About KFModTool</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
@@ -28,12 +28,18 @@
         <property name="text">
          <string>KFModTool</string>
         </property>
+        <property name="scaledContents">
+         <bool>false</bool>
+        </property>
        </widget>
       </item>
       <item>
-       <widget class="QLabel" name="ivanLabel">
+       <widget class="QLabel" name="githubLabel">
         <property name="text">
-         <string>by IvanDSM</string>
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Part of the KingsFieldRE project. Visit us on GitHub at: &lt;a href=&quot;https://github.com/IvanDSM/KingsFieldRE&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;https://github.com/IvanDSM/KingsFieldRE&lt;/span&gt;&lt;/a&gt;!&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
+        <property name="openExternalLinks">
+         <bool>true</bool>
         </property>
        </widget>
       </item>
@@ -46,6 +52,18 @@
          <enum>QFrame::Plain</enum>
         </property>
         <layout class="QVBoxLayout" name="verticalLayout_3">
+         <property name="leftMargin">
+          <number>0</number>
+         </property>
+         <property name="topMargin">
+          <number>0</number>
+         </property>
+         <property name="rightMargin">
+          <number>0</number>
+         </property>
+         <property name="bottomMargin">
+          <number>0</number>
+         </property>
          <item>
           <widget class="QLabel" name="greetsLabel">
            <property name="frameShadow">

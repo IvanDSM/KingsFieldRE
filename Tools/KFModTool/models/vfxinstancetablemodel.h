@@ -1,20 +1,20 @@
-#ifndef PLAYERLEVELDATATABLEMODEL_H
-#define PLAYERLEVELDATATABLEMODEL_H
+#ifndef VFXINSTANCETABLEMODEL_H
+#define VFXINSTANCETABLEMODEL_H
 
 #include <QAbstractTableModel>
 #include "kftypes.h"
 
-class PlayerLevelDataTableModel : public QAbstractTableModel
+class VFXInstanceTableModel : public QAbstractTableModel
 {
     Q_OBJECT
 public:
-    PlayerLevelDataTableModel(QObject *parent,
-                          KingsField::PlayerLvlData &playerLvl_) :
-        QAbstractTableModel(parent), playerLvl(playerLvl_) {}
+    VFXInstanceTableModel(QObject * parent,
+                          KingsField::VFXInstanceDeclaration &vfxInstance_) :
+        QAbstractTableModel(parent), vfxInstance(vfxInstance_) {}
 
     int columnCount(const QModelIndex &parent) const override
     {
-        Q_UNUSED(parent)
+        Q_UNUSED(parent);
         return 1;
     }
 
@@ -38,7 +38,7 @@ public:
     int rowCount(const QModelIndex &parent) const override
     {
         Q_UNUSED(parent)
-        return 5;
+        return 13;
     }
 
     bool setData(const QModelIndex &index, const QVariant &value, int role = Qt::EditRole) override;
@@ -50,7 +50,7 @@ public:
     }
 
 private:
-    KingsField::PlayerLvlData &playerLvl;
+    KingsField::VFXInstanceDeclaration &vfxInstance;
 };
 
-#endif // PLAYERLEVELDATATABLEMODEL_H
+#endif // VFXINSTANCETABLEMODEL_H

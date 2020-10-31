@@ -14,7 +14,7 @@ namespace Utilities
     template<class T>
     short clampToShort(T value)
     {
-        return static_cast<short>(qMax(static_cast<T>(-32768), qMin(static_cast<T>(32767), value)));
+        return static_cast<short>(qMax(static_cast<T>(-32767), qMin(static_cast<T>(32767), value)));
     }
 
     template<class T>

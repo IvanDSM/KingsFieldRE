@@ -2,6 +2,7 @@
 #include "models/entityclasstablemodel.h"
 #include "models/entityinstancetablemodel.h"
 #include "models/objectinstancetablemodel.h"
+#include "models/vfxinstancetablemodel.h"
 #include <QFileDialog>
 #include <QMessageBox>
 
@@ -20,6 +21,8 @@ MapEditWidget::MapEditWidget(QWidget *parent) :
             this, &MapEditWidget::hoveredTileInfo);
     connect(ui->mapViewWidget, &MapViewer::objectInstanceHovered,
             this, &MapEditWidget::objectInstanceHovered);
+    connect(ui->mapViewWidget, &MapViewer::vfxInstanceHovered,
+            this, &MapEditWidget::vfxInstanceHovered);
 
     ui->entityCDTable->horizontalHeader()->show();
     ui->entityCDTable->verticalHeader()->show();
@@ -119,6 +122,17 @@ void MapEditWidget::objectInstanceHovered(size_t instanceIndex)
                                                                    instance));
 
     ui->infoTabs->setCurrentWidget(ui->objectTab);
+}
+
+void MapEditWidget::vfxInstanceHovered(size_t instanceIndex)
+{
+    KingsField::VFXInstanceDeclaration &vfx = curMap->getVFXInstance(instanceIndex);
+    currentVFXInstance = &vfx;
+
+    ui->vfxInstanceAddrLabel->setText("Instance " + QString::number(instanceIndex));
+    ui->vfxInstanceTable->setModel(new VFXInstanceTableModel(ui->vfxInstanceTable, vfx));
+
+    ui->infoTabs->setCurrentWidget(ui->vfxTab);
 }
 
 void MapEditWidget::on_zoneDelimCheck_stateChanged(int arg1)

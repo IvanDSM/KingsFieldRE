@@ -13,8 +13,8 @@ class MapViewer : public QWidget
 public:
     enum class MapLayer
     {
-        LAYER_1,
-        LAYER_2
+        LAYER_1 = 1,
+        LAYER_2 = 2
     };
 
     enum class MapElement
@@ -84,6 +84,7 @@ signals:
     void hoveredTileInfo(byte elevation, byte rotation, byte collisionThing, byte zoneDelimiter,
                          byte tileId);
     void objectInstanceHovered(size_t instance);
+    void vfxInstanceHovered(size_t instance);
 
 public slots:
     void leaveEvent(QEvent *event) override;
@@ -98,6 +99,7 @@ private:
     void drawMouse();
     void drawObjects();
     void drawSelection();
+    void drawVFX();
 
     void setMousePos(qint8 trueX, qint8 trueY)
     {
@@ -107,10 +109,12 @@ private:
     }
     void processMouse(QMouseEvent *event);
 
-    // Convenience
+    // Convenience methods
     std::vector<size_t> entitiesAt(byte x, byte y);
     std::vector<size_t> objectsAt(byte x, byte y);
+    std::vector<size_t> vfxAt(byte x, byte y);
 
+    // Internal stuff
     bool drawZoneDelimiters = false;
     byte curBrush = 127;
     MapElement curBrushElement = MapElement::MAP_COLLISIONTHING;
@@ -123,6 +127,16 @@ private:
     std::shared_ptr<Map> mapPtr;
     std::vector<size_t> heldEntities;
     std::vector<size_t> heldObjects;
+    std::vector<size_t> heldVFX;
+
+    // Constants
+    static constexpr QColor entityColor = QColor(255, 0, 0);
+    static constexpr QColor mouseColor = QColor(255, 200, 87);
+    static constexpr QColor objectColor = QColor(0, 255, 255);
+    static constexpr QColor selectionColor = QColor(255, 255, 255, 127);
+    static constexpr QColor vfxColor = QColor(230, 126, 34);
+
+    const QString invalidElementWarning = "MapViewer: curElement set to something it shouldn't be (%1).";
 };
 
 #endif // MAPVIEWER_H

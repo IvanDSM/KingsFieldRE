@@ -27,12 +27,12 @@ public:
 
     }
 
-    const std::vector<KingsField::EntityClassDeclaration> getEntityClassDeclarations() const
+    const std::array<KingsField::EntityClassDeclaration, 40> getEntityClassDeclarations() const
     {
         return entityClassDeclarations;
     }
 
-    const std::vector<KingsField::EntityInstance> getEntityInstances() const
+    const std::array<KingsField::EntityInstance, 200> getEntityInstances() const
     {
         return entityInstances;
     }
@@ -71,11 +71,10 @@ public:
         }
     }
 
-    const std::vector<KingsField::ObjectInstanceDeclaration> &getObjectInstanceDeclarations() const
+    const std::array<KingsField::ObjectInstanceDeclaration, 350> &getObjectInstanceDeclarations() const
     {
         return objInstances;
     }
-
 
     KingsField::Tile& getTile(size_t line, size_t column)
     {
@@ -91,6 +90,23 @@ public:
         }
     }
 
+    KingsField::VFXInstanceDeclaration &getVFXInstance(size_t instanceIndex)
+    {
+        try
+        {
+            return vfxInstances[instanceIndex];
+        }
+        catch (const std::out_of_range &exception)
+        {
+            KFMTError::outOfRange(instanceIndex, "VFX instance declaration", exception.what());
+        }
+    }
+
+    const std::array<KingsField::VFXInstanceDeclaration, 128> &getVFXInstanceDeclarations() const
+    {
+        return vfxInstances;
+    }
+
     void writeChanges();
 
 private:
@@ -102,9 +118,10 @@ private:
     QByteArray map2;
     QByteArray map3;
     QString mapName;
-    std::vector<KingsField::EntityClassDeclaration> entityClassDeclarations;
-    std::vector<KingsField::EntityInstance> entityInstances;
-    std::vector<KingsField::ObjectInstanceDeclaration> objInstances;
+    std::array<KingsField::EntityClassDeclaration, 40> entityClassDeclarations;
+    std::array<KingsField::EntityInstance, 200> entityInstances;
+    std::array<KingsField::ObjectInstanceDeclaration, 350> objInstances;
+    std::array<KingsField::VFXInstanceDeclaration, 128> vfxInstances;
 };
 
 #endif // MAP_H

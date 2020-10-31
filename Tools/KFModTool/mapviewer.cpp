@@ -92,6 +92,7 @@ void MapViewer::mouseReleaseEvent(QMouseEvent *event)
     {
         heldEntities.clear();
         heldObjects.clear();
+        heldVFX.clear();
     }
 }
 
@@ -99,19 +100,26 @@ void MapViewer::paintEvent(QPaintEvent *event)
 {
     QWidget::paintEvent(event);
     QRect window(-1, -1, 81, 81);
+
     painter.begin(this);
     painter.setWindow(window);
+
     drawMap();
+
     drawEntities();
     drawObjects();
     drawSelection();
+    drawVFX();
+
     drawMouse();
+
     painter.end();
 }
 
 void MapViewer::drawEntities()
 {
-    painter.setPen(QColor(255, 0, 0));
+    painter.setPen(entityColor);
+
     for (auto entityInstance : mapPtr->getEntityInstances())
         if (entityInstance.EntityClass != 0xFF &&
             ((entityInstance.Layer == 1 && curLayer == MapLayer::LAYER_1) ||
@@ -137,6 +145,9 @@ void MapViewer::drawMap()
                         break;
                     case MapElement::MAP_COLLISIONTHING:
                         green = mapPtr->getTile(line, column).Layer1CollisionSomething;
+                        break;
+                    default:
+                        KFMTError::warning(invalidElementWarning.arg(static_cast<unsigned>(curElement)));
                 }
                 if (drawZoneDelimiters)
                     blue = mapPtr->getTile(line, column).Layer1ZoneDelimiter;
@@ -150,6 +161,9 @@ void MapViewer::drawMap()
                         break;
                     case MapElement::MAP_COLLISIONTHING:
                         green = mapPtr->getTile(line, column).Layer2CollisionSomething;
+                        break;
+                    default:
+                        KFMTError::warning(invalidElementWarning.arg(static_cast<unsigned>(curElement)));
                 }
                 if (drawZoneDelimiters)
                     blue = mapPtr->getTile(line, column).Layer2ZoneDelimiter;
@@ -163,15 +177,13 @@ void MapViewer::drawMap()
 
 void MapViewer::drawMouse()
 {
-    painter.setPen(QColor(0xFF, 0xC8, 0x57));
+    painter.setPen(mouseColor);
     painter.drawPoint(mousePos);
 }
 
 void MapViewer::drawObjects()
 {
-    QColor curColor(0, 255, 255);
-
-    painter.setPen(curColor);
+    painter.setPen(MapViewer::objectColor);
 
     for (auto objInstance : mapPtr->getObjectInstanceDeclarations())
         if (objInstance.ObjectID != KingsField::ObjectID::None &&
@@ -182,9 +194,18 @@ void MapViewer::drawObjects()
 
 void MapViewer::drawSelection()
 {
-    QColor curColor(255, 255, 255, 127);
+    painter.fillRect(selection, selectionColor);
+}
 
-    painter.fillRect(selection, curColor);
+void MapViewer::drawVFX()
+{
+    painter.setPen(vfxColor);
+
+    for (auto vfxInstance : mapPtr->getVFXInstanceDeclarations())
+    {
+        if (vfxInstance.TileLayer == static_cast<byte>(curLayer))
+            painter.drawPoint(vfxInstance.TileWEX, vfxInstance.TileNSY);
+    }
 }
 
 void MapViewer::processMouse(QMouseEvent *event)
@@ -220,6 +241,9 @@ void MapViewer::processMouse(QMouseEvent *event)
                     emit objectInstanceHovered(index);
                 index++;
             }
+
+            for (auto vfx : vfxAt(trueX, trueY))
+                emit vfxInstanceHovered(vfx);
 
             auto tile = mapPtr->getTile(trueX, trueY);
             switch(curLayer)
@@ -303,10 +327,17 @@ void MapViewer::processMouse(QMouseEvent *event)
                         mapPtr->getEntityInstance(entity).WEXTilePos = mousePos.x();
                         mapPtr->getEntityInstance(entity).NSYTilePos = mousePos.y();
                     }
+
                     for (auto object : heldObjects)
                     {
                         mapPtr->getObjectInstance(object).WEXTilePos = mousePos.x();
                         mapPtr->getObjectInstance(object).NSYTilePos = mousePos.y();
+                    }
+
+                    for (auto vfx : heldVFX)
+                    {
+                        mapPtr->getVFXInstance(vfx).TileWEX = mousePos.x();
+                        mapPtr->getVFXInstance(vfx).TileNSY = mousePos.y();
                     }
                 }
             }
@@ -314,6 +345,7 @@ void MapViewer::processMouse(QMouseEvent *event)
             {
                 heldEntities = entitiesAt(trueX, trueY);
                 heldObjects = objectsAt(trueX, trueY);
+                heldVFX = objectsAt(trueX, trueY);
             }
         }
     }
@@ -352,4 +384,19 @@ std::vector<size_t> MapViewer::objectsAt(byte x, byte y)
     }
 
     return objectIndices;
+}
+
+std::vector<size_t> MapViewer::vfxAt(byte x, byte y)
+{
+    size_t index = 0;
+    std::vector<size_t> vfxIndices;
+    for (auto vfxInstance : mapPtr->getVFXInstanceDeclarations())
+    {
+        if (x == vfxInstance.TileWEX && y == vfxInstance.TileNSY &&
+            vfxInstance.TileLayer == static_cast<byte>(curLayer))
+            vfxIndices.push_back(index);
+        index++;
+    }
+
+    return vfxIndices;
 }

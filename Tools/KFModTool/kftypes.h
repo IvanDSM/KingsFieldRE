@@ -1458,6 +1458,61 @@ namespace KingsField
     };
 
     /*!
+     * \brief Structure for VFX objects in King's Field.
+     */
+    struct VFXInstanceDeclaration {
+        undefined field_0x0;
+        undefined field_0x1;
+        undefined field_0x2;
+        undefined field_0x3;
+        byte TileLayer;
+        byte TileWEX;
+        byte TileNSY;
+        undefined field_0x7;
+        undefined field_0x8;
+        undefined field_0x9;
+        short FineXPos;
+        short FineYPos;
+        short FineZPos;
+
+        friend QDataStream &operator>> (QDataStream &in, VFXInstanceDeclaration &vfx)
+        {
+            in >> vfx.field_0x0;
+            in >> vfx.field_0x1;
+            in >> vfx.field_0x2;
+            in >> vfx.field_0x3;
+            in >> vfx.TileLayer;
+            in >> vfx.TileWEX;
+            in >> vfx.TileNSY;
+            in >> vfx.field_0x7;
+            in >> vfx.field_0x8;
+            in >> vfx.field_0x9;
+            in >> vfx.FineXPos;
+            in >> vfx.FineYPos;
+            in >> vfx.FineZPos;
+            return in;
+        }
+
+        friend QDataStream &operator<< (QDataStream &out, const VFXInstanceDeclaration &vfx)
+        {
+            out << vfx.field_0x0;
+            out << vfx.field_0x1;
+            out << vfx.field_0x2;
+            out << vfx.field_0x3;
+            out << vfx.TileLayer;
+            out << vfx.TileWEX;
+            out << vfx.TileNSY;
+            out << vfx.field_0x7;
+            out << vfx.field_0x8;
+            out << vfx.field_0x9;
+            out << vfx.FineXPos;
+            out << vfx.FineYPos;
+            out << vfx.FineZPos;
+            return out;
+        }
+    };
+
+    /*!
      * \brief Stats structure for weapons.
      */
     struct WeaponStats {
