@@ -19,6 +19,23 @@
      <property name="currentIndex">
       <number>0</number>
      </property>
+     <widget class="QWidget" name="armorStatsTab">
+      <attribute name="title">
+       <string>Armor Stats</string>
+      </attribute>
+      <layout class="QVBoxLayout" name="verticalLayout_6">
+       <item>
+        <widget class="QComboBox" name="armorCombo"/>
+       </item>
+       <item>
+        <widget class="QTableView" name="armorTable">
+         <attribute name="horizontalHeaderStretchLastSection">
+          <bool>true</bool>
+         </attribute>
+        </widget>
+       </item>
+      </layout>
+     </widget>
      <widget class="QWidget" name="magicTab">
       <attribute name="title">
        <string>Magic Spells Data</string>

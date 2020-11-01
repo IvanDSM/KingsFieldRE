@@ -26,6 +26,7 @@ SOURCES += \
     map.cpp \
     mapeditwidget.cpp \
     mapviewer.cpp \
+    models/armorstatstablemodel.cpp \
     models/entityclasstablemodel.cpp \
     models/entityinstancetablemodel.cpp \
     models/magictablemodel.cpp \
@@ -50,6 +51,7 @@ HEADERS += \
     map.h \
     mapeditwidget.h \
     mapviewer.h \
+    models/armorstatstablemodel.h \
     models/entityclasstablemodel.h \
     models/entityinstancetablemodel.h \
     models/magictablemodel.h \

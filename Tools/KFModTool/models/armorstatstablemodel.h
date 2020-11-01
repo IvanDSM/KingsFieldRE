@@ -1,16 +1,16 @@
-#ifndef VFXINSTANCETABLEMODEL_H
-#define VFXINSTANCETABLEMODEL_H
+#ifndef ARMORSTATSTABLEMODEL_H
+#define ARMORSTATSTABLEMODEL_H
 
 #include <QAbstractTableModel>
 #include "kftypes.h"
 
-class VFXInstanceTableModel : public QAbstractTableModel
+class ArmorStatsTableModel : public QAbstractTableModel
 {
     Q_OBJECT
 public:
-    VFXInstanceTableModel(QObject * parent,
-                          KingsField::VFXInstanceDeclaration &vfxInstance_) :
-        QAbstractTableModel(parent), vfxInstance(vfxInstance_) {}
+    ArmorStatsTableModel(QObject * parent,
+                          KingsField::ArmorStats &armorStats_) :
+        QAbstractTableModel(parent), armorStats(armorStats_) {}
 
     int columnCount(const QModelIndex &parent) const override
     {
@@ -38,7 +38,7 @@ public:
     int rowCount(const QModelIndex &parent) const override
     {
         Q_UNUSED(parent)
-        return 12;
+        return 16;
     }
 
     bool setData(const QModelIndex &index, const QVariant &value, int role = Qt::EditRole) override;
@@ -50,7 +50,7 @@ public:
     }
 
 private:
-    KingsField::VFXInstanceDeclaration &vfxInstance;
+    KingsField::ArmorStats &armorStats;
 };
 
-#endif // VFXINSTANCETABLEMODEL_H
+#endif // ARMORSTATSTABLEMODEL_H

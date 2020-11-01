@@ -4,6 +4,7 @@
 #include <QWidget>
 #include "ui_gamedbeditwidget.h"
 #include "gamedb.h"
+#include "models/armorstatstablemodel.h"
 #include "models/playerleveldatatablemodel.h"
 #include "models/magictablemodel.h"
 #include "models/objectclasstablemodel.h"
@@ -17,6 +18,12 @@ public:
     explicit GameDBEditWidget(QWidget *parent = nullptr, std::shared_ptr<GameDB> gameDB_ = nullptr);
 
 private slots:
+    void on_armorCombo_currentIndexChanged(int index)
+    {
+        ui->armorTable->setModel(new ArmorStatsTableModel(ui->armorTable,
+                                                          gameDB->getArmorStats(static_cast<size_t>(index))));
+    }
+
     void on_magicCombo_currentIndexChanged(int index)
     {
         ui->magicTable->setModel(new MagicTableModel(ui->magicTable,
@@ -42,6 +49,20 @@ private slots:
     }
 
 private:
+    void fillArmorStatsCombo()
+    {
+        const QString itemStrStd = "%1 %2";
+        QString itemName = "";
+        for (byte i = 0; i < GameDB::armorStatsSize; i++)
+        {
+            if (i < 39)
+                itemName = KingsField::getObjectName(KingsField::getObjectIDFromByte(i + 0x15));
+            else
+                itemName = "Unused";
+            ui->armorCombo->addItem(itemStrStd.arg(i).arg(itemName));
+        }
+    }
+
     void fillMagicCombo()
     {
         for (byte i = 0; i < GameDB::magicDataSize; i++)

@@ -33,7 +33,9 @@ GameDB::GameDB(TFile &fdatTFile) : fdat(fdatTFile), database(fdat.getFile(28))
 
     // Skip this unknown stuff (section 3)
     dbStream >> sectionSize;
-    dbStream.skipRawData(sectionSize);
+
+    for (auto &armor : armorStats)
+        dbStream >> armor;
 
     dbStream >> sectionSize;
 
@@ -79,7 +81,9 @@ void GameDB::writeChanges()
 
     // Skip this unknown stuff (section 3)
     dbStream >> sectionSize;
-    dbStream.skipRawData(sectionSize);
+
+    for (auto &armor : armorStats)
+        dbStream << armor;
 
     dbStream >> sectionSize;
 

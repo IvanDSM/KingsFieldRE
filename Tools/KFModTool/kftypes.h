@@ -17,6 +17,7 @@ typedef quint16 u_short;
 typedef quint32 u_int;
 #endif
 
+#pragma once
 
 namespace KingsField
 {
@@ -944,6 +945,72 @@ namespace KingsField
     // Structs
 
     /*!
+     * \brief Structure for armor stats in King's Field.
+     */
+    struct ArmorStats {
+        u_short Thingie;
+        u_short DefSlash;
+        u_short DefChop;
+        u_short DefStab;
+        u_short DefPoison;
+        u_short DefDarkM;
+        u_short DefFireM;
+        u_short DefEarthM;
+        u_short DefWindM;
+        u_short DefWaterM;
+        u_short field_0x14;
+        u_short field_0x16;
+        u_short field_0x18;
+        u_short field_0x1a;
+        u_short field_0x1c;
+        u_short field_0x1e;
+
+        friend QDataStream &operator>> (QDataStream &in, ArmorStats &armor)
+        {
+            in >> armor.Thingie;
+            in >> armor.DefSlash;
+            in >> armor.DefChop;
+            in >> armor.DefStab;
+            in >> armor.DefPoison;
+            in >> armor.DefDarkM;
+            in >> armor.DefFireM;
+            in >> armor.DefEarthM;
+            in >> armor.DefWindM;
+            in >> armor.DefWaterM;
+            in >> armor.field_0x14;
+            in >> armor.field_0x16;
+            in >> armor.field_0x18;
+            in >> armor.field_0x1a;
+            in >> armor.field_0x1c;
+            in >> armor.field_0x1e;
+
+            return in;
+        };
+
+        friend QDataStream &operator<< (QDataStream &out, const ArmorStats &armor)
+        {
+            out << armor.Thingie;
+            out << armor.DefSlash;
+            out << armor.DefChop;
+            out << armor.DefStab;
+            out << armor.DefPoison;
+            out << armor.DefDarkM;
+            out << armor.DefFireM;
+            out << armor.DefEarthM;
+            out << armor.DefWindM;
+            out << armor.DefWaterM;
+            out << armor.field_0x14;
+            out << armor.field_0x16;
+            out << armor.field_0x18;
+            out << armor.field_0x1a;
+            out << armor.field_0x1c;
+            out << armor.field_0x1e;
+
+            return out;
+        }
+    };
+
+    /*!
      * \brief Structure for the entity declarations at the beginning of each map file.
      */
     struct EntityClassDeclaration {
@@ -1461,10 +1528,9 @@ namespace KingsField
      * \brief Structure for VFX objects in King's Field.
      */
     struct VFXInstanceDeclaration {
-        undefined field_0x0;
-        undefined field_0x1;
-        undefined field_0x2;
-        undefined field_0x3;
+        u_short VFXID;
+        byte AnimFrameCount;
+        byte AnimSpeed;
         byte TileLayer;
         byte TileWEX;
         byte TileNSY;
@@ -1477,10 +1543,9 @@ namespace KingsField
 
         friend QDataStream &operator>> (QDataStream &in, VFXInstanceDeclaration &vfx)
         {
-            in >> vfx.field_0x0;
-            in >> vfx.field_0x1;
-            in >> vfx.field_0x2;
-            in >> vfx.field_0x3;
+            in >> vfx.VFXID;
+            in >> vfx.AnimFrameCount;
+            in >> vfx.AnimSpeed;
             in >> vfx.TileLayer;
             in >> vfx.TileWEX;
             in >> vfx.TileNSY;
@@ -1495,10 +1560,9 @@ namespace KingsField
 
         friend QDataStream &operator<< (QDataStream &out, const VFXInstanceDeclaration &vfx)
         {
-            out << vfx.field_0x0;
-            out << vfx.field_0x1;
-            out << vfx.field_0x2;
-            out << vfx.field_0x3;
+            out << vfx.VFXID;
+            out << vfx.AnimFrameCount;
+            out << vfx.AnimSpeed;
             out << vfx.TileLayer;
             out << vfx.TileWEX;
             out << vfx.TileNSY;

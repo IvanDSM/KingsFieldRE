@@ -10,6 +10,18 @@ class GameDB
 public:
     explicit GameDB(TFile &fdatTFile);
 
+    KingsField::ArmorStats &getArmorStats(size_t armorIndex)
+    {
+        try
+        {
+            return armorStats.at(armorIndex);
+        }
+        catch (const std::out_of_range &exception)
+        {
+            KFMTError::outOfRange(armorIndex, "armor stats", exception.what());
+        }
+    }
+
     KingsField::PlayerLvlData &getLevel(byte levelIndex)
     {
         try
@@ -60,15 +72,17 @@ public:
 
     void writeChanges();
 
-    static const size_t objClassDeclarationsSize = 320;
-    static const size_t lvlDataSize = 100;
-    static const size_t magicDataSize = 64;
-    static const size_t weaponStatsSize = 18;
+    static constexpr size_t armorStatsSize = 64;
+    static constexpr size_t objClassDeclarationsSize = 320;
+    static constexpr size_t lvlDataSize = 100;
+    static constexpr size_t magicDataSize = 64;
+    static constexpr size_t weaponStatsSize = 18;
 
 private:
     TFile &fdat;
 
     QByteArray database;
+    std::array<KingsField::ArmorStats, armorStatsSize> armorStats;
     std::array<KingsField::ObjectClassDeclaration, objClassDeclarationsSize> objClassDeclarations;
     std::array<KingsField::PlayerLvlData, lvlDataSize> lvlData;
     std::array<KingsField::Magic, magicDataSize> magicData;
