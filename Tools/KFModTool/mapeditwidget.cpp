@@ -129,7 +129,9 @@ void MapEditWidget::vfxInstanceHovered(size_t instanceIndex)
     KingsField::VFXInstanceDeclaration &vfx = curMap->getVFXInstance(instanceIndex);
     currentVFXInstance = &vfx;
 
-    ui->vfxInstanceAddrLabel->setText("Instance " + QString::number(instanceIndex));
+    auto address = QString::number(0x80195174 + (instanceIndex * 0x10), 16);
+    ui->vfxInstanceAddrLabel->setText("Instance " + QString::number(instanceIndex) +
+                                      ", at address " + address);
     ui->vfxInstanceTable->setModel(new VFXInstanceTableModel(ui->vfxInstanceTable, vfx));
 
     ui->infoTabs->setCurrentWidget(ui->vfxTab);
