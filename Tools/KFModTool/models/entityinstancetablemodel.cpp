@@ -11,7 +11,7 @@ QVariant EntityInstanceTableModel::data(const QModelIndex &index, int role) cons
             case 0: result.setValue(QString::number(entityInstance.RespawnMode)); break;
             case 1: result.setValue(QString::number(entityInstance.EntityClass)); break;
             case 2: result.setValue(QString::number(entityInstance.NonRandomRotation) + " ("
-                                    + nonRandomStr[entityInstance.NonRandomRotation] + ")"); break;
+                                    + nonRandomStr.at(entityInstance.NonRandomRotation) + ")"); break;
             case 3: result.setValue(QString::number(entityInstance.WEXTilePos)); break;
             case 4: result.setValue(QString::number(entityInstance.NSYTilePos)); break;
             case 5: result.setValue(QString::number(entityInstance.RespawnChance)); break;
@@ -89,7 +89,6 @@ bool EntityInstanceTableModel::setData(const QModelIndex &index, const QVariant 
                 else
                     uShortValue = value.toUInt() % 4096;
                 entityInstance.ZRotation = static_cast<quint16>(uShortValue);
-                result = true;
                 break;
             case 9: entityInstance.FineWEXPos = shortValue; break;
             case 10: entityInstance.FineNSYPos = shortValue; break;

@@ -112,16 +112,16 @@ public:
 private:
     TFile &fdat;
 
-    KingsField::Tile tileMap[80][80];
+    KingsField::Tile tileMap[80][80] {};
     unsigned int mapIndex;
     QByteArray map1;
     QByteArray map2;
     QByteArray map3;
     QString mapName;
-    std::array<KingsField::EntityClassDeclaration, 40> entityClassDeclarations;
-    std::array<KingsField::EntityInstance, 200> entityInstances;
-    std::array<KingsField::ObjectInstanceDeclaration, 350> objInstances;
-    std::array<KingsField::VFXInstanceDeclaration, 128> vfxInstances;
+    std::array<KingsField::EntityClassDeclaration, 40> entityClassDeclarations {};
+    std::array<KingsField::EntityInstance, 200> entityInstances {};
+    std::array<KingsField::ObjectInstanceDeclaration, 350> objInstances {};
+    std::array<KingsField::VFXInstanceDeclaration, 128> vfxInstances {};
 };
 
 #endif // MAP_H

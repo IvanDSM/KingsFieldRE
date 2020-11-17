@@ -1,6 +1,6 @@
 #include "kfmterror.h"
-#include <iostream>
 #include <QMessageBox>
+#include <iostream>
 
 void KFMTError::setParent(QWidget * parentPtr)
 {
@@ -26,7 +26,7 @@ void KFMTError::warning(const QString & warningMessage)
     QMessageBox::warning(_KFMTErrorInternal::_KFMTErrorParent, "Warning", warningMessage);
 }
 
-void KFMTError::outOfRange(const size_t &index, const QString &arrayName, const std::string exceptionWhat)
+void KFMTError::outOfRange(const size_t &index, const QString &arrayName, const std::string &exceptionWhat)
 {
     QString errorMessage = "Tried to access index %1 of the %2 array.\n%3";
     errorMessage = errorMessage.arg(index).arg(arrayName).arg(QString::fromStdString(exceptionWhat));

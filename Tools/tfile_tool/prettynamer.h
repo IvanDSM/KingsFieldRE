@@ -9,7 +9,6 @@
 class PrettyNamer
 {
     public:
-        PrettyNamer();
         const std::unordered_map<QString, QString> &getPrettyMap(const QByteArray &md5Hash);
 
     private:

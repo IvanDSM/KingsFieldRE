@@ -1,8 +1,5 @@
 #include "prettynamer.h"
 
-PrettyNamer::PrettyNamer()
-{}
-
 const std::unordered_map<QString, QString> &PrettyNamer::getPrettyMap(const QByteArray &md5Hash)
 {
     if (md5Hash == "b383d528016c005e756af9618b76e93e" || // FDAT.T

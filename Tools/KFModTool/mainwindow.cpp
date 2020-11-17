@@ -39,7 +39,7 @@ void MainWindow::on_actionLoad_files_triggered()
 void MainWindow::addMap(const unsigned int &index, const QString &name)
 {
     std::shared_ptr<Map> map(new Map(*fdat, index, name));
-    KFMTTreeWidgetItem* mapTreeItem = new KFMTTreeWidgetItem(ui->filesTree->itemAt(0,0), map);
+    auto mapTreeItem = new KFMTTreeWidgetItem(ui->filesTree->itemAt(0,0), map);
     mapTreeItem->setText(0, "Map " + QString::number(index) + ": " + name);
 
     ui->filesTree->itemAt(0, 0)->addChild(mapTreeItem);
@@ -68,7 +68,7 @@ void MainWindow::on_filesTree_itemDoubleClicked(QTreeWidgetItem *item, int)
 {
     if (item->type() == QTreeWidgetItem::UserType)
     {
-        auto kfmtItem = reinterpret_cast<KFMTTreeWidgetItem *>(item);
+        auto kfmtItem = dynamic_cast<KFMTTreeWidgetItem *>(item);
         if (kfmtItem->getType() == KFMTDataType::KFMT_MAP)
         {
             auto mapIndex = kfmtItem->getMap()->getIndex();
@@ -82,7 +82,7 @@ void MainWindow::on_filesTree_itemDoubleClicked(QTreeWidgetItem *item, int)
                 ui->editorTabs->addTab(mapEditor, map->getName());
                 ui->editorTabs->setCurrentWidget(mapEditor);
                 ui->editorTabs->setTabIcon(ui->editorTabs->currentIndex(), QIcon(":/map_icon.png"));
-                openMaps[mapIndex] = ui->editorTabs->currentIndex();
+                openMaps.at(mapIndex) = ui->editorTabs->currentIndex();
             }
         }
         else if (kfmtItem->getType() == KFMTDataType::KFMT_GAMEDB)
@@ -104,7 +104,7 @@ void MainWindow::on_actionSave_changes_triggered()
 {
     for (auto curChild = 0; curChild < ui->filesTree->itemAt(0, 0)->childCount(); curChild++)
     {
-        auto *child = reinterpret_cast<KFMTTreeWidgetItem *>(ui->filesTree->itemAt(0,0)->child(curChild));
+        auto *child = dynamic_cast<KFMTTreeWidgetItem *>(ui->filesTree->itemAt(0,0)->child(curChild));
 
         if (child->getType() == KFMTDataType::KFMT_MAP)
             child->getMap()->writeChanges();
@@ -140,7 +140,7 @@ void MainWindow::on_actionSave_changes_triggered()
 
 void MainWindow::addGameDB()
 {
-    KFMTTreeWidgetItem* gameDBTreeItem = new KFMTTreeWidgetItem(ui->filesTree->itemAt(0,0), gameDB);
+    auto gameDBTreeItem = new KFMTTreeWidgetItem(ui->filesTree->itemAt(0,0), gameDB);
     gameDBTreeItem->setText(0, "Game Database");
 
     ui->filesTree->itemAt(0, 0)->addChild(gameDBTreeItem);

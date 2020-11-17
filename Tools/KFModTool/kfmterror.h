@@ -41,7 +41,7 @@ class KFMTError
          * \param arrayName Name of the array (e.g. "object class declaration").
          * \param exceptionWhat Result of the exception's .what() method.
          */
-        static void outOfRange(const size_t &index, const QString &arrayName, const std::string exceptionWhat);
+        static void outOfRange(const size_t &index, const QString &arrayName, const std::string &exceptionWhat);
 };
 
 #endif // KFMTERROR_H

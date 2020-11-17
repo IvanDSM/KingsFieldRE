@@ -82,11 +82,11 @@ private:
     TFile &fdat;
 
     QByteArray database;
-    std::array<KingsField::ArmorStats, armorStatsSize> armorStats;
-    std::array<KingsField::ObjectClassDeclaration, objClassDeclarationsSize> objClassDeclarations;
-    std::array<KingsField::PlayerLvlData, lvlDataSize> lvlData;
-    std::array<KingsField::Magic, magicDataSize> magicData;
-    std::array<KingsField::WeaponStats, weaponStatsSize> weaponStats;
+    std::array<KingsField::ArmorStats, armorStatsSize> armorStats {};
+    std::array<KingsField::ObjectClassDeclaration, objClassDeclarationsSize> objClassDeclarations {};
+    std::array<KingsField::PlayerLvlData, lvlDataSize> lvlData {};
+    std::array<KingsField::Magic, magicDataSize> magicData {};
+    std::array<KingsField::WeaponStats, weaponStatsSize> weaponStats {};
 };
 
 #endif // GAMEDB_H
