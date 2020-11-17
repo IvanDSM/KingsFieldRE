@@ -1017,8 +1017,7 @@ namespace KingsField
         EntityMeshID MeshID;
         byte FourOrForty;
         undefined field_0x2;
-        undefined field_0x3;
-        undefined field_0x4;
+        u_short KnockbackResistance;
         undefined field_0x5;
         undefined field_0x6;
         byte Unknown_x07;
@@ -1061,8 +1060,7 @@ namespace KingsField
             classDecl.MeshID = KingsField::getEntityMeshIDFromByte(tempByte);
             in >> classDecl.FourOrForty;
             in >> classDecl.field_0x2;
-            in >> classDecl.field_0x3;
-            in >> classDecl.field_0x4;
+            in >> classDecl.KnockbackResistance;
             in >> classDecl.field_0x5;
             in >> classDecl.field_0x6;
             in >> classDecl.Unknown_x07;
@@ -1107,8 +1105,7 @@ namespace KingsField
             out << KingsField::getEntityMeshIDAsByte(classDecl.MeshID);
             out << classDecl.FourOrForty;
             out << classDecl.field_0x2;
-            out << classDecl.field_0x3;
-            out << classDecl.field_0x4;
+            out << classDecl.KnockbackResistance;
             out << classDecl.field_0x5;
             out << classDecl.field_0x6;
             out << classDecl.Unknown_x07;
