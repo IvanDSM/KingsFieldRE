@@ -3,9 +3,9 @@ King's Field (II) Reverse Engineering Tools and Documentation
 
 This repository contains tools and documentation for reverse engineering King's Field (II).
 
-This is the fruit of my efforts in decompiling and understanding how the game works and is here in the hopes that it might provide help to those who are interested in helping reverse engineer the game.
+This is the fruit of the community's efforts in understanding how the game works and is here in the hopes that it might provide help to those who are interested in helping reverse engineer the game.
 
-The tools are available in the repository, and documentation is available in the wiki. As of writing, the wiki is incomplete and new pieces of documentation will be added as soon as possible.
+The tools are available in the repository, and documentation is available in the wiki. As of writing, the wiki is incomplete and it is often outdated, but it is updated whenever possible.
 
 # Tools
 
@@ -55,4 +55,6 @@ tfile_tool has also been confirmed to work for Shadow Tower T files.
 # Credit where it's due
 tfile_tool is heavily based on the TheStolenBattenberg's [Psycpros](https://github.com/TheStolenBattenberg/Psycpros) project.
 
-Monster Mesh IDs were mostly found in [Shrine Maiden's King's Field II code page](http://mikosans.web.fc2.com/code/kings-field-2.html)
+Monster Mesh IDs were mostly found in [Shrine Maiden's King's Field II code page](http://mikosans.web.fc2.com/code/kings-field-2.html).
+
+A lot of the work discovering fields of the map file structures was done by Mendzen.
