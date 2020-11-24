@@ -103,6 +103,24 @@ public:
 
 private:
     /*!
+     * \brief Checks whether a file is a MO file.
+     * This is done by checking if the unsigned int at offset 0x08 in the file points to a section 
+     * in the file with the TMD ID (0x41).
+     * \param file File to check.
+     * \return Whether the file is a MO file.
+     */
+    static bool isMO(const QByteArray &file);
+    
+    /*!
+     * \brief Checks whether a file is an RTMD file.
+     * This is done by checking if the file starts with 4 zero bytes and is the followed by either 
+     * 0x12 (4 byte long) or 0x10 (4 byte long).
+     * \param file File to check.
+     * \return Whether the file is an RTMD file.
+     */
+    static bool isRTMD(const QByteArray &file);
+    
+    /*!
      * \brief Private function for actually loading from the 'file' member attribute.
      */
     void load();

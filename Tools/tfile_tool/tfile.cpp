@@ -35,10 +35,10 @@ bool TFile::extractFiles()
             curFileExt = "VB";
         else if (curFileData.mid(8).left(8) == curFileData.left(8))
             curFileExt = "RTIM";
-        else if (curFileData.left(4).compare(QByteArray::fromHex("00000000")) == 0 &&
-                 (curFileData.mid(4, 4).compare(QByteArray::fromHex("12000000")) == 0 ||
-                  curFileData.mid(4, 4).compare(QByteArray::fromHex("10000000")) == 0))
+        else if (isRTMD(curFileData))
             curFileExt = "RTMD";
+        else if (isMO(curFileData))
+            curFileExt = "MO";
         else
             curFileExt = "DAT";
 
@@ -95,7 +95,7 @@ QByteArray TFile::getFile(unsigned int trueFileNumber) const
 {
     QByteArray desiredFile;
 
-    if (trueFileNumber >= 0 && trueFileNumber < getTrueNumFiles())
+    if (trueFileNumber < getTrueNumFiles())
     {
         desiredFile = file.mid(fileOffsets[trueFileNumber],
                                fileOffsets[trueFileNumber + 1] - fileOffsets[trueFileNumber]);
@@ -138,7 +138,7 @@ unsigned int TFile::getTrueNumFiles() const
 
 void TFile::writeFile(const QByteArray &newFile, int index)
 {
-    if (index >= getTrueNumFiles())
+    if (static_cast<unsigned int>(index) >= getTrueNumFiles())
         return;
     for (int pos = 0; pos < newFile.size(); pos++)
         file[fileOffsets[index] + pos] = newFile[pos];
@@ -159,11 +159,25 @@ void TFile::writeFileMap()
     {
         QTextStream mapWriteStream(&mapOutFile);
         mapWriteStream << getBaseFilename() << ",MAP" << "\n";
-        for (auto mapping : fileMap)
+        for (const auto &mapping : fileMap)
             mapWriteStream << mapping.first << "," << mapping.second << "\n";
     }
 
+    
+}
 
+bool TFile::isMO(const QByteArray & file)
+{
+    auto tmdOff = *reinterpret_cast<quint32 *>(file.mid(8,4).data());
+    auto tmdSig = file.at(tmdOff);
+    return tmdSig == 0x41;
+}
+
+bool TFile::isRTMD(const QByteArray & file)
+{
+    return file.left(4).compare(QByteArray::fromHex("00000000")) == 0 &&
+                     (file.mid(4, 4).compare(QByteArray::fromHex("12000000")) == 0 ||
+                      file.mid(4, 4).compare(QByteArray::fromHex("10000000")) == 0);
 }
 
 void TFile::load()

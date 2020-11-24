@@ -12,11 +12,11 @@ class PrettyNamer
         const std::unordered_map<QString, QString> &getPrettyMap(const QByteArray &md5Hash);
 
     private:
-        const std::unordered_map<QString, QString> emptyMap;
+        const std::unordered_map<QString, QString> emptyMap {};
         const std::unordered_map<QString, QString> kfUSPrettyMap
         {
             {"FDAT.T27", "TextureDatabase"}, // TODO/FIXME: Find a better name for this file
-            {"FDAT.T28", "GameData"}, // TODO/FIXME: Find a better name for this file
+            {"FDAT.T28", "GameDatabase"},
             {"FDAT.T29", "WeaponDaggerData"},
             {"FDAT.T30", "WeaponShortSwordData"},
             {"FDAT.T31", "WeaponKnightSwordData"},
