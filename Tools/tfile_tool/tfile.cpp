@@ -136,6 +136,28 @@ unsigned int TFile::getTrueNumFiles() const
     return fileOffsets.size();
 }
 
+bool TFile::isMO(const QByteArray & file)
+{
+    quint32 tmdOff = *reinterpret_cast<quint32 *>(file.mid(8,4).data());
+    quint8 tmdSig = 0;
+    if (tmdOff < static_cast<quint32>(file.size()))
+        tmdSig = file.at(tmdOff);
+    
+    return tmdSig == 0x41;
+}
+
+bool TFile::isRTMD(const QByteArray & file)
+{
+    return file.left(4).compare(QByteArray::fromHex("00000000")) == 0 &&
+                     (file.mid(4, 4).compare(QByteArray::fromHex("12000000")) == 0 ||
+                      file.mid(4, 4).compare(QByteArray::fromHex("10000000")) == 0);
+}
+
+bool TFile::isTMD(const QByteArray & file)
+{
+    return file.left(4).compare(QByteArray::fromHex("41000000")) == 0;
+}
+
 void TFile::writeFile(const QByteArray &newFile, int index)
 {
     if (static_cast<unsigned int>(index) >= getTrueNumFiles())
@@ -164,23 +186,6 @@ void TFile::writeFileMap()
     }
 
     
-}
-
-bool TFile::isMO(const QByteArray & file)
-{
-    quint32 tmdOff = *reinterpret_cast<quint32 *>(file.mid(8,4).data());
-    quint8 tmdSig = 0;
-    if (tmdOff < static_cast<quint32>(file.size()))
-        tmdSig = file.at(tmdOff);
-    
-    return tmdSig == 0x41;
-}
-
-bool TFile::isRTMD(const QByteArray & file)
-{
-    return file.left(4).compare(QByteArray::fromHex("00000000")) == 0 &&
-                     (file.mid(4, 4).compare(QByteArray::fromHex("12000000")) == 0 ||
-                      file.mid(4, 4).compare(QByteArray::fromHex("10000000")) == 0);
 }
 
 void TFile::load()

@@ -87,21 +87,7 @@ public:
     {
         return file;
     }
-
-
-    /*!
-     * \brief Writes a file to the T file. Currently super unsafe! Does not verify the checksum!
-     * \param newFile The file to be written.
-     * \param index The TRUE index of the file.
-     */
-    void writeFile(const QByteArray &newFile, int index);
-
-    /*!
-     * \brief Writes the T file's file map to a csv file.
-     */
-    void writeFileMap();
-
-private:
+    
     /*!
      * \brief Checks whether a file is a MO file.
      * This is done by checking if the unsigned int at offset 0x08 in the file points to a section 
@@ -119,6 +105,29 @@ private:
      * \return Whether the file is an RTMD file.
      */
     static bool isRTMD(const QByteArray &file);
+    
+    /*!
+     * \brief Checks whether a file is a TMD file.
+     * This is done by checking if the file's first 4 bytes as an unsigned int is 
+     * equal to the TMD ID (0x41).
+     * \param file File to check.
+     * \return Whether the file is a TMD file.
+     */
+    static bool isTMD(const QByteArray &file);
+
+    /*!
+     * \brief Writes a file to the T file. Currently super unsafe! Does not verify the checksum!
+     * \param newFile The file to be written.
+     * \param index The TRUE index of the file.
+     */
+    void writeFile(const QByteArray &newFile, int index);
+
+    /*!
+     * \brief Writes the T file's file map to a csv file.
+     */
+    void writeFileMap();
+
+private:
     
     /*!
      * \brief Private function for actually loading from the 'file' member attribute.
