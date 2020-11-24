@@ -1,6 +1,8 @@
 #include "modelglview.h"
 
-ModelGLView::ModelGLView(QWidget *parent) : QOpenGLWidget(parent)
+void ModelGLView::paintEvent(QPaintEvent * event)
 {
-    
+    Q_UNUSED(event)
+    makeCurrent();
+    // GL stuff goes here or to a function you call here
 }
