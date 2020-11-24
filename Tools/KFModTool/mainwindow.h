@@ -68,6 +68,7 @@ private:
     std::unique_ptr<TFile> fdat = nullptr;
 
     std::shared_ptr<GameDB> gameDB = nullptr;
+    
     std::unique_ptr<Ui::MainWindow> ui;
 };
 #endif // MAINWINDOW_H

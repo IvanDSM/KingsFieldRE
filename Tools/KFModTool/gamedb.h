@@ -1,9 +1,9 @@
 #ifndef GAMEDB_H
 #define GAMEDB_H
 
-#include "tfile.h"
-#include "kftypes.h"
 #include "kfmterror.h"
+#include "kftypes.h"
+#include "tfile.h"
 
 class GameDB
 {

@@ -26,6 +26,7 @@ SOURCES += \
     map.cpp \
     mapeditwidget.cpp \
     mapviewer.cpp \
+    modelglview.cpp \
     models/armorstatstablemodel.cpp \
     models/entityclasstablemodel.cpp \
     models/entityinstancetablemodel.cpp \
@@ -35,6 +36,7 @@ SOURCES += \
     models/playerleveldatatablemodel.cpp \
     models/vfxinstancetablemodel.cpp \
     models/weaponstatstablemodel.cpp \
+    modelviewerwidget.cpp \
     prettynamer.cpp \
     texture.cpp \
     tfile.cpp
@@ -51,6 +53,7 @@ HEADERS += \
     map.h \
     mapeditwidget.h \
     mapviewer.h \
+    modelglview.h \
     models/armorstatstablemodel.h \
     models/entityclasstablemodel.h \
     models/entityinstancetablemodel.h \
@@ -60,6 +63,7 @@ HEADERS += \
     models/playerleveldatatablemodel.h \
     models/vfxinstancetablemodel.h \
     models/weaponstatstablemodel.h \
+    modelviewerwidget.h \
     prettynamer.h \
     texture.h \
     tfile.h \
@@ -69,7 +73,8 @@ FORMS += \
     aboutdialog.ui \
     gamedbeditwidget.ui \
     mainwindow.ui \
-    mapeditwidget.ui
+    mapeditwidget.ui \
+    modelviewerwidget.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
