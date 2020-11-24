@@ -168,8 +168,11 @@ void TFile::writeFileMap()
 
 bool TFile::isMO(const QByteArray & file)
 {
-    auto tmdOff = *reinterpret_cast<quint32 *>(file.mid(8,4).data());
-    auto tmdSig = file.at(tmdOff);
+    quint32 tmdOff = *reinterpret_cast<quint32 *>(file.mid(8,4).data());
+    quint8 tmdSig = 0;
+    if (tmdOff < static_cast<quint32>(file.size()))
+        tmdSig = file.at(tmdOff);
+    
     return tmdSig == 0x41;
 }
 
