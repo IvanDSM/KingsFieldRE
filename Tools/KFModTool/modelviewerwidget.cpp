@@ -1,5 +1,4 @@
 #include "modelviewerwidget.h"
-#include "ui_modelviewerwidget.h"
 
 ModelViewerWidget::ModelViewerWidget(QWidget *parent) :
     QWidget(parent),

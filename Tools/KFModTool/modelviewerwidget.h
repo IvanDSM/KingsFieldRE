@@ -2,6 +2,7 @@
 #define MODELVIEWERWIDGET_H
 
 #include "model.h"
+#include "ui_modelviewerwidget.h"
 #include <QWidget>
 
 namespace Ui {

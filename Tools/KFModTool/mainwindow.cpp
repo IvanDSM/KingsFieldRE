@@ -108,6 +108,7 @@ void MainWindow::on_filesTree_itemDoubleClicked(QTreeWidgetItem *item, int)
                     ui->editorTabs->setCurrentWidget(gameDBEditor);
                     ui->editorTabs->setTabIcon(ui->editorTabs->currentIndex(), QIcon(":/db_icon.png"));
                 }
+                break;
             }
             case KFMTDataType::KFMT_MAP:
             {
@@ -124,11 +125,16 @@ void MainWindow::on_filesTree_itemDoubleClicked(QTreeWidgetItem *item, int)
                     ui->editorTabs->setTabIcon(ui->editorTabs->currentIndex(), QIcon(":/map_icon.png"));
                     openMaps.at(mapIndex) = ui->editorTabs->currentIndex();
                 }
+                break;
             }
             case KFMTDataType::KFMT_MODEL:
             {
                 auto* modelViewer = new ModelViewerWidget(ui->editorTabs);
-                
+                modelViewer->setModel(kfmtItem->getModel());
+                ui->editorTabs->addTab(modelViewer, kfmtItem->text(0));
+                ui->editorTabs->setCurrentWidget(modelViewer);
+                ui->editorTabs->setTabIcon(ui->editorTabs->currentIndex(), QIcon(":/3d_icon.png"));
+                break;
             }
         }
     }
