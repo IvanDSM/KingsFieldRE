@@ -61,15 +61,21 @@ private:
     void addMap(unsigned int index, const QString &name);
     void addModel(TFile &tFile, unsigned int index, const QString &name);
     void loadFdat();
+    void loadItem();
+    
+    std::unique_ptr<Ui::MainWindow> ui;
 
     int openGameDB = -1;
     QString curSourceDirectory;
     std::array<int, 9> openMaps;
 
+    // T File pointers
     std::unique_ptr<TFile> fdat = nullptr;
-
-    std::shared_ptr<GameDB> gameDB = nullptr;
+    std::unique_ptr<TFile> item = nullptr;
     
-    std::unique_ptr<Ui::MainWindow> ui;
+    // T file tree item pointers
+    std::unique_ptr<QTreeWidgetItem> fdatTreeItem = nullptr;
+    std::unique_ptr<QTreeWidgetItem> itemTreeItem = nullptr;
+    
 };
 #endif // MAINWINDOW_H

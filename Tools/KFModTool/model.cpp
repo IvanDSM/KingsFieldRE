@@ -1,4 +1,5 @@
 #include "model.h"
+#include <iostream>
 
 Model::Model(TFile & tFile, unsigned int fileIndex)
 {
@@ -29,6 +30,7 @@ void Model::loadRTMD(const QByteArray &file)
 void Model::loadTMD(const QByteArray &file)
 {
     QDataStream in(file);
+    in.setByteOrder(QDataStream::LittleEndian);
     
     // Header section
     uint32_t id;
@@ -114,8 +116,31 @@ QDataStream &operator>>(QDataStream & in, Model::Primitive & primitive)
 {
     uint8_t tempByte;
     
+    // Lambda for reading gradation if necessary
+    auto readGradation = [](QDataStream &in, Model::Primitive &primitive)
+    {
+        if (primitive.isGradation())
+        {
+            in >> primitive.r1;
+            in >> primitive.g1;
+            in >> primitive.b1;
+            in.skipRawData(1);
+            in >> primitive.r2;
+            in >> primitive.g2;
+            in >> primitive.b2;
+            in.skipRawData(1);
+            if (primitive.isQuad())
+            {
+                in >> primitive.r3;
+                in >> primitive.g3;
+                in >> primitive.b3;
+                in.skipRawData(1);
+            }
+        }
+    };
+    
     // The elements are read in inverse order because the PS1 is a little endian architecture,
-    // and this entire section is read as one 32-bit integer to save speed.
+    // and this entire section is read as one 32-bit integer to save speed on the actual hardware.
     in >> primitive.olen;
     in >> primitive.ilen;
     
@@ -124,31 +149,23 @@ QDataStream &operator>>(QDataStream & in, Model::Primitive & primitive)
     
     in >> tempByte;
     primitive.mode = static_cast<Model::Primitive::PrimitiveMode>(tempByte);
-    
+
     switch(primitive.mode)
     {
-        case(Model::Primitive::PrimitiveMode::TriFlatNoTexOpaqueLit):
+        case(Model::Primitive::PrimitiveMode::x20TriFlatNoTexOpaqueLit):
+        case(Model::Primitive::PrimitiveMode::x22TriFlatNoTexTranslucentLit):
             in >> primitive.r0;
             in >> primitive.g0;
             in >> primitive.b0;
             in.skipRawData(1);
-            if (Model::Primitive::isGradation(primitive.flag))
-            {
-                in >> primitive.r1;
-                in >> primitive.g1;
-                in >> primitive.b1;
-                in.skipRawData(1);
-                in >> primitive.r2;
-                in >> primitive.g2;
-                in >> primitive.b2;
-                in.skipRawData(1);
-            }
+            readGradation(in, primitive);
             in >> primitive.normal0;
             in >> primitive.vertex0;
             in >> primitive.vertex1;
             in >> primitive.vertex2;
             break;
-        case(Model::Primitive::PrimitiveMode::TriFlatTexOpaqueLit):
+        case(Model::Primitive::PrimitiveMode::x24TriFlatTexOpaqueLit):
+        case(Model::Primitive::PrimitiveMode::x26TriFlatTexTranslucentLit):
             in >> primitive.u0;
             in >> primitive.v0;
             in >> primitive.cba;
@@ -163,7 +180,8 @@ QDataStream &operator>>(QDataStream & in, Model::Primitive & primitive)
             in >> primitive.vertex1;
             in >> primitive.vertex2;
             break;
-        case(Model::Primitive::PrimitiveMode::TriGouraudTexOpaqueLit):
+        case(Model::Primitive::PrimitiveMode::x2cQuadFlatTexOpaqueLit):
+        case(Model::Primitive::PrimitiveMode::x2eQuadFlatTexTranslucentLit):
             in >> primitive.u0;
             in >> primitive.v0;
             in >> primitive.cba;
@@ -173,14 +191,17 @@ QDataStream &operator>>(QDataStream & in, Model::Primitive & primitive)
             in >> primitive.u2;
             in >> primitive.v2;
             in.skipRawData(2);
+            in >> primitive.u3;
+            in >> primitive.v3;
+            in.skipRawData(2);
             in >> primitive.normal0;
             in >> primitive.vertex0;
-            in >> primitive.normal1;
             in >> primitive.vertex1;
-            in >> primitive.normal2;
             in >> primitive.vertex2;
+            in >> primitive.vertex3;
             break;
-        case(Model::Primitive::PrimitiveMode::TriGouraudTexTranslucentLit):
+        case(Model::Primitive::PrimitiveMode::x34TriGouraudTexOpaqueLit):
+        case(Model::Primitive::PrimitiveMode::x36TriGouraudTexTranslucentLit):
             in >> primitive.u0;
             in >> primitive.v0;
             in >> primitive.cba;
@@ -200,6 +221,7 @@ QDataStream &operator>>(QDataStream & in, Model::Primitive & primitive)
         default:
             KFMTError::error(QString::asprintf("Model: TMD: Unsupported mode 0x%x. Please implement!\n",
                                                static_cast<unsigned int>(primitive.mode)));
+            in.skipRawData(primitive.ilen * 4);
             break;
     }
     

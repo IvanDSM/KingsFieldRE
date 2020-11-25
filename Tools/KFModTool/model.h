@@ -65,10 +65,12 @@ public:
         uint8_t r0, g0, b0;
         uint8_t r1, g1, b1;
         uint8_t r2, g2, b2;
+        uint8_t r3, g3, b3;
     
         uint8_t u0, v0;
         uint8_t u1, v1;
         uint8_t u2, v2;
+        uint8_t u3, v3;
     
         uint16_t cba;
         uint16_t tsb;
@@ -77,17 +79,30 @@ public:
         uint16_t normal0, normal1, normal2, normal3;
         
         /*!
-         * \brief Checks whether a primitive's flag indicates it is a gradation primitive.
-         * \param flag Primitive flag
-         * \return Whether the primitive is a gradation primitive.
+         * \brief Checks whether this is a gradation primitive.
+         * \return Whether this is a gradation primitive.
          */
-        static bool isGradation(PrimitiveFlag flag) { return static_cast<uint8_t>(flag) > 3; }
+        bool isGradation() { return static_cast<uint8_t>(flag) > 3; }
+        
         /*!
-         * \brief Checks whether a primitive's flag indicates it is a single color primitive.
-         * \param flag Primitive flag
-         * \return Whether the primitive is a single color primitive.
+         * \brief Checks whether this is a triangle primitive.
+         * \return Whether this is a triangle primitive.
          */
-        static bool isSingleColor(PrimitiveFlag flag) { return static_cast<uint8_t>(flag) < 4; }
+        bool isTriangle() 
+        { 
+            auto mode_ = static_cast<uint8_t>(mode);
+            return (mode_ >> 5) && !((mode_ >> 3) & 1);
+        }
+        
+        /*!
+         * \brief Checks whether this is a quadrilateral primitive.
+         * \return Whether this is a quadrilateral primitive.
+         */
+        bool isQuad() 
+        { 
+            auto mode_ = static_cast<uint8_t>(mode);
+            return (mode_ >> 5) && ((mode_ >> 3) & 1);
+        }
     };
     
     /*!
@@ -140,50 +155,50 @@ enum class Model::Primitive::PrimitiveFlag
 
 enum class Model::Primitive::PrimitiveMode
 {
-    TriFlatNoTexOpaqueLit = 0b00100000, ///< 0x20
-    TriFlatNoTexOpaqueUnlit = 0b00100001, ///< 0x21
-    TriFlatNoTexTranslucentLit = 0b00100010, ///< 0x22
-    TriFlatNoTexTranslucentUnlit = 0b00100011, ///< 0x23
-    TriFlatTexOpaqueLit = 0b00100100, ///< 0x24
-    TriFlatTexOpaqueUnlit = 0b00100101, ///< 0x25
-    TriFlatTexTranslucentLit = 0b00100110, ///< 0x26
-    TriFlatTexTranslucentUnlit = 0b00100111, ///< 0x27
-    TriGouraudNoTexOpaqueLit = 0b00110000, ///< 0x30
-    TriGouraudNoTexOpaqueUnlit = 0b00110001, ///< 0x31
-    TriGouraudNoTexTranslucentLit = 0b00110010, ///< 0x32
-    TriGouraudNoTexTranslucentUnlit = 0b00110011, ///< 0x33
-    TriGouraudTexOpaqueLit = 0b00110100, ///< 0x34
-    TriGouraudTexOpaqueUnlit = 0b00110101, ///< 0x35
-    TriGouraudTexTranslucentLit = 0b00110110, ///< 0x36
-    TriGouraudTexTranslucentUnlit = 0b00110111, ///< 0x37
-    QuadFlatNoTexOpaqueLit = 0b00101000, ///< 0x28
-    QuadFlatNoTexOpaqueUnlit = 0b00101001, ///< 0x29
-    QuadFlatNoTexTranslucentLit = 0b00101010, ///< 0x2a
-    QuadFlatNoTexTranslucentUnlit = 0b00101011, ///< 0x2b
-    QuadFlatTexOpaqueLit = 0b00101100, ///< 0x2c
-    QuadFlatTexOpaqueUnlit = 0b00101101, ///< 0x2d
-    QuadFlatTexTranslucentLit = 0b00101110, ///< 0x2e
-    QuadFlatTexTranslucentUnlit = 0b00101111, ///< 0x2f
-    QuadGouraudNoTexOpaqueLit = 0b00111000, ///< 0x38
-    QuadGouraudNoTexOpaqueUnlit = 0b00111001, ///< 0x39
-    QuadGouraudNoTexTranslucentLit = 0b00111010, ///< 0x3a
-    QuadGouraudNoTexTranslucentUnlit = 0b00111011, ///< 0x3b
-    QuadGouraudTexOpaqueLit = 0b00111100, ///< 0x3c
-    QuadGouraudTexOpaqueUnlit = 0b00111101, ///< 0x3d
-    QuadGouraudTexTranslucentLit = 0b00111110, ///< 0x3e
-    QuadGouraudTexTranslucentUnlit = 0b00111111, ///< 0x3f
-    LineGradationOffOpaque = 0b01000000, ///< 0x40
-    LineGradationOffTranslucent = 0b01000010, ///< 0x42
-    LineGradationOnOpaque = 0b01010000, ///< 0x50
-    LineGradationOnTranslucent = 0b01010010, ///< 0x52
-    SpriteFreeOpaque = 0b01100100, ///< 0x64
-    SpriteFreeTranslucent = 0b01100110, ///< 0x66
-    Sprite1x1Opaque = 0b01101100, ///< 0x6c
-    Sprite1x1Translucent = 0b01101110, ///< 0x6e
-    Sprite8x8Opaque = 0b01110100, ///< 0x74
-    Sprite8x8Translucent = 0b01110110, ///< 0x76
-    Sprite16x16Opaque = 0b01111100, ///< 0x7c
-    Sprite16x16Translucent = 0b01111110 ///< 0x7e
+    x20TriFlatNoTexOpaqueLit = 0b00100000, 
+    x21TriFlatNoTexOpaqueUnlit = 0b00100001, 
+    x22TriFlatNoTexTranslucentLit = 0b00100010, 
+    x23TriFlatNoTexTranslucentUnlit = 0b00100011, 
+    x24TriFlatTexOpaqueLit = 0b00100100, 
+    x25TriFlatTexOpaqueUnlit = 0b00100101, 
+    x26TriFlatTexTranslucentLit = 0b00100110, 
+    x27TriFlatTexTranslucentUnlit = 0b00100111, 
+    x28QuadFlatNoTexOpaqueLit = 0b00101000, 
+    x29QuadFlatNoTexOpaqueUnlit = 0b00101001, 
+    x2aQuadFlatNoTexTranslucentLit = 0b00101010, 
+    x2bQuadFlatNoTexTranslucentUnlit = 0b00101011, 
+    x2cQuadFlatTexOpaqueLit = 0b00101100, 
+    x2dQuadFlatTexOpaqueUnlit = 0b00101101, 
+    x2eQuadFlatTexTranslucentLit = 0b00101110, 
+    x2fQuadFlatTexTranslucentUnlit = 0b00101111, 
+    x30TriGouraudNoTexOpaqueLit = 0b00110000, 
+    x31TriGouraudNoTexOpaqueUnlit = 0b00110001, 
+    x32TriGouraudNoTexTranslucentLit = 0b00110010, 
+    x33TriGouraudNoTexTranslucentUnlit = 0b00110011, 
+    x34TriGouraudTexOpaqueLit = 0b00110100, 
+    x35TriGouraudTexOpaqueUnlit = 0b00110101, 
+    x36TriGouraudTexTranslucentLit = 0b00110110, 
+    x37TriGouraudTexTranslucentUnlit = 0b00110111, 
+    x38QuadGouraudNoTexOpaqueLit = 0b00111000, 
+    x39QuadGouraudNoTexOpaqueUnlit = 0b00111001, 
+    x3aQuadGouraudNoTexTranslucentLit = 0b00111010, 
+    x3bQuadGouraudNoTexTranslucentUnlit = 0b00111011, 
+    x3cQuadGouraudTexOpaqueLit = 0b00111100, 
+    x3dQuadGouraudTexOpaqueUnlit = 0b00111101, 
+    x3eQuadGouraudTexTranslucentLit = 0b00111110, 
+    x3fQuadGouraudTexTranslucentUnlit = 0b00111111, 
+    x40LineGradationOffOpaque = 0b01000000, 
+    x42LineGradationOffTranslucent = 0b01000010, 
+    x50LineGradationOnOpaque = 0b01010000, 
+    x52LineGradationOnTranslucent = 0b01010010, 
+    x64SpriteFreeOpaque = 0b01100100, 
+    x66SpriteFreeTranslucent = 0b01100110, 
+    x6cSprite1x1Opaque = 0b01101100, 
+    x6eSprite1x1Translucent = 0b01101110, 
+    x74Sprite8x8Opaque = 0b01110100, 
+    x76Sprite8x8Translucent = 0b01110110, 
+    x7cSprite16x16Opaque = 0b01111100, 
+    x7eSprite16x16Translucent = 0b01111110 
 };
 
 #endif // MODEL_H
