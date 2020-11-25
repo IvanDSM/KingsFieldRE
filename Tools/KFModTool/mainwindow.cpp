@@ -2,6 +2,7 @@
 #include "gamedbeditwidget.h"
 #include "map.h"
 #include "mapeditwidget.h"
+#include "modelviewerwidget.h"
 #include <QFileDialog>
 
 void MainWindow::on_actionLoad_files_triggered()
@@ -36,13 +37,22 @@ void MainWindow::on_actionLoad_files_triggered()
 #endif
 }
 
-void MainWindow::addMap(const unsigned int &index, const QString &name)
+void MainWindow::addMap(unsigned int index, const QString &name)
 {
     std::shared_ptr<Map> map(new Map(*fdat, index, name));
     auto mapTreeItem = new KFMTTreeWidgetItem(ui->filesTree->itemAt(0,0), map);
     mapTreeItem->setText(0, "Map " + QString::number(index) + ": " + name);
 
     ui->filesTree->itemAt(0, 0)->addChild(mapTreeItem);
+}
+
+void MainWindow::addModel(TFile &tFile, unsigned int index, const QString &name)
+{
+    std::shared_ptr<Model> model(new Model(tFile, index));
+    auto parentItem = ui->filesTree->findItems(tFile.getFilename(), Qt::MatchExactly).front();
+    auto modelTreeItem = new KFMTTreeWidgetItem(parentItem, model);
+    modelTreeItem->setText(0, name);
+    parentItem->addChild(modelTreeItem);
 }
 
 void MainWindow::loadFdat()
@@ -59,6 +69,22 @@ void MainWindow::loadFdat()
     addMap(6, "Necron's Coliseum");
     addMap(7, "Guyra's Lair");
     addMap(8, "Weird Debug Map");
+    addModel(*fdat, 29, "Dagger Viewmodel");
+    addModel(*fdat, 30, "Short Sword Viewmodel");
+    addModel(*fdat, 31, "Knight Sword Viewmodel");
+    addModel(*fdat, 32, "Morning Star Viewmodel");
+    addModel(*fdat, 33, "Battle Hammer Viewmodel");
+    addModel(*fdat, 34, "Bastard Sword Viewmodel");
+    addModel(*fdat, 35, "Crescent Axe Viewmodel");
+    addModel(*fdat, 36, "Flame Sword Viewmodel");
+    addModel(*fdat, 37, "Shiden Viewmodel");
+    addModel(*fdat, 38, "Spider Viewmodel");
+    addModel(*fdat, 39, "Ice Blade Viewmodel");
+    addModel(*fdat, 40, "Seath's Sword Viewmodel");
+    addModel(*fdat, 41, "Moonlight Sword Viewmodel");
+    addModel(*fdat, 42, "Dark Slayer Viewmodel");
+    addModel(*fdat, 43, "Bow Viewmodel");
+    addModel(*fdat, 44, "Arbalest Viewmodel");
 
     gameDB.reset(new GameDB(*fdat));
     addGameDB();
@@ -69,32 +95,40 @@ void MainWindow::on_filesTree_itemDoubleClicked(QTreeWidgetItem *item, int)
     if (item->type() == QTreeWidgetItem::UserType)
     {
         auto kfmtItem = dynamic_cast<KFMTTreeWidgetItem *>(item);
-        if (kfmtItem->getType() == KFMTDataType::KFMT_MAP)
+        switch (kfmtItem->getType())
         {
-            auto mapIndex = kfmtItem->getMap()->getIndex();
-            if (openMaps.at(mapIndex) != -1)
-                ui->editorTabs->setCurrentIndex(openMaps.at(mapIndex));
-            else
+            case KFMTDataType::KFMT_GAMEDB:
             {
-                auto map = kfmtItem->getMap();
-                auto* mapEditor = new MapEditWidget(ui->editorTabs);
-                mapEditor->setMap(map);
-                ui->editorTabs->addTab(mapEditor, map->getName());
-                ui->editorTabs->setCurrentWidget(mapEditor);
-                ui->editorTabs->setTabIcon(ui->editorTabs->currentIndex(), QIcon(":/map_icon.png"));
-                openMaps.at(mapIndex) = ui->editorTabs->currentIndex();
+                if (openGameDB != -1)
+                    ui->editorTabs->setCurrentIndex(openGameDB);
+                else
+                {
+                    auto gameDBEditor = new GameDBEditWidget(ui->editorTabs, kfmtItem->getDB());
+                    ui->editorTabs->addTab(gameDBEditor, "Game Database");
+                    ui->editorTabs->setCurrentWidget(gameDBEditor);
+                    ui->editorTabs->setTabIcon(ui->editorTabs->currentIndex(), QIcon(":/db_icon.png"));
+                }
             }
-        }
-        else if (kfmtItem->getType() == KFMTDataType::KFMT_GAMEDB)
-        {
-            if (openGameDB != -1)
-                ui->editorTabs->setCurrentIndex(openGameDB);
-            else
+            case KFMTDataType::KFMT_MAP:
             {
-                auto gameDBEditor = new GameDBEditWidget(ui->editorTabs, kfmtItem->getDB());
-                ui->editorTabs->addTab(gameDBEditor, "Game Database");
-                ui->editorTabs->setCurrentWidget(gameDBEditor);
-                ui->editorTabs->setTabIcon(ui->editorTabs->currentIndex(), QIcon(":/db_icon.png"));
+                auto mapIndex = kfmtItem->getMap()->getIndex();
+                if (openMaps.at(mapIndex) != -1)
+                    ui->editorTabs->setCurrentIndex(openMaps.at(mapIndex));
+                else
+                {
+                    auto map = kfmtItem->getMap();
+                    auto* mapEditor = new MapEditWidget(ui->editorTabs);
+                    mapEditor->setMap(map);
+                    ui->editorTabs->addTab(mapEditor, map->getName());
+                    ui->editorTabs->setCurrentWidget(mapEditor);
+                    ui->editorTabs->setTabIcon(ui->editorTabs->currentIndex(), QIcon(":/map_icon.png"));
+                    openMaps.at(mapIndex) = ui->editorTabs->currentIndex();
+                }
+            }
+            case KFMTDataType::KFMT_MODEL:
+            {
+                auto* modelViewer = new ModelViewerWidget(ui->editorTabs);
+                
             }
         }
     }

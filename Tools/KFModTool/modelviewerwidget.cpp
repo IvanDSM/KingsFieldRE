@@ -8,7 +8,8 @@ ModelViewerWidget::ModelViewerWidget(QWidget *parent) :
     ui->setupUi(this);
 }
 
-ModelViewerWidget::~ModelViewerWidget()
+void ModelViewerWidget::setModel(std::shared_ptr<Model> model)
 {
-    delete ui;
+    curModel = model;
 }
+

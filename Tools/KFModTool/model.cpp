@@ -15,3 +15,18 @@ Model::Model(TFile & tFile, unsigned int fileIndex)
             KFMTError::error("Model: Tried to build a model from a file that's not MO, RTMD or TMD.");
     }
 }
+
+void Model::loadMO(const QByteArray & file)
+{
+    
+}
+
+void Model::loadRTMD(const QByteArray & file)
+{
+    
+}
+
+void Model::loadTMD(const QByteArray & file)
+{
+    
+}

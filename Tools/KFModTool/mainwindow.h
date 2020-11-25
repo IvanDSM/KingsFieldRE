@@ -58,7 +58,8 @@ private slots:
 
 private:
     void addGameDB();
-    void addMap(const unsigned int &index, const QString &name);
+    void addMap(unsigned int index, const QString &name);
+    void addModel(TFile &tFile, unsigned int index, const QString &name);
     void loadFdat();
 
     int openGameDB = -1;

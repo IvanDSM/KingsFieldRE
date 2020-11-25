@@ -1,6 +1,7 @@
 #ifndef MODELVIEWERWIDGET_H
 #define MODELVIEWERWIDGET_H
 
+#include "model.h"
 #include <QWidget>
 
 namespace Ui {
@@ -13,10 +14,11 @@ class ModelViewerWidget : public QWidget
     
 public:
     explicit ModelViewerWidget(QWidget *parent = nullptr);
-    ~ModelViewerWidget();
+    void setModel(std::shared_ptr<Model> model);
     
 private:
-    Ui::ModelViewerWidget *ui;
+    std::shared_ptr<Model> curModel;
+    std::unique_ptr<Ui::ModelViewerWidget> ui;
 };
 
 #endif // MODELVIEWERWIDGET_H

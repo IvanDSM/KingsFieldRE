@@ -3,5 +3,6 @@
         <file>tfile_icon.png</file>
         <file>map_icon.png</file>
         <file>db_icon.png</file>
+        <file>3d_icon.png</file>
     </qresource>
 </RCC>
