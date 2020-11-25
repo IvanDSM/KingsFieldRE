@@ -199,6 +199,7 @@ QDataStream &operator>>(QDataStream & in, Model::Primitive & primitive)
             in >> primitive.vertex1;
             in >> primitive.vertex2;
             in >> primitive.vertex3;
+            in.skipRawData(2);
             break;
         case(Model::Primitive::PrimitiveMode::x34TriGouraudTexOpaqueLit):
         case(Model::Primitive::PrimitiveMode::x36TriGouraudTexTranslucentLit):
@@ -217,6 +218,29 @@ QDataStream &operator>>(QDataStream & in, Model::Primitive & primitive)
             in >> primitive.vertex1;
             in >> primitive.normal2;
             in >> primitive.vertex2;
+            break;
+        case(Model::Primitive::PrimitiveMode::x3cQuadGouraudTexOpaqueLit):
+        case(Model::Primitive::PrimitiveMode::x3eQuadGouraudTexTranslucentLit):
+            in >> primitive.u0;
+            in >> primitive.v0;
+            in >> primitive.cba;
+            in >> primitive.u1;
+            in >> primitive.v1;
+            in >> primitive.tsb;
+            in >> primitive.u2;
+            in >> primitive.v2;
+            in.skipRawData(2);
+            in >> primitive.u3;
+            in >> primitive.v3;
+            in.skipRawData(2);
+            in >> primitive.normal0;
+            in >> primitive.vertex0;
+            in >> primitive.normal1;
+            in >> primitive.vertex1;
+            in >> primitive.normal2;
+            in >> primitive.vertex2;
+            in >> primitive.normal3;
+            in >> primitive.vertex3;
             break;
         default:
             KFMTError::error(QString::asprintf("Model: TMD: Unsupported mode 0x%x. Please implement!\n",
