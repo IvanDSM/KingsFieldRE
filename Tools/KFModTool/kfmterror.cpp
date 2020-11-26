@@ -20,6 +20,11 @@ void KFMTError::fatalError(const QString & fatalErrorMessage)
     std::exit(-1);
 }
 
+void KFMTError::log(const QString & logMessage)
+{
+    std::cerr << logMessage.toStdString() << '\n';
+}
+
 void KFMTError::warning(const QString & warningMessage)
 {
     std::cerr << "Warning: " << warningMessage.toStdString() << '\n';
