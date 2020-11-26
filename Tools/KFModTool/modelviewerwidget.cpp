@@ -10,5 +10,6 @@ ModelViewerWidget::ModelViewerWidget(QWidget *parent) :
 void ModelViewerWidget::setModel(std::shared_ptr<Model> model)
 {
     curModel = model;
+    ui->modelGLView->setModel(model);
 }
 

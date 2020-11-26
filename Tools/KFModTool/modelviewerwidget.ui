@@ -13,7 +13,7 @@
   <property name="windowTitle">
    <string>Model Viewer</string>
   </property>
-  <layout class="QHBoxLayout" name="horizontalLayout" stretch="3,2">
+  <layout class="QHBoxLayout" name="horizontalLayout" stretch="13,8">
    <item>
     <widget class="ModelGLView" name="modelGLView"/>
    </item>

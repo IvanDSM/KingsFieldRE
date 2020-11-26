@@ -5,7 +5,10 @@
 
 namespace _KFMTErrorInternal
 {
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wunused-variable"
     static QWidget *_KFMTErrorParent;
+#pragma GCC diagnostic pop
 }
 
 class KFMTError

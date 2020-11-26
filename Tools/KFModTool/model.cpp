@@ -19,7 +19,153 @@ Model::Model(TFile & tFile, unsigned int fileIndex)
 
 void Model::loadMO(const QByteArray &file)
 {
+    QDataStream moStream(file);
+    moStream.setByteOrder(QDataStream::LittleEndian);
     
+    quint32 tempUInt;
+    quint32 animationAmount_;
+    quint32 tmdOffset;
+    quint32 morphTargetTableOffset;
+    quint32 animationTableOffset;
+
+    // Read header
+    moStream.setByteOrder(QDataStream::LittleEndian);
+    moStream >> tempUInt; // Skip file length
+    moStream >> animationAmount_; // Get number of animations
+    animations.reserve(animationAmount_);
+    moStream >> tmdOffset;
+    moStream >> morphTargetTableOffset;
+    moStream >> animationTableOffset;
+    
+    // Here we do things a bit backwards: We'll read the TMD first
+    auto tmdSection = file.mid(tmdOffset);
+    loadTMD(tmdSection);
+    
+    
+    // Read the morph target table offsets
+    moStream.device()->seek(morphTargetTableOffset);
+
+    quint32 morphTargetTableEnd;
+    // Create vector for the morph target offsets
+    std::vector<quint32> morphTargetOffsets;
+
+    // The first morph target offset also serves as the end of the morph target table
+    moStream >> morphTargetTableEnd;
+    morphTargetOffsets.push_back(morphTargetTableEnd);
+
+    quint32 morphTargetTableSize = (morphTargetTableEnd - morphTargetTableOffset) / 4;
+    
+    for (size_t i = 0; i < morphTargetTableSize - 1; i++)
+    {
+        moStream >> tempUInt;
+        morphTargetOffsets.push_back(tempUInt);
+    }
+
+    // Read the morph targets
+    for (const auto &morphTargetOffset : morphTargetOffsets)
+    {
+        Mesh &referenceMesh = 
+                // To define the reference mesh, check if animFrames is empty
+                animFrames.empty() ? 
+                    // If animFrames is empty, use the base TMD as a reference
+                    baseMesh :
+                    // otherwise, use the last frame's final morph target
+                    morphTargets.at(animFrames.back().targets.back()); 
+        
+        std::vector<quint32> packetOffsets;
+        std::vector<MOPacket> packets;
+
+        // Seek to the morph target's offset
+        moStream.device()->seek(morphTargetOffset);
+
+        // Read the amount of packets and preallocates the minimum amount of packets in the morph target
+        quint16 packetAmount;
+        moStream >> packetAmount;
+
+        // Read the packets
+        for (size_t curPacket = 0; curPacket < packetAmount; curPacket++)
+        {
+            short idOrX; // PacketID for type 1, X delta for type 2
+            short numOrY; // Number of dummy packets it represents for type 1, Y delta for type 2
+            moStream >> idOrX;
+            moStream >> numOrY;
+            if (idOrX == static_cast<short>(0x8000))
+                for (short curDummyPacket = 0; curDummyPacket < numOrY; curDummyPacket++)
+                    packets.emplace_back();
+            else
+            {
+                short zDiff;
+                moStream >> zDiff;
+                packets.emplace_back(idOrX, numOrY, zDiff);
+            }
+        }
+        
+        // Initialize this target's mesh with our reference mesh
+        Mesh targetMesh = referenceMesh;
+        
+        auto packetIt = packets.cbegin();
+        auto vertexIt = targetMesh.vertices.begin();
+        
+        do
+        {
+            vertexIt->applyPacket(*packetIt);
+            packetIt++;
+            vertexIt++;
+        } while (packetIt != packets.cend() && vertexIt != targetMesh.vertices.end());
+        
+        morphTargets.push_back(targetMesh);
+    }
+
+    // Read the animation table
+
+    moStream.device()->seek(animationTableOffset);
+    std::vector<quint32> animationOffsets;
+    animationOffsets.resize(animationAmount_);
+
+    for (quint32 &animOffset : animationOffsets)
+        moStream >> animOffset;
+
+    auto curAnimNo = 0; // Used for printing the animation line
+    // Read the animations
+    for (const quint32 &animOffset : animationOffsets)
+    {
+        moStream.device()->seek(animOffset);
+        quint32 frameAmount;
+        std::vector<quint32> frameOffsets;
+        MOAnimation newAnimation;
+
+        moStream >> frameAmount;
+        frameOffsets.resize(frameAmount);
+
+        newAnimation.frameIndexes.reserve(frameAmount);
+
+        for (quint32 &frameOffset : frameOffsets)
+            moStream >> frameOffset;
+
+        // Read the frames
+        for (const quint32 &frameOffset : frameOffsets)
+        {
+
+            moStream.device()->seek(frameOffset);
+            short unknown00;
+            short weight;
+            short frameID;
+            short targetAmount;
+
+            moStream >> unknown00;
+            moStream >> weight;
+            moStream >> frameID;
+            moStream >> targetAmount;
+
+            MOFrame newFrame(unknown00, weight, frameID, targetAmount);
+            for (uint16_t &targetIndex : newFrame.targets)
+                moStream >> targetIndex;
+
+            animFrames.push_back(newFrame);
+        }
+        animations.push_back(newAnimation);
+        curAnimNo++;
+    }
 }
 
 void Model::loadRTMD(const QByteArray &file)
@@ -29,26 +175,26 @@ void Model::loadRTMD(const QByteArray &file)
 
 void Model::loadTMD(const QByteArray &file)
 {
-    QDataStream in(file);
-    in.setByteOrder(QDataStream::LittleEndian);
+    QDataStream tmdStream(file);
+    tmdStream.setByteOrder(QDataStream::LittleEndian);
     
     // Header section
     uint32_t id;
     uint32_t flags;
     uint32_t nobj;
     
-    in >> id;
+    tmdStream >> id;
     if (id != 0x41)
         KFMTError::error("Model: TMD ID is not 0x41. Bailing out.");
     
-    in >> flags;
+    tmdStream >> flags;
     if (flags != 0)
         KFMTError::error( "TMD addresses are not relative. Bailing out.");
     
-    in >> nobj;
+    tmdStream >> nobj;
     
     
-    quint64 objTableOffset = in.device()->pos();
+    quint64 objTableOffset = tmdStream.device()->pos();
 
     for (quint32 curObj = 0; curObj < nobj; curObj++)
     {
@@ -60,13 +206,13 @@ void Model::loadTMD(const QByteArray &file)
         quint32 primitiveCount;
         qint32 tempScale;
 
-        in >> verticesOffset;
-        in >> vertexCount;
-        in >> normalsOffset;
-        in >> normalCount;
-        in >> primitivesOffset;
-        in >> primitiveCount;
-        in >> tempScale;
+        tmdStream >> verticesOffset;
+        tmdStream >> vertexCount;
+        tmdStream >> normalsOffset;
+        tmdStream >> normalCount;
+        tmdStream >> primitivesOffset;
+        tmdStream >> primitiveCount;
+        tmdStream >> tempScale;
         scale = static_cast<float>(tempScale) / 4096.f;
 
         verticesOffset += objTableOffset;
@@ -78,22 +224,35 @@ void Model::loadTMD(const QByteArray &file)
         primitives.resize(primitiveCount);
 
         // Read object vertices
-        in.device()->seek(verticesOffset);
+        tmdStream.device()->seek(verticesOffset);
         for (auto &vertex : baseMesh.vertices)
-            vertex.readSVECTOR(in);
+        {
+            vertex.readSVECTOR(tmdStream);
+            baseMesh.indexes.push_back(baseMesh.indexes.size());
+        }
 
         // Read object normals
-        in.device()->seek(normalsOffset);
+        tmdStream.device()->seek(normalsOffset);
         for (auto &normal : normals)
-            normal.readSVECTOR(in);
+            normal.readSVECTOR(tmdStream);
 
         // Read object primitives
-        in.device()->seek(primitivesOffset);
+        tmdStream.device()->seek(primitivesOffset);
         for (auto &primitive : primitives)
         {
-            in >> primitive;
+            tmdStream >> primitive;
         }
     }
+}
+
+void Model::Vec3::applyPacket(const MOPacket & packet)
+{
+    if (packet.x == 0 && packet.y == 0 && packet.z == 0)
+        return;
+    
+    x = static_cast<float>(packet.x) / 4096.f;
+    y = static_cast<float>(packet.y) / 4096.f;
+    z = static_cast<float>(packet.z) / 4096.f;
 }
 
 void Model::Vec3::readSVECTOR(QDataStream & in)
@@ -107,9 +266,9 @@ void Model::Vec3::readSVECTOR(QDataStream & in)
     in >> vz;
     in.skipRawData(2);
     
-    x = static_cast<float>(vx) / 4096.f;
-    y = static_cast<float>(vy) / 4096.f;
-    z = static_cast<float>(vz) / 4096.f;
+    x = static_cast<float>(vx) / 4096;
+    y = static_cast<float>(vy) / 4096;
+    z = static_cast<float>(vz) / 4096;
 }
 
 QDataStream &operator>>(QDataStream & in, Model::Primitive & primitive)
@@ -200,6 +359,20 @@ QDataStream &operator>>(QDataStream & in, Model::Primitive & primitive)
             in >> primitive.vertex2;
             in >> primitive.vertex3;
             in.skipRawData(2);
+            break;
+        case(Model::Primitive::PrimitiveMode::x30TriGouraudNoTexOpaqueLit):
+        case(Model::Primitive::PrimitiveMode::x32TriGouraudNoTexTranslucentLit):
+            in >> primitive.r0;
+            in >> primitive.g0;
+            in >> primitive.b0;
+            in.skipRawData(1);
+            readGradation(in, primitive);
+            in >> primitive.normal0;
+            in >> primitive.vertex0;
+            in >> primitive.normal1;
+            in >> primitive.vertex1;
+            in >> primitive.normal2;
+            in >> primitive.vertex2;
             break;
         case(Model::Primitive::PrimitiveMode::x34TriGouraudTexOpaqueLit):
         case(Model::Primitive::PrimitiveMode::x36TriGouraudTexTranslucentLit):

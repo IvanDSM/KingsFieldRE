@@ -5,7 +5,7 @@
 void ModelGLView::setModel(std::shared_ptr<Model> model_)
 {
     //Destroy all previously created GL resources
-    if(model != NULL)
+    if(model != nullptr)
     {
         glProgram.removeAllShaders();
 
@@ -16,7 +16,6 @@ void ModelGLView::setModel(std::shared_ptr<Model> model_)
 
     //Build model
     //Imaginary IF statement where we check if it's MO, TMD or RTMD
-    BuildTMDModel();
 }
 
 void ModelGLView::initializeGL()
@@ -34,8 +33,10 @@ void ModelGLView::initializeGL()
     //glFuncs->glEnable(GL_DEPTH_TEST);
     glFuncs->glLineWidth(1.f);
     //glFuncs->glEnable(GL_LINE);
-    //BuildTMDModel();
+    
     BuildGrid();
+    while (model == nullptr) { /* Wait for model */ };
+    BuildTMDModel();
     
 }
 
@@ -55,6 +56,7 @@ void ModelGLView::mouseMoveEvent(QMouseEvent * event)
 
 void ModelGLView::mouseReleaseEvent(QMouseEvent * event)
 {
+    Q_UNUSED(event)
     lastMousePos = {-999, -999};
 }
 
@@ -114,7 +116,7 @@ void ModelGLView::BuildTMDModel()
 
     glFuncs->glBindBuffer(GL_ARRAY_BUFFER, glVBO);
     glFuncs->glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
-
+    
     glFuncs->glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
     //glFuncs->glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, 7 * sizeof(float), (void*)(3 * sizeof(float)));
 
@@ -122,7 +124,7 @@ void ModelGLView::BuildTMDModel()
     //glFuncs->glEnableVertexAttribArray(1);
 
     glFuncs->glBindVertexArray(0);
-
+    
     //Build Shader
     if(!glProgram.addShaderFromSourceFile(QOpenGLShader::Vertex, ":/tmdShader.vert"))
         KFMTError::error("ModelGLView: Couldn't load GLSL Vertex Shader...");
@@ -134,6 +136,8 @@ void ModelGLView::BuildTMDModel()
         KFMTError::error("ModelGLView: Couldn't link GLSL Program...");
 
     glProgWVP = glProgram.uniformLocation("uWVP");
+    
+    tmdBuilt = true;
 }
 
 void ModelGLView::DrawTMDModel()

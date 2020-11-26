@@ -64,7 +64,7 @@ private slots:
     void refreshTimeout() { repaint(); }
     
 private:
-    std::shared_ptr<Model> model = NULL;
+    std::shared_ptr<Model> model = nullptr;
     
     QTimer refreshTimer{this};
     
@@ -100,6 +100,7 @@ private:
     //OGL Model
     unsigned int glVBO = 0;
     unsigned int glVAO = 0;
+    bool tmdBuilt = false;
     
     // OGL Functions
     QOpenGLExtraFunctions *glFuncs = nullptr;
