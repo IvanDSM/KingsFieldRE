@@ -45,8 +45,11 @@ void ModelGLView::initializeGL()
     //F->glEnable(GL_CULL_FACE);
     //F->glDepthFunc(GL_LEQUAL);
     //F->glEnable(GL_DEPTH_TEST);
+    F->glLineWidth(8.f);
+    //F->glEnable(GL_LINE);
+    //BuildTMDModel();
+    BuildGrid();
 
-    BuildTMDModel();
 }
 
 void ModelGLView::resizeGL(int w, int h)
@@ -80,9 +83,12 @@ void ModelGLView::paintGL()
 
     fRot += 15.0f;
 
+    DrawGrid();
+
     //Here's where we finally draw...
     //Imaginary IF statement where we check if it's MO, TMD or RTMD
-    DrawTMDModel();
+
+    //DrawTMDModel();
 }
 
 void ModelGLView::BuildTMDModel()
@@ -135,4 +141,60 @@ void ModelGLView::DrawTMDModel()
 
     E->glBindVertexArray(glVAO);
     F->glDrawArrays(GL_TRIANGLES, 0, 3);
+}
+
+//
+// GL Grid
+//
+void ModelGLView::BuildGrid()
+{
+    //Build Grid
+    //This could all be pre-processed...
+    QVector3D gridVertices[44];
+
+    float gridSect = 20.f;
+    int gridPos = 0;
+    for(int i = 0; i <= 10; ++i)
+    {
+        gridVertices[gridPos + 0] = QVector3D(-100.f + (gridSect * i), 0.f, -100.f);
+        gridVertices[gridPos + 1] = QVector3D(-100.f + (gridSect * i), 0.f,  100.f);
+        gridVertices[gridPos + 2] = QVector3D(-100.f, 0.f, -100.f + (gridSect * i));
+        gridVertices[gridPos + 3] = QVector3D( 100.f, 0.f, -100.f + (gridSect * i));
+
+        gridPos+=4;
+    }
+
+    E->glGenBuffers(1, &glGridVBO);
+    E->glGenVertexArrays(1, &glGridVAO);
+
+    E->glBindVertexArray(glGridVAO);
+    E->glBindBuffer(GL_ARRAY_BUFFER, glGridVBO);
+    E->glBufferData(GL_ARRAY_BUFFER, sizeof(gridVertices), gridVertices, GL_STATIC_DRAW);
+
+    F->glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 12, (void*)0);
+    F->glEnableVertexAttribArray(0);
+    E->glBindVertexArray(0);
+
+    //Build Shader
+    //TO-DO: (Change this to use 'simpleShader.vert / simpleShader.frag'
+    if(!glSimpleProgram.addShaderFromSourceFile(QOpenGLShader::Vertex, ":/tmdShader.vert"))
+        KFMTError::error("Couldn't load GLSL Vertex Shader...");
+
+    if(!glSimpleProgram.addShaderFromSourceFile(QOpenGLShader::Fragment, ":/tmdShader.frag"))
+        KFMTError::error("Couldn't load GLSL Fragment Shader...");
+
+    if(!glSimpleProgram.link())
+        KFMTError::error("Couldn't link GLSL Program...");
+
+    glSimpleProgramWVP = glSimpleProgram.uniformLocation("uWVP");
+}
+
+void ModelGLView::DrawGrid()
+{
+    //Bind GLSL Program
+    glSimpleProgram.bind();
+    glSimpleProgram.setUniformValue(glSimpleProgramWVP, (glMatProj * glMatView));
+
+    E->glBindVertexArray(glGridVAO);
+    F->glDrawArrays(GL_LINES, 0, 44);
 }

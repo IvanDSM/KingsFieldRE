@@ -26,6 +26,9 @@ protected:
     void BuildTMDModel();
     void DrawTMDModel();
 
+    void BuildGrid();
+    void DrawGrid();
+
 private:
     std::shared_ptr<Model> model = NULL;
 
@@ -37,7 +40,7 @@ private:
     //Matrices & Vectors
     //We do a weird here, and set the y to -1 for the up vector
     //this is identical to way the PS1 does it's projection (why tho sony)
-    QVector3D glCamFrom = {0.f, 0.f, -256.f};
+    QVector3D glCamFrom = {0.f, 64.f, -256.f};
     QVector3D glCamTo   = {0.f, 0.f, 0.f};
     QVector3D glCamUp   = {0.f, 1.f, 0.f};
     QVector3D glWorldScale = {1.f, 1.f, 1.f};
@@ -57,7 +60,16 @@ private:
 
     float fRot = 0.0f;
 
+    //
+    // Primary Viewer Stuff
+    //
+    QOpenGLShaderProgram glSimpleProgram;
+    unsigned int glSimpleProgramWVP;
 
+    unsigned int glGridVBO;
+    unsigned int glGridVAO;
+    unsigned int glAxisVBO;
+    unsigned int glAxisVAO;
 };
 
 #endif // MODELGLVIEW_H
