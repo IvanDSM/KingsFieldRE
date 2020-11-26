@@ -1,4 +1,4 @@
-precision highp float;
+//precision highp float;
 
 //varying vec3 vNormal;
 varying vec4 vColour;
