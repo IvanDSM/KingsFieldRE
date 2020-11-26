@@ -34,7 +34,8 @@ public:
     struct Mesh
     {
         std::vector<Vec3> vertices;
-        std::vector<unsigned int> indexes;
+        std::vector<Vec3> normals;
+        std::vector<Primitive> primitives;
         
         Vec3 &operator[](size_t vertex) {return vertices[vertex];}
     };
@@ -56,9 +57,7 @@ public:
     
     explicit Model(TFile &tFile, unsigned int fileIndex);
     
-    Mesh baseMesh;
-    std::vector<Vec3> normals;
-    std::vector<Primitive> primitives;
+    std::vector<Mesh> baseObjects;
     float scale;
     
     std::vector<MOAnimation> animations;

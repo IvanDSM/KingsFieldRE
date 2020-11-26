@@ -9,7 +9,7 @@ Model::Model(TFile & tFile, unsigned int fileIndex)
         if (TFile::isMO(file)) // MO File
             loadMO(file);
         else if (TFile::isRTMD(file)) // RTMD File
-            loadRTMD(file);
+            loadTMD(file);
         else if (TFile::isTMD(file)) // TMD File
             loadTMD(file);
         else
@@ -68,7 +68,7 @@ void Model::loadMO(const QByteArray &file)
                 // To define the reference mesh, check if animFrames is empty
                 animFrames.empty() ? 
                     // If animFrames is empty, use the base TMD as a reference
-                    baseMesh :
+                    baseObjects.front() :
                     // otherwise, use the last frame's final morph target
                     morphTargets.at(animFrames.back().targets.back()); 
         
@@ -170,7 +170,14 @@ void Model::loadMO(const QByteArray &file)
 
 void Model::loadRTMD(const QByteArray &file)
 {
+    QDataStream rtmdStream(file);
+    rtmdStream.setByteOrder(QDataStream::LittleEndian);
     
+    // Skip "ID"
+    rtmdStream.skipRawData(8);
+    
+    uint32_t nobj;
+    rtmdStream >> nobj;
 }
 
 void Model::loadTMD(const QByteArray &file)
@@ -184,15 +191,15 @@ void Model::loadTMD(const QByteArray &file)
     uint32_t nobj;
     
     tmdStream >> id;
-    if (id != 0x41)
-        KFMTError::error("Model: TMD ID is not 0x41. Bailing out.");
+    if (id != 0x41 && id != 00)
+        KFMTError::error("Model: (R)TMD ID is not 0x41 or 0x00. Bailing out.");
     
     tmdStream >> flags;
-    if (flags != 0)
+    if (flags != 0 && flags != 0x12 && flags != 0x10)
         KFMTError::error( "TMD addresses are not relative. Bailing out.");
     
     tmdStream >> nobj;
-    
+    baseObjects.resize(nobj);
     
     quint64 objTableOffset = tmdStream.device()->pos();
 
@@ -219,29 +226,29 @@ void Model::loadTMD(const QByteArray &file)
         normalsOffset += objTableOffset;
         primitivesOffset += objTableOffset;
 
-        baseMesh.vertices.resize(vertexCount);
-        normals.resize(normalCount);
-        primitives.resize(primitiveCount);
+        auto &objMesh = baseObjects[curObj];
+        
+        objMesh.vertices.resize(vertexCount);
+        objMesh.normals.resize(normalCount);
+        objMesh.primitives.resize(primitiveCount);
 
         // Read object vertices
         tmdStream.device()->seek(verticesOffset);
-        for (auto &vertex : baseMesh.vertices)
-        {
+        for (auto &vertex : objMesh.vertices)
             vertex.readSVECTOR(tmdStream);
-            baseMesh.indexes.push_back(baseMesh.indexes.size());
-        }
 
         // Read object normals
         tmdStream.device()->seek(normalsOffset);
-        for (auto &normal : normals)
+        for (auto &normal : objMesh.normals)
             normal.readSVECTOR(tmdStream);
 
         // Read object primitives
         tmdStream.device()->seek(primitivesOffset);
-        for (auto &primitive : primitives)
-        {
+        for (auto &primitive : objMesh.primitives)
             tmdStream >> primitive;
-        }
+        
+        // Seek to the next object's position in the object table
+        tmdStream.device()->seek(objTableOffset + ((curObj + 1) * 28));
     }
 }
 

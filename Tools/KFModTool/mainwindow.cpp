@@ -29,6 +29,13 @@ void MainWindow::on_actionLoad_files_triggered()
         loadItem();
     }
     
+    if (tfile_dir.exists("RTMD.T"))
+    {
+        // We don't use C++14 so no make_unique :(
+        rtmd.reset(new TFile(tfile_dir.filePath("RTMD.T")));
+    
+        loadRtmd();
+    }
 }
 
 void MainWindow::addGameDB()
@@ -229,6 +236,37 @@ void MainWindow::loadItem()
     addModel(*item, 100, "Item: Arrow For The Bow");
     addModel(*item, 101, "Item: Elf's Bolt");
     addModel(*item, 102, "Item: \"A\" Herb 2");
+}
+
+void MainWindow::loadRtmd()
+{
+    if (rtmd == nullptr)
+        return;
+    
+    if (rtmdTreeItem.get() != nullptr)
+    {
+        ui->filesTree->removeItemWidget(rtmdTreeItem.get(), 0);
+        for (auto child : rtmdTreeItem->takeChildren())
+        {
+            ui->filesTree->removeItemWidget(child, 0);
+            delete child;
+        }
+    }
+    
+    rtmdTreeItem.reset(new QTreeWidgetItem(ui->filesTree));
+    rtmdTreeItem->setIcon(0, QIcon(":/tfile_icon.png"));
+    rtmdTreeItem->setText(0, "RTMD.T");
+    ui->filesTree->addTopLevelItem(rtmdTreeItem.get());
+    
+    addModel(*rtmd, 0, "Tileset 0");
+    addModel(*rtmd, 1, "Tileset 1");
+    addModel(*rtmd, 2, "Tileset 2");
+    addModel(*rtmd, 3, "Tileset 3");
+    addModel(*rtmd, 4, "Tileset 4");
+    addModel(*rtmd, 5, "Tileset 5");
+    addModel(*rtmd, 6, "Tileset 6");
+    addModel(*rtmd, 7, "Tileset 7");
+    addModel(*rtmd, 8, "Tileset 8");
 }
 
 void MainWindow::on_filesTree_itemDoubleClicked(QTreeWidgetItem *item, int)
