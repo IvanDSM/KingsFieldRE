@@ -37,6 +37,8 @@ public:
         std::vector<Vec3> normals;
         std::vector<Primitive> primitives;
         
+        bool visible = true;
+        
         Vec3 &operator[](size_t vertex) {return vertices[vertex];}
     };
     

@@ -9,7 +9,7 @@ Model::Model(TFile & tFile, unsigned int fileIndex)
         if (TFile::isMO(file)) // MO File
             loadMO(file);
         else if (TFile::isRTMD(file)) // RTMD File
-            loadTMD(file);
+            loadRTMD(file);
         else if (TFile::isTMD(file)) // TMD File
             loadTMD(file);
         else
@@ -170,14 +170,11 @@ void Model::loadMO(const QByteArray &file)
 
 void Model::loadRTMD(const QByteArray &file)
 {
-    QDataStream rtmdStream(file);
-    rtmdStream.setByteOrder(QDataStream::LittleEndian);
-    
-    // Skip "ID"
-    rtmdStream.skipRawData(8);
-    
-    uint32_t nobj;
-    rtmdStream >> nobj;
+    // This just calls the TMD loading function and then makes all objects except for the 
+    // first one invisible.
+    loadTMD(file);
+    for (auto objIt = baseObjects.begin() + 1; objIt != baseObjects.end(); objIt++)
+        objIt->visible = false;
 }
 
 void Model::loadTMD(const QByteArray &file)
