@@ -268,7 +268,6 @@ void MainWindow::loadMo()
     for (size_t moFile = 0; moFile < mo->getTrueNumFiles(); moFile++)
     {
         addModel(*mo, moFile, QString::asprintf("Model %zu", moFile));
-        KFMTError::log(QString::asprintf("Loaded MO %zu", moFile));
     }
 }
 
