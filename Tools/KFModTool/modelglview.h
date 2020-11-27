@@ -97,6 +97,7 @@ protected:
     void initializeGL() override;
     void mouseMoveEvent(QMouseEvent *event) override;
     void mouseReleaseEvent(QMouseEvent *event) override;
+    void wheelEvent(QWheelEvent *event) override;
 
     void resizeGL(int w, int h) override;
     void paintGL() override;
@@ -124,13 +125,13 @@ private:
     
     // Some constants
     static constexpr float zNear = 0.1f;
-    static constexpr float zFar  = 1000000.0f;
+    static constexpr float zFar  = 2048.0f;
     static constexpr float pFoV  = 60.f;
 
     // Matrices & Vectors
     QVector3D glCamFrom = {0.f, 64.f, -128.f};
     QVector3D glCamTo   = {0.f, 0.f, 0.f};
-    QVector3D glCamUp   = {0.f, 1.f, 0.f};
+    QVector3D glCamUp   = {0.f,-1.f, 0.f};
 
     QVector3D glModelScale = {256.f, 256.f, 256.f};
     QVector3D glModelRotation = {0.f, 0.f, 0.f};
@@ -142,6 +143,9 @@ private:
     //OGL Shader
     QOpenGLShaderProgram glProgram;
     unsigned int glProgramMVP = 0;
+    unsigned int glProgramModel = 0;
+    unsigned int glProgramLightPos = 0;
+
 
     //OGL Model
 
@@ -154,6 +158,8 @@ private:
 
     float camRotY = 0.f;
     float camRotZ = 0.f;
+    float camZoom = 128.f;
+
     QPoint lastMousePos{-999, -999};
 
     //
