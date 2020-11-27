@@ -88,6 +88,7 @@ RESOURCES += \
 
 DISTFILES += \
     litCommon.frag \
+    litMime.vert \
     litStatic.vert \
     unlitSimple.frag \
     unlitSimple.vert
