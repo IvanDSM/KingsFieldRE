@@ -87,5 +87,7 @@ RESOURCES += \
 	resources.qrc
 
 DISTFILES += \
-    tmdShader.frag \
-    tmdShader.vert
+    litCommon.frag \
+    litStatic.vert \
+    unlitSimple.frag \
+    unlitSimple.vert

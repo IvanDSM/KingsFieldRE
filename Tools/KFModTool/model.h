@@ -5,7 +5,6 @@
 #include "kftypes.h"
 #include "tfile.h"
 
-
 /*!
  * \brief Class to represent a generic 3D model.
  * This class is made to accomodate the three kinds of model King's Field uses: MO, RTMD and TMD.
@@ -39,6 +38,10 @@ public:
         
         bool visible = true;
         
+        unsigned int oglVertexBufferObject;
+        unsigned int oglVertexArrayObject;
+        unsigned int oglVertexNum;
+
         Vec3 &operator[](size_t vertex) {return vertices[vertex];}
     };
     

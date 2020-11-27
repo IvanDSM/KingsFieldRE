@@ -4,7 +4,9 @@
         <file>map_icon.png</file>
         <file>db_icon.png</file>
         <file>3d_icon.png</file>
-        <file>tmdShader.frag</file>
-        <file>tmdShader.vert</file>
+        <file>unlitSimple.vert</file>
+        <file>unlitSimple.frag</file>
+        <file>litCommon.frag</file>
+        <file>litStatic.vert</file>
     </qresource>
 </RCC>

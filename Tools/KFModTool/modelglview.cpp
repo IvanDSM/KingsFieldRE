@@ -1,21 +1,11 @@
 #include "modelglview.h"
 #include <iostream> 
 #include <QMouseEvent>
+#include <QWheelEvent>
 
 void ModelGLView::setModel(std::shared_ptr<Model> model_)
-{
-    //Destroy all previously created GL resources
-    if(model != nullptr)
-    {
-        glProgram.removeAllShaders();
-
-        glFuncs->glDeleteBuffers(1, &glVBO);
-        glFuncs->glDeleteVertexArrays(1, &glVAO);
-    }
+{    
     model = model_;
-
-    //Build model
-    //Imaginary IF statement where we check if it's MO, TMD or RTMD
 }
 
 void ModelGLView::initializeGL()
@@ -31,17 +21,18 @@ void ModelGLView::initializeGL()
     //glFuncs->glEnable(GL_CULL_FACE);
     //glFuncs->glDepthFunc(GL_LEQUAL);
     //glFuncs->glEnable(GL_DEPTH_TEST);
-    glFuncs->glLineWidth(1.f);
+    //glFuncs->glLineWidth(1.f);
     //glFuncs->glEnable(GL_LINE);
-    
+
     BuildGrid();
+
     while (model == nullptr) { /* Wait for model */ };
     BuildTMDModel();
-    
 }
 
 void ModelGLView::mouseMoveEvent(QMouseEvent * event)
 {
+    //Rotation
     if (event->buttons() == Qt::MiddleButton)
     {
         if (lastMousePos.x() != -999)
@@ -70,7 +61,7 @@ void ModelGLView::resizeGL(int w, int h)
 void ModelGLView::paintGL()
 {
     //Clear Buffers
-    glFuncs->glClear(GL_COLOR_BUFFER_BIT);
+    glFuncs->glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     //Build View Matrix
     glMatView.setToIdentity();
@@ -80,63 +71,158 @@ void ModelGLView::paintGL()
     glMatWorld.setToIdentity();
     glMatWorld.scale(glModelScale);
     glMatWorld.rotate(glModelRotation.x(), vecLeft);
-    glMatWorld.rotate(0.f, vecUp);
+    glMatWorld.rotate(glModelRotation.y(), vecUp);
     glMatWorld.rotate(glModelRotation.z(), vecFront);
-
-    glModelRotation.setY(0.f);
 
     glMatView.rotate(camRotY, vecUp);
     glMatView.rotate(camRotZ, vecLeft);
     
     DrawGrid();
-
-    //Here's where we finally draw...
-    //Imaginary IF statement where we check if it's MO, TMD or RTMD
-
-    //DrawTMDModel();
+    DrawTMDModel();
 }
 
 void ModelGLView::BuildTMDModel()
 {
-    //BuildTMDModel Imagines that all objects are parts of a bigger mesh
+    //Loop through each object and build it for OpenGL.
+    std::vector<TMDVertex> vertices;
 
-    //Build Model
-    glFuncs->glGenBuffers(1, &glVBO);
-    glFuncs->glGenVertexArrays(1, &glVAO);
+    //
+    // To-do : refactor this gigantic mess
+    //    Load Normals, Colour and Texcoord
+    // Vec3 to QVector3D function pls?
+    //
+    for(Model::Mesh& tmdObj : model->baseObjects)
+    {
+        for(Model::Primitive tmdPrim : tmdObj.primitives)
+        {
+            if(tmdPrim.isTriangle())
+            {
+                //Add 3 vertices to the list
+                TMDVertex v0, v1, v2;
+                Model::Vec3 V;
 
-    //Build VertexBuffer in memory ready for copy
-    float vertices[] = {
-        -128.f, -128.f, 0.0f,
-         128.f, -128.f, 0.0f,
-          0.0f,  128.f, 0.0f
-    };
+                //Vertex 1
+                V = tmdObj.vertices[tmdPrim.vertex0];
 
-    //Copy to GL
-    glFuncs->glBindVertexArray(glVAO);
+                v0.position = { V.x, V.y, V.z };
+                v0.normal = {0.f, 0.f, 0.f};
+                v0.colour = {1.f,1.f,1.f,1.f};
+                v0.texcoord = {0.f,0.f};
 
-    glFuncs->glBindBuffer(GL_ARRAY_BUFFER, glVBO);
-    glFuncs->glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
-    
-    glFuncs->glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
-    //glFuncs->glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, 7 * sizeof(float), (void*)(3 * sizeof(float)));
+                //Vertex 2
+                V = tmdObj.vertices[tmdPrim.vertex1];
+                v1.position = { V.x, V.y, V.z };
+                v1.normal = {0.f, 0.f, 0.f};
+                v1.colour = {1.f,1.f,1.f,1.f};
+                v1.texcoord = {0.f,0.f};
 
-    glFuncs->glEnableVertexAttribArray(0);
-    //glFuncs->glEnableVertexAttribArray(1);
+                //Vertex 2
+                V = tmdObj.vertices[tmdPrim.vertex2];
+                v2.position = { V.x, V.y, V.z };
+                v2.normal = {0.f, 0.f, 0.f};
+                v2.colour = {1.f,1.f,1.f,1.f};
+                v2.texcoord = {0.f,0.f};
 
-    glFuncs->glBindVertexArray(0);
-    
-    //Build Shader
-    if(!glProgram.addShaderFromSourceFile(QOpenGLShader::Vertex, ":/tmdShader.vert"))
+                vertices.push_back(v0);
+                vertices.push_back(v1);
+                vertices.push_back(v2);
+
+            }else{
+                //Add 3 vertices to the list
+                TMDVertex v0, v1, v2, v3;
+                Model::Vec3 V;
+
+                //Vertex 1
+                V = tmdObj.vertices[tmdPrim.vertex0];
+                v0.position = { V.x, V.y, V.z };
+                v0.normal = {0.f, 0.f, 0.f};
+                v0.colour = {1.f,1.f,1.f,1.f};
+                v0.texcoord = {0.f,0.f};
+
+                //Vertex 2
+                V = tmdObj.vertices[tmdPrim.vertex1];
+                v1.position = { V.x, V.y, V.z };
+                v1.normal = {0.f, 0.f, 0.f};
+                v1.colour = {1.f,1.f,1.f,1.f};
+                v1.texcoord = {0.f,0.f};
+
+                //Vertex 2
+                V = tmdObj.vertices[tmdPrim.vertex2];
+                v2.position = { V.x, V.y, V.z };
+                v2.normal = {0.f, 0.f, 0.f};
+                v2.colour = {1.f,1.f,1.f,1.f};
+                v2.texcoord = {0.f,0.f};
+
+                //Vertex 3
+                V = tmdObj.vertices[tmdPrim.vertex3];
+                v3.position = { V.x, V.y, V.z };
+                v3.normal = {0.f, 0.f, 0.f};
+                v3.colour = {1.f,1.f,1.f,1.f};
+                v3.texcoord = {0.f,0.f};
+
+                //Split the quad into two seperate triangles
+
+                //Tri 1 (0, 1, 2)
+                vertices.push_back(v0);
+                vertices.push_back(v1);
+                vertices.push_back(v2);
+
+                //Tri 2 (0, 2, 3)
+                vertices.push_back(v0);
+                vertices.push_back(v2);
+                vertices.push_back(v3);
+            }
+        }
+
+        //Begin Generating OpenGL stuff for this object
+        glFuncs->glGenBuffers(1, &tmdObj.oglVertexBufferObject);
+        glFuncs->glGenVertexArrays(1, &tmdObj.oglVertexArrayObject);
+
+        //Bind array buffer
+        glFuncs->glBindVertexArray(tmdObj.oglVertexArrayObject);
+
+        //bind vertex buffer, and copy the data to it
+        glFuncs->glBindBuffer(GL_ARRAY_BUFFER, tmdObj.oglVertexBufferObject);
+        glFuncs->glBufferData(GL_ARRAY_BUFFER, 48 * vertices.size(), &vertices.front(), GL_STATIC_DRAW);
+
+        //Set up the offsets and strides of each component of the vertex...
+
+        //Position
+        glFuncs->glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 48, (void*)0);
+        glFuncs->glEnableVertexAttribArray(0);
+
+        //Normal
+        glFuncs->glVertexAttribPointer(1, 3, GL_FLOAT, GL_TRUE, 48, (void*)12);
+        glFuncs->glEnableVertexAttribArray(1);
+
+        //Colour
+        glFuncs->glVertexAttribPointer(2, 4, GL_FLOAT, GL_FALSE, 48, (void*)24);
+        glFuncs->glEnableVertexAttribArray(2);
+
+        //Texcoord
+        glFuncs->glVertexAttribPointer(3, 2, GL_FLOAT, GL_FALSE, 48, (void*)40);
+        glFuncs->glEnableVertexAttribArray(3);
+
+        //Unbind buffers
+        glFuncs->glBindBuffer(GL_ARRAY_BUFFER, 0);
+        glFuncs->glBindVertexArray(0);
+
+        //Set vertex number for draw...
+        tmdObj.oglVertexNum = vertices.size();
+    }
+
+    //Now we build the shaders required for rendering
+    if(!glProgram.addShaderFromSourceFile(QOpenGLShader::Vertex, ":/litStatic.vert"))
         KFMTError::error("ModelGLView: Couldn't load GLSL Vertex Shader...");
 
-    if(!glProgram.addShaderFromSourceFile(QOpenGLShader::Fragment, ":/tmdShader.frag"))
+    if(!glProgram.addShaderFromSourceFile(QOpenGLShader::Fragment, ":/litCommon.frag"))
         KFMTError::error("ModelGLView: Couldn't load GLSL Fragment Shader...");
 
     if(!glProgram.link())
         KFMTError::error("ModelGLView: Couldn't link GLSL Program...");
 
-    glProgWVP = glProgram.uniformLocation("uWVP");
-    
+    glProgramMVP = glProgram.uniformLocation("uMVP");
+
     tmdBuilt = true;
 }
 
@@ -144,10 +230,18 @@ void ModelGLView::DrawTMDModel()
 {
     //Bind GLSL Program
     glProgram.bind();
-    glProgram.setUniformValue(glProgWVP, (glMatProj * glMatView * glMatWorld));
+    glProgram.setUniformValue(glProgramMVP, (glMatProj * glMatView) * glMatWorld);
 
-    glFuncs->glBindVertexArray(glVAO);
-    glFuncs->glDrawArrays(GL_TRIANGLES, 0, 3);
+    for(Model::Mesh tmdObj : model->baseObjects)
+    {
+        //if(!tmdObj.visible)
+        //   continue;
+
+        glFuncs->glBindVertexArray(tmdObj.oglVertexArrayObject);
+        glFuncs->glDrawArrays(GL_TRIANGLES, 0, tmdObj.oglVertexNum);
+
+        glFuncs->glBindVertexArray(0);
+    }
 }
 
 //
@@ -162,30 +256,35 @@ void ModelGLView::BuildGrid()
     glFuncs->glBindBuffer(GL_ARRAY_BUFFER, glGridVBO);
     glFuncs->glBufferData(GL_ARRAY_BUFFER, sizeof(gridVertices), gridVertices.data(), GL_STATIC_DRAW);
 
-    glFuncs->glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 12, (void*)0);
+    glFuncs->glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 24, (void*)0);
     glFuncs->glEnableVertexAttribArray(0);
+    glFuncs->glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 24, (void*)12);
+    glFuncs->glEnableVertexAttribArray(1);
+
+    glFuncs->glBindBuffer(GL_ARRAY_BUFFER, 0);
     glFuncs->glBindVertexArray(0);
 
     //Build Shader
-    //TO-DO: (Change this to use 'simpleShader.vert / simpleShader.frag'
-    if(!glSimpleProgram.addShaderFromSourceFile(QOpenGLShader::Vertex, ":/tmdShader.vert"))
+    if(!glSimpleProgram.addShaderFromSourceFile(QOpenGLShader::Vertex, ":/unlitSimple.vert"))
         KFMTError::error("ModelGLView: Couldn't load GLSL Vertex Shader...");
 
-    if(!glSimpleProgram.addShaderFromSourceFile(QOpenGLShader::Fragment, ":/tmdShader.frag"))
+    if(!glSimpleProgram.addShaderFromSourceFile(QOpenGLShader::Fragment, ":/unlitSimple.frag"))
         KFMTError::error("ModelGLView: Couldn't load GLSL Fragment Shader...");
 
     if(!glSimpleProgram.link())
         KFMTError::error("ModelGLView: Couldn't link GLSL Program...");
 
-    glSimpleProgramWVP = glSimpleProgram.uniformLocation("uWVP");
+    glSimpleProgramMVP = glSimpleProgram.uniformLocation("uMVP");
 }
 
 void ModelGLView::DrawGrid()
 {
     //Bind GLSL Program
     glSimpleProgram.bind();
-    glSimpleProgram.setUniformValue(glSimpleProgramWVP, (glMatProj * glMatView));
+    glSimpleProgram.setUniformValue(glSimpleProgramMVP, (glMatProj * glMatView));
 
     glFuncs->glBindVertexArray(glGridVAO);
-    glFuncs->glDrawArrays(GL_LINES, 0, 44);
+    glFuncs->glDrawArrays(GL_LINES, 0, 46);
+
+    glFuncs->glBindVertexArray(0);
 }
