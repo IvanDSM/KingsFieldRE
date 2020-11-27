@@ -90,7 +90,22 @@ public:
         fmt.setSamples(2);
 
         setFormat(fmt);
+        setMouseTracking(true);
     }
+    
+    bool setCurAnim(int animationIndex)
+    {
+        if (animationIndex < -1 || static_cast<size_t>(animationIndex) > model->animations.size())
+        {
+            KFMTError::error("ModelGLView: Tried to set animation to non-existent animation " +
+                             QString::number(animationIndex));
+            return false;
+        }
+        
+        curAnim = animationIndex;
+        return true;
+    }
+    
     void setModel(std::shared_ptr<Model> model_);
     
 protected:
@@ -101,18 +116,20 @@ protected:
 
     void resizeGL(int w, int h) override;
     void paintGL() override;
-
+    
+private slots:
+    void refreshTimeout() { repaint(); }
+    
+private:
+    
     void BuildTMDModel();
     void DrawTMDModel();
 
     void BuildGrid();
     void DrawGrid();
     
-private slots:
-    void refreshTimeout() { repaint(); }
-    
-private:
     std::shared_ptr<Model> model = nullptr;
+    int curAnim = -1;
     
     QTimer refreshTimer{this};
     
@@ -145,7 +162,6 @@ private:
     unsigned int glProgramMVP = 0;
     unsigned int glProgramModel = 0;
     unsigned int glProgramLightPos = 0;
-
 
     //OGL Model
 

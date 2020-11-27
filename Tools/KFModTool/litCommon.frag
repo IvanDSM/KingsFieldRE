@@ -13,7 +13,7 @@ void main(void)
 
     //Calculate diffuse component
     float D = max(dot(Normal, lightDir), 0.0);
-    vec3  C = vec3(1.0, 1.0, 1.0);  //= vColour.rgb;
+    vec3  C = vColour.rgb;
 
     //Calculate fragment light.
     //the first vec (0.1, 0.1, 0.1) represents the ambient

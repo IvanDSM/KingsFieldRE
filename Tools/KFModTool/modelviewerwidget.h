@@ -17,6 +17,12 @@ public:
     explicit ModelViewerWidget(QWidget *parent = nullptr);
     void setModel(std::shared_ptr<Model> model);
     
+private slots:
+    void objListChanged(const QModelIndex &, const QModelIndex &)
+    {
+        ui->modelGLView->repaint();
+    }
+    
 private:
     std::shared_ptr<Model> curModel;
     std::unique_ptr<Ui::ModelViewerWidget> ui;

@@ -139,10 +139,10 @@ struct Model::Primitive
     // The following variables represent packet elements. Not all of them are present in all types,
     // and the only reason all of them are declared here is to save time and not have to do some
     // sketchy inheritance stuff that'd make the file 5x bigger.
-    uint8_t r0, g0, b0;
-    uint8_t r1, g1, b1;
-    uint8_t r2, g2, b2;
-    uint8_t r3, g3, b3;
+    uint8_t r0 = 255, g0 = 255, b0 = 255;
+    uint8_t r1 = 255, g1 = 255, b1 = 255;
+    uint8_t r2 = 255, g2 = 255, b2 = 255;
+    uint8_t r3 = 255, g3 = 255, b3 = 255;
 
     uint8_t u0, v0;
     uint8_t u1, v1;
@@ -179,7 +179,17 @@ struct Model::Primitive
         auto mode_ = static_cast<uint8_t>(mode);
         return (mode_ >> 5) && !((mode_ >> 3) & 1);
     }
-
+    
+    /*!
+     * \brief Checks whether this is a quadrilateral primitive.
+     * \return Whether this is a quadrilateral primitive.
+     */
+    bool isQuad() 
+    { 
+        auto mode_ = static_cast<uint8_t>(mode);
+        return (mode_ >> 5) && ((mode_ >> 3) & 1);
+    }
+    
     /*!
      * \brief Checks whether this primitive is flat shaded.
      * \return Whether this is a flat shade primitive.
@@ -192,15 +202,6 @@ struct Model::Primitive
      */
     bool isTextured() { return static_cast<uint8_t>(mode) >> 2; }
 
-    /*!
-     * \brief Checks whether this is a quadrilateral primitive.
-     * \return Whether this is a quadrilateral primitive.
-     */
-    bool isQuad() 
-    { 
-        auto mode_ = static_cast<uint8_t>(mode);
-        return (mode_ >> 5) && ((mode_ >> 3) & 1);
-    }
 };
 
 struct Model::Vec3

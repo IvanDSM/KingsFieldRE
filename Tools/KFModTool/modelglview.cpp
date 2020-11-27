@@ -43,7 +43,7 @@ void ModelGLView::mouseMoveEvent(QMouseEvent * event)
 
 void ModelGLView::wheelEvent(QWheelEvent *event)
 {
-   camZoom += event->pixelDelta().y();
+    camZoom += event->pixelDelta().y();
 }
 
 void ModelGLView::mouseReleaseEvent(QMouseEvent * event)
@@ -165,9 +165,9 @@ void ModelGLView::BuildTMDModel()
                 vertices.push_back(v1);
                 vertices.push_back(v0);
 
-                //Tri 2 (1, 2, 3)
-                vertices.push_back(v3);
+                //Tri 2 (1, 3, 2)
                 vertices.push_back(v2);
+                vertices.push_back(v3);
                 vertices.push_back(v1);
             }
             else

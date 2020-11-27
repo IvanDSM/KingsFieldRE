@@ -485,6 +485,5 @@ QDataStream &operator>>(QDataStream & in, Model::Primitive & primitive)
             in.skipRawData(primitive.ilen * 4);
             break;
     }
-    
     return in;
 }

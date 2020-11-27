@@ -70,6 +70,9 @@ private:
     int openGameDB = -1;
     QString curSourceDirectory;
     std::array<int, 9> openMaps;
+    
+    // TODO: Implement this stuff
+    std::unordered_map<QString, int> openTabs; 
 
     // T File pointers
     std::unique_ptr<TFile> fdat = nullptr;

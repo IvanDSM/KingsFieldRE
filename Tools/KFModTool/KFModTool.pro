@@ -32,6 +32,8 @@ SOURCES += \
     models/entityclasstablemodel.cpp \
     models/entityinstancetablemodel.cpp \
     models/magictablemodel.cpp \
+    models/modelanimationlistmodel.cpp \
+    models/modelobjecttablemodel.cpp \
     models/objectclasstablemodel.cpp \
     models/objectinstancetablemodel.cpp \
     models/playerleveldatatablemodel.cpp \
@@ -60,6 +62,8 @@ HEADERS += \
     models/entityclasstablemodel.h \
     models/entityinstancetablemodel.h \
     models/magictablemodel.h \
+    models/modelanimationlistmodel.h \
+    models/modelobjecttablemodel.h \
     models/objectclasstablemodel.h \
     models/objectinstancetablemodel.h \
     models/playerleveldatatablemodel.h \
