@@ -265,10 +265,8 @@ void MainWindow::loadMo()
     moTreeItem->setText(0, "MO.T");
     ui->filesTree->addTopLevelItem(moTreeItem.get());
     
-    for (size_t moFile = 0; moFile < mo->getTrueNumFiles(); moFile++)
-    {
+    for (size_t moFile = 0; moFile < mo->getTrueNumFiles() - 1; moFile++)
         addModel(*mo, moFile, QString::asprintf("Model %zu", moFile));
-    }
 }
 
 void MainWindow::loadRtmd()
@@ -291,15 +289,8 @@ void MainWindow::loadRtmd()
     rtmdTreeItem->setText(0, "RTMD.T");
     ui->filesTree->addTopLevelItem(rtmdTreeItem.get());
     
-    addModel(*rtmd, 0, "Tileset 0");
-    addModel(*rtmd, 1, "Tileset 1");
-    addModel(*rtmd, 2, "Tileset 2");
-    addModel(*rtmd, 3, "Tileset 3");
-    addModel(*rtmd, 4, "Tileset 4");
-    addModel(*rtmd, 5, "Tileset 5");
-    addModel(*rtmd, 6, "Tileset 6");
-    addModel(*rtmd, 7, "Tileset 7");
-    addModel(*rtmd, 8, "Tileset 8");
+    for (size_t tileset = 0; tileset < rtmd->getTrueNumFiles() - 1; tileset++)
+        addModel(*rtmd, tileset, QString::asprintf("Tileset %zu", tileset));
 }
 
 void MainWindow::on_filesTree_itemDoubleClicked(QTreeWidgetItem *item, int)
