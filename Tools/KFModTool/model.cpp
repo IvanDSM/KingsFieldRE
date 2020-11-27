@@ -399,6 +399,22 @@ QDataStream &operator>>(QDataStream & in, Model::Primitive & primitive)
             in >> primitive.normal2;
             in >> primitive.vertex2;
             break;
+        case(Model::Primitive::PrimitiveMode::x38QuadGouraudNoTexOpaqueLit):
+        case(Model::Primitive::PrimitiveMode::x3aQuadGouraudNoTexTranslucentLit):
+            in >> primitive.r0;
+            in >> primitive.g0;
+            in >> primitive.b0;
+            in.skipRawData(1);
+            readGradation(in, primitive);
+            in >> primitive.normal0;
+            in >> primitive.vertex0;
+            in >> primitive.normal1;
+            in >> primitive.vertex1;
+            in >> primitive.normal2;
+            in >> primitive.vertex2;
+            in >> primitive.normal3;
+            in >> primitive.vertex3;
+            break;
         case(Model::Primitive::PrimitiveMode::x3cQuadGouraudTexOpaqueLit):
         case(Model::Primitive::PrimitiveMode::x3eQuadGouraudTexTranslucentLit):
             in >> primitive.u0;
