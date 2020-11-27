@@ -178,6 +178,47 @@ void Model::loadRTMD(const QByteArray &file)
     loadTMD(file);
     for (auto objIt = baseObjects.begin() + 1; objIt != baseObjects.end(); objIt++)
         objIt->visible = false;
+
+    //Quick Hack:
+    //  Loop through each primitive and convert the vertex offsets to indices
+    //
+    for(Model::Mesh &mesh : Model::baseObjects)
+    {
+        for(Model::Primitive &prim : mesh.primitives)
+        {
+            if(prim.isTriangle())
+            {
+                prim.vertex0 = prim.vertex0 >> 3;
+                prim.vertex1 = prim.vertex1 >> 3;
+                prim.vertex2 = prim.vertex2 >> 3;
+
+                prim.normal0 = prim.normal0 >> 3;
+
+                if(prim.isSmooth())
+                {
+                    prim.normal1 = prim.normal1 >> 3;
+                    prim.normal2 = prim.normal2 >> 3;
+                }
+            }else
+            if(prim.isQuad()){
+                prim.vertex0 = prim.vertex0 >> 3;
+                prim.vertex1 = prim.vertex1 >> 3;
+                prim.vertex2 = prim.vertex2 >> 3;
+                prim.vertex3 = prim.vertex3 >> 3;
+
+                prim.normal0 = prim.normal0 >> 3;
+
+                if(prim.isSmooth())
+                {
+                    prim.normal1 = prim.normal1 >> 3;
+                    prim.normal2 = prim.normal2 >> 3;
+                    prim.normal3 = prim.normal3 >> 3;
+                }
+            }else{
+
+            }
+        }
+    }
 }
 
 void Model::loadTMD(const QByteArray &file)
@@ -379,7 +420,7 @@ QDataStream &operator>>(QDataStream & in, Model::Primitive & primitive)
             in >> primitive.normal1;
             in >> primitive.vertex1;
             in >> primitive.normal2;
-            in >> primitive.vertex2;
+            in >> primitive.vertex2;         
             break;
         case(Model::Primitive::PrimitiveMode::x34TriGouraudTexOpaqueLit):
         case(Model::Primitive::PrimitiveMode::x36TriGouraudTexTranslucentLit):
@@ -413,7 +454,7 @@ QDataStream &operator>>(QDataStream & in, Model::Primitive & primitive)
             in >> primitive.normal2;
             in >> primitive.vertex2;
             in >> primitive.normal3;
-            in >> primitive.vertex3;
+            in >> primitive.vertex3;           
             break;
         case(Model::Primitive::PrimitiveMode::x3cQuadGouraudTexOpaqueLit):
         case(Model::Primitive::PrimitiveMode::x3eQuadGouraudTexTranslucentLit):

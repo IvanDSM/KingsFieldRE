@@ -17,12 +17,8 @@ void ModelGLView::initializeGL()
     glFuncs->glClearColor(0x34 / 255.0f, 0x49 / 255.0f, 0x5E / 255.0f, 1.f);    //Nice Palettes: https://htmlcolorcodes.com/
 
     //Set some OGL render states (cull etc)
-    //glFuncs->glCullFace(GL_BACK);
-    //glFuncs->glEnable(GL_CULL_FACE);
-    //glFuncs->glDepthFunc(GL_LEQUAL);
-    //glFuncs->glEnable(GL_DEPTH_TEST);
-    //glFuncs->glLineWidth(1.f);
-    //glFuncs->glEnable(GL_LINE);
+    glFuncs->glEnable(GL_CULL_FACE);
+    glFuncs->glEnable(GL_DEPTH_TEST);
 
     BuildGrid();
 
@@ -38,11 +34,16 @@ void ModelGLView::mouseMoveEvent(QMouseEvent * event)
         if (lastMousePos.x() != -999)
         {
             auto mousePosDiff = event->globalPos() - lastMousePos;
-            camRotY += mousePosDiff.x() * 0.25f;
-            camRotZ += mousePosDiff.y() * 0.25f;
+            camRotY += (mousePosDiff.x() * 0.0174533) * 0.25f;
+            camRotZ += (mousePosDiff.y() * 0.0174533) * 0.25f;
         }
         lastMousePos = event->globalPos();
     }
+}
+
+void ModelGLView::wheelEvent(QWheelEvent *event)
+{
+   camZoom += event->pixelDelta().y();
 }
 
 void ModelGLView::mouseReleaseEvent(QMouseEvent * event)
@@ -63,6 +64,11 @@ void ModelGLView::paintGL()
     //Clear Buffers
     glFuncs->glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+    //Apply Rotation to glCamFrom
+    glCamFrom.setX(qCos(camRotY) * qCos(camRotZ) * camZoom);
+    glCamFrom.setY(qSin(camRotZ) * camZoom);
+    glCamFrom.setZ(qSin(camRotY) * qCos(camRotZ) * camZoom);
+
     //Build View Matrix
     glMatView.setToIdentity();
     glMatView.lookAt(glCamFrom, glCamTo, glCamUp);
@@ -74,8 +80,8 @@ void ModelGLView::paintGL()
     glMatWorld.rotate(glModelRotation.y(), vecUp);
     glMatWorld.rotate(glModelRotation.z(), vecFront);
 
-    glMatView.rotate(camRotY, vecUp);
-    glMatView.rotate(camRotZ, vecLeft);
+    //glMatView.rotate(camRotY, vecUp);
+    //glMatView.rotate(camRotZ, vecLeft);
     
     DrawGrid();
     DrawTMDModel();
@@ -93,7 +99,7 @@ void ModelGLView::BuildTMDModel()
     //
     for(Model::Mesh& tmdObj : model->baseObjects)
     {
-        for(Model::Primitive &tmdPrim : tmdObj.primitives)
+        for(Model::Primitive tmdPrim : tmdObj.primitives)
         {
             if(tmdPrim.isTriangle())
             {
@@ -101,27 +107,26 @@ void ModelGLView::BuildTMDModel()
                 TMDVertex v0, v1, v2;
 
                 //Vertex 1
-
                 v0.position = tmdObj.vertices[tmdPrim.vertex0];
-                v0.normal = {0.f, 0.f, 0.f};
-                v0.colour = {1.f,1.f,1.f,1.f};
+                v0.normal = tmdPrim.isSmooth() ? tmdObj.normals[tmdPrim.normal0] : tmdObj.normals[tmdPrim.normal0];
+                v0.colour = tmdPrim.isGradation() ? tmdPrim.Colour0() : tmdPrim.Colour0();
                 v0.texcoord = {0.f,0.f};
 
                 //Vertex 2
                 v1.position = tmdObj.vertices[tmdPrim.vertex1];
-                v1.normal = {0.f, 0.f, 0.f};
-                v1.colour = {1.f,1.f,1.f,1.f};
+                v1.normal = tmdPrim.isSmooth() ? tmdObj.normals[tmdPrim.normal1] : tmdObj.normals[tmdPrim.normal0];
+                v1.colour = tmdPrim.isGradation() ? tmdPrim.Colour1() : tmdPrim.Colour0();
                 v1.texcoord = {0.f,0.f};
 
                 //Vertex 2
                 v2.position = tmdObj.vertices[tmdPrim.vertex2];
-                v2.normal = {0.f, 0.f, 0.f};
-                v2.colour = {1.f,1.f,1.f,1.f};
+                v2.normal = tmdPrim.isSmooth() ? tmdObj.normals[tmdPrim.normal2] : tmdObj.normals[tmdPrim.normal0];
+                v2.colour = tmdPrim.isGradation() ? tmdPrim.Colour2() : tmdPrim.Colour0();
                 v2.texcoord = {0.f,0.f};
 
-                vertices.push_back(v0);
-                vertices.push_back(v1);
                 vertices.push_back(v2);
+                vertices.push_back(v1);
+                vertices.push_back(v0);
 
             }
             else if (tmdPrim.isQuad())
@@ -131,39 +136,39 @@ void ModelGLView::BuildTMDModel()
 
                 //Vertex 1
                 v0.position = tmdObj.vertices[tmdPrim.vertex0];
-                v0.normal = {0.f, 0.f, 0.f};
-                v0.colour = {1.f,1.f,1.f,1.f};
+                v0.normal = tmdPrim.isSmooth() ? tmdObj.normals[tmdPrim.normal0] : tmdObj.normals[tmdPrim.normal0];
+                v0.colour = tmdPrim.isGradation() ? tmdPrim.Colour0() : tmdPrim.Colour0();
                 v0.texcoord = {0.f,0.f};
 
                 //Vertex 2
                 v1.position = tmdObj.vertices[tmdPrim.vertex1];
-                v1.normal = {0.f, 0.f, 0.f};
-                v1.colour = {1.f,1.f,1.f,1.f};
+                v1.normal = tmdPrim.isSmooth() ? tmdObj.normals[tmdPrim.normal1] : tmdObj.normals[tmdPrim.normal0];
+                v1.colour = tmdPrim.isGradation() ? tmdPrim.Colour1() : tmdPrim.Colour0();
                 v1.texcoord = {0.f,0.f};
 
                 //Vertex 2
                 v2.position = tmdObj.vertices[tmdPrim.vertex2];
-                v2.normal = {0.f, 0.f, 0.f};
-                v2.colour = {1.f,1.f,1.f,1.f};
+                v2.normal = tmdPrim.isSmooth() ? tmdObj.normals[tmdPrim.normal2] : tmdObj.normals[tmdPrim.normal0];
+                v2.colour = tmdPrim.isGradation() ? tmdPrim.Colour2() : tmdPrim.Colour0();
                 v2.texcoord = {0.f,0.f};
 
-                //Vertex 3
+                //Vertex 2
                 v3.position = tmdObj.vertices[tmdPrim.vertex3];
-                v3.normal = {0.f, 0.f, 0.f};
-                v3.colour = {1.f,1.f,1.f,1.f};
+                v3.normal = tmdPrim.isSmooth() ? tmdObj.normals[tmdPrim.normal3] : tmdObj.normals[tmdPrim.normal0];
+                v3.colour = tmdPrim.isGradation() ? tmdPrim.Colour3() : tmdPrim.Colour0();
                 v3.texcoord = {0.f,0.f};
 
                 //Split the quad into two seperate triangles
 
                 //Tri 1 (0, 1, 2)
-                vertices.push_back(v0);
+                vertices.push_back(v2);
                 vertices.push_back(v1);
-                vertices.push_back(v2);
-
-                //Tri 2 (0, 2, 3)
                 vertices.push_back(v0);
-                vertices.push_back(v2);
+
+                //Tri 2 (1, 2, 3)
                 vertices.push_back(v3);
+                vertices.push_back(v2);
+                vertices.push_back(v1);
             }
             else
                 KFMTError::error("ModelGLView: Unhandled TMD primitive type (line or sprite).");
@@ -187,7 +192,7 @@ void ModelGLView::BuildTMDModel()
         glFuncs->glEnableVertexAttribArray(0);
 
         //Normal
-        glFuncs->glVertexAttribPointer(1, 3, GL_FLOAT, GL_TRUE, 48, (void*)12);
+        glFuncs->glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 48, (void*)12);
         glFuncs->glEnableVertexAttribArray(1);
 
         //Colour
@@ -217,6 +222,8 @@ void ModelGLView::BuildTMDModel()
         KFMTError::error("ModelGLView: Couldn't link GLSL Program...");
 
     glProgramMVP = glProgram.uniformLocation("uMVP");
+    glProgramModel = glProgram.uniformLocation("uModel");
+    glProgramLightPos = glProgram.uniformLocation("uLightPos");
 
     tmdBuilt = true;
 }
@@ -226,11 +233,13 @@ void ModelGLView::DrawTMDModel()
     //Bind GLSL Program
     glProgram.bind();
     glProgram.setUniformValue(glProgramMVP, (glMatProj * glMatView) * glMatWorld);
+    glProgram.setUniformValue(glProgramModel, glMatWorld);
+    glProgram.setUniformValue(glProgramLightPos, glCamFrom);
 
     for(Model::Mesh tmdObj : model->baseObjects)
     {
-        //if(!tmdObj.visible)
-        //   continue;
+        if(!tmdObj.visible)
+           continue;
 
         glFuncs->glBindVertexArray(tmdObj.oglVertexArrayObject);
         glFuncs->glDrawArrays(GL_TRIANGLES, 0, tmdObj.oglVertexNum);

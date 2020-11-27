@@ -5,6 +5,7 @@
 #include "kftypes.h"
 #include "tfile.h"
 #include <QVector3D>
+#include <QVector4D>
 
 /*!
  * \brief Class to represent a generic 3D model.
@@ -155,6 +156,15 @@ struct Model::Primitive
     uint16_t normal0, normal1, normal2, normal3;
     
     /*!
+     * \brief Returns r0, g0 and b0 as a QVector4D
+     * \return QVector4D with colour
+     */
+    QVector4D Colour0() { return {r0 / 255.0f, g0 / 255.0f, b0 / 255.0f, 1.f }; }
+    QVector4D Colour1() { return {r1 / 255.0f, g1 / 255.0f, b1 / 255.0f, 1.f }; }
+    QVector4D Colour2() { return {r2 / 255.0f, g2 / 255.0f, b2 / 255.0f, 1.f }; }
+    QVector4D Colour3() { return {r3 / 255.0f, g3 / 255.0f, b3 / 255.0f, 1.f }; }
+
+    /*!
      * \brief Checks whether this is a gradation primitive.
      * \return Whether this is a gradation primitive.
      */
@@ -169,7 +179,19 @@ struct Model::Primitive
         auto mode_ = static_cast<uint8_t>(mode);
         return (mode_ >> 5) && !((mode_ >> 3) & 1);
     }
-    
+
+    /*!
+     * \brief Checks whether this primitive is flat shaded.
+     * \return Whether this is a flat shade primitive.
+     */
+    bool isSmooth() { return static_cast<uint8_t>(mode) >> 4; }
+
+    /*!
+     * \brief Checks whether this primitive is textured.
+     * \return Whether this is a textured primitive.
+     */
+    bool isTextured() { return static_cast<uint8_t>(mode) >> 2; }
+
     /*!
      * \brief Checks whether this is a quadrilateral primitive.
      * \return Whether this is a quadrilateral primitive.
