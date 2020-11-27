@@ -62,6 +62,7 @@ private:
     void addModel(TFile &tFile, unsigned int index, const QString &name);
     void loadFdat();
     void loadItem();
+    void loadMo();
     void loadRtmd();
     
     std::unique_ptr<Ui::MainWindow> ui;
@@ -73,11 +74,13 @@ private:
     // T File pointers
     std::unique_ptr<TFile> fdat = nullptr;
     std::unique_ptr<TFile> item = nullptr;
+    std::unique_ptr<TFile> mo = nullptr;
     std::unique_ptr<TFile> rtmd = nullptr;
     
     // T file tree item pointers
     std::unique_ptr<QTreeWidgetItem> fdatTreeItem = nullptr;
     std::unique_ptr<QTreeWidgetItem> itemTreeItem = nullptr;
+    std::unique_ptr<QTreeWidgetItem> moTreeItem = nullptr;
     std::unique_ptr<QTreeWidgetItem> rtmdTreeItem = nullptr;
     
 };

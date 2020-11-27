@@ -4,6 +4,7 @@
 #include "kfmterror.h"
 #include "kftypes.h"
 #include "tfile.h"
+#include <QVector3D>
 
 /*!
  * \brief Class to represent a generic 3D model.
@@ -188,6 +189,8 @@ struct Model::Vec3
     
     void applyPacket(const MOPacket &packet);
     void readSVECTOR(QDataStream &in);
+    
+    operator QVector3D() { return {x, y, z}; }
 };
 
 

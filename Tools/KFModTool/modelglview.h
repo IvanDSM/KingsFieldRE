@@ -87,7 +87,7 @@ public:
         fmt.setRenderableType(QSurfaceFormat::OpenGL);
         fmt.setMajorVersion(3);
         fmt.setMinorVersion(0);
-        fmt.setSamples(8);
+        fmt.setSamples(2);
 
         setFormat(fmt);
     }

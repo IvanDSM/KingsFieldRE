@@ -93,32 +93,28 @@ void ModelGLView::BuildTMDModel()
     //
     for(Model::Mesh& tmdObj : model->baseObjects)
     {
-        for(Model::Primitive tmdPrim : tmdObj.primitives)
+        for(Model::Primitive &tmdPrim : tmdObj.primitives)
         {
             if(tmdPrim.isTriangle())
             {
                 //Add 3 vertices to the list
                 TMDVertex v0, v1, v2;
-                Model::Vec3 V;
 
                 //Vertex 1
-                V = tmdObj.vertices[tmdPrim.vertex0];
 
-                v0.position = { V.x, V.y, V.z };
+                v0.position = tmdObj.vertices[tmdPrim.vertex0];
                 v0.normal = {0.f, 0.f, 0.f};
                 v0.colour = {1.f,1.f,1.f,1.f};
                 v0.texcoord = {0.f,0.f};
 
                 //Vertex 2
-                V = tmdObj.vertices[tmdPrim.vertex1];
-                v1.position = { V.x, V.y, V.z };
+                v1.position = tmdObj.vertices[tmdPrim.vertex1];
                 v1.normal = {0.f, 0.f, 0.f};
                 v1.colour = {1.f,1.f,1.f,1.f};
                 v1.texcoord = {0.f,0.f};
 
                 //Vertex 2
-                V = tmdObj.vertices[tmdPrim.vertex2];
-                v2.position = { V.x, V.y, V.z };
+                v2.position = tmdObj.vertices[tmdPrim.vertex2];
                 v2.normal = {0.f, 0.f, 0.f};
                 v2.colour = {1.f,1.f,1.f,1.f};
                 v2.texcoord = {0.f,0.f};
@@ -127,35 +123,32 @@ void ModelGLView::BuildTMDModel()
                 vertices.push_back(v1);
                 vertices.push_back(v2);
 
-            }else{
-                //Add 3 vertices to the list
+            }
+            else if (tmdPrim.isQuad())
+            {
+                //Add 4 vertices to the list
                 TMDVertex v0, v1, v2, v3;
-                Model::Vec3 V;
 
                 //Vertex 1
-                V = tmdObj.vertices[tmdPrim.vertex0];
-                v0.position = { V.x, V.y, V.z };
+                v0.position = tmdObj.vertices[tmdPrim.vertex0];
                 v0.normal = {0.f, 0.f, 0.f};
                 v0.colour = {1.f,1.f,1.f,1.f};
                 v0.texcoord = {0.f,0.f};
 
                 //Vertex 2
-                V = tmdObj.vertices[tmdPrim.vertex1];
-                v1.position = { V.x, V.y, V.z };
+                v1.position = tmdObj.vertices[tmdPrim.vertex1];
                 v1.normal = {0.f, 0.f, 0.f};
                 v1.colour = {1.f,1.f,1.f,1.f};
                 v1.texcoord = {0.f,0.f};
 
                 //Vertex 2
-                V = tmdObj.vertices[tmdPrim.vertex2];
-                v2.position = { V.x, V.y, V.z };
+                v2.position = tmdObj.vertices[tmdPrim.vertex2];
                 v2.normal = {0.f, 0.f, 0.f};
                 v2.colour = {1.f,1.f,1.f,1.f};
                 v2.texcoord = {0.f,0.f};
 
                 //Vertex 3
-                V = tmdObj.vertices[tmdPrim.vertex3];
-                v3.position = { V.x, V.y, V.z };
+                v3.position = tmdObj.vertices[tmdPrim.vertex3];
                 v3.normal = {0.f, 0.f, 0.f};
                 v3.colour = {1.f,1.f,1.f,1.f};
                 v3.texcoord = {0.f,0.f};
@@ -172,6 +165,8 @@ void ModelGLView::BuildTMDModel()
                 vertices.push_back(v2);
                 vertices.push_back(v3);
             }
+            else
+                KFMTError::error("ModelGLView: Unhandled TMD primitive type (line or sprite).");
         }
 
         //Begin Generating OpenGL stuff for this object

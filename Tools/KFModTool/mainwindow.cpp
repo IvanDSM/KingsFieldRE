@@ -29,6 +29,13 @@ void MainWindow::on_actionLoad_files_triggered()
         loadItem();
     }
     
+    if (tfile_dir.exists("MO.T"))
+    {
+        // We don't use C++14 so no make_unique :(
+        mo.reset(new TFile(tfile_dir.filePath("MO.T")));
+        loadMo();
+    }
+    
     if (tfile_dir.exists("RTMD.T"))
     {
         // We don't use C++14 so no make_unique :(
@@ -236,6 +243,33 @@ void MainWindow::loadItem()
     addModel(*item, 100, "Item: Arrow For The Bow");
     addModel(*item, 101, "Item: Elf's Bolt");
     addModel(*item, 102, "Item: \"A\" Herb 2");
+}
+
+void MainWindow::loadMo()
+{
+    if (mo == nullptr)
+        return;
+    
+    if (moTreeItem.get() != nullptr)
+    {
+        ui->filesTree->removeItemWidget(moTreeItem.get(), 0);
+        for (auto child : moTreeItem->takeChildren())
+        {
+            ui->filesTree->removeItemWidget(child, 0);
+            delete child;
+        }
+    }
+    
+    moTreeItem.reset(new QTreeWidgetItem(ui->filesTree));
+    moTreeItem->setIcon(0, QIcon(":/tfile_icon.png"));
+    moTreeItem->setText(0, "MO.T");
+    ui->filesTree->addTopLevelItem(moTreeItem.get());
+    
+    for (size_t moFile = 0; moFile < mo->getTrueNumFiles(); moFile++)
+    {
+        addModel(*mo, moFile, QString::asprintf("Model %zu", moFile));
+        KFMTError::log(QString::asprintf("Loaded MO %zu", moFile));
+    }
 }
 
 void MainWindow::loadRtmd()

@@ -41,6 +41,9 @@ void Model::loadMO(const QByteArray &file)
     auto tmdSection = file.mid(tmdOffset);
     loadTMD(tmdSection);
     
+    // If there are no animations, we pack up and go. This MO serves as just a TMD encapsulator.
+    if (animationAmount_ == 0)
+        return;
     
     // Read the morph target table offsets
     moStream.device()->seek(morphTargetTableOffset);
@@ -106,12 +109,12 @@ void Model::loadMO(const QByteArray &file)
         auto packetIt = packets.cbegin();
         auto vertexIt = targetMesh.vertices.begin();
         
-        do
+        while (packetIt != packets.cend() && vertexIt != targetMesh.vertices.end())
         {
             vertexIt->applyPacket(*packetIt);
             packetIt++;
             vertexIt++;
-        } while (packetIt != packets.cend() && vertexIt != targetMesh.vertices.end());
+        };
         
         morphTargets.push_back(targetMesh);
     }
