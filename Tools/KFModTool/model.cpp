@@ -390,6 +390,27 @@ QDataStream &operator>>(QDataStream & in, Model::Primitive & primitive)
             in >> primitive.vertex1;
             in >> primitive.vertex2;
             break;
+        case(Model::Primitive::PrimitiveMode::x25TriFlatTexOpaqueUnlit):
+        case(Model::Primitive::PrimitiveMode::x27TriFlatTexTranslucentUnlit):
+            in >> primitive.u0;
+            in >> primitive.v0;
+            in >> primitive.cba;
+            in >> primitive.u1;
+            in >> primitive.v1;
+            in >> primitive.tsb;
+            in >> primitive.u2;
+            in >> primitive.v2;
+            in.skipRawData(2);
+            // FIXME: Is this supposed to be here?
+            in >> primitive.r0;
+            in >> primitive.g0;
+            in >> primitive.b0;
+            in.skipRawData(1);
+            in >> primitive.vertex0;
+            in >> primitive.vertex1;
+            in >> primitive.vertex2;
+            in.skipRawData(2);
+            break;
         case(Model::Primitive::PrimitiveMode::x28QuadFlatNoTexOpaqueLit):
         case(Model::Primitive::PrimitiveMode::x2aQuadFlatNoTexTranslucentLit):
             in >> primitive.r0;

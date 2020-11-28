@@ -65,7 +65,7 @@ public:
     explicit Model(TFile &tFile, unsigned int fileIndex);
     
     std::vector<Mesh> baseObjects;
-    float scale;
+    float scale = 1.0f;
     
     std::vector<MOAnimation> animations;
     std::vector<MOFrame> animFrames;
