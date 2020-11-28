@@ -1,11 +1,12 @@
 #include "modelglview.h"
-#include <iostream> 
 #include <QMouseEvent>
 #include <QWheelEvent>
+#include <iostream> 
+#include <utility>
 
 void ModelGLView::setModel(std::shared_ptr<Model> model_)
 {    
-    model = model_;
+    model = std::move(model_);
 }
 
 void ModelGLView::initializeGL()
@@ -23,10 +24,10 @@ void ModelGLView::initializeGL()
     BuildGrid();
 
     while (model == nullptr) { /* Wait for model */ };
-    if(model->animations.size() == 0)
+    if(model->animations.empty())
         BuildTMDModel();
     else
-        setCurAnim(2);
+        setCurAnim(0);
 }
 
 void ModelGLView::mouseMoveEvent(QMouseEvent * event)
@@ -60,7 +61,7 @@ void ModelGLView::resizeGL(int w, int h)
 {
     //Build Projection Matrix according to new w & h
     glMatProj.setToIdentity();
-    glMatProj.perspective(pFoV, (float)w / (float)h, zNear, zFar);
+    glMatProj.perspective(pFoV, static_cast<float>(w) / static_cast<float>(h), zNear, zFar);
 }
 
 void ModelGLView::paintGL()
@@ -464,7 +465,7 @@ void ModelGLView::DrawTMDModel()
     glTMDProgram.setUniformValue(glTMDProgramModel, glMatWorld);
     glTMDProgram.setUniformValue(glTMDProgramLightPos, glCamFrom);
 
-    for(Model::Mesh tmdObj : model->baseObjects)
+    for(const Model::Mesh& tmdObj : model->baseObjects)
     {
         if(tmdObj.visible)
         {
