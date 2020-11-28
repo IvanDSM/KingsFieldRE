@@ -45,7 +45,8 @@ private slots:
 
     void on_editorTabs_tabCloseRequested(int index)
     {
-        //std::replace(openMaps.begin(), openMaps.end(), index, -1);
+        auto tabName = ui->editorTabs->tabText(index);
+        openTabs.erase(openTabs.find(tabName));
         ui->editorTabs->removeTab(index);
     }
 
@@ -73,7 +74,7 @@ private:
     QString curSourceDirectory;
     
     // TODO: Implement this stuff
-    std::unordered_map<QString, int> openTabs; 
+    std::unordered_map<QString, QWidget *> openTabs; 
 
     // T File pointers
     std::unique_ptr<TFile> fdat = nullptr;

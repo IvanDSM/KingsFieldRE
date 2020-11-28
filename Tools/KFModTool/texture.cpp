@@ -1,6 +1,8 @@
 #include "kfmterror.h"
 #include "texture.h"
 
+#include <memory>
+
 Texture::Texture(TFile & tFile, unsigned int index)
 {
     auto file = tFile.getFile(index);
@@ -47,7 +49,7 @@ void Texture::loadTIM(const QByteArray &file)
         timStream >> w;
         timStream >> h;
         
-        clut.reset(new CLUT(clutSize, dx, dy, w, h, pMode));
+        clut = std::make_unique<CLUT>(clutSize, dx, dy, w, h, pMode);
         
         // Compensate for header length on the CLUT size so we can use it as a counter
         clutSize -= 12;

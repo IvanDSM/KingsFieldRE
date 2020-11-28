@@ -91,25 +91,25 @@ QString TFile::getFiletype(unsigned int trueFileNumber) const
         auto file = getFile(trueFileNumber);
         if (isTMD(file))
             return "TMD";
-        else if (isTIM(file))
+        if (isTIM(file))
             return "TIM";
-        else if (isVH(file))
+        if (isVH(file))
             return "VH";
-        else if (isSEQ(file))
+        if (isSEQ(file))
             return "SEQ";
-        else if (isVB(file))
+        if (isVB(file))
             return "VB";
-        else if (isRTIM(file))
+        if (isRTIM(file))
             return "RTIM";
-        else if (isRTMD(file))
+        if (isRTMD(file))
             return "RTMD";
-        else if (isMO(file))
+        if (isMO(file))
             return "MO";
-        else if (isMAP1(file))
+        if (isMAP1(file))
             return "MAP1";
-        else if (isMAP2(file))
+        if (isMAP2(file))
             return "MAP2";
-        else if (isMAP3(file))
+        if (isMAP3(file))
             return "MAP3";
     }
 
@@ -144,7 +144,7 @@ QString TFile::getPrettyName(size_t index)
     
     if (prettyNameIt != prettyMap.end())
         return prettyNameIt->second;
-    else
+    
         return "";
 }
 

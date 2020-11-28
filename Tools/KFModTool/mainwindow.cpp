@@ -5,6 +5,7 @@
 #include "modelviewerwidget.h"
 #include "textureviewer.h"
 #include <QFileDialog>
+#include <memory>
 
 #define TEST_GENERIC 1
 
@@ -18,8 +19,7 @@ void MainWindow::on_actionLoad_files_triggered()
     curSourceDirectory = directory;
     if (tfile_dir.exists("FDAT.T"))
     {
-        // We don't use C++14 so no make_unique :(
-        fdat.reset(new TFile(tfile_dir.filePath("FDAT.T")));
+        fdat = std::make_unique<TFile>(tfile_dir.filePath("FDAT.T"));
         
 #if TEST_GENERIC
         loadTFile(*fdat, fdatTreeItem);
@@ -30,16 +30,14 @@ void MainWindow::on_actionLoad_files_triggered()
     
     if (tfile_dir.exists("ITEM.T"))
     {
-        // We don't use C++14 so no make_unique :(
-        item.reset(new TFile(tfile_dir.filePath("ITEM.T")));
+        item = std::make_unique<TFile>(tfile_dir.filePath("ITEM.T"));
     
         loadTFile(*item, itemTreeItem);
     }
     
     if (tfile_dir.exists("MO.T"))
     {
-        // We don't use C++14 so no make_unique :(
-        mo.reset(new TFile(tfile_dir.filePath("MO.T")));
+        mo = std::make_unique<TFile>(tfile_dir.filePath("MO.T"));
         
 #if TEST_GENERIC
         loadTFile(*mo, moTreeItem);
@@ -50,16 +48,14 @@ void MainWindow::on_actionLoad_files_triggered()
     
     if (tfile_dir.exists("RTIM.T"))
     {
-        // We don't use C++14 so no make_unique :(
-        rtim.reset(new TFile(tfile_dir.filePath("RTIM.T")));
+        rtim = std::make_unique<TFile>(tfile_dir.filePath("RTIM.T"));
     
         loadTFile(*rtim, rtimTreeItem);
     }
     
     if (tfile_dir.exists("RTMD.T"))
     {
-        // We don't use C++14 so no make_unique :(
-        rtmd.reset(new TFile(tfile_dir.filePath("RTMD.T")));
+        rtmd = std::make_unique<TFile>(tfile_dir.filePath("RTMD.T"));
         
 #if TEST_GENERIC
         loadTFile(*rtmd, rtmdTreeItem);
@@ -71,7 +67,7 @@ void MainWindow::on_actionLoad_files_triggered()
     if (tfile_dir.exists("TALK.T"))
     {
         // We don't use C++14 so no make_unique :(
-        talk.reset(new TFile(tfile_dir.filePath("TALK.T")));
+        talk = std::make_unique<TFile>(tfile_dir.filePath("TALK.T"));
     
         loadTFile(*talk, talkTreeItem);
     }
@@ -135,7 +131,7 @@ void MainWindow::loadFdat()
     if (fdat == nullptr)
         return;
     
-    if (fdatTreeItem.get() != nullptr)
+    if (fdatTreeItem != nullptr)
     {
         ui->filesTree->removeItemWidget(fdatTreeItem.get(), 0);
         for (auto child : fdatTreeItem->takeChildren())
@@ -145,7 +141,7 @@ void MainWindow::loadFdat()
         }
     }
     
-    fdatTreeItem.reset(new QTreeWidgetItem(ui->filesTree));
+    fdatTreeItem = std::make_unique<QTreeWidgetItem>(ui->filesTree);
     fdatTreeItem->setIcon(0, QIcon(":/tfile_icon.png"));
     fdatTreeItem->setText(0, "FDAT.T");
     ui->filesTree->addTopLevelItem(fdatTreeItem.get());
@@ -183,7 +179,7 @@ void MainWindow::loadMo()
     if (mo == nullptr)
         return;
     
-    if (moTreeItem.get() != nullptr)
+    if (moTreeItem != nullptr)
     {
         ui->filesTree->removeItemWidget(moTreeItem.get(), 0);
         for (auto child : moTreeItem->takeChildren())
@@ -193,7 +189,7 @@ void MainWindow::loadMo()
         }
     }
     
-    moTreeItem.reset(new QTreeWidgetItem(ui->filesTree));
+    moTreeItem = std::make_unique<QTreeWidgetItem>(ui->filesTree);
     moTreeItem->setIcon(0, QIcon(":/tfile_icon.png"));
     moTreeItem->setText(0, "MO.T");
     ui->filesTree->addTopLevelItem(moTreeItem.get());
@@ -207,7 +203,7 @@ void MainWindow::loadRtmd()
     if (rtmd == nullptr)
         return;
     
-    if (rtmdTreeItem.get() != nullptr)
+    if (rtmdTreeItem != nullptr)
     {
         ui->filesTree->removeItemWidget(rtmdTreeItem.get(), 0);
         for (auto child : rtmdTreeItem->takeChildren())
@@ -217,7 +213,7 @@ void MainWindow::loadRtmd()
         }
     }
     
-    rtmdTreeItem.reset(new QTreeWidgetItem(ui->filesTree));
+    rtmdTreeItem = std::make_unique<QTreeWidgetItem>(ui->filesTree);
     rtmdTreeItem->setIcon(0, QIcon(":/tfile_icon.png"));
     rtmdTreeItem->setText(0, "RTMD.T");
     ui->filesTree->addTopLevelItem(rtmdTreeItem.get());
@@ -238,7 +234,7 @@ void MainWindow::loadTFile(TFile &tFile, std::unique_ptr<QTreeWidgetItem> &tFile
         }
     }
     
-    tFileTreeItem.reset(new QTreeWidgetItem(ui->filesTree));
+    tFileTreeItem = std::make_unique<QTreeWidgetItem>(ui->filesTree);
     tFileTreeItem->setIcon(0, QIcon(":/tfile_icon.png"));
     tFileTreeItem->setText(0, tFile.getFilename());
     ui->filesTree->addTopLevelItem(tFileTreeItem.get());
@@ -248,9 +244,7 @@ void MainWindow::loadTFile(TFile &tFile, std::unique_ptr<QTreeWidgetItem> &tFile
         auto file = tFile.getFile(fileIndex);
         if (TFile::isTMD(file))
             addModel(tFile, fileIndex);
-        else if (TFile::isTIM(file))
-            addTexture(tFile, fileIndex);
-        else if (TFile::isRTIM(file))
+        else if (TFile::isTIM(file) || TFile::isRTIM(file))
             addTexture(tFile, fileIndex);
         else if (TFile::isRTMD(file))
             addModel(tFile, fileIndex);
@@ -266,40 +260,35 @@ void MainWindow::on_filesTree_itemDoubleClicked(QTreeWidgetItem *item, int)
     if (item->type() == QTreeWidgetItem::UserType)
     {
         auto kfmtItem = dynamic_cast<KFMTTreeWidgetItem *>(item);
+        
+        // Check to see if there is already a tab for this item
+        auto tabForItem = openTabs.find(kfmtItem->text(0));
+        if (tabForItem != openTabs.end())
+        {
+            // If there is one, switch to it and leave the function
+            ui->editorTabs->setCurrentWidget(tabForItem->second);
+            return;
+        }
+        
+        // Otherwise, create tab for the item
         switch (kfmtItem->getType())
         {
             case KFMTDataType::KFMT_GAMEDB:
             {
-                if (false) // TODO: Implement open table detection for GameDB
-                {
-                    
-                }
-                else
-                {
-                    auto gameDBEditor = new GameDBEditWidget(ui->editorTabs, kfmtItem->getDB());
-                    ui->editorTabs->addTab(gameDBEditor, "Game Database");
-                    ui->editorTabs->setCurrentWidget(gameDBEditor);
-                    ui->editorTabs->setTabIcon(ui->editorTabs->currentIndex(), QIcon(":/db_icon.png"));
-                }
+                auto gameDBEditor = new GameDBEditWidget(ui->editorTabs, kfmtItem->getDB());
+                ui->editorTabs->addTab(gameDBEditor, "Game Database");
+                ui->editorTabs->setCurrentWidget(gameDBEditor);
+                ui->editorTabs->setTabIcon(ui->editorTabs->currentIndex(), QIcon(":/db_icon.png"));
                 break;
             }
             case KFMTDataType::KFMT_MAP:
             {
-                auto mapIndex = kfmtItem->getMap()->getIndex();
-                if (false) // TODO: Implement open table detection for map
-                {
-                    
-                }
-                else
-                {
-                    auto map = kfmtItem->getMap();
-                    auto* mapEditor = new MapEditWidget(ui->editorTabs);
-                    mapEditor->setMap(map);
-                    ui->editorTabs->addTab(mapEditor, kfmtItem->text(0));
-                    ui->editorTabs->setCurrentWidget(mapEditor);
-                    ui->editorTabs->setTabIcon(ui->editorTabs->currentIndex(), QIcon(":/map_icon.png"));
-                    //openMaps.at(mapIndex) = ui->editorTabs->currentIndex();
-                }
+                auto map = kfmtItem->getMap();
+                auto* mapEditor = new MapEditWidget(ui->editorTabs);
+                mapEditor->setMap(map);
+                ui->editorTabs->addTab(mapEditor, kfmtItem->text(0));
+                ui->editorTabs->setCurrentWidget(mapEditor);
+                ui->editorTabs->setTabIcon(ui->editorTabs->currentIndex(), QIcon(":/map_icon.png"));
                 break;
             }
             case KFMTDataType::KFMT_MODEL:
@@ -321,6 +310,9 @@ void MainWindow::on_filesTree_itemDoubleClicked(QTreeWidgetItem *item, int)
                 break;
             }
         }
+        
+        // Add tab to the tab list
+        openTabs.emplace(kfmtItem->text(0), ui->editorTabs->currentWidget());
     }
 }
 
