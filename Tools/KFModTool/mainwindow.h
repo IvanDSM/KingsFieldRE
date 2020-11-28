@@ -24,7 +24,7 @@ public:
     {
         ui->setupUi(this);
         KFMTError::setParent(this);
-        std::fill(openMaps.begin(), openMaps.end(), -1);
+        //std::fill(openMaps.begin(), openMaps.end(), -1);
     }
 
 private slots:
@@ -45,7 +45,7 @@ private slots:
 
     void on_editorTabs_tabCloseRequested(int index)
     {
-        std::replace(openMaps.begin(), openMaps.end(), index, -1);
+        //std::replace(openMaps.begin(), openMaps.end(), index, -1);
         ui->editorTabs->removeTab(index);
     }
 
@@ -63,7 +63,6 @@ private:
     void addTexture(TFile &tFile, unsigned int index);
     
     void loadFdat();
-    void loadItem();
     void loadMo();
     void loadRtmd();
     
@@ -71,9 +70,7 @@ private:
     
     std::unique_ptr<Ui::MainWindow> ui;
 
-    int openGameDB = -1;
     QString curSourceDirectory;
-    std::array<int, 9> openMaps;
     
     // TODO: Implement this stuff
     std::unordered_map<QString, int> openTabs; 

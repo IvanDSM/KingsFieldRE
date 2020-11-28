@@ -2,9 +2,9 @@
 #include <QDataStream>
 
 Map::Map(TFile &fdatTFile, unsigned int index): fdat(fdatTFile),  mapIndex(index),
-    map1(fdat.getFile(index * 3)),
-    map2(fdat.getFile(index * 3 + 1)),
-    map3(fdat.getFile(index * 3 + 2))
+    map1(fdat.getFile(index)),
+    map2(fdat.getFile(index + 1)),
+    map3(fdat.getFile(index + 2))
 {
     QDataStream map1Stream(map1);
     map1Stream.skipRawData(4);
@@ -83,7 +83,7 @@ void Map::writeChanges()
     Checksum::calculateAndWriteChecksum(map2);
     Checksum::calculateAndWriteChecksum(map3);
 
-    fdat.writeFile(map1, static_cast<int>(mapIndex * 3));
-    fdat.writeFile(map2, static_cast<int>(mapIndex * 3) + 1);
-    fdat.writeFile(map3, static_cast<int>(mapIndex * 3) + 2);
+    fdat.writeFile(map1, static_cast<int>(mapIndex));
+    fdat.writeFile(map2, static_cast<int>(mapIndex) + 1);
+    fdat.writeFile(map3, static_cast<int>(mapIndex) + 2);
 }

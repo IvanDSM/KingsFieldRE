@@ -6,6 +6,8 @@
 #include "textureviewer.h"
 #include <QFileDialog>
 
+#define TEST_GENERIC 1
+
 void MainWindow::on_actionLoad_files_triggered()
 {
     auto directory = QFileDialog::getExistingDirectory(this, "Select the folder with your King's Field T files.", QDir::homePath());
@@ -18,8 +20,12 @@ void MainWindow::on_actionLoad_files_triggered()
     {
         // We don't use C++14 so no make_unique :(
         fdat.reset(new TFile(tfile_dir.filePath("FDAT.T")));
-    
+        
+#if TEST_GENERIC
+        loadTFile(*fdat, fdatTreeItem);
+#else
         loadFdat();
+#endif
     }
     
     if (tfile_dir.exists("ITEM.T"))
@@ -34,7 +40,12 @@ void MainWindow::on_actionLoad_files_triggered()
     {
         // We don't use C++14 so no make_unique :(
         mo.reset(new TFile(tfile_dir.filePath("MO.T")));
+        
+#if TEST_GENERIC
+        loadTFile(*mo, moTreeItem);
+#else
         loadMo();
+#endif
     }
     
     if (tfile_dir.exists("RTIM.T"))
@@ -49,8 +60,12 @@ void MainWindow::on_actionLoad_files_triggered()
     {
         // We don't use C++14 so no make_unique :(
         rtmd.reset(new TFile(tfile_dir.filePath("RTMD.T")));
-    
+        
+#if TEST_GENERIC
+        loadTFile(*rtmd, rtmdTreeItem);
+#else
         loadRtmd();
+#endif
     }
     
     if (tfile_dir.exists("TALK.T"))
@@ -77,7 +92,7 @@ void MainWindow::addGameDB(TFile &tFile, unsigned int index)
 
 void MainWindow::addMap(TFile &tFile, unsigned int index)
 {
-    auto prettyName = tFile.getPrettyName(index * 3);
+    auto prettyName = tFile.getPrettyName(index);
     if (prettyName.isEmpty())
         prettyName = tFile.getFilename() + ' ' + QString::number(index);
     
@@ -136,14 +151,15 @@ void MainWindow::loadFdat()
     ui->filesTree->addTopLevelItem(fdatTreeItem.get());
 
     addMap(*fdat, 0);
-    addMap(*fdat, 1);
-    addMap(*fdat, 2);
     addMap(*fdat, 3);
-    addMap(*fdat, 4);
-    addMap(*fdat, 5);
     addMap(*fdat, 6);
-    addMap(*fdat, 7);
-    addMap(*fdat, 8);
+    addMap(*fdat, 9);
+    addMap(*fdat, 12);
+    addMap(*fdat, 15);
+    addMap(*fdat, 18);
+    addMap(*fdat, 21);
+    addMap(*fdat, 24);
+    addGameDB(*fdat, 28);
     addModel(*fdat, 29);
     addModel(*fdat, 30);
     addModel(*fdat, 31);
@@ -160,33 +176,6 @@ void MainWindow::loadFdat()
     addModel(*fdat, 42);
     addModel(*fdat, 43);
     addModel(*fdat, 44);
-    addGameDB(*fdat, 28);
-}
-
-void MainWindow::loadItem()
-{
-    if (item == nullptr)
-        return;
-    
-    if (itemTreeItem.get() != nullptr)
-    {
-        ui->filesTree->removeItemWidget(itemTreeItem.get(), 0);
-        for (auto child : itemTreeItem->takeChildren())
-        {
-            ui->filesTree->removeItemWidget(child, 0);
-            delete child;
-        }
-    }
-    
-    itemTreeItem.reset(new QTreeWidgetItem(ui->filesTree));
-    itemTreeItem->setIcon(0, QIcon(":/tfile_icon.png"));
-    itemTreeItem->setText(0, "ITEM.T");
-    ui->filesTree->addTopLevelItem(itemTreeItem.get());
-
-    for (size_t file = 0; file < item->getTrueNumFiles() - 1; file++)
-        addModel(*item, file);
-        
-    addTexture(*item, 103);
 }
 
 void MainWindow::loadMo()
@@ -281,8 +270,10 @@ void MainWindow::on_filesTree_itemDoubleClicked(QTreeWidgetItem *item, int)
         {
             case KFMTDataType::KFMT_GAMEDB:
             {
-                if (openGameDB != -1)
-                    ui->editorTabs->setCurrentIndex(openGameDB);
+                if (false) // TODO: Implement open table detection for GameDB
+                {
+                    
+                }
                 else
                 {
                     auto gameDBEditor = new GameDBEditWidget(ui->editorTabs, kfmtItem->getDB());
@@ -295,8 +286,10 @@ void MainWindow::on_filesTree_itemDoubleClicked(QTreeWidgetItem *item, int)
             case KFMTDataType::KFMT_MAP:
             {
                 auto mapIndex = kfmtItem->getMap()->getIndex();
-                if (openMaps.at(mapIndex) != -1)
-                    ui->editorTabs->setCurrentIndex(openMaps.at(mapIndex));
+                if (false) // TODO: Implement open table detection for map
+                {
+                    
+                }
                 else
                 {
                     auto map = kfmtItem->getMap();
@@ -305,7 +298,7 @@ void MainWindow::on_filesTree_itemDoubleClicked(QTreeWidgetItem *item, int)
                     ui->editorTabs->addTab(mapEditor, kfmtItem->text(0));
                     ui->editorTabs->setCurrentWidget(mapEditor);
                     ui->editorTabs->setTabIcon(ui->editorTabs->currentIndex(), QIcon(":/map_icon.png"));
-                    openMaps.at(mapIndex) = ui->editorTabs->currentIndex();
+                    //openMaps.at(mapIndex) = ui->editorTabs->currentIndex();
                 }
                 break;
             }

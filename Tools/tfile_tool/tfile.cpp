@@ -170,15 +170,15 @@ bool TFile::isMAP2(const QByteArray & file)
 
 bool TFile::isMAP3(const QByteArray & file)
 {
-    return file.at(0x03) == '\x80' && 
-           file.at(0x03) == file.at(0x07) && file.at(0x07) == file.at(0x0b) && file.at(0x0b) == file.at(0x0f) &&
-           file.at(0x13) == file.at(0x17) && file.at(0x17) == file.at(0x1b) && file.at(0x1b) == file.at(0x1f) &&
-           file.at(0x23) == file.at(0x27) && file.at(0x27) == file.at(0x2b) && file.at(0x2b) == file.at(0x2f) &&
-           file.at(0x33) == file.at(0x37) && file.at(0x37) == file.at(0x3b) && file.at(0x3b) == file.at(0x3f) &&
-           file.at(0x43) == file.at(0x47) && file.at(0x47) == file.at(0x4b) && file.at(0x4b) == file.at(0x4f) &&
-           file.at(0x53) == file.at(0x57) && file.at(0x57) == file.at(0x5b) && file.at(0x5b) == file.at(0x5f) &&
-            file.at(0x63) == file.at(0x67) && file.at(0x67) == file.at(0x6b) && file.at(0x6b) == file.at(0x6f) &&
-            file.at(0x73) == file.at(0x77) && file.at(0x77) == file.at(0x7b) && file.at(0x7b) == file.at(0x7f);
+    return file.at(0x07) == '\x80' && 
+           file.at(0x07) == file.at(0x0b) && file.at(0x0b) == file.at(0x0f) && file.at(0x13) == file.at(0x17) &&
+           file.at(0x17) == file.at(0x1b) && file.at(0x1b) == file.at(0x1f) && file.at(0x23) == file.at(0x27) && 
+           file.at(0x27) == file.at(0x2b) && file.at(0x2b) == file.at(0x2f) && file.at(0x33) == file.at(0x37) && 
+           file.at(0x37) == file.at(0x3b) && file.at(0x3b) == file.at(0x3f) && file.at(0x43) == file.at(0x47) && 
+           file.at(0x47) == file.at(0x4b) && file.at(0x4b) == file.at(0x4f) && file.at(0x53) == file.at(0x57) && 
+           file.at(0x57) == file.at(0x5b) && file.at(0x5b) == file.at(0x5f) && file.at(0x63) == file.at(0x67) && 
+           file.at(0x67) == file.at(0x6b) && file.at(0x6b) == file.at(0x6f) && file.at(0x73) == file.at(0x77) && 
+           file.at(0x77) == file.at(0x7b) && file.at(0x7b) == file.at(0x7f);
 }
 
 bool TFile::isMO(const QByteArray & file)
@@ -210,7 +210,8 @@ bool TFile::isSEQ(const QByteArray & file)
 
 bool TFile::isTIM(const QByteArray & file)
 {
-    return file.left(4).compare(QByteArray::fromHex("10000000")) == 0;
+    return file.left(4).compare(QByteArray::fromHex("10000000")) == 0 &&
+           file.mid(5, 3).compare(QByteArray::fromHex("000000")) == 0;
 }
 
 bool TFile::isTMD(const QByteArray & file)
