@@ -12,7 +12,7 @@ typedef quint8 byte;
 class Map
 {
 public:
-    Map(TFile &fdatTFile, unsigned int index, const QString & name);
+    Map(TFile &fdatTFile, unsigned int index);
 
     KingsField::EntityClassDeclaration &getEntityClassDeclaration(byte classDeclIndex)
     {
@@ -52,11 +52,6 @@ public:
     const unsigned int &getIndex() const
     {
         return mapIndex;
-    }
-
-    const QString &getName() const
-    {
-        return mapName;
     }
 
     KingsField::ObjectInstanceDeclaration &getObjectInstance(size_t instanceIndex)
@@ -117,7 +112,6 @@ private:
     QByteArray map1;
     QByteArray map2;
     QByteArray map3;
-    QString mapName;
     std::array<KingsField::EntityClassDeclaration, 40> entityClassDeclarations {};
     std::array<KingsField::EntityInstance, 200> entityInstances {};
     std::array<KingsField::ObjectInstanceDeclaration, 350> objInstances {};

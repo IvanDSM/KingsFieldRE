@@ -8,7 +8,7 @@
 class Texture
 {
 public:
-    explicit Texture(TFile &tFile, unsigned int index, QString name);
+    explicit Texture(TFile &tFile, unsigned int index);
 
     enum class PixelMode {
         CLUT4Bit = 0,

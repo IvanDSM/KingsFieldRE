@@ -57,15 +57,17 @@ private slots:
     }
 
 private:
-    void addGameDB();
-    void addMap(unsigned int index, const QString &name);
-    void addModel(TFile &tFile, unsigned int index, const QString &name);
-    void addTexture(TFile &tFile, unsigned int index, const QString &name);
+    void addGameDB(TFile & tFile, unsigned int index);
+    void addMap(TFile &tFile, unsigned int index);
+    void addModel(TFile &tFile, unsigned int index);
+    void addTexture(TFile &tFile, unsigned int index);
     
     void loadFdat();
     void loadItem();
     void loadMo();
     void loadRtmd();
+    
+    void loadTFile(TFile & tFile, std::unique_ptr<QTreeWidgetItem> &tFileTreeItem);
     
     std::unique_ptr<Ui::MainWindow> ui;
 
@@ -80,13 +82,17 @@ private:
     std::unique_ptr<TFile> fdat = nullptr;
     std::unique_ptr<TFile> item = nullptr;
     std::unique_ptr<TFile> mo = nullptr;
+    std::unique_ptr<TFile> rtim = nullptr;
     std::unique_ptr<TFile> rtmd = nullptr;
+    std::unique_ptr<TFile> talk = nullptr;
     
     // T file tree item pointers
     std::unique_ptr<QTreeWidgetItem> fdatTreeItem = nullptr;
     std::unique_ptr<QTreeWidgetItem> itemTreeItem = nullptr;
     std::unique_ptr<QTreeWidgetItem> moTreeItem = nullptr;
+    std::unique_ptr<QTreeWidgetItem> rtimTreeItem = nullptr;
     std::unique_ptr<QTreeWidgetItem> rtmdTreeItem = nullptr;
+    std::unique_ptr<QTreeWidgetItem> talkTreeItem = nullptr;
     
 };
 #endif // MAINWINDOW_H

@@ -27,7 +27,7 @@ void MainWindow::on_actionLoad_files_triggered()
         // We don't use C++14 so no make_unique :(
         item.reset(new TFile(tfile_dir.filePath("ITEM.T")));
     
-        loadItem();
+        loadTFile(*item, itemTreeItem);
     }
     
     if (tfile_dir.exists("MO.T"))
@@ -37,6 +37,14 @@ void MainWindow::on_actionLoad_files_triggered()
         loadMo();
     }
     
+    if (tfile_dir.exists("RTIM.T"))
+    {
+        // We don't use C++14 so no make_unique :(
+        rtim.reset(new TFile(tfile_dir.filePath("RTIM.T")));
+    
+        loadTFile(*rtim, rtimTreeItem);
+    }
+    
     if (tfile_dir.exists("RTMD.T"))
     {
         // We don't use C++14 so no make_unique :(
@@ -44,41 +52,66 @@ void MainWindow::on_actionLoad_files_triggered()
     
         loadRtmd();
     }
+    
+    if (tfile_dir.exists("TALK.T"))
+    {
+        // We don't use C++14 so no make_unique :(
+        talk.reset(new TFile(tfile_dir.filePath("TALK.T")));
+    
+        loadTFile(*talk, talkTreeItem);
+    }
+    
+    for (int tab = 0; tab < ui->editorTabs->count(); tab++)
+        ui->editorTabs->removeTab(tab);
 }
 
-void MainWindow::addGameDB()
+void MainWindow::addGameDB(TFile &tFile, unsigned int index)
 {
-    std::shared_ptr<GameDB> gameDB(new GameDB(*fdat));
-    auto gameDBTreeItem = new KFMTTreeWidgetItem(fdatTreeItem.get(), gameDB);
+    std::shared_ptr<GameDB> gameDB(new GameDB(tFile, index));
+    auto parentItem = ui->filesTree->findItems(tFile.getFilename(), Qt::MatchExactly).front();
+    auto gameDBTreeItem = new KFMTTreeWidgetItem(parentItem, gameDB);
     gameDBTreeItem->setText(0, "Game Database");
 
-    ui->filesTree->itemAt(0, 0)->addChild(gameDBTreeItem);
+    parentItem->addChild(gameDBTreeItem);
 }
 
-void MainWindow::addMap(unsigned int index, const QString &name)
+void MainWindow::addMap(TFile &tFile, unsigned int index)
 {
-    std::shared_ptr<Map> map(new Map(*fdat, index, name));
-    auto mapTreeItem = new KFMTTreeWidgetItem(fdatTreeItem.get(), map);
-    mapTreeItem->setText(0, "Map " + QString::number(index) + ": " + name);
+    auto prettyName = tFile.getPrettyName(index * 3);
+    if (prettyName.isEmpty())
+        prettyName = tFile.getFilename() + ' ' + QString::number(index);
+    
+    std::shared_ptr<Map> map(new Map(tFile, index));
+    auto parentItem = ui->filesTree->findItems(tFile.getFilename(), Qt::MatchExactly).front();
+    auto mapTreeItem = new KFMTTreeWidgetItem(parentItem, map);
+    mapTreeItem->setText(0, prettyName);
 
-    ui->filesTree->itemAt(0, 0)->addChild(mapTreeItem);
+    parentItem->addChild(mapTreeItem);
 }
 
-void MainWindow::addModel(TFile &tFile, unsigned int index, const QString &name)
+void MainWindow::addModel(TFile &tFile, unsigned int index)
 {
+    auto prettyName = tFile.getPrettyName(index);
+    if (prettyName.isEmpty())
+        prettyName = tFile.getFilename() + ' ' + QString::number(index);
+    
     std::shared_ptr<Model> model(new Model(tFile, index));
     auto parentItem = ui->filesTree->findItems(tFile.getFilename(), Qt::MatchExactly).front();
     auto modelTreeItem = new KFMTTreeWidgetItem(parentItem, model);
-    modelTreeItem->setText(0, name);
+    modelTreeItem->setText(0, prettyName);
     parentItem->addChild(modelTreeItem);
 }
 
-void MainWindow::addTexture(TFile & tFile, unsigned int index, const QString & name)
+void MainWindow::addTexture(TFile & tFile, unsigned int index)
 {
-    std::shared_ptr<Texture> texture(new Texture(tFile, index, name));
+    auto prettyName = tFile.getPrettyName(index);
+    if (prettyName.isEmpty())
+        prettyName = tFile.getFilename() + ' ' + QString::number(index);
+    
+    std::shared_ptr<Texture> texture(new Texture(tFile, index));
     auto parentItem = ui->filesTree->findItems(tFile.getFilename(), Qt::MatchExactly).front();
     auto textureTreeItem = new KFMTTreeWidgetItem(parentItem, texture);
-    textureTreeItem->setText(0, name);
+    textureTreeItem->setText(0, prettyName);
     parentItem->addChild(textureTreeItem);
 }
 
@@ -102,32 +135,32 @@ void MainWindow::loadFdat()
     fdatTreeItem->setText(0, "FDAT.T");
     ui->filesTree->addTopLevelItem(fdatTreeItem.get());
 
-    addMap(0, "Western Shore");
-    addMap(1, "Garrison");
-    addMap(2, "Central Village");
-    addMap(3, "East Village");
-    addMap(4, "Cathedral");
-    addMap(5, "The Big Mine");
-    addMap(6, "Necron's Coliseum");
-    addMap(7, "Guyra's Lair");
-    addMap(8, "Weird Debug Map");
-    addModel(*fdat, 29, "Dagger Viewmodel");
-    addModel(*fdat, 30, "Short Sword Viewmodel");
-    addModel(*fdat, 31, "Knight Sword Viewmodel");
-    addModel(*fdat, 32, "Morning Star Viewmodel");
-    addModel(*fdat, 33, "Battle Hammer Viewmodel");
-    addModel(*fdat, 34, "Bastard Sword Viewmodel");
-    addModel(*fdat, 35, "Crescent Axe Viewmodel");
-    addModel(*fdat, 36, "Flame Sword Viewmodel");
-    addModel(*fdat, 37, "Shiden Viewmodel");
-    addModel(*fdat, 38, "Spider Viewmodel");
-    addModel(*fdat, 39, "Ice Blade Viewmodel");
-    addModel(*fdat, 40, "Seath's Sword Viewmodel");
-    addModel(*fdat, 41, "Moonlight Sword Viewmodel");
-    addModel(*fdat, 42, "Dark Slayer Viewmodel");
-    addModel(*fdat, 43, "Bow Viewmodel");
-    addModel(*fdat, 44, "Arbalest Viewmodel");
-    addGameDB();
+    addMap(*fdat, 0);
+    addMap(*fdat, 1);
+    addMap(*fdat, 2);
+    addMap(*fdat, 3);
+    addMap(*fdat, 4);
+    addMap(*fdat, 5);
+    addMap(*fdat, 6);
+    addMap(*fdat, 7);
+    addMap(*fdat, 8);
+    addModel(*fdat, 29);
+    addModel(*fdat, 30);
+    addModel(*fdat, 31);
+    addModel(*fdat, 32);
+    addModel(*fdat, 33);
+    addModel(*fdat, 34);
+    addModel(*fdat, 35);
+    addModel(*fdat, 36);
+    addModel(*fdat, 37);
+    addModel(*fdat, 38);
+    addModel(*fdat, 39);
+    addModel(*fdat, 40);
+    addModel(*fdat, 41);
+    addModel(*fdat, 42);
+    addModel(*fdat, 43);
+    addModel(*fdat, 44);
+    addGameDB(*fdat, 28);
 }
 
 void MainWindow::loadItem()
@@ -150,110 +183,10 @@ void MainWindow::loadItem()
     itemTreeItem->setText(0, "ITEM.T");
     ui->filesTree->addTopLevelItem(itemTreeItem.get());
 
-    addModel(*item, 0, "Weapon: Dagger");
-    addModel(*item, 1, "Weapon: Short Sword");
-    addModel(*item, 2, "Weapon: Knight Sword");
-    addModel(*item, 3, "Weapon: Morning Star");
-    addModel(*item, 4, "Weapon: Battle Hammer");
-    addModel(*item, 5, "Weapon: Bastard Sword");
-    addModel(*item, 6, "Weapon: Crescent Axe");
-    addModel(*item, 7, "Weapon: Flame Sword");
-    addModel(*item, 8, "Weapon: Shiden");
-    addModel(*item, 9, "Weapon: Spider");
-    addModel(*item, 10, "Weapon: Ice Blade");
-    addModel(*item, 11, "Weapon: Seaths Sword");
-    addModel(*item, 12, "Weapon: Moonlight Sword");
-    addModel(*item, 13, "Weapon: Dark Slayer");
-    addModel(*item, 14, "Weapon: Bow");
-    addModel(*item, 15, "Weapon: Arbalest");
-    addModel(*item, 16, "Head: Iron Mask");
-    addModel(*item, 17, "Head: Knight Helm");
-    addModel(*item, 18, "Head: Great Helm");
-    addModel(*item, 19, "Head: Blood Crown");
-    addModel(*item, 20, "Head: Lightning Helm");
-    addModel(*item, 21, "Head: Seaths Helm");
-    addModel(*item, 22, "Body: Breast Plate");
-    addModel(*item, 23, "Body: Knight Plate");
-    addModel(*item, 24, "Body: Ice Armor");
-    addModel(*item, 25, "Body: Dark Armor");
-    addModel(*item, 26, "Body: Seaths Armor");
-    addModel(*item, 27, "Shield: Leather Shield");
-    addModel(*item, 28, "Shield: Large Shield");
-    addModel(*item, 29, "Shield: Moon Guard");
-    addModel(*item, 30, "Shield: Crystal Guard");
-    addModel(*item, 31, "Shield: Skull Shield");
-    addModel(*item, 32, "Shield: Seaths Shield");
-    addModel(*item, 33, "Arms: Iron Gloves");
-    addModel(*item, 34, "Arms: Stone Hands");
-    addModel(*item, 35, "Arms: Silver Arms");
-    addModel(*item, 36, "Arms: Demons Hands");
-    addModel(*item, 37, "Arms: Ruinous Gloves");
-    addModel(*item, 38, "Feet: Iron Boots");
-    addModel(*item, 39, "Feet: Leg Guarders");
-    addModel(*item, 40, "Feet: Silver Boots");
-    addModel(*item, 41, "Feet: Death Walkers");
-    addModel(*item, 42, "Feet: Ruinous Boots");
-    addModel(*item, 43, "Equip. Item: Scorpions Bracelet");
-    addModel(*item, 44, "Equip. Item: Seaths Tear");
-    addModel(*item, 45, "Equip. Item: Seaths Bracelet");
-    addModel(*item, 46, "Equip. Item: Earth Ring");
-    addModel(*item, 47, "Equip. Item: Psycpros Collar");
-    addModel(*item, 48, "Equip. Item: Amulet Of Mist");
-    addModel(*item, 49, "Equip. Item: Lightwave Ring");
-    addModel(*item, 50, "Item: Pirate's Map");
-    addModel(*item, 51, "Item: Miner's Map");
-    addModel(*item, 52, "Item: Necron's Map");
-    addModel(*item, 53, "Item: Gold Coin");
-    addModel(*item, 54, "Item: Blood Stone");
-    addModel(*item, 55, "Item: Moon Stone");
-    addModel(*item, 56, "Item: Verdite");
-    addModel(*item, 57, "Item: Earth Herb");
-    addModel(*item, 58, "Item: Antidote");
-    addModel(*item, 59, "Item: Dragon Crystal");
-    addModel(*item, 60, "Item: Blue Potion");
-    addModel(*item, 61, "Item: Red Potion");
-    addModel(*item, 62, "Item: Green Potion");
-    addModel(*item, 63, "Item: Gold Potion");
-    addModel(*item, 64, "Item: \"A\" Potion");
-    addModel(*item, 65, "Item: Crystal Flask");
-    addModel(*item, 66, "Item: Figure Of Seath");
-    addModel(*item, 67, "Item: Phantom Rod");
-    addModel(*item, 68, "Item: Truth Glass");
-    addModel(*item, 69, "Item: Seaths Plume");
-    addModel(*item, 70, "Item: Demons Pick");
-    addModel(*item, 71, "Item: Harvines Flute");
-    addModel(*item, 72, "Item: Ground Bell");
-    addModel(*item, 73, "Item: Fire Crystal");
-    addModel(*item, 74, "Item: Water Crystal");
-    addModel(*item, 75, "Item: Earth Crystal");
-    addModel(*item, 76, "Item: Wind Crystal");
-    addModel(*item, 77, "Item: Light Crystal");
-    addModel(*item, 78, "Item: Dark Crystal");
-    addModel(*item, 79, "Item: Crystal");
-    addModel(*item, 80, "Item: Crystal Shard");
-    addModel(*item, 81, "Item: \"A\" Ring");
-    addModel(*item, 82, "Item: Elf's Key");
-    addModel(*item, 83, "Item: Pirate's Key");
-    addModel(*item, 84, "Item: Skull Key");
-    addModel(*item, 85, "Item: Jail Key");
-    addModel(*item, 86, "Item: Rhombus Key");
-    addModel(*item, 87, "Item: Harvines Key");
-    addModel(*item, 88, "Item: Dragon Stone");
-    addModel(*item, 89, "Item: Magicians Key");
-    addModel(*item, 90, "Item: Silver Key");
-    addModel(*item, 91, "Item: Gold Key");
-    addModel(*item, 92, "Item: Shrine Key");
-    addModel(*item, 93, "Item: \"A\" Herb");
-    addModel(*item, 94, "Item: Moon Gate");
-    addModel(*item, 95, "Item: Star Gate");
-    addModel(*item, 96, "Item: Sun Gate");
-    addModel(*item, 97, "Item: Moon Key");
-    addModel(*item, 98, "Item: Star Key");
-    addModel(*item, 99, "Item: Sun Key");
-    addModel(*item, 100, "Item: Arrow For The Bow");
-    addModel(*item, 101, "Item: Elf's Bolt");
-    addModel(*item, 102, "Item: \"A\" Herb 2");
-    addTexture(*item, 103, "Test");
+    for (size_t file = 0; file < item->getTrueNumFiles() - 1; file++)
+        addModel(*item, file);
+        
+    addTexture(*item, 103);
 }
 
 void MainWindow::loadMo()
@@ -277,7 +210,7 @@ void MainWindow::loadMo()
     ui->filesTree->addTopLevelItem(moTreeItem.get());
     
     for (size_t moFile = 0; moFile < mo->getTrueNumFiles() - 1; moFile++)
-        addModel(*mo, moFile, QString::asprintf("Model %zu", moFile));
+        addModel(*mo, moFile);
 }
 
 void MainWindow::loadRtmd()
@@ -301,7 +234,42 @@ void MainWindow::loadRtmd()
     ui->filesTree->addTopLevelItem(rtmdTreeItem.get());
     
     for (size_t tileset = 0; tileset < rtmd->getTrueNumFiles() - 1; tileset++)
-        addModel(*rtmd, tileset, QString::asprintf("Tileset %zu", tileset));
+        addModel(*rtmd, tileset);
+}
+
+void MainWindow::loadTFile(TFile &tFile, std::unique_ptr<QTreeWidgetItem> &tFileTreeItem)
+{
+    if (tFileTreeItem.get() != nullptr)
+    {
+        ui->filesTree->removeItemWidget(tFileTreeItem.get(), 0);
+        for (auto child : tFileTreeItem->takeChildren())
+        {
+            ui->filesTree->removeItemWidget(child, 0);
+            delete child;
+        }
+    }
+    
+    tFileTreeItem.reset(new QTreeWidgetItem(ui->filesTree));
+    tFileTreeItem->setIcon(0, QIcon(":/tfile_icon.png"));
+    tFileTreeItem->setText(0, tFile.getFilename());
+    ui->filesTree->addTopLevelItem(tFileTreeItem.get());
+    
+    for (size_t fileIndex = 0; fileIndex < tFile.getTrueNumFiles() - 1; fileIndex++)
+    {
+        auto file = tFile.getFile(fileIndex);
+        if (TFile::isTMD(file))
+            addModel(tFile, fileIndex);
+        else if (TFile::isTIM(file))
+            addTexture(tFile, fileIndex);
+        else if (TFile::isRTIM(file))
+            addTexture(tFile, fileIndex);
+        else if (TFile::isRTMD(file))
+            addModel(tFile, fileIndex);
+        else if (TFile::isMO(file))
+            addModel(tFile, fileIndex);
+        else if (TFile::isMAP1(file))
+            addMap(tFile, fileIndex);
+    }
 }
 
 void MainWindow::on_filesTree_itemDoubleClicked(QTreeWidgetItem *item, int)
@@ -334,7 +302,7 @@ void MainWindow::on_filesTree_itemDoubleClicked(QTreeWidgetItem *item, int)
                     auto map = kfmtItem->getMap();
                     auto* mapEditor = new MapEditWidget(ui->editorTabs);
                     mapEditor->setMap(map);
-                    ui->editorTabs->addTab(mapEditor, map->getName());
+                    ui->editorTabs->addTab(mapEditor, kfmtItem->text(0));
                     ui->editorTabs->setCurrentWidget(mapEditor);
                     ui->editorTabs->setTabIcon(ui->editorTabs->currentIndex(), QIcon(":/map_icon.png"));
                     openMaps.at(mapIndex) = ui->editorTabs->currentIndex();

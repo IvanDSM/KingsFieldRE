@@ -8,7 +8,7 @@
 class GameDB
 {
 public:
-    explicit GameDB(TFile &fdatTFile);
+    explicit GameDB(TFile &fdatTFile, unsigned int index);
 
     KingsField::ArmorStats &getArmorStats(size_t armorIndex)
     {

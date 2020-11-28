@@ -1,7 +1,7 @@
 #include "kfmterror.h"
 #include "texture.h"
 
-Texture::Texture(TFile & tFile, unsigned int index, QString name)
+Texture::Texture(TFile & tFile, unsigned int index)
 {
     auto file = tFile.getFile(index);
     
