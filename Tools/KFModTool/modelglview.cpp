@@ -108,6 +108,10 @@ void ModelGLView::BuildMOAnimation()
     //Build each animation frame
     unsigned int i = 0;
 
+    //We need to store this 'cause some weird funky stuff happens with
+    //looping when we don't.
+    unsigned int firstFrame = 0;
+    unsigned int lastFrame = 0;
     for(size_t frameID : Anim.frameIndexes)
     {
          Model::MOFrame &moFrame = model->animFrames[frameID];
@@ -117,27 +121,37 @@ void ModelGLView::BuildMOAnimation()
              continue;
 
         //If frameID is 0, we use baseMesh & this frame to form the MO
+         /*
         if(i == 0)
         {
             frame1 = model->morphTargets[model->animFrames[Anim.frameIndexes[Anim.frameIndexes.size()-1]].frameID];
             frame2 = model->morphTargets[model->animFrames[frameID].frameID];
-            KFMTError::log("Added Start Frame");
-            KFMTError::log(QString::number(model->animFrames[Anim.frameIndexes[Anim.frameIndexes.size()-1]].frameID));
-            KFMTError::log(QString::number(model->animFrames[frameID].frameID));
 
+            firstFrame = model->animFrames[Anim.frameIndexes[Anim.frameIndexes.size()-1]].frameID;
+            lastFrame = model->animFrames[frameID].frameID;
+
+            KFMTError::log("Added start Frame");
+            KFMTError::log("1 : " + QString::number(firstFrame));
+            KFMTError::log("2 : " + QString::number(lastFrame));
         }else
+        */
+
         if(i == Anim.frameIndexes.size()-1)
         {
-            frame2 = model->morphTargets[model->animFrames[frameID].frameID];
-            frame1 = model->morphTargets[model->animFrames[Anim.frameIndexes[0]].frameID];
-            KFMTError::log("Added end frame");
-            KFMTError::log(QString::number(model->animFrames[frameID].frameID));
-            KFMTError::log(QString::number(model->animFrames[Anim.frameIndexes[0]].frameID));
+            frame1 = model->morphTargets[model->animFrames[frameID].frameID];
+            frame2 = model->morphTargets[model->animFrames[Anim.frameIndexes[0]].frameID];
+
+            KFMTError::log("Added End Frame");
+            KFMTError::log("1 : " + QString::number(model->animFrames[frameID].frameID));
+            KFMTError::log("2 : " + QString::number(model->animFrames[Anim.frameIndexes[0]].frameID));
         }else
         {
             frame1 = model->morphTargets[model->animFrames[frameID].frameID];
             frame2 = model->morphTargets[model->animFrames[frameID+1].frameID];
-            KFMTError::log("Added Mid Frame");
+
+            KFMTError::log("Added Mid/Start Frame");
+            KFMTError::log("1 : " + QString::number(model->animFrames[frameID].frameID));
+            KFMTError::log("2 : " + QString::number(model->animFrames[frameID+1].frameID));
         }
 
         //Now build the actual frame!
@@ -310,6 +324,8 @@ void ModelGLView::DrawMOAnimation()
         {
             animFrame = 0;
         }
+
+        KFMTError::log("Frame: " + QString::number(animFrame));
         animFrameDelta = 0.f;
     }
 }
