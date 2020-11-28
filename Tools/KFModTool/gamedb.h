@@ -8,7 +8,7 @@
 class GameDB
 {
 public:
-    explicit GameDB(TFile &fdatTFile, unsigned int index);
+    explicit GameDB(TFile &tFile, unsigned int index_);
 
     KingsField::ArmorStats &getArmorStats(size_t armorIndex)
     {
@@ -79,8 +79,10 @@ public:
     static constexpr size_t weaponStatsSize = 18;
 
 private:
-    TFile &fdat;
+    TFile &tFile;
+    unsigned int index;
 
+    
     QByteArray database;
     std::array<KingsField::ArmorStats, armorStatsSize> armorStats {};
     std::array<KingsField::ObjectClassDeclaration, objClassDeclarationsSize> objClassDeclarations {};

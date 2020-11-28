@@ -1,7 +1,8 @@
 #include "gamedb.h"
 #include "checksum.h"
 
-GameDB::GameDB(TFile &fdatTFile, unsigned int index) : fdat(fdatTFile), database(fdat.getFile(index))
+GameDB::GameDB(TFile &tFile, unsigned int index_) : tFile(tFile), database(tFile.getFile(index_)), 
+    index(index_)
 {
 
     QDataStream dbStream(database);
@@ -97,5 +98,5 @@ void GameDB::writeChanges()
 
     Checksum::calculateAndWriteChecksum(database);
 
-    fdat.writeFile(database, 28);
+    tFile.writeFile(database, index);
 }
