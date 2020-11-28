@@ -1,6 +1,7 @@
 #ifndef KFMTERROR_H
 #define KFMTERROR_H
 
+#include <queue>
 #include <QWidget>
 
 namespace _KFMTErrorInternal
@@ -8,6 +9,7 @@ namespace _KFMTErrorInternal
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wunused-variable"
     static QWidget *_KFMTErrorParent;
+    static std::queue<QString> lastErrors {};
 #pragma GCC diagnostic pop
 }
 

@@ -9,6 +9,20 @@ void KFMTError::setParent(QWidget * parentPtr)
 
 void KFMTError::error(const QString & errorMessage)
 {
+    if (!_KFMTErrorInternal::lastErrors.empty() && 
+        (errorMessage == _KFMTErrorInternal::lastErrors.front() ||
+         errorMessage == _KFMTErrorInternal::lastErrors.back())
+       )
+    {
+        log(errorMessage);
+        return;
+    }
+    
+    _KFMTErrorInternal::lastErrors.push(errorMessage);
+    
+    while (_KFMTErrorInternal::lastErrors.size() > 2)
+        _KFMTErrorInternal::lastErrors.pop();
+        
     std::cerr << "Error: " << errorMessage.toStdString() << '\n';
     QMessageBox::critical(_KFMTErrorInternal::_KFMTErrorParent, "Error", errorMessage);
 }
