@@ -13,8 +13,6 @@ bool TFile::extractFiles()
         outputDir.mkpath(".");
 
     QByteArray curFileData;
-    QString curFileExt;
-    QString curFileName;
     unsigned int index = 0;
     while (index < getTrueNumFiles() - 1) // -1 so we don't try to extract starting from EOF
     {
@@ -23,39 +21,20 @@ bool TFile::extractFiles()
         // We try to identify the file type.
         QByteArray signatureBytes = curFileData.left(4); // Signature in PSX format
 
-        if (isTMD(curFileData))
-            curFileExt = "TMD";
-        else if (isTIM(curFileData) == 0)
-            curFileExt = "TIM";
-        else if (signatureBytes.compare(QByteArray::fromHex("70424156")) == 0)
-            curFileExt = "VH";
-        else if (signatureBytes.compare(QByteArray::fromHex("70514553")) == 0)
-            curFileExt = "SEQ";
-        else if (curFileData.left(16).compare(QByteArray::fromHex("00000000000000000000000000000000")) == 0) // FIXME: Shitty detection
-            curFileExt = "VB";
-        else if (isRTIM(curFileData))
-            curFileExt = "RTIM";
-        else if (isRTMD(curFileData))
-            curFileExt = "RTMD";
-        else if (isMO(curFileData))
-            curFileExt = "MO";
-        else
-            curFileExt = "DAT";
-
-        QString prettyName = "";
-
-        auto prettyNameIt = prettyMap.find(getFilename() + QString::number(index));
-        if (prettyNameIt != prettyMap.end())
-            prettyName = "_" + prettyNameIt->second;
+        QString curFileExt = getFiletype(index);
+        
+        auto prettyName = getPrettyName(index);
+        if (!prettyName.isEmpty())
+            prettyName = "_" + prettyName.replace(QRegExp("[^A-Za-z0-9]"), "");
 
         // FIXME: The way we're making the current filename is kind of ugly and probably slow!
         // There has to be a better way to do this.
 
-        curFileName = outputDir.path() + QDir::separator();
+        QString curFileName = outputDir.path() + QDir::separator();
 
         curFileName += getFilename().leftRef(getFilename().indexOf('.'));
 
-        curFileName += "_I" + QString::number(index);
+        curFileName += QString::number(index);
 
         curFileName += prettyName;
 
@@ -104,6 +83,39 @@ QByteArray TFile::getFile(unsigned int trueFileNumber) const
     return desiredFile;
 }
 
+QString TFile::getFiletype(unsigned int trueFileNumber) const
+{
+    
+    if (trueFileNumber < getTrueNumFiles())
+    {
+        auto file = getFile(trueFileNumber);
+        if (isTMD(file))
+            return "TMD";
+        else if (isTIM(file))
+            return "TIM";
+        else if (isVH(file))
+            return "VH";
+        else if (isSEQ(file))
+            return "SEQ";
+        else if (isVB(file))
+            return "VB";
+        else if (isRTIM(file))
+            return "RTIM";
+        else if (isRTMD(file))
+            return "RTMD";
+        else if (isMO(file))
+            return "MO";
+        else if (isMAP1(file))
+            return "MAP1";
+        else if (isMAP2(file))
+            return "MAP2";
+        else if (isMAP3(file))
+            return "MAP3";
+    }
+
+    return "DAT";
+}
+
 std::vector<unsigned int> TFile::getFileOffsets()
 {
     // FIXME: This is ugly, remake this when it's not 6 in the morning.
@@ -121,19 +133,52 @@ QByteArray &TFile::getHash()
     return hash;
 }
 
-std::vector<unsigned int> TFile::getTrueFileOffsets()
-{
-    return fileOffsets;
-}
-
 unsigned int TFile::getNumFiles()
 {
     return nFiles;
 }
 
+QString TFile::getPrettyName(size_t index)
+{
+    auto prettyNameIt = prettyMap.find(getFilename() + QString::number(index));
+    
+    if (prettyNameIt != prettyMap.end())
+        return prettyNameIt->second;
+    else
+        return "";
+}
+
+std::vector<unsigned int> TFile::getTrueFileOffsets()
+{
+    return fileOffsets;
+}
+
 unsigned int TFile::getTrueNumFiles() const
 {
     return fileOffsets.size();
+}
+
+bool TFile::isMAP1(const QByteArray &file)
+{
+    return file.left(4).compare(QByteArray::fromHex("00FA0000")) == 0;
+}
+
+bool TFile::isMAP2(const QByteArray & file)
+{
+    return file.left(4).compare(QByteArray::fromHex("C0320000")) == 0;
+}
+
+bool TFile::isMAP3(const QByteArray & file)
+{
+    return file.at(0x03) == '\x80' && 
+           file.at(0x03) == file.at(0x07) && file.at(0x07) == file.at(0x0b) && file.at(0x0b) == file.at(0x0f) &&
+           file.at(0x13) == file.at(0x17) && file.at(0x17) == file.at(0x1b) && file.at(0x1b) == file.at(0x1f) &&
+           file.at(0x23) == file.at(0x27) && file.at(0x27) == file.at(0x2b) && file.at(0x2b) == file.at(0x2f) &&
+           file.at(0x33) == file.at(0x37) && file.at(0x37) == file.at(0x3b) && file.at(0x3b) == file.at(0x3f) &&
+           file.at(0x43) == file.at(0x47) && file.at(0x47) == file.at(0x4b) && file.at(0x4b) == file.at(0x4f) &&
+           file.at(0x53) == file.at(0x57) && file.at(0x57) == file.at(0x5b) && file.at(0x5b) == file.at(0x5f) &&
+            file.at(0x63) == file.at(0x67) && file.at(0x67) == file.at(0x6b) && file.at(0x6b) == file.at(0x6f) &&
+            file.at(0x73) == file.at(0x77) && file.at(0x77) == file.at(0x7b) && file.at(0x7b) == file.at(0x7f);
 }
 
 bool TFile::isMO(const QByteArray & file)
@@ -158,6 +203,11 @@ bool TFile::isRTIM(const QByteArray & file)
     return file.mid(8).left(8) == file.left(8);
 }
 
+bool TFile::isSEQ(const QByteArray & file)
+{
+    return file.left(4).compare(QByteArray::fromHex("70514553")) == 0;
+}
+
 bool TFile::isTIM(const QByteArray & file)
 {
     return file.left(4).compare(QByteArray::fromHex("10000000")) == 0;
@@ -166,6 +216,16 @@ bool TFile::isTIM(const QByteArray & file)
 bool TFile::isTMD(const QByteArray & file)
 {
     return file.left(4).compare(QByteArray::fromHex("41000000")) == 0;
+}
+
+bool TFile::isVB(const QByteArray & file)
+{
+    return file.left(16).compare(QByteArray::fromHex("00000000000000000000000000000000")) == 0;
+}
+
+bool TFile::isVH(const QByteArray & file)
+{
+    return file.left(4).compare(QByteArray::fromHex("70424156")) == 0;
 }
 
 void TFile::writeFile(const QByteArray &newFile, int index)

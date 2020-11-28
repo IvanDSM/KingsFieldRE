@@ -52,6 +52,13 @@ public:
      * \return File as a QByteArray, empty if given an invalid file number.
      */
     QByteArray getFile(unsigned int trueFileNumber) const;
+    
+    /*!
+     * \brief Returns the file type for a given file number.
+     * \param trueFileNumber True file number for the desired file.
+     * \return File type as a QString, empty if given an invalid file number.
+     */
+    QString getFiletype(unsigned int trueFileNumber) const;
 
     /*!
      * \brief Retrieves the vector of de-duplicated file offsets before multiplying.
@@ -64,18 +71,20 @@ public:
      * \return MD5 hash for the T file.
      */
     QByteArray &getHash();
+    
+    /*!
+     * \brief Retrieves the number of files reported by the T file, including duplicates.
+     * \return Number of files reported by the T file, including duplicates.
+     */
+    unsigned int getNumFiles();
+    
+    QString getPrettyName(size_t index);
 
     /*!
      * \brief Retrieves the vector of de-duplicated and multiplied file offsets.
      * \return Vector of de-duplicated and multiplied file offsets.
      */
     std::vector<unsigned int> getTrueFileOffsets();
-
-    /*!
-     * \brief Retrieves the number of files reported by the T file, including duplicates.
-     * \return Number of files reported by the T file, including duplicates.
-     */
-    unsigned int getNumFiles();
 
     /*!
      * \brief Retrieves the number of actual files in the T file, with duplicates removed.
@@ -87,6 +96,12 @@ public:
     {
         return file;
     }
+    
+    static bool isMAP1(const QByteArray &file);
+    
+    static bool isMAP2(const QByteArray &file);
+    
+    static bool isMAP3(const QByteArray &file);
     
     /*!
      * \brief Checks whether a file is a MO file.
@@ -115,6 +130,15 @@ public:
     static bool isRTIM(const QByteArray &file);
     
     /*!
+     * \brief Checks whether a file is a SEQ file.
+     * This is done by checking if the file's first 4 bytes are equal to the 
+     * little-endian string "SEQp".
+     * \param file File to check.
+     * \return Whether the file is a SEQ file.
+     */
+    static bool isSEQ(const QByteArray &file);
+    
+    /*!
      * \brief Checks whether a file is an TIM file.
      * This is done by checking if the file's first 4 bytes as an unsigned int is 
      * equal to the TMD ID (0x10).
@@ -131,6 +155,24 @@ public:
      * \return Whether the file is a TMD file.
      */
     static bool isTMD(const QByteArray &file);
+    
+    /*!
+     * \brief Checks whether a file is a VB file.
+     * This is done by checking if the file's first 16 bytes are zero.
+     * FIXME: This is some really shitty detection.
+     * \param file File to check.
+     * \return Whether the file is a VB file.
+     */
+    static bool isVB(const QByteArray &file);
+    
+    /*!
+     * \brief Checks whether a file is a VH file.
+     * This is done by checking if the file's first 4 bytes are equal to the 
+     * little-endian string "VABp".
+     * \param file File to check.
+     * \return Whether the file is a VH file.
+     */
+    static bool isVH(const QByteArray &file);
 
     /*!
      * \brief Writes a file to the T file. Currently super unsafe! Does not verify the checksum!
