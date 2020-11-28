@@ -14,7 +14,7 @@ void KFMTError::error(const QString & errorMessage)
          errorMessage == _KFMTErrorInternal::lastErrors.back())
        )
     {
-        log(errorMessage);
+        log("Error: " + errorMessage);
         return;
     }
     
