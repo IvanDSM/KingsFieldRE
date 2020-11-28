@@ -26,7 +26,7 @@ void ModelGLView::initializeGL()
     if(model->animations.size() == 0)
         BuildTMDModel();
     else
-        setCurAnim(2);
+        setCurAnim(0);
 }
 
 void ModelGLView::mouseMoveEvent(QMouseEvent * event)
@@ -128,8 +128,8 @@ void ModelGLView::BuildMOAnimation()
         }else
         if(i == Anim.frameIndexes.size()-1)
         {
-            frame1 = model->morphTargets[model->animFrames[frameID].frameID];
-            frame2 = model->morphTargets[model->animFrames[Anim.frameIndexes[0]].frameID];
+            frame2 = model->morphTargets[model->animFrames[frameID].frameID];
+            frame1 = model->morphTargets[model->animFrames[Anim.frameIndexes[0]].frameID];
             KFMTError::log("Added end frame");
             KFMTError::log(QString::number(model->animFrames[frameID].frameID));
             KFMTError::log(QString::number(model->animFrames[Anim.frameIndexes[0]].frameID));
