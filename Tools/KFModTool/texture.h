@@ -1,57 +1,62 @@
 #ifndef TEXTURE_H
 #define TEXTURE_H
 
-#include <QObject>
+#include "tfile.h"
 #include <QImage>
 #include <QPainter>
 
-class Texture : public QObject
+class Texture
 {
-    Q_OBJECT
 public:
-    explicit Texture (QObject *parent = nullptr) : QObject(parent)
-    {
+    explicit Texture(TFile &tFile, unsigned int index, QString name);
 
-    }
-
-    enum class PMode {
-        CLUT_4BIT = 0,
-        CLUT_8BIT = 1,
-        DIR_15BIT = 2,
-        DIR_24BIT = 3,
-        MIXED = 4
+    enum class PixelMode {
+        CLUT4Bit = 0,
+        CLUT8Bit = 1,
+        Direct15Bit = 2,
+        Dir24Bit = 3,
+        Mixed = 4
     };
+    
+    QPoint &getFramebufferCoordinate()
+    {
+        return framebufferCoordinate;
+    }
+    
+    QImage &getImage() { return texture; }
+    
 
-signals:
-
-protected:
+private:
+    
+    void loadRTIM(const QByteArray &file);
+    void loadTIM(const QByteArray &file);
+    
     struct CLUT
     {
-        quint32 bnum;
-        quint16 dx;
-        quint16 dy;
-        quint16 w;
-        quint16 h;
-        std::vector<QColor> clut;
+        quint32 bnum = 0;
+        quint16 dx = 0;
+        quint16 dy = 0;
+        quint16 w = 0;
+        quint16 h = 0;
+        std::vector<QColor> clut {};
 
         CLUT() = default;
-
-        CLUT(quint32 _bnum, quint16 _dx, quint16 _dy, quint16 _w, quint16 _h, PMode pColor) : bnum(_bnum),
-            dx(_dx), dy(_dy), h(_h)
+        CLUT(quint32 _bnum, quint16 _dx, quint16 _dy, quint16 _w, quint16 _h, PixelMode pColor) : 
+            bnum(_bnum), dx(_dx), dy(_dy), h(_h)
         {
-            if (pColor == PMode::CLUT_4BIT)
+            if (pColor == PixelMode::CLUT4Bit)
                 w = _w * 4;
-            else if (pColor == PMode::CLUT_8BIT)
+            else if (pColor == PixelMode::CLUT8Bit)
                 w = _w * 2;
-            clut.reserve(_bnum);
+            clut.reserve((_bnum - 12) / 2);
         }
 
         void addColor(quint16 clutEntry)
         {
-            const quint8 r = clutEntry & 31,
-                         g = (clutEntry >> 5) & 31,
-                         b = (clutEntry >> 10) & 31,
-                         a = ((clutEntry >> 15) & 1 & (r | g | b)) * 255;
+            const quint8 r = (clutEntry & 31) * 8;
+            const quint8 g = ((clutEntry >> 5) & 31) * 8;
+            const quint8 b = ((clutEntry >> 10) & 31) * 8;
+            const quint8 a = ((clutEntry >> 15) & 1 & (r | g | b)) * 255;
             clut.emplace_back(r, g, b, a);
         }
 
@@ -61,18 +66,16 @@ protected:
         }
     };
 
-    QImage texture;
-    QPainter texPainter;
+    QImage texture {};
+    QPainter texPainter {};
 
     // TIM Header
-    quint32 id;
-    quint32 flags;
-    PMode pMode;
+    PixelMode pMode;
     bool cf;
-    CLUT clut;
+    std::unique_ptr<CLUT> clut {nullptr};
 
     // Pixel buffer
-    std::vector<quint8> clutPixelBuffer;
+    QPoint framebufferCoordinate {0,0};
 };
 
 #endif // TEXTURE_H

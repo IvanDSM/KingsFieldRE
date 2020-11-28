@@ -3,6 +3,7 @@
 #include "map.h"
 #include "mapeditwidget.h"
 #include "modelviewerwidget.h"
+#include "textureviewer.h"
 #include <QFileDialog>
 
 void MainWindow::on_actionLoad_files_triggered()
@@ -70,6 +71,15 @@ void MainWindow::addModel(TFile &tFile, unsigned int index, const QString &name)
     auto modelTreeItem = new KFMTTreeWidgetItem(parentItem, model);
     modelTreeItem->setText(0, name);
     parentItem->addChild(modelTreeItem);
+}
+
+void MainWindow::addTexture(TFile & tFile, unsigned int index, const QString & name)
+{
+    std::shared_ptr<Texture> texture(new Texture(tFile, index, name));
+    auto parentItem = ui->filesTree->findItems(tFile.getFilename(), Qt::MatchExactly).front();
+    auto textureTreeItem = new KFMTTreeWidgetItem(parentItem, texture);
+    textureTreeItem->setText(0, name);
+    parentItem->addChild(textureTreeItem);
 }
 
 void MainWindow::loadFdat()
@@ -243,6 +253,7 @@ void MainWindow::loadItem()
     addModel(*item, 100, "Item: Arrow For The Bow");
     addModel(*item, 101, "Item: Elf's Bolt");
     addModel(*item, 102, "Item: \"A\" Herb 2");
+    addTexture(*item, 103, "Test");
 }
 
 void MainWindow::loadMo()
@@ -337,6 +348,15 @@ void MainWindow::on_filesTree_itemDoubleClicked(QTreeWidgetItem *item, int)
                 ui->editorTabs->addTab(modelViewer, kfmtItem->text(0));
                 ui->editorTabs->setCurrentWidget(modelViewer);
                 ui->editorTabs->setTabIcon(ui->editorTabs->currentIndex(), QIcon(":/3d_icon.png"));
+                break;
+            }
+            case KFMTDataType::KFMT_TEXTURE:
+            {
+                auto* textureViewer = new TextureViewer(ui->editorTabs);
+                textureViewer->setTexture(kfmtItem->getTexture());
+                ui->editorTabs->addTab(textureViewer, kfmtItem->text(0));
+                ui->editorTabs->setCurrentWidget(textureViewer);
+                ui->editorTabs->setTabIcon(ui->editorTabs->currentIndex(), QIcon(":/tex_icon.png"));
                 break;
             }
         }

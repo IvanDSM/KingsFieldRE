@@ -42,6 +42,7 @@ SOURCES += \
     modelviewerwidget.cpp \
     prettynamer.cpp \
     texture.cpp \
+    textureviewer.cpp \
     tfile.cpp
 
 HEADERS += \
@@ -72,6 +73,7 @@ HEADERS += \
     modelviewerwidget.h \
     prettynamer.h \
     texture.h \
+    textureviewer.h \
     tfile.h \
     utilities.h
 
@@ -80,7 +82,8 @@ FORMS += \
     gamedbeditwidget.ui \
     mainwindow.ui \
     mapeditwidget.ui \
-    modelviewerwidget.ui
+    modelviewerwidget.ui \
+    textureviewer.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

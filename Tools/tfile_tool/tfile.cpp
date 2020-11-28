@@ -23,9 +23,9 @@ bool TFile::extractFiles()
         // We try to identify the file type.
         QByteArray signatureBytes = curFileData.left(4); // Signature in PSX format
 
-        if (signatureBytes.compare(QByteArray::fromHex("41000000")) == 0)
+        if (isTMD(curFileData))
             curFileExt = "TMD";
-        else if (signatureBytes.compare(QByteArray::fromHex("10000000")) == 0)
+        else if (isTIM(curFileData) == 0)
             curFileExt = "TIM";
         else if (signatureBytes.compare(QByteArray::fromHex("70424156")) == 0)
             curFileExt = "VH";
@@ -33,7 +33,7 @@ bool TFile::extractFiles()
             curFileExt = "SEQ";
         else if (curFileData.left(16).compare(QByteArray::fromHex("00000000000000000000000000000000")) == 0) // FIXME: Shitty detection
             curFileExt = "VB";
-        else if (curFileData.mid(8).left(8) == curFileData.left(8))
+        else if (isRTIM(curFileData))
             curFileExt = "RTIM";
         else if (isRTMD(curFileData))
             curFileExt = "RTMD";
@@ -151,6 +151,16 @@ bool TFile::isRTMD(const QByteArray & file)
     return file.left(4).compare(QByteArray::fromHex("00000000")) == 0 &&
                      (file.mid(4, 4).compare(QByteArray::fromHex("12000000")) == 0 ||
                       file.mid(4, 4).compare(QByteArray::fromHex("10000000")) == 0);
+}
+
+bool TFile::isRTIM(const QByteArray & file)
+{
+    return file.mid(8).left(8) == file.left(8);
+}
+
+bool TFile::isTIM(const QByteArray & file)
+{
+    return file.left(4).compare(QByteArray::fromHex("10000000")) == 0;
 }
 
 bool TFile::isTMD(const QByteArray & file)

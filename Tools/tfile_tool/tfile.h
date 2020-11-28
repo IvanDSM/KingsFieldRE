@@ -107,6 +107,23 @@ public:
     static bool isRTMD(const QByteArray &file);
     
     /*!
+     * \brief Checks whether a file is an RTIM file (should only be run after checking for TIM).
+     * This is done by checking if the file's first 8 bytes are equal to the next 8 bytes.
+     * \param file File to check.
+     * \return Whether the file is an RTIM file.
+     */
+    static bool isRTIM(const QByteArray &file);
+    
+    /*!
+     * \brief Checks whether a file is an TIM file.
+     * This is done by checking if the file's first 4 bytes as an unsigned int is 
+     * equal to the TMD ID (0x10).
+     * \param file File to check.
+     * \return Whether the file is an TIM file.
+     */
+    static bool isTIM(const QByteArray &file);
+    
+    /*!
      * \brief Checks whether a file is a TMD file.
      * This is done by checking if the file's first 4 bytes as an unsigned int is 
      * equal to the TMD ID (0x41).

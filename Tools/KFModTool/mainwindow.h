@@ -60,6 +60,8 @@ private:
     void addGameDB();
     void addMap(unsigned int index, const QString &name);
     void addModel(TFile &tFile, unsigned int index, const QString &name);
+    void addTexture(TFile &tFile, unsigned int index, const QString &name);
+    
     void loadFdat();
     void loadItem();
     void loadMo();

@@ -9,5 +9,6 @@
         <file>litCommon.frag</file>
         <file>litStatic.vert</file>
         <file>litMime.vert</file>
+        <file>tex_icon.png</file>
     </qresource>
 </RCC>

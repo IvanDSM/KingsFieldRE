@@ -4,13 +4,15 @@
 #include "gamedb.h"
 #include "map.h"
 #include "model.h"
+#include "texture.h"
 #include <QTreeWidgetItem>
 
 enum class KFMTDataType
 {
     KFMT_MAP,
     KFMT_GAMEDB,
-    KFMT_MODEL
+    KFMT_MODEL,
+    KFMT_TEXTURE
 };
 
 class KFMTTreeWidgetItem : public QTreeWidgetItem
@@ -19,6 +21,7 @@ public:
     explicit KFMTTreeWidgetItem(QTreeWidgetItem *parent, std::shared_ptr<GameDB> kfmtDB);
     explicit KFMTTreeWidgetItem(QTreeWidgetItem *parent, std::shared_ptr<Map> kfmtMap);
     explicit KFMTTreeWidgetItem(QTreeWidgetItem *parent, std::shared_ptr<Model> kfmtModel);
+    explicit KFMTTreeWidgetItem(QTreeWidgetItem *parent, std::shared_ptr<Texture> kfmtTexture);
 
     std::shared_ptr<GameDB> getDB()
     {
@@ -43,14 +46,23 @@ public:
         else
             return nullptr;
     }
+    
+    std::shared_ptr<Texture> getTexture()
+    {
+        if (dataType == KFMTDataType::KFMT_TEXTURE)
+            return texPtr;
+        else
+            return nullptr;
+    }
 
     KFMTDataType getType() { return dataType; }
 
 private:
     KFMTDataType dataType;
-    std::shared_ptr<GameDB> dbPtr{nullptr};
-    std::shared_ptr<Map> mapPtr{nullptr};
-    std::shared_ptr<Model> modelPtr{nullptr};
+    std::shared_ptr<GameDB> dbPtr = nullptr;
+    std::shared_ptr<Map> mapPtr = nullptr;
+    std::shared_ptr<Model> modelPtr = nullptr;
+    std::shared_ptr<Texture> texPtr = nullptr;
 };
 
 #endif // KFMTTREEWIDGETITEM_H

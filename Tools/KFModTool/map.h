@@ -12,7 +12,7 @@ typedef quint8 byte;
 class Map
 {
 public:
-    Map(TFile &fdatTFile, unsigned int index, QString name);
+    Map(TFile &fdatTFile, unsigned int index, const QString & name);
 
     KingsField::EntityClassDeclaration &getEntityClassDeclaration(byte classDeclIndex)
     {
