@@ -165,7 +165,10 @@ void Model::loadMO(const QByteArray &file)
                 moStream >> targetIndex;
 
             animFrames.push_back(newFrame);
+            newAnimation.frameIndexes.push_back(animFrames.size());
         }
+
+
         animations.push_back(newAnimation);
         curAnimNo++;
     }

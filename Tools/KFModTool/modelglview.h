@@ -72,6 +72,15 @@ struct TMDVertex
     QVector2D texcoord;
 };
 
+struct MOVertex
+{
+    QVector3D position1;
+    QVector3D position2;
+    QVector3D normal;
+    QVector4D colour;
+    QVector2D texcoord;
+};
+
 class ModelGLView : public QOpenGLWidget
 {
     Q_OBJECT
@@ -103,6 +112,12 @@ public:
         }
         
         curAnim = animationIndex;
+
+        //Build the animation
+        BuildMOAnimation();
+        animFrame = 0;
+        animFrameDelta = 0.f;
+
         return true;
     }
     
@@ -121,7 +136,9 @@ private slots:
     void refreshTimeout() { repaint(); }
     
 private:
-    
+    void BuildMOAnimation();
+    void DrawMOAnimation();
+
     void BuildTMDModel();
     void DrawTMDModel();
 
@@ -157,17 +174,21 @@ private:
     QMatrix4x4 glMatView;
     QMatrix4x4 glMatWorld;
 
-    //OGL Shader
-    QOpenGLShaderProgram glProgram;
-    unsigned int glProgramMVP = 0;
-    unsigned int glProgramModel = 0;
-    unsigned int glProgramLightPos = 0;
+    //MO Stuff
+    QOpenGLShaderProgram glMOProgram;
+    unsigned int glMOProgramMVP = 12345678;
+    unsigned int glMOProgramModel = 0;
+    unsigned int glMOProgramLightPos = 0;
+    unsigned int glMOProgramWeight = 0;
 
-    //OGL Model
+    unsigned int animFrame = 0;
+    float animFrameDelta = 0.f;
 
-    unsigned int glVBO = 0;
-    unsigned int glVAO = 0;
-    bool tmdBuilt = false;
+    //TMD Stuff
+    QOpenGLShaderProgram glTMDProgram;
+    unsigned int glTMDProgramMVP = 0;
+    unsigned int glTMDProgramModel = 0;
+    unsigned int glTMDProgramLightPos = 0;
     
     // OGL Functions
     QOpenGLExtraFunctions *glFuncs = nullptr;

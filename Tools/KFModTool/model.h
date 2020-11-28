@@ -105,6 +105,11 @@ struct Model::MOFrame
     {
         targets.resize(targetAmount);
     }
+
+    //Ogl
+    unsigned int glVBO = 0;
+    unsigned int glVAO = 0;
+    unsigned int glVertexNum = 0;
 };
 
 struct Model::MOPacket

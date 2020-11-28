@@ -23,7 +23,10 @@ void ModelGLView::initializeGL()
     BuildGrid();
 
     while (model == nullptr) { /* Wait for model */ };
-    BuildTMDModel();
+    if(model->animations.size() == 0)
+        BuildTMDModel();
+    else
+        setCurAnim(2);
 }
 
 void ModelGLView::mouseMoveEvent(QMouseEvent * event)
@@ -43,7 +46,8 @@ void ModelGLView::mouseMoveEvent(QMouseEvent * event)
 
 void ModelGLView::wheelEvent(QWheelEvent *event)
 {
-    camZoom += event->pixelDelta().y();
+    camZoom -= (event->angleDelta().y() / 120.f) * 8.f;
+    camZoom = qMax(camZoom, 8.f);
 }
 
 void ModelGLView::mouseReleaseEvent(QMouseEvent * event)
@@ -79,14 +83,240 @@ void ModelGLView::paintGL()
     glMatWorld.rotate(glModelRotation.x(), vecLeft);
     glMatWorld.rotate(glModelRotation.y(), vecUp);
     glMatWorld.rotate(glModelRotation.z(), vecFront);
-
-    //glMatView.rotate(camRotY, vecUp);
-    //glMatView.rotate(camRotZ, vecLeft);
     
     DrawGrid();
-    DrawTMDModel();
+
+    //If curAnim is -1, we must be drawing a TMD, else it's MO
+    if(curAnim == -1)
+    {
+        DrawTMDModel();
+    }else{
+        DrawMOAnimation();
+    }
 }
 
+//
+// MO Build & Draw
+//
+void ModelGLView::BuildMOAnimation()
+{
+    //Get the animation from the model
+    Model::MOAnimation Anim = model->animations[curAnim];
+    Model::Mesh frame1;
+    Model::Mesh frame2;
+
+    //Build each animation frame
+    unsigned int i = 0;
+
+    for(size_t frameID : Anim.frameIndexes)
+    {
+         Model::MOFrame &moFrame = model->animFrames[frameID];
+
+         //My little, not very safe safe guard.
+         if(moFrame.glVAO > 0)
+             continue;
+
+        //If frameID is 0, we use baseMesh & this frame to form the MO
+        if(i == 0)
+        {
+            frame1 = model->morphTargets[model->animFrames[Anim.frameIndexes[Anim.frameIndexes.size()-1]].frameID];
+            frame2 = model->morphTargets[model->animFrames[frameID].frameID];
+            KFMTError::log("Added Start Frame");
+            KFMTError::log(QString::number(model->animFrames[Anim.frameIndexes[Anim.frameIndexes.size()-1]].frameID));
+            KFMTError::log(QString::number(model->animFrames[frameID].frameID));
+
+        }else
+        if(i == Anim.frameIndexes.size()-1)
+        {
+            frame1 = model->morphTargets[model->animFrames[frameID].frameID];
+            frame2 = model->morphTargets[model->animFrames[Anim.frameIndexes[0]].frameID];
+            KFMTError::log("Added end frame");
+            KFMTError::log(QString::number(model->animFrames[frameID].frameID));
+            KFMTError::log(QString::number(model->animFrames[Anim.frameIndexes[0]].frameID));
+        }else
+        {
+            frame1 = model->morphTargets[model->animFrames[frameID].frameID];
+            frame2 = model->morphTargets[model->animFrames[frameID+1].frameID];
+            KFMTError::log("Added Mid Frame");
+        }
+
+        //Now build the actual frame!
+        std::vector<MOVertex> vertices;
+        for(Model::Primitive &prim : model->baseObjects[0].primitives)
+        {
+            if(prim.isTriangle())
+            {
+                MOVertex v0, v1, v2;
+
+                //Vertex 1
+                v0.position1 = frame1.vertices[prim.vertex0];
+                v0.position2 = frame2.vertices[prim.vertex0];
+                v0.normal    = prim.isSmooth() ? frame1.normals[prim.normal0] : frame1.normals[prim.normal0];
+                v0.colour    = prim.isGradation() ? prim.Colour0() : prim.Colour0();
+                v0.texcoord  = {0.f,0.f};
+
+                //Vertex 2
+                v1.position1 = frame1.vertices[prim.vertex1];
+                v1.position2 = frame2.vertices[prim.vertex1];
+                v1.normal    = prim.isSmooth() ? frame1.normals[prim.normal1] : frame1.normals[prim.normal0];
+                v1.colour    = prim.isGradation() ? prim.Colour1() : prim.Colour0();
+                v1.texcoord  = {0.f,0.f};
+
+                //Vertex 3
+                v2.position1 = frame1.vertices[prim.vertex2];
+                v2.position2 = frame2.vertices[prim.vertex2];
+                v2.normal    = prim.isSmooth() ? frame1.normals[prim.normal2] : frame1.normals[prim.normal0];
+                v2.colour    = prim.isGradation() ? prim.Colour2() : prim.Colour0();
+                v2.texcoord  = {0.f,0.f};
+
+                vertices.push_back(v2);
+                vertices.push_back(v1);
+                vertices.push_back(v0);
+
+            }else
+            if(prim.isQuad())
+            {
+                MOVertex v0, v1, v2, v3;
+
+                //Vertex 1
+                v0.position1 = frame1.vertices[prim.vertex0];
+                v0.position2 = frame2.vertices[prim.vertex0];
+                v0.normal    = prim.isSmooth() ? frame1.normals[prim.normal0] : frame1.normals[prim.normal0];
+                v0.colour    = prim.isGradation() ? prim.Colour0() : prim.Colour0();
+                v0.texcoord  = {0.f,0.f};
+
+                //Vertex 2
+                v1.position1 = frame1.vertices[prim.vertex1];
+                v1.position2 = frame2.vertices[prim.vertex1];
+                v1.normal    = prim.isSmooth() ? frame1.normals[prim.normal1] : frame1.normals[prim.normal0];
+                v1.colour    = prim.isGradation() ? prim.Colour1() : prim.Colour0();
+                v1.texcoord  = {0.f,0.f};
+
+                //Vertex 3
+                v2.position1 = frame1.vertices[prim.vertex2];
+                v2.position2 = frame2.vertices[prim.vertex2];
+                v2.normal    = prim.isSmooth() ? frame1.normals[prim.normal2] : frame1.normals[prim.normal0];
+                v2.colour    = prim.isGradation() ? prim.Colour2() : prim.Colour0();
+                v2.texcoord  = {0.f,0.f};
+
+                //Vertex 4
+                v3.position1 = frame1.vertices[prim.vertex3];
+                v3.position2 = frame2.vertices[prim.vertex3];
+                v3.normal    = prim.isSmooth() ? frame1.normals[prim.normal3] : frame1.normals[prim.normal0];
+                v3.colour    = prim.isGradation() ? prim.Colour3() : prim.Colour0();
+                v3.texcoord  = {0.f,0.f};
+
+                //Tri 1 (0, 1, 2)
+                vertices.push_back(v2);
+                vertices.push_back(v1);
+                vertices.push_back(v0);
+
+                //Tri 2 (1, 3, 2)
+                vertices.push_back(v2);
+                vertices.push_back(v3);
+                vertices.push_back(v1);
+
+            }else{
+                KFMTError::error("ModelGLView: Unhandled TMD primitive type (line or sprite).");
+            }
+        }
+
+        //Begin Generating OpenGL stuff for this frame
+        glFuncs->glGenBuffers(1, &moFrame.glVBO);
+        glFuncs->glGenVertexArrays(1, &moFrame.glVAO);
+
+        //Bind array buffer
+        glFuncs->glBindVertexArray(moFrame.glVAO);
+
+        //bind vertex buffer, and copy the data to it
+        glFuncs->glBindBuffer(GL_ARRAY_BUFFER, moFrame.glVBO);
+        glFuncs->glBufferData(GL_ARRAY_BUFFER, 60 * vertices.size(), &vertices.front(), GL_STATIC_DRAW);
+
+        //Set up the offsets and strides of each component of the vertex...
+
+        //Position 1
+        glFuncs->glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 60, (void*)0);
+        glFuncs->glEnableVertexAttribArray(0);
+
+        //Position 2
+        glFuncs->glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 60, (void*)12);
+        glFuncs->glEnableVertexAttribArray(1);
+
+        //Normal
+        glFuncs->glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 60, (void*)24);
+        glFuncs->glEnableVertexAttribArray(2);
+
+        //Colour
+        glFuncs->glVertexAttribPointer(3, 4, GL_FLOAT, GL_FALSE, 60, (void*)36);
+        glFuncs->glEnableVertexAttribArray(3);
+
+        //Texcoord
+        glFuncs->glVertexAttribPointer(4, 2, GL_FLOAT, GL_FALSE, 60, (void*)52);
+        glFuncs->glEnableVertexAttribArray(4);
+
+        //Unbind buffers
+        glFuncs->glBindBuffer(GL_ARRAY_BUFFER, 0);
+        glFuncs->glBindVertexArray(0);
+
+        //Set vertex number for draw...
+        moFrame.glVertexNum = vertices.size();
+        i++;
+    }
+
+    //Build MO Shader (only once though)
+    if(glMOProgramMVP == 12345678)
+    {
+        if(!glMOProgram.addShaderFromSourceFile(QOpenGLShader::Vertex, ":/litMime.vert"))
+            KFMTError::error("ModelGLView: Couldn't load GLSL Vertex Shader...");
+
+        if(!glMOProgram.addShaderFromSourceFile(QOpenGLShader::Fragment, ":/litCommon.frag"))
+            KFMTError::error("ModelGLView: Couldn't load GLSL Fragment Shader...");
+
+        if(!glMOProgram.link())
+            KFMTError::error("ModelGLView: Couldn't link GLSL Program...");
+
+        glMOProgramMVP = glMOProgram.uniformLocation("uMVP");
+        glMOProgramModel = glMOProgram.uniformLocation("uModel");
+        glMOProgramLightPos = glMOProgram.uniformLocation("uLightPos");
+        glMOProgramWeight = glMOProgram.uniformLocation("uWeight");
+    }
+}
+
+void ModelGLView::DrawMOAnimation()
+{
+    //Set up the shader...
+    glMOProgram.bind();
+    glMOProgram.setUniformValue(glMOProgramMVP, (glMatProj * glMatView) * glMatWorld);
+    glMOProgram.setUniformValue(glMOProgramModel, glMatWorld);
+    glMOProgram.setUniformValue(glMOProgramLightPos, glCamFrom);
+    glMOProgram.setUniformValue(glMOProgramWeight, animFrameDelta);
+
+    //Draw it...
+    //Get current animation
+    uint convertedInd = model->animations[curAnim].frameIndexes[animFrame];
+
+    glFuncs->glBindVertexArray(model->animFrames[convertedInd].glVAO);
+    glFuncs->glDrawArrays(GL_TRIANGLES, 0, model->animFrames[convertedInd].glVertexNum);
+
+    glFuncs->glBindVertexArray(0);
+
+    //Some quick 'n' dirty logic to make things move
+    animFrameDelta += 0.01;
+    if(animFrameDelta >= 1.f)
+    {
+        animFrame++;
+
+        if(animFrame >= model->animations[curAnim].frameIndexes.size())
+        {
+            animFrame = 0;
+        }
+        animFrameDelta = 0.f;
+    }
+}
+
+//
+// TMD/RTMD Build & Draw
+//
 void ModelGLView::BuildTMDModel()
 {
     //Loop through each object and build it for OpenGL.
@@ -212,39 +442,37 @@ void ModelGLView::BuildTMDModel()
     }
 
     //Now we build the shaders required for rendering
-    if(!glProgram.addShaderFromSourceFile(QOpenGLShader::Vertex, ":/litStatic.vert"))
+    if(!glTMDProgram.addShaderFromSourceFile(QOpenGLShader::Vertex, ":/litStatic.vert"))
         KFMTError::error("ModelGLView: Couldn't load GLSL Vertex Shader...");
 
-    if(!glProgram.addShaderFromSourceFile(QOpenGLShader::Fragment, ":/litCommon.frag"))
+    if(!glTMDProgram.addShaderFromSourceFile(QOpenGLShader::Fragment, ":/litCommon.frag"))
         KFMTError::error("ModelGLView: Couldn't load GLSL Fragment Shader...");
 
-    if(!glProgram.link())
+    if(!glTMDProgram.link())
         KFMTError::error("ModelGLView: Couldn't link GLSL Program...");
 
-    glProgramMVP = glProgram.uniformLocation("uMVP");
-    glProgramModel = glProgram.uniformLocation("uModel");
-    glProgramLightPos = glProgram.uniformLocation("uLightPos");
-
-    tmdBuilt = true;
+    glTMDProgramMVP = glTMDProgram.uniformLocation("uMVP");
+    glTMDProgramModel = glTMDProgram.uniformLocation("uModel");
+    glTMDProgramLightPos = glTMDProgram.uniformLocation("uLightPos");
 }
 
 void ModelGLView::DrawTMDModel()
 {
     //Bind GLSL Program
-    glProgram.bind();
-    glProgram.setUniformValue(glProgramMVP, (glMatProj * glMatView) * glMatWorld);
-    glProgram.setUniformValue(glProgramModel, glMatWorld);
-    glProgram.setUniformValue(glProgramLightPos, glCamFrom);
+    glTMDProgram.bind();
+    glTMDProgram.setUniformValue(glTMDProgramMVP, (glMatProj * glMatView) * glMatWorld);
+    glTMDProgram.setUniformValue(glTMDProgramModel, glMatWorld);
+    glTMDProgram.setUniformValue(glTMDProgramLightPos, glCamFrom);
 
     for(Model::Mesh tmdObj : model->baseObjects)
     {
-        if(!tmdObj.visible)
-           continue;
+        if(tmdObj.visible)
+        {
+            glFuncs->glBindVertexArray(tmdObj.oglVertexArrayObject);
+            glFuncs->glDrawArrays(GL_TRIANGLES, 0, tmdObj.oglVertexNum);
 
-        glFuncs->glBindVertexArray(tmdObj.oglVertexArrayObject);
-        glFuncs->glDrawArrays(GL_TRIANGLES, 0, tmdObj.oglVertexNum);
-
-        glFuncs->glBindVertexArray(0);
+            glFuncs->glBindVertexArray(0);
+        }
     }
 }
 

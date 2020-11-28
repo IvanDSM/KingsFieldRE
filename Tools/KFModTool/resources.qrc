@@ -8,5 +8,6 @@
         <file>unlitSimple.frag</file>
         <file>litCommon.frag</file>
         <file>litStatic.vert</file>
+        <file>litMime.vert</file>
     </qresource>
 </RCC>
