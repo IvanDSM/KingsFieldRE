@@ -1,14 +1,14 @@
 #ifndef GAMEDBEDITWIDGET_H
 #define GAMEDBEDITWIDGET_H
 
-#include <QWidget>
-#include "ui_gamedbeditwidget.h"
 #include "gamedb.h"
 #include "models/armorstatstablemodel.h"
 #include "models/playerleveldatatablemodel.h"
 #include "models/magictablemodel.h"
 #include "models/objectclasstablemodel.h"
 #include "models/weaponstatstablemodel.h"
+#include "ui_gamedbeditwidget.h"
+#include <QWidget>
 
 class GameDBEditWidget : public QWidget
 {
@@ -16,6 +16,7 @@ class GameDBEditWidget : public QWidget
 
 public:
     explicit GameDBEditWidget(QWidget *parent = nullptr, std::shared_ptr<GameDB> gameDB_ = nullptr);
+    ~GameDBEditWidget() {delete ui;}
 
 private slots:
     void on_armorCombo_currentIndexChanged(int index)

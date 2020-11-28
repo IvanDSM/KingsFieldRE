@@ -4,16 +4,19 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 CONFIG += c++17
 
-# The following define makes your compiler emit warnings if you use
-# any Qt feature that has been marked deprecated (the exact warnings
-# depend on your compiler). Please consult the documentation of the
-# deprecated API in order to know how to port your code away from it.
 DEFINES += QT_DEPRECATED_WARNINGS
 
-# You can also make your code fail to compile if it uses deprecated APIs.
-# In order to do so, uncomment the following line.
-# You can also select to disable deprecated APIs only up to a certain version of Qt.
-#DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
+# Inherit system CFLAGS/CXXFLAGS into qmake
+QMAKE_CFLAGS += $$(CFLAGS) -isystem $$[QT_INSTALL_HEADERS]
+QMAKE_CXXFLAGS += $$(CXXFLAGS) -isystem $$[QT_INSTALL_HEADERS]
+
+# Supress warnings for Qt stuff
+QMAKE_CFLAGS += -isystem "$$[QT_INSTALL_HEADERS]/qt5" -isystem "$$[QT_INSTALL_HEADERS]/qt5/QtWidgets" \
+                -isystem "$$[QT_INSTALL_HEADERS]/QtXml" -isystem "/usr/include/qt5/QtGui" \
+                -isystem "$$[QT_INSTALL_HEADERS]/QtCore"
+QMAKE_CXXFLAGS += -isystem "$$[QT_INSTALL_HEADERS]/qt5" -isystem "$$[QT_INSTALL_HEADERS]/qt5/QtWidgets" \
+                  -isystem "$$[QT_INSTALL_HEADERS]/QtXml" -isystem "/usr/include/qt5/QtGui" \
+                  -isystem "$$[QT_INSTALL_HEADERS]/QtCore"
 
 SOURCES += \
     aboutdialog.cpp \
@@ -37,12 +40,13 @@ SOURCES += \
     models/objectclasstablemodel.cpp \
     models/objectinstancetablemodel.cpp \
     models/playerleveldatatablemodel.cpp \
+    models/texturelistmodel.cpp \
     models/vfxinstancetablemodel.cpp \
     models/weaponstatstablemodel.cpp \
     modelviewerwidget.cpp \
     prettynamer.cpp \
-    texture.cpp \
-    textureviewer.cpp \
+    texturedb.cpp \
+    texturedbviewer.cpp \
     tfile.cpp
 
 HEADERS += \
@@ -68,12 +72,13 @@ HEADERS += \
     models/objectclasstablemodel.h \
     models/objectinstancetablemodel.h \
     models/playerleveldatatablemodel.h \
+    models/texturelistmodel.h \
     models/vfxinstancetablemodel.h \
     models/weaponstatstablemodel.h \
     modelviewerwidget.h \
     prettynamer.h \
-    texture.h \
-    textureviewer.h \
+    texturedb.h \
+    texturedbviewer.h \
     tfile.h \
     utilities.h
 
@@ -83,7 +88,7 @@ FORMS += \
     mainwindow.ui \
     mapeditwidget.ui \
     modelviewerwidget.ui \
-    textureviewer.ui
+    texturedbviewer.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

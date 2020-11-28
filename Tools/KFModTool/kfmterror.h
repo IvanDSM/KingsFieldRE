@@ -32,7 +32,7 @@ class KFMTError
          * \brief Displays a fatal error message.
          * \param errorMessage Error message to display.
          */
-        static void fatalError(const QString &fatalErrorMessage);
+        [[noreturn]] static void fatalError(const QString &fatalErrorMessage);
         
         /*!
          * \brief Writes a quiet log message to stderr;
@@ -52,7 +52,7 @@ class KFMTError
          * \param arrayName Name of the array (e.g. "object class declaration").
          * \param exceptionWhat Result of the exception's .what() method.
          */
-        static void outOfRange(const size_t &index, const QString &arrayName, const std::string &exceptionWhat);
+        [[noreturn]] static void outOfRange(const size_t &index, const QString &arrayName, const std::string &exceptionWhat);
 };
 
 #endif // KFMTERROR_H

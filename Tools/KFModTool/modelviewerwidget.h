@@ -5,16 +5,14 @@
 #include "ui_modelviewerwidget.h"
 #include <QWidget>
 
-namespace Ui {
-class ModelViewerWidget;
-}
-
 class ModelViewerWidget : public QWidget
 {
     Q_OBJECT
     
 public:
     explicit ModelViewerWidget(QWidget *parent = nullptr);
+    ~ModelViewerWidget() {delete ui;}
+    
     void setModel(std::shared_ptr<Model> model);
     
 private slots:
@@ -25,7 +23,7 @@ private slots:
     
 private:
     std::shared_ptr<Model> curModel;
-    std::unique_ptr<Ui::ModelViewerWidget> ui;
+    Ui::ModelViewerWidget *ui;
 };
 
 #endif // MODELVIEWERWIDGET_H

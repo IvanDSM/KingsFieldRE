@@ -1,5 +1,8 @@
 #ifndef KFTYPES_H
 #define KFTYPES_H
+// I don't want any warnings for unused functions here.
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wunused-function"
 
 #include <QDataStream>
 #include <QString>
@@ -1679,5 +1682,5 @@ namespace KingsField
     constexpr static const double rotationCoefficient = 360.0 / 4096.0;
 }
 
-
+#pragma GCC diagnostic pop
 #endif // KFTYPES_H

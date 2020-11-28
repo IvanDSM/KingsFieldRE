@@ -80,10 +80,10 @@ public:
 
 private:
     TFile &tFile;
-    unsigned int index;
-
-    
     QByteArray database;
+    unsigned int index;
+    
+    
     std::array<KingsField::ArmorStats, armorStatsSize> armorStats {};
     std::array<KingsField::ObjectClassDeclaration, objClassDeclarationsSize> objClassDeclarations {};
     std::array<KingsField::PlayerLvlData, lvlDataSize> lvlData {};

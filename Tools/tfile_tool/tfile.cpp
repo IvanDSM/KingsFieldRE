@@ -145,7 +145,7 @@ QString TFile::getPrettyName(size_t index)
     if (prettyNameIt != prettyMap.end())
         return prettyNameIt->second;
     
-        return "";
+    return "";
 }
 
 std::vector<unsigned int> TFile::getTrueFileOffsets()

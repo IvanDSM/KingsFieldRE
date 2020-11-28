@@ -3,7 +3,7 @@
 #include "map.h"
 #include "mapeditwidget.h"
 #include "modelviewerwidget.h"
-#include "textureviewer.h"
+#include "texturedbviewer.h"
 #include <QFileDialog>
 #include <memory>
 
@@ -119,7 +119,7 @@ void MainWindow::addTexture(TFile & tFile, unsigned int index)
     if (prettyName.isEmpty())
         prettyName = tFile.getFilename() + ' ' + QString::number(index);
     
-    std::shared_ptr<Texture> texture(new Texture(tFile, index));
+    std::shared_ptr<TextureDB> texture(new TextureDB(tFile, index));
     auto parentItem = ui->filesTree->findItems(tFile.getFilename(), Qt::MatchExactly).front();
     auto textureTreeItem = new KFMTTreeWidgetItem(parentItem, texture);
     textureTreeItem->setText(0, prettyName);
@@ -302,8 +302,8 @@ void MainWindow::on_filesTree_itemDoubleClicked(QTreeWidgetItem *item, int)
             }
             case KFMTDataType::KFMT_TEXTURE:
             {
-                auto* textureViewer = new TextureViewer(ui->editorTabs);
-                textureViewer->setTexture(kfmtItem->getTexture());
+                auto* textureViewer = new TextureDBViewer(ui->editorTabs);
+                textureViewer->setTextureDB(kfmtItem->getTexture());
                 ui->editorTabs->addTab(textureViewer, kfmtItem->text(0));
                 ui->editorTabs->setCurrentWidget(textureViewer);
                 ui->editorTabs->setTabIcon(ui->editorTabs->currentIndex(), QIcon(":/tex_icon.png"));

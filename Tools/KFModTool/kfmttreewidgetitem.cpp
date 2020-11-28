@@ -26,7 +26,7 @@ KFMTTreeWidgetItem::KFMTTreeWidgetItem(QTreeWidgetItem *parent, std::shared_ptr<
     setIcon(0, QIcon(":/3d_icon.png"));
 }
 
-KFMTTreeWidgetItem::KFMTTreeWidgetItem(QTreeWidgetItem *parent, std::shared_ptr<Texture> kfmtTexture) : 
+KFMTTreeWidgetItem::KFMTTreeWidgetItem(QTreeWidgetItem *parent, std::shared_ptr<TextureDB> kfmtTexture) : 
     QTreeWidgetItem(parent, QTreeWidgetItem::UserType),
     dataType(KFMTDataType::KFMT_TEXTURE),
     texPtr(std::move(kfmtTexture))
