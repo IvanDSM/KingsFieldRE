@@ -72,6 +72,7 @@ HEADERS += \
     models/weaponstatstablemodel.h \
     modelviewerwidget.h \
     prettynamer.h \
+    soundbank.h \
     texture.h \
     textureviewer.h \
     tfile.h \
