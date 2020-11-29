@@ -1,5 +1,5 @@
 ﻿#include "prettynamer.h"
-#include "tfile.h"
+#include "../common/tfile.h"
 #include <QBuffer>
 #include <QCryptographicHash>
 #include <QDebug>

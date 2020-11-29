@@ -19,6 +19,8 @@ QMAKE_CXXFLAGS += -isystem "$$[QT_INSTALL_HEADERS]/qt5" -isystem "$$[QT_INSTALL_
                   -isystem "$$[QT_INSTALL_HEADERS]/QtCore"
 
 SOURCES += \
+    ../common/prettynamer.cpp \
+    ../common/tfile.cpp \
     aboutdialog.cpp \
     gamedb.cpp \
     gamedbeditwidget.cpp \
@@ -44,12 +46,12 @@ SOURCES += \
     models/vfxinstancetablemodel.cpp \
     models/weaponstatstablemodel.cpp \
     modelviewerwidget.cpp \
-    prettynamer.cpp \
     texturedb.cpp \
-    texturedbviewer.cpp \
-    tfile.cpp
+    texturedbviewer.cpp
 
 HEADERS += \
+    ../common/prettynamer.h \
+    ../common/tfile.h \
     aboutdialog.h \
     checksum.h \
     gamedb.h \
@@ -76,11 +78,9 @@ HEADERS += \
     models/vfxinstancetablemodel.h \
     models/weaponstatstablemodel.h \
     modelviewerwidget.h \
-    prettynamer.h \
     soundbank.h \
     texturedb.h \
     texturedbviewer.h \
-    tfile.h \
     utilities.h
 
 FORMS += \

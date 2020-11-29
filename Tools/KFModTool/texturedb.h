@@ -1,7 +1,7 @@
 #ifndef TEXTUREDB_H
 #define TEXTUREDB_H
 
-#include "tfile.h"
+#include "../common/tfile.h"
 #include <QImage>
 #include <QPainter>
 

@@ -1,13 +1,13 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
-#include <QMainWindow>
-#include <QMessageBox>
-#include <memory>
-#include <tfile.h>
+#include "../common/tfile.h"
 #include "kfmttreewidgetitem.h"
 #include "ui_mainwindow.h"
 #include "aboutdialog.h"
+#include <QMainWindow>
+#include <QMessageBox>
+#include <memory>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }

@@ -3,7 +3,7 @@
 
 #include "kfmterror.h"
 #include "kftypes.h"
-#include "tfile.h"
+#include "../common/tfile.h"
 
 class GameDB
 {
