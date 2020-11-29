@@ -3,9 +3,10 @@
 
 #include <memory>
 
-TextureDB::TextureDB(TFile & tFile, unsigned int index)
+TextureDB::TextureDB(TFile &tFile, unsigned int index)
 {
     auto file = tFile.getFile(index);
+    fileId = tFile.getFilename() + QString::number(index);
     
     if (TFile::isTIM(file))
         loadTIM(file);
@@ -38,8 +39,8 @@ void TextureDB::loadRTIM(const QByteArray &file)
     QDataStream rtimStream(file);
     rtimStream.setByteOrder(QDataStream::LittleEndian);
     
-    uint16_t rtimID;
-    uint16_t rtimUnknown;
+    uint16_t clutVramX;
+    uint16_t clutVramY;
     uint16_t clutEntryAmount;
     uint16_t clutAmount;
     
@@ -53,14 +54,9 @@ void TextureDB::loadRTIM(const QByteArray &file)
     {
         textures.emplace_back();
         
-        rtimStream >> rtimID;
-        if (rtimID != 448 && rtimID != 512 && rtimID != 576)
-        {
-            KFMTError::error("Texture: RTIM with invalid ID " + QString::number(rtimID));
-            return;
-        }
+        rtimStream >> clutVramX;
+        rtimStream >> clutVramY;
         
-        rtimStream >> rtimUnknown;
         rtimStream >> clutEntryAmount;
         if (clutEntryAmount == 16)
             textures.back().pMode = PixelMode::CLUT4Bit;
@@ -68,21 +64,45 @@ void TextureDB::loadRTIM(const QByteArray &file)
             textures.back().pMode = PixelMode::CLUT8Bit;
         
         rtimStream >> clutAmount;
-        if (clutAmount != 1)
-        {
-            KFMTError::error("Texture: Unsupported RTIM CLUT amount " + QString::number(clutAmount));
-            return;
-        }
         
         rtimStream >> rtimIDDupe;
         rtimStream >> rtimUnknownDupe;
         rtimStream >> clutEntryAmountDupe;
         rtimStream >> clutAmountDupe;
         
-        if (rtimID != rtimIDDupe || rtimUnknown != rtimUnknownDupe ||
-            clutEntryAmount != clutEntryAmountDupe || clutAmount != clutAmountDupe)
+        if (clutVramX != rtimIDDupe || clutVramY != rtimUnknownDupe ||
+            clutEntryAmount != clutEntryAmountDupe || clutAmount != clutAmountDupe ||
+            (clutVramX == 0 && clutVramY == 0 && clutEntryAmount == 0 && clutAmount == 0))
         {
-            KFMTError::error("Texture: RTIM header dupes don't match.");
+            KFMTError::error("Texture: Invalid RTIM header.");
+            KFMTError::log(QString("%1 @ %2").arg(fileId).arg(rtimStream.device()->pos() - 16, 0, 16));
+            KFMTError::log(QString::asprintf("vramx = %u, vramy = %u clutentries = %u clutcnt = %u",
+                                             clutVramX, clutVramY, clutEntryAmount, clutAmount));
+            return;
+        }
+        else if (clutVramX == 0xFFFF && clutVramY == 0xFFFF && clutEntryAmount == 0xFFFF && clutAmount == 0xFFFF)
+        {
+            // FIXME: VERY JANKY LOADING THING FOR THE WEIRD PICTURE
+            rtimStream.skipRawData(48);
+            int curPixel = 0;
+            textures.back().image = QImage(96, 8, QImage::Format_RGB888);
+            
+            while (!rtimStream.atEnd())
+            {
+                uint8_t pixel;
+                rtimStream >> pixel;
+                
+                textures.back().image.setPixel(curPixel % 96, curPixel / 96, qRgb(pixel, pixel, pixel));
+                curPixel++;
+            }
+            
+            break;
+        }
+        
+        if (clutAmount != 1)
+        {
+            KFMTError::error("Texture: Unsupported RTIM CLUT amount " + QString::number(clutAmount));
+            return;
         }
         
         readCLUT(rtimStream, textures.back(), true);
