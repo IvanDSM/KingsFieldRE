@@ -46,6 +46,7 @@ SOURCES += \
     models/vfxinstancetablemodel.cpp \
     models/weaponstatstablemodel.cpp \
     modelviewerwidget.cpp \
+    soundbank.cpp \
     texturedb.cpp \
     texturedbviewer.cpp
 
