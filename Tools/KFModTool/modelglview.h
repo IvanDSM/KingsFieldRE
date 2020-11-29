@@ -101,6 +101,55 @@ public:
         setFormat(fmt);
         setMouseTracking(true);
     }
+
+    ~ModelGLView()
+    {
+        glFuncs->glBindVertexArray(0);
+        glFuncs->glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+        if(model != nullptr)
+        {
+            if(model->animFrames.empty())
+            {
+                //Clear TMD Objects
+                for(Model::Mesh &mesh : model->baseObjects)
+                {
+                    glFuncs->glDeleteBuffers(1, &mesh.oglVertexBufferObject);
+                    glFuncs->glDeleteVertexArrays(1, &mesh.oglVertexArrayObject);
+                    mesh.oglVertexNum = 0;
+                    mesh.oglVertexBufferObject = 0;
+                    mesh.oglVertexArrayObject = 0;
+                }
+
+                //Clear Shader
+                glTMDProgram.release();
+                glTMDProgram.removeAllShaders();
+            }
+            else
+            {
+                //Clear MO Frames
+                for(Model::MOFrame &frame : model->animFrames)
+                {
+                    glFuncs->glDeleteBuffers(1, &frame.glVBO);
+                    glFuncs->glDeleteVertexArrays(1, &frame.glVAO);
+                    frame.glVertexNum = 0;
+                    frame.glVBO = 0;
+                    frame.glVAO = 0;
+                }
+
+                //Clear Shader
+                glMOProgram.release();
+                glMOProgram.removeAllShaders();
+            }
+        }
+
+        //Clear Grid
+        glFuncs->glDeleteBuffers(1, &glGridVBO);
+        glFuncs->glDeleteVertexArrays(1, &glGridVAO);
+
+        glSimpleProgram.release();
+        glSimpleProgram.removeAllShaders();
+    }
     
     bool setCurAnim(int animationIndex)
     {
@@ -207,8 +256,6 @@ private:
 
     unsigned int glGridVBO = 0;
     unsigned int glGridVAO = 0;
-    unsigned int glAxisVBO = 0;
-    unsigned int glAxisVAO = 0;
 };
 
 #endif // MODELGLVIEW_H

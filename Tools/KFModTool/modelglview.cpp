@@ -109,10 +109,7 @@ void ModelGLView::BuildMOAnimation()
     //Build each animation frame
     unsigned int i = 0;
 
-    //We need to store this 'cause some weird funky stuff happens with
-    //looping when we don't.
-    unsigned int firstFrame = 0;
-    unsigned int lastFrame = 0;
+
     for(size_t frameID : Anim.frameIndexes)
     {
          Model::MOFrame &moFrame = model->animFrames[frameID];
@@ -120,22 +117,6 @@ void ModelGLView::BuildMOAnimation()
          //My little, not very safe safe guard.
          if(moFrame.glVAO > 0)
              continue;
-
-        //If frameID is 0, we use baseMesh & this frame to form the MO
-         /*
-        if(i == 0)
-        {
-            frame1 = model->morphTargets[model->animFrames[Anim.frameIndexes[Anim.frameIndexes.size()-1]].frameID];
-            frame2 = model->morphTargets[model->animFrames[frameID].frameID];
-
-            firstFrame = model->animFrames[Anim.frameIndexes[Anim.frameIndexes.size()-1]].frameID;
-            lastFrame = model->animFrames[frameID].frameID;
-
-            KFMTError::log("Added start Frame");
-            KFMTError::log("1 : " + QString::number(firstFrame));
-            KFMTError::log("2 : " + QString::number(lastFrame));
-        }else
-        */
 
         if(i == Anim.frameIndexes.size()-1)
         {
