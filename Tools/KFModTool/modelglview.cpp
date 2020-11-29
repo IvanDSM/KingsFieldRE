@@ -120,20 +120,26 @@ void ModelGLView::BuildMOAnimation()
 
         if(i == Anim.frameIndexes.size()-1)
         {
-            frame1 = model->morphTargets[model->animFrames[frameID].frameID];
+            frame1 = model->morphTargets[model->animFrames[Anim.frameIndexes[Anim.frameIndexes.size()-1]].frameID];
             frame2 = model->morphTargets[model->animFrames[Anim.frameIndexes[0]].frameID];
 
-            KFMTError::log("Added End Frame");
-            KFMTError::log("1 : " + QString::number(model->animFrames[frameID].frameID));
-            KFMTError::log("2 : " + QString::number(model->animFrames[Anim.frameIndexes[0]].frameID));
+            KFMTError::log("Frames End: ");
+            KFMTError::log("    f1: " + QString::number(model->animFrames[Anim.frameIndexes[Anim.frameIndexes.size()-1]].frameID));
+            KFMTError::log("    f2: " + QString::number(model->animFrames[Anim.frameIndexes[0]].frameID));
         }else
         {
             frame1 = model->morphTargets[model->animFrames[frameID].frameID];
             frame2 = model->morphTargets[model->animFrames[frameID+1].frameID];
 
-            KFMTError::log("Added Mid/Start Frame");
-            KFMTError::log("1 : " + QString::number(model->animFrames[frameID].frameID));
-            KFMTError::log("2 : " + QString::number(model->animFrames[frameID+1].frameID));
+            if((frameID+1) > model->animFrames.size())
+            {
+                KFMTError::error("GLModelView: Frame ID exceeded maximum");
+                KFMTError::log("This should be impossible!");
+            }
+
+            KFMTError::log("Frames Mid/Start: ");
+            KFMTError::log("    f1: " + QString::number(model->animFrames[frameID].frameID));
+            KFMTError::log("    f2: " + QString::number(model->animFrames[frameID+1].frameID));
         }
 
         //Now build the actual frame!

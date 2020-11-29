@@ -153,7 +153,7 @@ public:
     ~SoundBank();
 
 public:
-    void loadVAB(); //Should take a VH and VB file
+    void loadVAB(const QByteArray &vh, const QByteArray &vb); //Should take a VH and VB file
 
     /*!
      * \brief Get a sound object from the sound bank.
@@ -162,16 +162,20 @@ public:
      */
     Sound *getSound(unsigned int index)
     {
-       if(index < 0 || index >= sounds.size())
+       if(index >= sound.size())
        {
            KFMTError::error("SoundBank: Invalid Sound ID");
            return nullptr;
        }
 
-       return sounds[index];
+       return sound[index];
     }
+
 private:
-    std::vector<Sound*> sounds;
+    std::vector<VABFormat::Program*> program;
+    std::vector<VABFormat::Tone*> tone;
+
+    std::vector<Sound*> sound;
 
 };
 
