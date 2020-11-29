@@ -17,7 +17,7 @@ const std::unordered_map<QString, QString> &PrettyNamer::getPrettyMap(const QByt
         md5Hash == "5C9D729367476B66B7988288FE842BA4" || // ITEM.T
         md5Hash == "7E09927E405FFC282A4DBC501B95BF89" || // MO.T
         md5Hash == "AB20EC7C9C4E227FCA9C065D7DA05ECC" || // RTIM.T
-        md5Hash == "9C980424DC165E5B15A8BCBDB50368A8" || // FDAT.T
+        md5Hash == "9C980424DC165E5B15A8BCBDB50368A8" || // RTMD.T
         md5Hash == "D39EE781C7BAC1F8CC851AD2B8D0C72A" || // TALK.T
         md5Hash == "4605A5C590578E857F2E690FBA575198"    // VAB.T
         )
