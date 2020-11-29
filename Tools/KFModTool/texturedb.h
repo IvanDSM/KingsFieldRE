@@ -43,6 +43,7 @@ private:
     void readPixelData(QDataStream &stream, Texture &targetTex, bool isRtim = false);
     
     std::vector<Texture> textures;
+    QString fileId;
 };
 
 struct TextureDB::CLUT
@@ -55,7 +56,7 @@ struct TextureDB::CLUT
     std::vector<QColor> clut {};
     
     CLUT() = default;
-    CLUT(uint32_t _bnum, uint16_t _dx, uint16_t _dy, uint16_t _w, uint16_t _h, PixelMode pColor) : 
+    CLUT(uint32_t _bnum, uint16_t _dx, uint16_t _dy, uint16_t _w, uint16_t _h, PixelMode pColor) :
             bnum(_bnum), dx(_dx), dy(_dy), h(_h)
     {
         if (pColor == PixelMode::CLUT4Bit)
@@ -95,6 +96,7 @@ struct TextureDB::Texture
     // CLUT + Pixel Data
     std::unique_ptr<CLUT> clut;
     QImage image;
+    
 };
 
 #endif // TEXTUREDB_H
