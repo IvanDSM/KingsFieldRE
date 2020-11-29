@@ -18,7 +18,7 @@ public:
 private slots:
     void on_exportBtn_clicked();
     
-    void on_texList_doubleClicked(const QModelIndex &index);
+    void on_texList_activated(const QModelIndex &index);
     
 private:
     size_t curTexture = 0;

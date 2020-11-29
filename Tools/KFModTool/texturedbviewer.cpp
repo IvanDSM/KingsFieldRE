@@ -33,7 +33,7 @@ void TextureDBViewer::on_exportBtn_clicked()
     curTextureDB->getTexture(curTexture).save(fileName, format, 0);
 }
 
-void TextureDBViewer::on_texList_doubleClicked(const QModelIndex &index)
+void TextureDBViewer::on_texList_activated(const QModelIndex &index)
 {
     curTexture = index.row();
     ui->texWidget->setPixmap(QPixmap::fromImage(curTextureDB->getTexture(curTexture)));

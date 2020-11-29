@@ -42,7 +42,7 @@ class PrettyNamer
             {"FDAT.T24", "Weird Debug Map Tilemap"},
             {"FDAT.T25", "Weird Debug Map Map DB"},
             {"FDAT.T26", "Weird Debug Map Script"},
-            {"FDAT.T27", "Texture Database"}, // TODO/FIXME: Find a better name for this file
+            {"FDAT.T27", "Texture Database"},
             {"FDAT.T28", "Game Database"},
             {"FDAT.T29", "Dagger Viewmodel"},
             {"FDAT.T30", "Short Sword Viewmodel"},
@@ -60,6 +60,7 @@ class PrettyNamer
             {"FDAT.T42", "Dark Slayer Viewmodel"},
             {"FDAT.T43", "Bow Viewmodel"},
             {"FDAT.T44", "Arbalest Viewmodel"},
+                
             {"ITEM.T0", "Dagger Model"},
             {"ITEM.T1", "Short Sword Model"},
             {"ITEM.T2", "Knight Sword Model"},
@@ -440,6 +441,7 @@ class PrettyNamer
             {"ITEM.T400", "Text: Truth Glass The Research Office"},
             {"ITEM.T401", "Text: Truth Glass The Village Of The Wind"},
             {"ITEM.T402", "Text: Truth Glass The East Seaside"},
+                
             {"MO.T0", "Slime"},
             {"MO.T1", "Posion Slime"},
             {"MO.T2", "Sigill"},
@@ -535,12 +537,12 @@ class PrettyNamer
             {"RTIM.T5", "Big Mine Texture Database"},
             {"RTIM.T6", "Necron's Colosseum Texture Database"},
             {"RTIM.T7", "Guyra's Lair Texture Database"},
-            {"RTIM.T7", "Weird Debug Map Texture Database"},
-            {"RTIM.T16", "Lighthouse"},
+            {"RTIM.T8", "Weird Debug Map Texture Database"},
             {"RTIM.T16", "Picture of a King"},
             {"RTIM.T23", "Village House 01"},
             {"RTIM.T24", "Village House 02"},
             {"RTIM.T28", "Seath's Door"},
+            {"RTIM.T29", "The Picture of Warriors"},
 
             {"RTMD.T0", "Western Shore Tileset"},
             {"RTMD.T1", "Garrison Tileset"},
