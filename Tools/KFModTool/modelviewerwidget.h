@@ -21,6 +21,8 @@ private slots:
         ui->modelGLView->repaint();
     }
     
+    void on_animList_activated(const QModelIndex &index);
+    
 private:
     std::shared_ptr<Model> curModel;
     Ui::ModelViewerWidget *ui;

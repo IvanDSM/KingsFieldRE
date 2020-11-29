@@ -19,3 +19,8 @@ void ModelViewerWidget::setModel(std::shared_ptr<Model> model)
             this, &ModelViewerWidget::objListChanged);
 }
 
+
+void ModelViewerWidget::on_animList_activated(const QModelIndex &index)
+{
+    ui->modelGLView->setCurAnim(index.row());
+}
