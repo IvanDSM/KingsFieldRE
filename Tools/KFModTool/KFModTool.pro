@@ -106,5 +106,9 @@ DISTFILES += \
     unlitSimple.frag \
     unlitSimple.vert
 
-unix: CONFIG += link_pkgconfig
-unix: PKGCONFIG += imagequant
+
+INCLUDEPATH += $$PWD/libs
+DEPENDPATH += $$PWD/libs
+
+unix:!macx: LIBS += -L$$PWD/libs/ -limagequant_2.13.1
+win32: LIBS += -L$$PWD/libs/ -llibimagequant_2.13.1.dll
