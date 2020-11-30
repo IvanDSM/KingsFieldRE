@@ -126,6 +126,11 @@ void MainWindow::on_filesTree_itemDoubleClicked(QTreeWidgetItem *item_, int)
 void MainWindow::on_actionSave_changes_triggered()
 {
     auto tFileItemCount = ui->filesTree->topLevelItemCount();
+    
+    // Bail out if files weren't loaded
+    if (tFileItemCount == 0)
+            return;
+    
     for (auto tFileItemIndex = 0; tFileItemIndex < tFileItemCount; tFileItemIndex++)
     {
         auto tFileItem = ui->filesTree->topLevelItem(tFileItemIndex);
