@@ -41,8 +41,17 @@ void ModelGLView::mouseMoveEvent(QMouseEvent * event)
             camRotY += (mousePosDiff.x() * 0.0174533) * 0.25f;
             camRotZ += (mousePosDiff.y() * 0.0174533) * 0.25f;
         }
-        lastMousePos = event->globalPos();
     }
+    else if (event->buttons() == Qt::RightButton)
+    {
+        if (lastMousePos.x() != -999)
+        {
+            auto mousePosDiff = event->globalPos() - lastMousePos;
+            camTranslateX += -mousePosDiff.x();
+            camTranslateY += mousePosDiff.y();
+        }
+    }
+    lastMousePos = event->globalPos();
 }
 
 void ModelGLView::wheelEvent(QWheelEvent *event)
@@ -80,6 +89,7 @@ void ModelGLView::paintGL()
     //Build View Matrix
     glMatView.setToIdentity();
     glMatView.lookAt(glCamFrom, glCamTo, glCamUp);
+    glMatView.translate(qSin(camRotY) * camTranslateX , camTranslateY, qCos(camRotY) * camTranslateX);
 
     //Build World Matrix
     glMatWorld.setToIdentity();

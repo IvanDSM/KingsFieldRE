@@ -250,6 +250,8 @@ private:
 
     float camRotY = 0.f;
     float camRotZ = 0.f;
+    float camTranslateX = 0.f;
+    float camTranslateY = 0.f;
     float camZoom = 128.f;
 
     QPoint lastMousePos{-999, -999};
