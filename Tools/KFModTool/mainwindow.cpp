@@ -62,11 +62,11 @@ void MainWindow::on_actionLoad_files_triggered()
         ui->editorTabs->removeTab(tab);
 }
 
-void MainWindow::on_filesTree_itemDoubleClicked(QTreeWidgetItem *item, int)
+void MainWindow::on_filesTree_itemDoubleClicked(QTreeWidgetItem *item_, int)
 {
-    if (item->type() == QTreeWidgetItem::UserType)
+    if (item_->type() == QTreeWidgetItem::UserType)
     {
-        auto kfmtItem = dynamic_cast<KFMTTreeWidgetItem *>(item);
+        auto kfmtItem = dynamic_cast<KFMTTreeWidgetItem *>(item_);
         
         // Check to see if there is already a tab for this item
         auto tabForItem = openTabs.find(kfmtItem->text(0));

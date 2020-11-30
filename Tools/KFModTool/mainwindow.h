@@ -42,13 +42,15 @@ private slots:
 
     void on_actionLoad_files_triggered();
 
-    void on_filesTree_itemDoubleClicked(QTreeWidgetItem *item, int);
+    void on_filesTree_itemDoubleClicked(QTreeWidgetItem *item_, int);
 
     void on_editorTabs_tabCloseRequested(int index)
     {
         auto tabName = ui->editorTabs->tabText(index);
         openTabs.erase(openTabs.find(tabName));
+        auto tabWidget = ui->editorTabs->widget(index);
         ui->editorTabs->removeTab(index);
+        tabWidget->deleteLater();
     }
 
     void on_actionSave_changes_triggered();
