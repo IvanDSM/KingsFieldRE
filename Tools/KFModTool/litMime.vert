@@ -26,7 +26,7 @@ vec3 LinearIntr(vec3 v1, vec3 v2, float t)
 
 void main(void)
 {
-    vec3 finalVertex = CosineIntr(inVertex1, inVertex2, uWeight);
+    vec3 finalVertex = LinearIntr(inVertex1, inVertex2, uWeight);
 
     //Pass transformed vertex to fragment shader
     gl_Position = uMVP * vec4(finalVertex, 1.0);

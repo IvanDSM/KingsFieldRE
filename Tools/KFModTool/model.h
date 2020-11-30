@@ -148,6 +148,7 @@ struct Model::Primitive
     uint8_t r1 = 255, g1 = 255, b1 = 255;
     uint8_t r2 = 255, g2 = 255, b2 = 255;
     uint8_t r3 = 255, g3 = 255, b3 = 255;
+    uint8_t alpha = 255;
 
     uint8_t u0, v0;
     uint8_t u1, v1;
@@ -164,10 +165,10 @@ struct Model::Primitive
      * \brief Returns r0, g0 and b0 as a QVector4D
      * \return QVector4D with colour
      */
-    QVector4D Colour0() { return {r0 / 255.0f, g0 / 255.0f, b0 / 255.0f, 1.f }; }
-    QVector4D Colour1() { return {r1 / 255.0f, g1 / 255.0f, b1 / 255.0f, 1.f }; }
-    QVector4D Colour2() { return {r2 / 255.0f, g2 / 255.0f, b2 / 255.0f, 1.f }; }
-    QVector4D Colour3() { return {r3 / 255.0f, g3 / 255.0f, b3 / 255.0f, 1.f }; }
+    QVector4D Colour0() { return {r0 / 255.f, g0 / 255.f, b0 / 255.f, alpha / 255.f }; }
+    QVector4D Colour1() { return {r1 / 255.f, g1 / 255.f, b1 / 255.f, alpha / 255.f }; }
+    QVector4D Colour2() { return {r2 / 255.f, g2 / 255.f, b2 / 255.f, alpha / 255.f }; }
+    QVector4D Colour3() { return {r3 / 255.f, g3 / 255.f, b3 / 255.f, alpha / 255.f }; }
 
     /*!
      * \brief Checks whether this is a gradation primitive.
@@ -199,14 +200,31 @@ struct Model::Primitive
      * \brief Checks whether this primitive is flat shaded.
      * \return Whether this is a flat shade primitive.
      */
-    bool isSmooth() { return static_cast<uint8_t>(mode) >> 4; }
+    bool isSmooth()
+    {
+        auto mode_ = static_cast<uint8_t>(mode);
+        return (mode_ >> 4) & 1;
+    }
 
     /*!
      * \brief Checks whether this primitive is textured.
      * \return Whether this is a textured primitive.
      */
-    bool isTextured() { return static_cast<uint8_t>(mode) >> 2; }
+    bool isTextured()
+    {
+        auto mode_ = static_cast<uint8_t>(mode);
+        return (mode_ >> 2) & 1;
+    }
 
+    /*!
+     * \brief Checks if a primitive is double sided.
+     * \return Whether this is a double sided primitive.
+     */
+    bool isDoubleSided()
+    {
+        auto flag_ = static_cast<uint8_t>(flag);
+        return (flag_ >> 1) & 1;
+    }
 };
 
 struct Model::Vec3
@@ -241,7 +259,7 @@ enum class Model::Primitive::PrimitiveMode
     x20TriFlatNoTexOpaqueLit = 0b00100000, 
     x21TriFlatNoTexOpaqueUnlit = 0b00100001, 
     x22TriFlatNoTexTranslucentLit = 0b00100010, 
-    x23TriFlatNoTexTranslucentUnlit = 0b00100011, 
+    x23TriFlatNoTexTranslucentUnlit = 0b00100011,
     x24TriFlatTexOpaqueLit = 0b00100100, 
     x25TriFlatTexOpaqueUnlit = 0b00100101, 
     x26TriFlatTexTranslucentLit = 0b00100110, 
