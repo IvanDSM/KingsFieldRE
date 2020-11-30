@@ -96,6 +96,10 @@ void TextureDB::replaceTexture(QImage & newTexture, size_t textureIndex, bool sm
         
         liq_write_remapped_image(iQRes, iQImg, texture.image.bits(),
                                  newTex.width() * newTex.height());
+        
+        liq_result_destroy(iQRes);
+        liq_image_destroy(iQImg);
+        liq_attr_destroy(iQAttr);
     }
     else
     {
