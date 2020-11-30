@@ -64,9 +64,10 @@ void TextureDB::replaceTexture(QImage & newTexture, size_t textureIndex, bool sm
         if (texture.pMode == PixelMode::CLUT4Bit)
             liq_set_max_colors(iQAttr, 16);
         
-        if (liq_set_speed(iQAttr, 0) != LIQ_OK)
+        
+        if (liq_set_speed(iQAttr, 1) != LIQ_OK)
         {
-            KFMTError::error("Texture: Failed to set libimagequant speed to 0, will use default.");
+            KFMTError::error("Texture: Failed to set libimagequant speed to 1, will use default.");
         }
         
         if (liq_image_quantize(iQImg, iQAttr, &iQRes) != LIQ_OK)
@@ -75,6 +76,12 @@ void TextureDB::replaceTexture(QImage & newTexture, size_t textureIndex, bool sm
             liq_attr_destroy(iQAttr);
             return;
         }
+        
+        if (liq_set_dithering_level(iQRes, 1.0) != LIQ_OK)
+        {
+            KFMTError::error("Texture: Failed to set libimagequant dither level to 1.0, will use default.");
+        }
+        
         const liq_palette *iQPal = liq_get_palette(iQRes);
         
         QVector<QRgb> clut;
@@ -95,6 +102,99 @@ void TextureDB::replaceTexture(QImage & newTexture, size_t textureIndex, bool sm
         KFMTError::error("Texture: Unhandled pixel mode for replacing textures.");
         return;
     }
+}
+
+void TextureDB::writeChanges()
+{
+    QByteArray outFile;
+    QDataStream outStream(&outFile, QIODevice::WriteOnly);
+    outStream.setByteOrder(QDataStream::LittleEndian);
+    
+    if (!isRtim) // TIM File
+    {
+    }
+    else // RTIM File
+    {
+        for (auto &texture : textures)
+        {
+            uint16_t clutEntryAmount = 16;
+            if (texture.pMode == PixelMode::CLUT8Bit)
+                clutEntryAmount = 256;
+            
+            // Write CLUT header
+            outStream << texture.clutVramX;
+            outStream << texture.clutVramY;
+            outStream << clutEntryAmount;
+            outStream << static_cast<uint16_t>(1);
+            
+            // Write CLUT header dupe
+            outStream << texture.clutVramX;
+            outStream << texture.clutVramY;
+            outStream << clutEntryAmount;
+            outStream << static_cast<uint16_t>(1);
+            
+            // Write CLUT
+            for (auto entry : texture.getCLUTEntries())
+                outStream << entry;
+            
+            // Adjust width before writing
+            uint16_t fixedPixelWidth = texture.pxWidth;
+            if (texture.pMode == PixelMode::CLUT4Bit)
+                fixedPixelWidth /= 4;
+            else if (texture.pMode == PixelMode::CLUT8Bit)
+                fixedPixelWidth /= 2;
+            
+            // Write pixel data header
+            outStream << texture.pxVramX;
+            outStream << texture.pxVramY;
+            outStream << fixedPixelWidth;
+            outStream << texture.pxHeight;
+            
+            // Write pixel data header dupe
+            outStream << texture.pxVramX;
+            outStream << texture.pxVramY;
+            outStream << fixedPixelWidth;
+            outStream << texture.pxHeight;
+            
+            auto imageByteData = texture.image.bits();
+            auto imagePixelSize = texture.image.width() * texture.image.height();
+            auto imageCurPixel = 0;
+            
+            while (imageCurPixel < imagePixelSize)
+            {
+                switch (texture.pMode)
+                {
+                case PixelMode::CLUT4Bit:
+                {
+                    uint8_t px0 = imageByteData[imageCurPixel] & 15;
+                    uint8_t px1 = imageByteData[imageCurPixel + 1] & 15;
+                    uint8_t px2 = imageByteData[imageCurPixel + 2] & 15;
+                    uint8_t px3 = imageByteData[imageCurPixel + 3] & 15;
+                    
+                    uint16_t packet = px0 | (px1 << 4) | (px2 << 8) | (px3 << 12);
+                    
+                    outStream << packet;
+                    
+                    imageCurPixel += 4;
+                }
+                break;
+                case PixelMode::CLUT8Bit:
+                {
+                    outStream << imageByteData[imageCurPixel];
+                    outStream << imageByteData[imageCurPixel + 1];
+                    imageCurPixel += 2;
+                }
+                break;
+                default:
+                    KFMTError::error("Texture: Unhandled pixel mode!");
+                    return;
+                    break;
+                }
+            }
+        }
+    }
+    
+    tFile.writeFile(outFile, fileIndex);
 }
 
 void TextureDB::loadRTIM(const QByteArray &file)
@@ -329,99 +429,6 @@ void TextureDB::readPixelData(QDataStream & stream, Texture & targetTex)
                 return;
         }
     }
-}
-
-void TextureDB::writeChanges()
-{
-    QByteArray outFile;
-    QDataStream outStream(&outFile, QIODevice::WriteOnly);
-    outStream.setByteOrder(QDataStream::LittleEndian);
-    
-    if (!isRtim) // TIM File
-    {
-    }
-    else // RTIM File
-    {
-        for (auto &texture : textures)
-        {
-            uint16_t clutEntryAmount = 16;
-            if (texture.pMode == PixelMode::CLUT8Bit)
-                clutEntryAmount = 256;
-            
-            // Write CLUT header
-            outStream << texture.clutVramX;
-            outStream << texture.clutVramY;
-            outStream << clutEntryAmount;
-            outStream << static_cast<uint16_t>(1);
-            
-            // Write CLUT header dupe
-            outStream << texture.clutVramX;
-            outStream << texture.clutVramY;
-            outStream << clutEntryAmount;
-            outStream << static_cast<uint16_t>(1);
-            
-            // Write CLUT
-            for (auto entry : texture.getCLUTEntries())
-                outStream << entry;
-            
-            // Adjust width before writing
-            uint16_t fixedPixelWidth = texture.pxWidth;
-            if (texture.pMode == PixelMode::CLUT4Bit)
-                fixedPixelWidth /= 4;
-            else if (texture.pMode == PixelMode::CLUT8Bit)
-                fixedPixelWidth /= 2;
-            
-            // Write pixel data header
-            outStream << texture.pxVramX;
-            outStream << texture.pxVramY;
-            outStream << fixedPixelWidth;
-            outStream << texture.pxHeight;
-            
-            // Write pixel data header dupe
-            outStream << texture.pxVramX;
-            outStream << texture.pxVramY;
-            outStream << fixedPixelWidth;
-            outStream << texture.pxHeight;
-            
-            auto imageByteData = texture.image.bits();
-            auto imagePixelSize = texture.image.width() * texture.image.height();
-            auto imageCurPixel = 0;
-            
-            while (imageCurPixel < imagePixelSize)
-            {
-                switch (texture.pMode)
-                {
-                    case PixelMode::CLUT4Bit:
-                    {
-                        uint8_t px0 = imageByteData[imageCurPixel] & 15;
-                        uint8_t px1 = imageByteData[imageCurPixel + 1] & 15;
-                        uint8_t px2 = imageByteData[imageCurPixel + 2] & 15;
-                        uint8_t px3 = imageByteData[imageCurPixel + 3] & 15;
-                        
-                        uint16_t packet = px0 | (px1 << 4) | (px2 << 8) | (px3 << 12);
-                        
-                        outStream << packet;
-                        
-                        imageCurPixel += 4;
-                    }
-                    break;
-                    case PixelMode::CLUT8Bit:
-                    {
-                        outStream << imageByteData[imageCurPixel];
-                        outStream << imageByteData[imageCurPixel + 1];
-                        imageCurPixel += 2;
-                    }
-                    break;
-                    default:
-                        KFMTError::error("Texture: Unhandled pixel mode!");
-                        return;
-                        break;
-                }
-            }
-        }
-    }
-    
-    tFile.writeFile(outFile, fileIndex);
 }
 
 std::vector<uint16_t> TextureDB::Texture::getCLUTEntries()
