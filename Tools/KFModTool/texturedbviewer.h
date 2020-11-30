@@ -32,6 +32,11 @@ private:
     size_t curTexture = 0;
     std::shared_ptr<TextureDB> curTextureDB = nullptr;
     Ui::TextureDBViewer *ui;
+    
+    const QString clutFbPosLabelPrefix = "CLUT Framebuffer Position: ";
+    const QString pixelFbPosLabelPrefix = "Pixel Framebuffer Position: ";
+    const QString pixelModePrefix = "Pixel Mode: ";
+    const QString pixelSizePrefix = "Pixel Size: ";
 };
 
 #endif // TEXTUREDBVIEWER_H
