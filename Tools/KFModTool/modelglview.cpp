@@ -145,8 +145,8 @@ void ModelGLView::BuildMOAnimation()
                 //Vertex 1
                 v0.position1 = frame1.vertices[prim.vertex0];
                 v0.position2 = frame2.vertices[prim.vertex0];
-                v0.normal    = prim.isSmooth() ? frame1.normals[prim.normal0] : frame1.normals[prim.normal0];
-                v0.colour    = prim.isGradation() ? prim.Colour0() : prim.Colour0();
+                v0.normal    = frame1.normals[prim.normal0];
+                v0.colour    = prim.Colour0();
                 v0.texcoord  = {prim.u0 / 255.f, prim.v0 / 255.f};
 
                 //Vertex 2
@@ -175,8 +175,8 @@ void ModelGLView::BuildMOAnimation()
                 //Vertex 1
                 v0.position1 = frame1.vertices[prim.vertex0];
                 v0.position2 = frame2.vertices[prim.vertex0];
-                v0.normal    = prim.isSmooth() ? frame1.normals[prim.normal0] : frame1.normals[prim.normal0];
-                v0.colour    = prim.isGradation() ? prim.Colour0() : prim.Colour0();
+                v0.normal    = frame1.normals[prim.normal0];
+                v0.colour    = prim.Colour0();
                 v0.texcoord  = {prim.u0 / 255.f, prim.v0 / 255.f};
 
                 //Vertex 2
@@ -329,8 +329,8 @@ void ModelGLView::BuildTMDModel()
 
                 //Vertex 1
                 v0.position = tmdObj.vertices[tmdPrim.vertex0];
-                v0.normal = tmdPrim.isSmooth() ? tmdObj.normals[tmdPrim.normal0] : tmdObj.normals[tmdPrim.normal0];
-                v0.colour = tmdPrim.isGradation() ? tmdPrim.Colour0() : tmdPrim.Colour0();
+                v0.normal = tmdObj.normals[tmdPrim.normal0];
+                v0.colour = tmdPrim.Colour0();
                 v0.texcoord = {tmdPrim.u0 / 255.f, tmdPrim.v0 / 255.f};
 
                 //Vertex 2
@@ -363,8 +363,8 @@ void ModelGLView::BuildTMDModel()
 
                 //Vertex 1
                 v0.position = tmdObj.vertices[tmdPrim.vertex0];
-                v0.normal = tmdPrim.isSmooth() ? tmdObj.normals[tmdPrim.normal0] : tmdObj.normals[tmdPrim.normal0];
-                v0.colour = tmdPrim.isGradation() ? tmdPrim.Colour0() : tmdPrim.Colour0();
+                v0.normal = tmdObj.normals[tmdPrim.normal0];
+                v0.colour = tmdPrim.Colour0();
                 v0.texcoord = {tmdPrim.u0 / 255.f, tmdPrim.v0 / 255.f};
 
                 //Vertex 2
