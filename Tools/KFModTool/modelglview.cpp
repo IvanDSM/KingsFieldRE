@@ -69,6 +69,9 @@ void ModelGLView::paintGL()
     //Clear Buffers
     glFuncs->glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+    //Stop camera flipping :)
+    camRotZ = qMin(qMax(-89.999f, camRotZ * 57.2958f), 89.999f) * 0.0174533f;
+
     //Apply Rotation to glCamFrom
     glCamFrom.setX(qCos(camRotY) * qCos(camRotZ) * camZoom);
     glCamFrom.setY(qSin(camRotZ) * camZoom);
@@ -120,20 +123,15 @@ void ModelGLView::BuildMOAnimation()
 
         if(i == Anim.frameIndexes.size()-1)
         {
-            frame1 = model->morphTargets[model->animFrames[frameID].frameID];
+            frame1 = model->morphTargets[model->animFrames[Anim.frameIndexes[Anim.frameIndexes.size()-1]].frameID];
             frame2 = model->morphTargets[model->animFrames[Anim.frameIndexes[0]].frameID];
-
-            KFMTError::log("Added End Frame");
-            KFMTError::log("1 : " + QString::number(model->animFrames[frameID].frameID));
-            KFMTError::log("2 : " + QString::number(model->animFrames[Anim.frameIndexes[0]].frameID));
         }else
         {
             frame1 = model->morphTargets[model->animFrames[frameID].frameID];
             frame2 = model->morphTargets[model->animFrames[frameID+1].frameID];
 
-            KFMTError::log("Added Mid/Start Frame");
-            KFMTError::log("1 : " + QString::number(model->animFrames[frameID].frameID));
-            KFMTError::log("2 : " + QString::number(model->animFrames[frameID+1].frameID));
+            if((frameID+1) > model->animFrames.size())
+                KFMTError::error("GLModelView: Frame ID exceeded maximum!");
         }
 
         //Now build the actual frame!
@@ -149,21 +147,21 @@ void ModelGLView::BuildMOAnimation()
                 v0.position2 = frame2.vertices[prim.vertex0];
                 v0.normal    = prim.isSmooth() ? frame1.normals[prim.normal0] : frame1.normals[prim.normal0];
                 v0.colour    = prim.isGradation() ? prim.Colour0() : prim.Colour0();
-                v0.texcoord  = {0.f,0.f};
+                v0.texcoord  = {prim.u0 / 255.f, prim.v0 / 255.f};
 
                 //Vertex 2
                 v1.position1 = frame1.vertices[prim.vertex1];
                 v1.position2 = frame2.vertices[prim.vertex1];
                 v1.normal    = prim.isSmooth() ? frame1.normals[prim.normal1] : frame1.normals[prim.normal0];
                 v1.colour    = prim.isGradation() ? prim.Colour1() : prim.Colour0();
-                v1.texcoord  = {0.f,0.f};
+                v1.texcoord  = {prim.u1 / 255.f, prim.v1 / 255.f};
 
                 //Vertex 3
                 v2.position1 = frame1.vertices[prim.vertex2];
                 v2.position2 = frame2.vertices[prim.vertex2];
                 v2.normal    = prim.isSmooth() ? frame1.normals[prim.normal2] : frame1.normals[prim.normal0];
                 v2.colour    = prim.isGradation() ? prim.Colour2() : prim.Colour0();
-                v2.texcoord  = {0.f,0.f};
+                v2.texcoord  = {prim.u2 / 255.f, prim.v2 / 255.f};
 
                 vertices.push_back(v2);
                 vertices.push_back(v1);
@@ -179,35 +177,35 @@ void ModelGLView::BuildMOAnimation()
                 v0.position2 = frame2.vertices[prim.vertex0];
                 v0.normal    = prim.isSmooth() ? frame1.normals[prim.normal0] : frame1.normals[prim.normal0];
                 v0.colour    = prim.isGradation() ? prim.Colour0() : prim.Colour0();
-                v0.texcoord  = {0.f,0.f};
+                v0.texcoord  = {prim.u0 / 255.f, prim.v0 / 255.f};
 
                 //Vertex 2
                 v1.position1 = frame1.vertices[prim.vertex1];
                 v1.position2 = frame2.vertices[prim.vertex1];
                 v1.normal    = prim.isSmooth() ? frame1.normals[prim.normal1] : frame1.normals[prim.normal0];
                 v1.colour    = prim.isGradation() ? prim.Colour1() : prim.Colour0();
-                v1.texcoord  = {0.f,0.f};
+                v1.texcoord  = {prim.u1 / 255.f, prim.v1 / 255.f};
 
                 //Vertex 3
                 v2.position1 = frame1.vertices[prim.vertex2];
                 v2.position2 = frame2.vertices[prim.vertex2];
                 v2.normal    = prim.isSmooth() ? frame1.normals[prim.normal2] : frame1.normals[prim.normal0];
                 v2.colour    = prim.isGradation() ? prim.Colour2() : prim.Colour0();
-                v2.texcoord  = {0.f,0.f};
+                v2.texcoord  = {prim.u2 / 255.f, prim.v2 / 255.f};
 
                 //Vertex 4
                 v3.position1 = frame1.vertices[prim.vertex3];
                 v3.position2 = frame2.vertices[prim.vertex3];
                 v3.normal    = prim.isSmooth() ? frame1.normals[prim.normal3] : frame1.normals[prim.normal0];
                 v3.colour    = prim.isGradation() ? prim.Colour3() : prim.Colour0();
-                v3.texcoord  = {0.f,0.f};
+                v3.texcoord  = {prim.u3 / 255.f, prim.v3 / 255.f};
 
-                //Tri 1 (0, 1, 2)
+                //Tri 1 (2, 1, 0)
                 vertices.push_back(v2);
                 vertices.push_back(v1);
                 vertices.push_back(v0);
 
-                //Tri 2 (1, 3, 2)
+                //Tri 2 (2, 3, 1)
                 vertices.push_back(v2);
                 vertices.push_back(v3);
                 vertices.push_back(v1);
@@ -297,7 +295,7 @@ void ModelGLView::DrawMOAnimation()
     glFuncs->glBindVertexArray(0);
 
     //Some quick 'n' dirty logic to make things move
-    animFrameDelta += 0.01;
+    animFrameDelta += animFrameAdd;
     if(animFrameDelta >= 1.f)
     {
         animFrame++;
@@ -306,8 +304,6 @@ void ModelGLView::DrawMOAnimation()
         {
             animFrame = 0;
         }
-
-        KFMTError::log("Frame: " + QString::number(animFrame));
         animFrameDelta = 0.f;
     }
 }
@@ -317,14 +313,11 @@ void ModelGLView::DrawMOAnimation()
 //
 void ModelGLView::BuildTMDModel()
 {
-    //Loop through each object and build it for OpenGL.
-    std::vector<TMDVertex> vertices;
-
     //
     // To-do : refactor this gigantic mess
-    //    Load Normals, Colour and Texcoord
-    // Vec3 to QVector3D function pls?
-    //
+    //    
+    std::vector<TMDVertex> vertices;
+
     for(Model::Mesh& tmdObj : model->baseObjects)
     {
         for(Model::Primitive tmdPrim : tmdObj.primitives)
@@ -338,24 +331,30 @@ void ModelGLView::BuildTMDModel()
                 v0.position = tmdObj.vertices[tmdPrim.vertex0];
                 v0.normal = tmdPrim.isSmooth() ? tmdObj.normals[tmdPrim.normal0] : tmdObj.normals[tmdPrim.normal0];
                 v0.colour = tmdPrim.isGradation() ? tmdPrim.Colour0() : tmdPrim.Colour0();
-                v0.texcoord = {0.f,0.f};
+                v0.texcoord = {tmdPrim.u0 / 255.f, tmdPrim.v0 / 255.f};
 
                 //Vertex 2
                 v1.position = tmdObj.vertices[tmdPrim.vertex1];
                 v1.normal = tmdPrim.isSmooth() ? tmdObj.normals[tmdPrim.normal1] : tmdObj.normals[tmdPrim.normal0];
                 v1.colour = tmdPrim.isGradation() ? tmdPrim.Colour1() : tmdPrim.Colour0();
-                v1.texcoord = {0.f,0.f};
+                v1.texcoord = {tmdPrim.u1 / 255.f, tmdPrim.v1 / 255.f};
 
                 //Vertex 2
                 v2.position = tmdObj.vertices[tmdPrim.vertex2];
                 v2.normal = tmdPrim.isSmooth() ? tmdObj.normals[tmdPrim.normal2] : tmdObj.normals[tmdPrim.normal0];
                 v2.colour = tmdPrim.isGradation() ? tmdPrim.Colour2() : tmdPrim.Colour0();
-                v2.texcoord = {0.f,0.f};
+                v2.texcoord = {tmdPrim.u2 / 255.f, tmdPrim.v2 / 255.f};
 
                 vertices.push_back(v2);
                 vertices.push_back(v1);
                 vertices.push_back(v0);
 
+                if(tmdPrim.isDoubleSided()) //Just reverse-wind the previous triangle
+                {
+                    vertices.push_back(v0);
+                    vertices.push_back(v2);
+                    vertices.push_back(v1);
+                }
             }
             else if (tmdPrim.isQuad())
             {
@@ -366,25 +365,25 @@ void ModelGLView::BuildTMDModel()
                 v0.position = tmdObj.vertices[tmdPrim.vertex0];
                 v0.normal = tmdPrim.isSmooth() ? tmdObj.normals[tmdPrim.normal0] : tmdObj.normals[tmdPrim.normal0];
                 v0.colour = tmdPrim.isGradation() ? tmdPrim.Colour0() : tmdPrim.Colour0();
-                v0.texcoord = {0.f,0.f};
+                v0.texcoord = {tmdPrim.u0 / 255.f, tmdPrim.v0 / 255.f};
 
                 //Vertex 2
                 v1.position = tmdObj.vertices[tmdPrim.vertex1];
                 v1.normal = tmdPrim.isSmooth() ? tmdObj.normals[tmdPrim.normal1] : tmdObj.normals[tmdPrim.normal0];
                 v1.colour = tmdPrim.isGradation() ? tmdPrim.Colour1() : tmdPrim.Colour0();
-                v1.texcoord = {0.f,0.f};
+                v1.texcoord = {tmdPrim.u1 / 255.f, tmdPrim.v1 / 255.f};
 
                 //Vertex 2
                 v2.position = tmdObj.vertices[tmdPrim.vertex2];
                 v2.normal = tmdPrim.isSmooth() ? tmdObj.normals[tmdPrim.normal2] : tmdObj.normals[tmdPrim.normal0];
                 v2.colour = tmdPrim.isGradation() ? tmdPrim.Colour2() : tmdPrim.Colour0();
-                v2.texcoord = {0.f,0.f};
+                v2.texcoord = {tmdPrim.u2 / 255.f, tmdPrim.v2 / 255.f};
 
                 //Vertex 2
                 v3.position = tmdObj.vertices[tmdPrim.vertex3];
                 v3.normal = tmdPrim.isSmooth() ? tmdObj.normals[tmdPrim.normal3] : tmdObj.normals[tmdPrim.normal0];
                 v3.colour = tmdPrim.isGradation() ? tmdPrim.Colour3() : tmdPrim.Colour0();
-                v3.texcoord = {0.f,0.f};
+                v3.texcoord = {tmdPrim.u3 / 255.f, tmdPrim.v3 / 255.f};
 
                 //Split the quad into two seperate triangles
 
@@ -393,10 +392,23 @@ void ModelGLView::BuildTMDModel()
                 vertices.push_back(v1);
                 vertices.push_back(v0);
 
-                //Tri 2 (1, 3, 2)
+                //Tri 2 (2, 3, 1)
                 vertices.push_back(v2);
                 vertices.push_back(v3);
                 vertices.push_back(v1);
+
+                if(tmdPrim.isDoubleSided()) //Just reverse-wind the previous triangle
+                {
+                    //Tri 1 (0, 1, 2)
+                    vertices.push_back(v0);
+                    vertices.push_back(v2);
+                    vertices.push_back(v1);
+
+                    //Tri 2 (1, 3, 2)
+                    vertices.push_back(v1);
+                    vertices.push_back(v2);
+                    vertices.push_back(v3);
+                }
             }
             else
                 KFMTError::error("ModelGLView: Unhandled TMD primitive type (line or sprite).");
@@ -437,6 +449,8 @@ void ModelGLView::BuildTMDModel()
 
         //Set vertex number for draw...
         tmdObj.oglVertexNum = vertices.size();
+
+        vertices.clear();
     }
 
     //Now we build the shaders required for rendering

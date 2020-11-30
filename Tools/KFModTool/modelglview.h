@@ -140,6 +140,8 @@ public:
                 //Clear Shader
                 glMOProgram.release();
                 glMOProgram.removeAllShaders();
+
+                glMOProgramMVP = 12345678;
             }
         }
 
@@ -149,6 +151,8 @@ public:
 
         glSimpleProgram.release();
         glSimpleProgram.removeAllShaders();
+
+        KFMTError::log("If this shows, something still janky with mo :(");
     }
     
     bool setCurAnim(int animationIndex)
@@ -231,6 +235,8 @@ private:
     unsigned int glMOProgramWeight = 0;
 
     unsigned int animFrame = 0;
+
+    float animFrameAdd   = 0.05f;
     float animFrameDelta = 0.f;
 
     //TMD Stuff

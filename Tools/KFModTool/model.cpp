@@ -165,7 +165,7 @@ void Model::loadMO(const QByteArray &file)
                 moStream >> targetIndex;
 
             animFrames.push_back(newFrame);
-            newAnimation.frameIndexes.push_back(animFrames.size());
+            newAnimation.frameIndexes.push_back(animFrames.size()-1);
         }
 
 
@@ -317,9 +317,9 @@ void Model::Vec3::readSVECTOR(QDataStream & in)
     in >> vz;
     in.skipRawData(2);
     
-    x = static_cast<float>(vx) / 4096;
-    y = static_cast<float>(vy) / 4096;
-    z = static_cast<float>(vz) / 4096;
+    x = static_cast<float>(vx) / 4096.f;
+    y = static_cast<float>(vy) / 4096.f;
+    z = static_cast<float>(vz) / 4096.f;
 }
 
 QDataStream &operator>>(QDataStream & in, Model::Primitive & primitive)
@@ -362,8 +362,9 @@ QDataStream &operator>>(QDataStream & in, Model::Primitive & primitive)
 
     switch(primitive.mode)
     {
-        case(Model::Primitive::PrimitiveMode::x20TriFlatNoTexOpaqueLit):
         case(Model::Primitive::PrimitiveMode::x22TriFlatNoTexTranslucentLit):
+            primitive.alpha = 127;
+        case(Model::Primitive::PrimitiveMode::x20TriFlatNoTexOpaqueLit):
             in >> primitive.r0;
             in >> primitive.g0;
             in >> primitive.b0;
@@ -374,8 +375,9 @@ QDataStream &operator>>(QDataStream & in, Model::Primitive & primitive)
             in >> primitive.vertex1;
             in >> primitive.vertex2;
             break;
-        case(Model::Primitive::PrimitiveMode::x24TriFlatTexOpaqueLit):
         case(Model::Primitive::PrimitiveMode::x26TriFlatTexTranslucentLit):
+            primitive.alpha = 127;
+        case(Model::Primitive::PrimitiveMode::x24TriFlatTexOpaqueLit):
             in >> primitive.u0;
             in >> primitive.v0;
             in >> primitive.cba;
@@ -390,8 +392,9 @@ QDataStream &operator>>(QDataStream & in, Model::Primitive & primitive)
             in >> primitive.vertex1;
             in >> primitive.vertex2;
             break;
-        case(Model::Primitive::PrimitiveMode::x25TriFlatTexOpaqueUnlit):
         case(Model::Primitive::PrimitiveMode::x27TriFlatTexTranslucentUnlit):
+            primitive.alpha = 127;
+        case(Model::Primitive::PrimitiveMode::x25TriFlatTexOpaqueUnlit):
             in >> primitive.u0;
             in >> primitive.v0;
             in >> primitive.cba;
@@ -411,8 +414,9 @@ QDataStream &operator>>(QDataStream & in, Model::Primitive & primitive)
             in >> primitive.vertex2;
             in.skipRawData(2);
             break;
-        case(Model::Primitive::PrimitiveMode::x28QuadFlatNoTexOpaqueLit):
         case(Model::Primitive::PrimitiveMode::x2aQuadFlatNoTexTranslucentLit):
+            primitive.alpha = 127;
+        case(Model::Primitive::PrimitiveMode::x28QuadFlatNoTexOpaqueLit):
             in >> primitive.r0;
             in >> primitive.g0;
             in >> primitive.b0;
@@ -425,8 +429,9 @@ QDataStream &operator>>(QDataStream & in, Model::Primitive & primitive)
             in >> primitive.vertex3;
             in.skipRawData(2);
             break;
-        case(Model::Primitive::PrimitiveMode::x2cQuadFlatTexOpaqueLit):
         case(Model::Primitive::PrimitiveMode::x2eQuadFlatTexTranslucentLit):
+            primitive.alpha = 127;
+        case(Model::Primitive::PrimitiveMode::x2cQuadFlatTexOpaqueLit):
             in >> primitive.u0;
             in >> primitive.v0;
             in >> primitive.cba;
@@ -446,8 +451,9 @@ QDataStream &operator>>(QDataStream & in, Model::Primitive & primitive)
             in >> primitive.vertex3;
             in.skipRawData(2);
             break;
-        case(Model::Primitive::PrimitiveMode::x30TriGouraudNoTexOpaqueLit):
         case(Model::Primitive::PrimitiveMode::x32TriGouraudNoTexTranslucentLit):
+            primitive.alpha = 127;
+        case(Model::Primitive::PrimitiveMode::x30TriGouraudNoTexOpaqueLit):
             in >> primitive.r0;
             in >> primitive.g0;
             in >> primitive.b0;
@@ -460,8 +466,9 @@ QDataStream &operator>>(QDataStream & in, Model::Primitive & primitive)
             in >> primitive.normal2;
             in >> primitive.vertex2;         
             break;
-        case(Model::Primitive::PrimitiveMode::x34TriGouraudTexOpaqueLit):
         case(Model::Primitive::PrimitiveMode::x36TriGouraudTexTranslucentLit):
+            primitive.alpha = 127;
+        case(Model::Primitive::PrimitiveMode::x34TriGouraudTexOpaqueLit):
             in >> primitive.u0;
             in >> primitive.v0;
             in >> primitive.cba;
@@ -478,8 +485,9 @@ QDataStream &operator>>(QDataStream & in, Model::Primitive & primitive)
             in >> primitive.normal2;
             in >> primitive.vertex2;
             break;
-        case(Model::Primitive::PrimitiveMode::x38QuadGouraudNoTexOpaqueLit):
         case(Model::Primitive::PrimitiveMode::x3aQuadGouraudNoTexTranslucentLit):
+            primitive.alpha = 127;
+        case(Model::Primitive::PrimitiveMode::x38QuadGouraudNoTexOpaqueLit):
             in >> primitive.r0;
             in >> primitive.g0;
             in >> primitive.b0;
@@ -494,8 +502,9 @@ QDataStream &operator>>(QDataStream & in, Model::Primitive & primitive)
             in >> primitive.normal3;
             in >> primitive.vertex3;           
             break;
-        case(Model::Primitive::PrimitiveMode::x3cQuadGouraudTexOpaqueLit):
         case(Model::Primitive::PrimitiveMode::x3eQuadGouraudTexTranslucentLit):
+            primitive.alpha = 127;
+        case(Model::Primitive::PrimitiveMode::x3cQuadGouraudTexOpaqueLit):
             in >> primitive.u0;
             in >> primitive.v0;
             in >> primitive.cba;

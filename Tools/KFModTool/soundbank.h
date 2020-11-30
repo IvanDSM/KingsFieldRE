@@ -1,9 +1,9 @@
 #ifndef SOUNDBANK_H
 #define SOUNDBANK_H
 
-#include <vector>
-
 #include "kfmterror.h"
+#include <vector>
+#include <QtMath>
 
 //
 // Formats
@@ -81,6 +81,48 @@ namespace VABFormat
         unsigned short vagTable[256];   //There's always 256 vag offsets (512 bytes)
     };
 }
+namespace PSXSpu
+{
+    static const signed char pos_adpcm_filter[] = {0, +60, +115, +98, +122};
+    static const signed char neg_adpcm_filter[] = {0,   0,  -52, -55,  -60};
+
+    struct adpcm_block_shift
+    {
+        unsigned char shiftFilter;
+        union {
+            unsigned char shift : 4;
+            unsigned char filter : 3;
+            unsigned char reserved : 1;
+        };
+    };
+
+    struct adpcm_block_flag
+    {
+        unsigned char flag;
+        union {
+            unsigned char loopEnd : 1;
+            unsigned char loopRepeat : 1;
+            unsigned char loopStart : 1;
+            unsigned char reserved : 5;
+        };
+    };
+
+    struct adpcm_block_sample
+    {
+        unsigned char sample;
+        union {
+            unsigned char first : 4;
+            unsigned char second : 4;
+        };
+    };
+
+    struct adpcm_block
+    {
+        adpcm_block_shift shiftFilter;
+        adpcm_block_flag  flags;
+        adpcm_block_sample samples[14];
+    };
+}
 
 class Sound {
 public:
@@ -89,7 +131,19 @@ public:
 
 public:
 
+    /*!
+     * \brief Decode a block of SPU ADPCM (MONO) and converts it to S16 PCM (MONO)
+     * \param in spu_adpcm_block
+     * \param out pcm data
+     * \return n/a
+     */
+    void decodeSpuADPCM(PSXSpu::adpcm_block block, signed short *pcm);
+
 private:
+
+    //These values relate to the decoding of ADPCM data.
+    signed short sampleOld    = 0;
+    signed short sampleOldest = 0;
 
 };
 
@@ -99,8 +153,7 @@ public:
     ~SoundBank();
 
 public:
-    void loadVAB(); //Should take a VH and VB file
-    void loadSEQ(); //Single SEQ file
+    void loadVAB(const QByteArray &vh, const QByteArray &vb); //Should take a VH and VB file
 
     /*!
      * \brief Get a sound object from the sound bank.
@@ -109,16 +162,20 @@ public:
      */
     Sound *getSound(unsigned int index)
     {
-       if(index < 0 || index >= sounds.size())
+       if(index >= sound.size())
        {
            KFMTError::error("SoundBank: Invalid Sound ID");
            return nullptr;
        }
 
-       return sounds[index];
+       return sound[index];
     }
+
 private:
-    std::vector<Sound*> sounds;
+    std::vector<VABFormat::Program*> program;
+    std::vector<VABFormat::Tone*> tone;
+
+    std::vector<Sound*> sound;
 
 };
 
