@@ -20,7 +20,15 @@ private slots:
     
     void on_texList_activated(const QModelIndex &index);
     
+    void on_replaceNBtn_clicked();
+    
+    void on_replaceSBtn_clicked();
+    
+    void updateTextureView();
+    
 private:
+    void replaceTexture(bool smooth);
+    
     size_t curTexture = 0;
     std::shared_ptr<TextureDB> curTextureDB = nullptr;
     Ui::TextureDBViewer *ui;

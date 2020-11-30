@@ -1,10 +1,10 @@
 #include "map.h"
 #include <QDataStream>
 
-Map::Map(TFile &fdatTFile, unsigned int index): fdat(fdatTFile),  mapIndex(index),
-    map1(fdat.getFile(index)),
-    map2(fdat.getFile(index + 1)),
-    map3(fdat.getFile(index + 2))
+Map::Map(TFile &tFile_, unsigned int index): tFile(tFile_),  fileIndex(index),
+    map1(tFile_.getFile(index)),
+    map2(tFile_.getFile(index + 1)),
+    map3(tFile_.getFile(index + 2))
 {
     QDataStream map1Stream(map1);
     map1Stream.skipRawData(4);
@@ -20,31 +20,19 @@ Map::Map(TFile &fdatTFile, unsigned int index): fdat(fdatTFile),  mapIndex(index
     map2Stream.setByteOrder(QDataStream::LittleEndian);
 
     map2Stream.skipRawData(4); // Skip entity class declaration + state info section size
-    for (auto entityCD = 0; entityCD < 40; entityCD++)
-    {
-        KingsField::EntityClassDeclaration declaration{};
+    for (auto &declaration : entityClassDeclarations)
         map2Stream >> declaration;
-        entityClassDeclarations.at(entityCD) = declaration;
-    }
 
     map2Stream.device()->seek(0x32C8); // Skip state info section and entity instance declaration section size
-    for(auto entityInstance = 0; entityInstance < 200; entityInstance++)
-    {
-        KingsField::EntityInstance instance{};
+    for (auto &instance : entityInstances)
         map2Stream >> instance;
-        entityInstances.at(entityInstance) = instance;
-    }
 
     map2Stream.skipRawData(4); // Skip object instance declaration section size
-    for (auto objectInstance = 0; objectInstance < 350; objectInstance++)
-    {
-        KingsField::ObjectInstanceDeclaration objInstance{};
-        map2Stream >> objInstance;
-        objInstances.at(objectInstance) = objInstance;
-    }
+    for (auto &objectInstance : objInstances)
+        map2Stream >> objectInstance;
 
     map2Stream.skipRawData(4); // Skip VFX instance declaration section size
-    for (KingsField::VFXInstanceDeclaration &vfx : vfxInstances)
+    for (auto &vfx : vfxInstances)
         map2Stream >> vfx;
 }
 
@@ -64,26 +52,26 @@ void Map::writeChanges()
     map2Stream.setByteOrder(QDataStream::LittleEndian);
 
     map2Stream.skipRawData(4); // Skip entity class declaration + state info section size
-    for (auto entityCD : entityClassDeclarations)
+    for (const auto &entityCD : entityClassDeclarations)
         map2Stream << entityCD;
 
     map2Stream.device()->seek(0x32C8); // Skip state info section and entity instance declaration section size
-    for (auto entityInstance : entityInstances)
+    for (const auto &entityInstance : entityInstances)
         map2Stream << entityInstance;
 
     map2Stream.skipRawData(4); // Skip object instance declaration section size
-    for (auto objInstance : objInstances)
+    for (const auto &objInstance : objInstances)
         map2Stream << objInstance;
 
     map2Stream.skipRawData(4); // Skip VFX instance declaration section size
-    for (auto vfx : vfxInstances)
+    for (const auto &vfx : vfxInstances)
         map2Stream << vfx;
 
     Checksum::calculateAndWriteChecksum(map1);
     Checksum::calculateAndWriteChecksum(map2);
     Checksum::calculateAndWriteChecksum(map3);
 
-    fdat.writeFile(map1, static_cast<int>(mapIndex));
-    fdat.writeFile(map2, static_cast<int>(mapIndex) + 1);
-    fdat.writeFile(map3, static_cast<int>(mapIndex) + 2);
+    tFile.writeFile(map1, static_cast<int>(fileIndex));
+    tFile.writeFile(map2, static_cast<int>(fileIndex) + 1);
+    tFile.writeFile(map3, static_cast<int>(fileIndex) + 2);
 }

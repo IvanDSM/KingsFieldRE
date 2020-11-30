@@ -5,6 +5,7 @@
 #include "kfmttreewidgetitem.h"
 #include "ui_mainwindow.h"
 #include "aboutdialog.h"
+#include <QDir>
 #include <QMainWindow>
 #include <QMessageBox>
 #include <memory>
@@ -68,6 +69,7 @@ private:
     void loadRtmd();
     
     void loadTFile(TFile & tFile, std::unique_ptr<QTreeWidgetItem> &tFileTreeItem);
+    void writeTFile(TFile & tFile, QDir directory);
     
     std::unique_ptr<Ui::MainWindow> ui;
 

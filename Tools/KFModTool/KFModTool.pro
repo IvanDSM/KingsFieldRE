@@ -105,3 +105,6 @@ DISTFILES += \
     litStatic.vert \
     unlitSimple.frag \
     unlitSimple.vert
+
+unix: CONFIG += link_pkgconfig
+unix: PKGCONFIG += imagequant

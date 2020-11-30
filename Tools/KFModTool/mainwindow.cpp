@@ -7,8 +7,6 @@
 #include <QFileDialog>
 #include <memory>
 
-#define TEST_GENERIC 1
-
 void MainWindow::on_actionLoad_files_triggered()
 {
     auto directory = QFileDialog::getExistingDirectory(this, "Select the folder with your King's Field T files.", QDir::homePath());
@@ -21,11 +19,7 @@ void MainWindow::on_actionLoad_files_triggered()
     {
         fdat = std::make_unique<TFile>(tfile_dir.filePath("FDAT.T"));
         
-#if TEST_GENERIC
         loadTFile(*fdat, fdatTreeItem);
-#else
-        loadFdat();
-#endif
     }
     
     if (tfile_dir.exists("ITEM.T"))
@@ -39,11 +33,7 @@ void MainWindow::on_actionLoad_files_triggered()
     {
         mo = std::make_unique<TFile>(tfile_dir.filePath("MO.T"));
         
-#if TEST_GENERIC
         loadTFile(*mo, moTreeItem);
-#else
-        loadMo();
-#endif
     }
     
     if (tfile_dir.exists("RTIM.T"))
@@ -57,11 +47,7 @@ void MainWindow::on_actionLoad_files_triggered()
     {
         rtmd = std::make_unique<TFile>(tfile_dir.filePath("RTMD.T"));
         
-#if TEST_GENERIC
         loadTFile(*rtmd, rtmdTreeItem);
-#else
-        loadRtmd();
-#endif
     }
     
     if (tfile_dir.exists("TALK.T"))
@@ -72,8 +58,104 @@ void MainWindow::on_actionLoad_files_triggered()
         loadTFile(*talk, talkTreeItem);
     }
     
-    for (int tab = 0; tab < ui->editorTabs->count(); tab++)
+    for (int tab = ui->editorTabs->count() - 1; tab >= 0; tab++)
         ui->editorTabs->removeTab(tab);
+}
+
+void MainWindow::on_filesTree_itemDoubleClicked(QTreeWidgetItem *item, int)
+{
+    if (item->type() == QTreeWidgetItem::UserType)
+    {
+        auto kfmtItem = dynamic_cast<KFMTTreeWidgetItem *>(item);
+        
+        // Check to see if there is already a tab for this item
+        auto tabForItem = openTabs.find(kfmtItem->text(0));
+        if (tabForItem != openTabs.end())
+        {
+            // If there is one, switch to it and leave the function
+            ui->editorTabs->setCurrentWidget(tabForItem->second);
+            return;
+        }
+        
+        // Otherwise, create tab for the item
+        switch (kfmtItem->getType())
+        {
+        case KFMTDataType::KFMT_GAMEDB:
+        {
+            auto gameDBEditor = new GameDBEditWidget(ui->editorTabs, kfmtItem->getDB());
+            ui->editorTabs->addTab(gameDBEditor, "Game Database");
+            ui->editorTabs->setCurrentWidget(gameDBEditor);
+            ui->editorTabs->setTabIcon(ui->editorTabs->currentIndex(), QIcon(":/db_icon.png"));
+            break;
+        }
+        case KFMTDataType::KFMT_MAP:
+        {
+            auto map = kfmtItem->getMap();
+            auto* mapEditor = new MapEditWidget(ui->editorTabs);
+            mapEditor->setMap(map);
+            ui->editorTabs->addTab(mapEditor, kfmtItem->text(0));
+            ui->editorTabs->setCurrentWidget(mapEditor);
+            ui->editorTabs->setTabIcon(ui->editorTabs->currentIndex(), QIcon(":/map_icon.png"));
+            break;
+        }
+        case KFMTDataType::KFMT_MODEL:
+        {
+            auto* modelViewer = new ModelViewerWidget(ui->editorTabs);
+            modelViewer->setModel(kfmtItem->getModel());
+            ui->editorTabs->addTab(modelViewer, kfmtItem->text(0));
+            ui->editorTabs->setCurrentWidget(modelViewer);
+            ui->editorTabs->setTabIcon(ui->editorTabs->currentIndex(), QIcon(":/3d_icon.png"));
+            break;
+        }
+        case KFMTDataType::KFMT_TEXTUREDB:
+        {
+            auto* textureViewer = new TextureDBViewer(ui->editorTabs);
+            textureViewer->setTextureDB(kfmtItem->getTextureDB());
+            ui->editorTabs->addTab(textureViewer, kfmtItem->text(0));
+            ui->editorTabs->setCurrentWidget(textureViewer);
+            ui->editorTabs->setTabIcon(ui->editorTabs->currentIndex(), QIcon(":/tex_icon.png"));
+            break;
+        }
+        }
+        
+        // Add tab to the tab list
+        openTabs.emplace(kfmtItem->text(0), ui->editorTabs->currentWidget());
+    }
+}
+
+void MainWindow::on_actionSave_changes_triggered()
+{
+    auto tFileItemCount = ui->filesTree->topLevelItemCount();
+    for (auto tFileItemIndex = 0; tFileItemIndex < tFileItemCount; tFileItemIndex++)
+    {
+        auto tFileItem = ui->filesTree->topLevelItem(tFileItemIndex);
+        for (auto childIndex = 0; childIndex < tFileItem->childCount(); childIndex++)
+            dynamic_cast<KFMTTreeWidgetItem *>(tFileItem->child(childIndex))->writeChanges();
+    }
+    
+    auto dirPath = QFileDialog::getExistingDirectory(this, "Select where to save the changed files",
+                                                     QDir::homePath());
+    
+    if (dirPath.isEmpty())
+        return;
+    
+    if (dirPath == curSourceDirectory)
+    {
+        auto answer = QMessageBox::question(this, "You're about to overwrite your files!",
+                                            "You just chose the same directory as your source files. Are you sure you want to overwrite them?");
+        
+        if (answer != QMessageBox::Yes)
+            return;
+    }
+    
+    QDir dir(dirPath);
+    
+    writeTFile(*fdat, dir);
+    writeTFile(*item, dir);
+    writeTFile(*rtim, dir);
+    writeTFile(*talk, dir);
+    
+    QMessageBox::information(this, "Changes saved successfully!", "Your changes have been saved!");
 }
 
 void MainWindow::addGameDB(TFile &tFile, unsigned int index)
@@ -126,102 +208,6 @@ void MainWindow::addTexture(TFile & tFile, unsigned int index)
     parentItem->addChild(textureTreeItem);
 }
 
-void MainWindow::loadFdat()
-{
-    if (fdat == nullptr)
-        return;
-    
-    if (fdatTreeItem != nullptr)
-    {
-        ui->filesTree->removeItemWidget(fdatTreeItem.get(), 0);
-        for (auto child : fdatTreeItem->takeChildren())
-        {
-            ui->filesTree->removeItemWidget(child, 0);
-            delete child;
-        }
-    }
-    
-    fdatTreeItem = std::make_unique<QTreeWidgetItem>(ui->filesTree);
-    fdatTreeItem->setIcon(0, QIcon(":/tfile_icon.png"));
-    fdatTreeItem->setText(0, "FDAT.T");
-    ui->filesTree->addTopLevelItem(fdatTreeItem.get());
-
-    addMap(*fdat, 0);
-    addMap(*fdat, 3);
-    addMap(*fdat, 6);
-    addMap(*fdat, 9);
-    addMap(*fdat, 12);
-    addMap(*fdat, 15);
-    addMap(*fdat, 18);
-    addMap(*fdat, 21);
-    addMap(*fdat, 24);
-    addGameDB(*fdat, 28);
-    addModel(*fdat, 29);
-    addModel(*fdat, 30);
-    addModel(*fdat, 31);
-    addModel(*fdat, 32);
-    addModel(*fdat, 33);
-    addModel(*fdat, 34);
-    addModel(*fdat, 35);
-    addModel(*fdat, 36);
-    addModel(*fdat, 37);
-    addModel(*fdat, 38);
-    addModel(*fdat, 39);
-    addModel(*fdat, 40);
-    addModel(*fdat, 41);
-    addModel(*fdat, 42);
-    addModel(*fdat, 43);
-    addModel(*fdat, 44);
-}
-
-void MainWindow::loadMo()
-{
-    if (mo == nullptr)
-        return;
-    
-    if (moTreeItem != nullptr)
-    {
-        ui->filesTree->removeItemWidget(moTreeItem.get(), 0);
-        for (auto child : moTreeItem->takeChildren())
-        {
-            ui->filesTree->removeItemWidget(child, 0);
-            delete child;
-        }
-    }
-    
-    moTreeItem = std::make_unique<QTreeWidgetItem>(ui->filesTree);
-    moTreeItem->setIcon(0, QIcon(":/tfile_icon.png"));
-    moTreeItem->setText(0, "MO.T");
-    ui->filesTree->addTopLevelItem(moTreeItem.get());
-    
-    for (size_t moFile = 0; moFile < mo->getTrueNumFiles() - 1; moFile++)
-        addModel(*mo, moFile);
-}
-
-void MainWindow::loadRtmd()
-{
-    if (rtmd == nullptr)
-        return;
-    
-    if (rtmdTreeItem != nullptr)
-    {
-        ui->filesTree->removeItemWidget(rtmdTreeItem.get(), 0);
-        for (auto child : rtmdTreeItem->takeChildren())
-        {
-            ui->filesTree->removeItemWidget(child, 0);
-            delete child;
-        }
-    }
-    
-    rtmdTreeItem = std::make_unique<QTreeWidgetItem>(ui->filesTree);
-    rtmdTreeItem->setIcon(0, QIcon(":/tfile_icon.png"));
-    rtmdTreeItem->setText(0, "RTMD.T");
-    ui->filesTree->addTopLevelItem(rtmdTreeItem.get());
-    
-    for (size_t tileset = 0; tileset < rtmd->getTrueNumFiles() - 1; tileset++)
-        addModel(*rtmd, tileset);
-}
-
 void MainWindow::loadTFile(TFile &tFile, std::unique_ptr<QTreeWidgetItem> &tFileTreeItem)
 {
     if (tFileTreeItem.get() != nullptr)
@@ -255,101 +241,10 @@ void MainWindow::loadTFile(TFile &tFile, std::unique_ptr<QTreeWidgetItem> &tFile
     }
 }
 
-void MainWindow::on_filesTree_itemDoubleClicked(QTreeWidgetItem *item, int)
+void MainWindow::writeTFile(TFile &tFile, QDir directory)
 {
-    if (item->type() == QTreeWidgetItem::UserType)
-    {
-        auto kfmtItem = dynamic_cast<KFMTTreeWidgetItem *>(item);
-        
-        // Check to see if there is already a tab for this item
-        auto tabForItem = openTabs.find(kfmtItem->text(0));
-        if (tabForItem != openTabs.end())
-        {
-            // If there is one, switch to it and leave the function
-            ui->editorTabs->setCurrentWidget(tabForItem->second);
-            return;
-        }
-        
-        // Otherwise, create tab for the item
-        switch (kfmtItem->getType())
-        {
-            case KFMTDataType::KFMT_GAMEDB:
-            {
-                auto gameDBEditor = new GameDBEditWidget(ui->editorTabs, kfmtItem->getDB());
-                ui->editorTabs->addTab(gameDBEditor, "Game Database");
-                ui->editorTabs->setCurrentWidget(gameDBEditor);
-                ui->editorTabs->setTabIcon(ui->editorTabs->currentIndex(), QIcon(":/db_icon.png"));
-                break;
-            }
-            case KFMTDataType::KFMT_MAP:
-            {
-                auto map = kfmtItem->getMap();
-                auto* mapEditor = new MapEditWidget(ui->editorTabs);
-                mapEditor->setMap(map);
-                ui->editorTabs->addTab(mapEditor, kfmtItem->text(0));
-                ui->editorTabs->setCurrentWidget(mapEditor);
-                ui->editorTabs->setTabIcon(ui->editorTabs->currentIndex(), QIcon(":/map_icon.png"));
-                break;
-            }
-            case KFMTDataType::KFMT_MODEL:
-            {
-                auto* modelViewer = new ModelViewerWidget(ui->editorTabs);
-                modelViewer->setModel(kfmtItem->getModel());
-                ui->editorTabs->addTab(modelViewer, kfmtItem->text(0));
-                ui->editorTabs->setCurrentWidget(modelViewer);
-                ui->editorTabs->setTabIcon(ui->editorTabs->currentIndex(), QIcon(":/3d_icon.png"));
-                break;
-            }
-            case KFMTDataType::KFMT_TEXTURE:
-            {
-                auto* textureViewer = new TextureDBViewer(ui->editorTabs);
-                textureViewer->setTextureDB(kfmtItem->getTexture());
-                ui->editorTabs->addTab(textureViewer, kfmtItem->text(0));
-                ui->editorTabs->setCurrentWidget(textureViewer);
-                ui->editorTabs->setTabIcon(ui->editorTabs->currentIndex(), QIcon(":/tex_icon.png"));
-                break;
-            }
-        }
-        
-        // Add tab to the tab list
-        openTabs.emplace(kfmtItem->text(0), ui->editorTabs->currentWidget());
-    }
-}
-
-void MainWindow::on_actionSave_changes_triggered()
-{
-    for (auto curChild = 0; curChild < ui->filesTree->itemAt(0, 0)->childCount(); curChild++)
-    {
-        auto *child = dynamic_cast<KFMTTreeWidgetItem *>(ui->filesTree->itemAt(0,0)->child(curChild));
-
-        if (child->getType() == KFMTDataType::KFMT_MAP)
-            child->getMap()->writeChanges();
-        else if (child->getType() == KFMTDataType::KFMT_GAMEDB)
-            child->getDB()->writeChanges();
-    }
-
-    auto dirPath = QFileDialog::getExistingDirectory(this, "Select where to save the changed files",
-                                               QDir::homePath());
-
-    if (dirPath.isEmpty())
-        return;
-
-    if (dirPath == curSourceDirectory)
-    {
-        auto answer = QMessageBox::question(this, "You're about to overwrite your files!",
-                                            "You just chose the same directory as your source files. Are you sure you want to overwrite them?");
-
-        if (answer != QMessageBox::Yes)
-            return;
-    }
-
-    QDir dir(dirPath);
-
-
-    QFile fdatOut(dir.filePath("FDAT.T"));
-    fdatOut.open(QIODevice::WriteOnly);
-    fdatOut.write(fdat->getTFile());
-    fdatOut.close();
-
-    QMessageBox::information(this, "Changes saved successfully!", "Your changes have been saved!");
+    QFile tFileOut(directory.filePath(tFile.getFilename()));
+    tFileOut.open(QIODevice::WriteOnly);
+    tFileOut.write(tFile.getTFile());
+    tFileOut.close();
 }

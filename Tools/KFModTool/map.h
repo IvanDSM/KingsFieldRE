@@ -12,7 +12,7 @@ typedef quint8 byte;
 class Map
 {
 public:
-    Map(TFile &fdatTFile, unsigned int index);
+    Map(TFile &tFile_, unsigned int index);
 
     KingsField::EntityClassDeclaration &getEntityClassDeclaration(byte classDeclIndex)
     {
@@ -51,7 +51,7 @@ public:
 
     const unsigned int &getIndex() const
     {
-        return mapIndex;
+        return fileIndex;
     }
 
     KingsField::ObjectInstanceDeclaration &getObjectInstance(size_t instanceIndex)
@@ -105,10 +105,10 @@ public:
     void writeChanges();
 
 private:
-    TFile &fdat;
-
+    TFile &tFile;
+    unsigned int fileIndex;
+    
     KingsField::Tile tileMap[80][80] {};
-    unsigned int mapIndex;
     QByteArray map1;
     QByteArray map2;
     QByteArray map3;
