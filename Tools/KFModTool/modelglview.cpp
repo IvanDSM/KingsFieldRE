@@ -27,7 +27,10 @@ void ModelGLView::initializeGL()
     if(model->animations.empty())
         BuildTMDModel();
     else
+    {
         setCurAnim(0);
+        BuildMOAnimation();
+    }
 }
 
 void ModelGLView::mouseMoveEvent(QMouseEvent * event)
@@ -38,8 +41,8 @@ void ModelGLView::mouseMoveEvent(QMouseEvent * event)
         if (lastMousePos.x() != -999)
         {
             auto mousePosDiff = event->globalPos() - lastMousePos;
-            camRotY += (mousePosDiff.x() * 0.0174533) * 0.25f;
-            camRotZ += (mousePosDiff.y() * 0.0174533) * 0.25f;
+            camRotY += (mousePosDiff.x() * 0.0174533f) * 0.25f;
+            camRotZ += (mousePosDiff.y() * 0.0174533f) * 0.25f;
         }
     }
     else if (event->buttons() == Qt::RightButton)
@@ -121,7 +124,6 @@ void ModelGLView::BuildMOAnimation()
 
     //Build each animation frame
     unsigned int i = 0;
-
 
     for(size_t frameID : Anim.frameIndexes)
     {
@@ -239,23 +241,23 @@ void ModelGLView::BuildMOAnimation()
         //Set up the offsets and strides of each component of the vertex...
 
         //Position 1
-        glFuncs->glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 60, (void*)0);
+        glFuncs->glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 60, nullptr);
         glFuncs->glEnableVertexAttribArray(0);
 
         //Position 2
-        glFuncs->glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 60, (void*)12);
+        glFuncs->glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 60, reinterpret_cast<void *>(12));
         glFuncs->glEnableVertexAttribArray(1);
 
         //Normal
-        glFuncs->glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 60, (void*)24);
+        glFuncs->glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 60, reinterpret_cast<void *>(24));
         glFuncs->glEnableVertexAttribArray(2);
 
         //Colour
-        glFuncs->glVertexAttribPointer(3, 4, GL_FLOAT, GL_FALSE, 60, (void*)36);
+        glFuncs->glVertexAttribPointer(3, 4, GL_FLOAT, GL_FALSE, 60, reinterpret_cast<void *>(36));
         glFuncs->glEnableVertexAttribArray(3);
 
         //Texcoord
-        glFuncs->glVertexAttribPointer(4, 2, GL_FLOAT, GL_FALSE, 60, (void*)52);
+        glFuncs->glVertexAttribPointer(4, 2, GL_FLOAT, GL_FALSE, 60, reinterpret_cast<void *>(52));
         glFuncs->glEnableVertexAttribArray(4);
 
         //Unbind buffers
@@ -438,19 +440,19 @@ void ModelGLView::BuildTMDModel()
         //Set up the offsets and strides of each component of the vertex...
 
         //Position
-        glFuncs->glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 48, (void*)0);
+        glFuncs->glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 48, nullptr);
         glFuncs->glEnableVertexAttribArray(0);
 
         //Normal
-        glFuncs->glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 48, (void*)12);
+        glFuncs->glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 48, reinterpret_cast<void *>(12));
         glFuncs->glEnableVertexAttribArray(1);
 
         //Colour
-        glFuncs->glVertexAttribPointer(2, 4, GL_FLOAT, GL_FALSE, 48, (void*)24);
+        glFuncs->glVertexAttribPointer(2, 4, GL_FLOAT, GL_FALSE, 48, reinterpret_cast<void *>(24));
         glFuncs->glEnableVertexAttribArray(2);
 
         //Texcoord
-        glFuncs->glVertexAttribPointer(3, 2, GL_FLOAT, GL_FALSE, 48, (void*)40);
+        glFuncs->glVertexAttribPointer(3, 2, GL_FLOAT, GL_FALSE, 48, reinterpret_cast<void *>(40));
         glFuncs->glEnableVertexAttribArray(3);
 
         //Unbind buffers

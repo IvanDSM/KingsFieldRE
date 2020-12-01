@@ -88,28 +88,28 @@ QString TFile::getFiletype(unsigned int trueFileNumber) const
     
     if (trueFileNumber < getTrueNumFiles())
     {
-        auto file = getFile(trueFileNumber);
-        if (isTMD(file))
+        auto checkFile = getFile(trueFileNumber);
+        if (isTMD(checkFile))
             return "TMD";
-        if (isTIM(file))
+        if (isTIM(checkFile))
             return "TIM";
-        if (isVH(file))
+        if (isVH(checkFile))
             return "VH";
-        if (isSEQ(file))
+        if (isSEQ(checkFile))
             return "SEQ";
-        if (isVB(file))
+        if (isVB(checkFile))
             return "VB";
-        if (isRTIM(file))
+        if (isRTIM(checkFile))
             return "RTIM";
-        if (isRTMD(file))
+        if (isRTMD(checkFile))
             return "RTMD";
-        if (isMO(file))
+        if (isMO(checkFile))
             return "MO";
-        if (isMAP1(file))
+        if (isMAP1(checkFile))
             return "MAP1";
-        if (isMAP2(file))
+        if (isMAP2(checkFile))
             return "MAP2";
-        if (isMAP3(file))
+        if (isMAP3(checkFile))
             return "MAP3";
     }
 

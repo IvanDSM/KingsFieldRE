@@ -327,24 +327,24 @@ QDataStream &operator>>(QDataStream & in, Model::Primitive & primitive)
     uint8_t tempByte;
     
     // Lambda for reading gradation if necessary
-    auto readGradation = [](QDataStream &in, Model::Primitive &primitive)
+    auto readGradation = [](QDataStream &inStream, Model::Primitive &prim)
     {
-        if (primitive.isGradation())
+        if (prim.isGradation())
         {
-            in >> primitive.r1;
-            in >> primitive.g1;
-            in >> primitive.b1;
-            in.skipRawData(1);
-            in >> primitive.r2;
-            in >> primitive.g2;
-            in >> primitive.b2;
-            in.skipRawData(1);
-            if (primitive.isQuad())
+            inStream >> prim.r1;
+            inStream >> prim.g1;
+            inStream >> prim.b1;
+            inStream.skipRawData(1);
+            inStream >> prim.r2;
+            inStream >> prim.g2;
+            inStream >> prim.b2;
+            inStream.skipRawData(1);
+            if (prim.isQuad())
             {
-                in >> primitive.r3;
-                in >> primitive.g3;
-                in >> primitive.b3;
-                in.skipRawData(1);
+                inStream >> prim.r3;
+                inStream >> prim.g3;
+                inStream >> prim.b3;
+                inStream.skipRawData(1);
             }
         }
     };

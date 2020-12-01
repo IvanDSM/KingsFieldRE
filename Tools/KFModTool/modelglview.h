@@ -64,27 +64,27 @@ constexpr std::array<QVector3D, 92> __weiVLGledoM_generateGrid()
     return grid;
 }
 
-struct TMDVertex
-{
-    QVector3D position;
-    QVector3D normal;
-    QVector4D colour;
-    QVector2D texcoord;
-};
-
-struct MOVertex
-{
-    QVector3D position1;
-    QVector3D position2;
-    QVector3D normal;
-    QVector4D colour;
-    QVector2D texcoord;
-};
-
 class ModelGLView : public QOpenGLWidget
 {
     Q_OBJECT
 public:
+    struct TMDVertex
+    {
+        QVector3D position;
+        QVector3D normal;
+        QVector4D colour;
+        QVector2D texcoord;
+    };
+    
+    struct MOVertex
+    {
+        QVector3D position1;
+        QVector3D position2;
+        QVector3D normal;
+        QVector4D colour;
+        QVector2D texcoord;
+    };
+    
     explicit ModelGLView(QWidget *parent = nullptr, std::shared_ptr<Model> model_ = nullptr) : 
         QOpenGLWidget(parent), model(model_) 
     {
@@ -166,8 +166,6 @@ public:
         
         curAnim = animationIndex;
 
-        //Build the animation
-        BuildMOAnimation();
         animFrame = 0;
         animFrameDelta = 0.f;
 

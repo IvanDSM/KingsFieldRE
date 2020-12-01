@@ -1,7 +1,7 @@
 #include "gamedb.h"
 #include "checksum.h"
 
-GameDB::GameDB(TFile &tFile, unsigned int index_) : tFile(tFile), database(tFile.getFile(index_)), 
+GameDB::GameDB(TFile &tFile_, unsigned int index_) : tFile(tFile_), database(tFile_.getFile(index_)), 
     index(index_)
 {
 

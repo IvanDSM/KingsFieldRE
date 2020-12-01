@@ -443,7 +443,7 @@ class PrettyNamer
             {"ITEM.T402", "Text: Truth Glass The East Seaside"},
                 
             {"MO.T0", "Slime"},
-            {"MO.T1", "Posion Slime"},
+            {"MO.T1", "Poison Slime"},
             {"MO.T2", "Sigill"},
             {"MO.T3", "Baltail (Body)"},
             {"MO.T4", "Baltail (Tail)"},
