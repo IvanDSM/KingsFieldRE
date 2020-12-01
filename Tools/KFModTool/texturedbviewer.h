@@ -15,6 +15,10 @@ public:
     
     void setTextureDB(std::shared_ptr<TextureDB> textureDB);
     
+protected:
+    void paintEvent(QPaintEvent *e) override { QWidget::paintEvent(e); updateTextureLabel(); }
+    void resizeEvent(QResizeEvent *e) override { QWidget::resizeEvent(e); updateTextureLabel(); }
+    
 private slots:
     void on_exportBtn_clicked();
     
@@ -24,11 +28,14 @@ private slots:
     
     void on_replaceSBtn_clicked();
     
-    void updateTextureView();
     
 private:
     void replaceTexture(bool smooth);
     
+    void updateTextureLabel();
+    void updateTextureViewer();
+    
+    QPixmap curTexPixmap {};
     size_t curTexture = 0;
     std::shared_ptr<TextureDB> curTextureDB = nullptr;
     Ui::TextureDBViewer *ui;

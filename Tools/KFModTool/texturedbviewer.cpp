@@ -17,7 +17,7 @@ void TextureDBViewer::setTextureDB(std::shared_ptr<TextureDB> textureDB)
 {
     curTextureDB = textureDB;
     ui->texList->setModel(new TextureListModel(ui->texList, textureDB));
-    updateTextureView();
+    updateTextureViewer();
 }
 
 void TextureDBViewer::on_exportBtn_clicked()
@@ -40,7 +40,7 @@ void TextureDBViewer::on_exportBtn_clicked()
 void TextureDBViewer::on_texList_activated(const QModelIndex &index)
 {
     curTexture = index.row();
-    updateTextureView();
+    updateTextureViewer();
 }
 
 void TextureDBViewer::on_replaceNBtn_clicked()
@@ -53,44 +53,6 @@ void TextureDBViewer::on_replaceSBtn_clicked()
     replaceTexture(true);
 }
 
-void TextureDBViewer::updateTextureView()
-{
-    auto &texture = curTextureDB->getTexture(curTexture);
-    ui->texWidget->setPixmap(QPixmap::fromImage(texture.image));
-    
-    ui->clutFbPosLabel->setText(clutFbPosLabelPrefix + QString::asprintf("{%d, %d}",
-                                                                         texture.clutVramX,
-                                                                         texture.clutVramY));
-    ui->pixelFbPosLabel->setText(pixelFbPosLabelPrefix + QString::asprintf("{%d, %d}",
-                                                                           texture.pxVramX,
-                                                                           texture.pxVramY));
-    ui->pixelSizeLabel->setText(pixelSizePrefix + QString::asprintf("%dx%d",
-                                                                         texture.pxWidth,
-                                                                         texture.pxHeight));
-    QString pixelModeString;
-    
-    switch (texture.pMode)
-    {
-        case TextureDB::PixelMode::CLUT4Bit:
-            pixelModeString = "CLUT 4bpp";
-            break;
-        case TextureDB::PixelMode::CLUT8Bit:
-            pixelModeString = "CLUT 8bpp";
-            break;
-        case TextureDB::PixelMode::Direct15Bit:
-            pixelModeString = "Direct 15bpp";
-            break;
-        case TextureDB::PixelMode::Dir24Bit:
-            pixelModeString = "Direct 24bpp";
-            break;
-        case TextureDB::PixelMode::Mixed:
-            pixelModeString = "Mixed";
-            break;
-    }
-    
-    ui->pixelModeLabel->setText(pixelModePrefix + pixelModeString);
-}
-
 void TextureDBViewer::replaceTexture(bool smooth)
 {
     auto filter = "Images (*.bmp *.gif *.jpg *.jpeg *.png *.ppm *.xbm *.xpm)";
@@ -101,5 +63,50 @@ void TextureDBViewer::replaceTexture(bool smooth)
     
     QImage replacement(fileName);
     curTextureDB->replaceTexture(replacement, curTexture, smooth);
-    updateTextureView();
+    updateTextureViewer();
+}
+
+void TextureDBViewer::updateTextureLabel()
+{
+    ui->texWidget->setPixmap(curTexPixmap.scaled(ui->texWidget->size(), Qt::KeepAspectRatio,
+                                                 Qt::FastTransformation));
+}
+
+void TextureDBViewer::updateTextureViewer()
+{
+    auto &texture = curTextureDB->getTexture(curTexture);
+    curTexPixmap = QPixmap::fromImage(texture.image);
+    updateTextureLabel();
+    
+    ui->clutFbPosLabel->setText(clutFbPosLabelPrefix + QString::asprintf("{%d, %d}",
+                                                                         texture.clutVramX,
+                                                                         texture.clutVramY));
+    ui->pixelFbPosLabel->setText(pixelFbPosLabelPrefix + QString::asprintf("{%d, %d}",
+                                                                           texture.pxVramX,
+                                                                           texture.pxVramY));
+    ui->pixelSizeLabel->setText(pixelSizePrefix + QString::asprintf("%dx%d",
+                                                                    texture.pxWidth,
+                                                                    texture.pxHeight));
+    QString pixelModeString;
+    
+    switch (texture.pMode)
+    {
+    case TextureDB::PixelMode::CLUT4Bit:
+        pixelModeString = "CLUT 4bpp";
+        break;
+    case TextureDB::PixelMode::CLUT8Bit:
+        pixelModeString = "CLUT 8bpp";
+        break;
+    case TextureDB::PixelMode::Direct15Bit:
+        pixelModeString = "Direct 15bpp";
+        break;
+    case TextureDB::PixelMode::Dir24Bit:
+        pixelModeString = "Direct 24bpp";
+        break;
+    case TextureDB::PixelMode::Mixed:
+        pixelModeString = "Mixed";
+        break;
+    }
+    
+    ui->pixelModeLabel->setText(pixelModePrefix + pixelModeString);
 }
