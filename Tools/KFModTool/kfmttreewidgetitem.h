@@ -5,6 +5,7 @@
 #include "map.h"
 #include "model.h"
 #include "texturedb.h"
+#include "../common/tfile.h"
 #include <QTreeWidgetItem>
 
 enum class KFMTDataType
@@ -18,10 +19,13 @@ enum class KFMTDataType
 class KFMTTreeWidgetItem : public QTreeWidgetItem
 {
 public:
-    explicit KFMTTreeWidgetItem(QTreeWidgetItem *parent, std::shared_ptr<GameDB> kfmtDB);
-    explicit KFMTTreeWidgetItem(QTreeWidgetItem *parent, std::shared_ptr<Map> kfmtMap);
-    explicit KFMTTreeWidgetItem(QTreeWidgetItem *parent, std::shared_ptr<Model> kfmtModel);
-    explicit KFMTTreeWidgetItem(QTreeWidgetItem *parent, std::shared_ptr<TextureDB> kfmtTextureDB);
+    explicit KFMTTreeWidgetItem(QTreeWidgetItem *parent,
+                                TFile &tFile_, unsigned int fileIndex, KFMTDataType type);
+    
+    /*!
+     * \brief Builds the file into the appropriate structure.
+     */
+    void build();
 
     std::shared_ptr<GameDB> getDB()
     {
@@ -55,12 +59,15 @@ public:
             return nullptr;
     }
 
-    KFMTDataType getType() { return dataType; }
+    KFMTDataType getType() const { return dataType; } 
     
     void writeChanges();
 
 private:
     KFMTDataType dataType;
+    TFile &tFile;
+    unsigned int index;
+    
     std::shared_ptr<GameDB> dbPtr = nullptr;
     std::shared_ptr<Map> mapPtr = nullptr;
     std::shared_ptr<Model> modelPtr = nullptr;

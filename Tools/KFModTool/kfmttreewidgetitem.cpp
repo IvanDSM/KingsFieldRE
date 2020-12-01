@@ -1,42 +1,45 @@
 #include "kfmttreewidgetitem.h"
-
 #include <utility>
 
-KFMTTreeWidgetItem::KFMTTreeWidgetItem(QTreeWidgetItem *parent, std::shared_ptr<GameDB> kfmtDB) :
+KFMTTreeWidgetItem::KFMTTreeWidgetItem(QTreeWidgetItem * parent,
+                                       TFile & tFile_, unsigned int fileIndex, KFMTDataType type) :
     QTreeWidgetItem(parent, QTreeWidgetItem::UserType),
-    dataType(KFMTDataType::KFMT_GAMEDB),
-    dbPtr(std::move(kfmtDB))
+    dataType(type), tFile(tFile_), index(fileIndex)
 {
-    setIcon(0, QIcon(":/db_icon.png"));
+    switch (type)
+    {
+        case KFMTDataType::KFMT_GAMEDB:
+            setIcon(0, QIcon(":/db_icon.png"));
+            break;
+        case KFMTDataType::KFMT_MAP:
+            setIcon(0, QIcon(":/map_icon.png"));
+            break;
+        case KFMTDataType::KFMT_MODEL:
+            setIcon(0, QIcon(":/3d_icon.png"));
+            break;
+        case KFMTDataType::KFMT_TEXTUREDB:
+            setIcon(0, QIcon(":/tex_icon.png"));
+            break;
+        default:
+            break;
+    }
 }
 
-KFMTTreeWidgetItem::KFMTTreeWidgetItem(QTreeWidgetItem *parent, std::shared_ptr<Map> kfmtMap) :
-    QTreeWidgetItem(parent, QTreeWidgetItem::UserType),
-    dataType(KFMTDataType::KFMT_MAP),
-    mapPtr(std::move(kfmtMap))
+void KFMTTreeWidgetItem::build()
 {
-    setIcon(0, QIcon(":/map_icon.png"));
-}
-
-KFMTTreeWidgetItem::KFMTTreeWidgetItem(QTreeWidgetItem *parent, std::shared_ptr<Model> kfmtModel) :
-    QTreeWidgetItem(parent, QTreeWidgetItem::UserType),
-    dataType(KFMTDataType::KFMT_MODEL),
-    modelPtr(std::move(kfmtModel))
-{
-    setIcon(0, QIcon(":/3d_icon.png"));
-}
-
-KFMTTreeWidgetItem::KFMTTreeWidgetItem(QTreeWidgetItem *parent, std::shared_ptr<TextureDB> kfmtTextureDB) : 
-    QTreeWidgetItem(parent, QTreeWidgetItem::UserType),
-    dataType(KFMTDataType::KFMT_TEXTUREDB),
-    texDBPtr(std::move(kfmtTextureDB))
-{
-    setIcon(0, QIcon(":/tex_icon.png"));
+    if (getType() == KFMTDataType::KFMT_GAMEDB && dbPtr == nullptr)
+        dbPtr.reset(new GameDB(tFile, index));
+    else if (getType() == KFMTDataType::KFMT_MAP && mapPtr == nullptr)
+        mapPtr.reset(new Map(tFile, index));
+    else if (getType() == KFMTDataType::KFMT_MODEL && modelPtr == nullptr)
+        modelPtr.reset(new Model(tFile, index));
+    else if (getType() == KFMTDataType::KFMT_TEXTUREDB && texDBPtr == nullptr)
+        texDBPtr.reset(new TextureDB(tFile, index));
 }
 
 void KFMTTreeWidgetItem::writeChanges()
 {
-    switch(getType())
+    switch (getType())
     {
         case KFMTDataType::KFMT_GAMEDB:
             dbPtr->writeChanges();

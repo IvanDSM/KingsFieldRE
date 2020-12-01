@@ -77,6 +77,9 @@ void MainWindow::on_filesTree_itemDoubleClicked(QTreeWidgetItem *item_, int)
             return;
         }
         
+        // Builds the item's contents if necessary
+        kfmtItem->build();
+        
         // Otherwise, create tab for the item
         switch (kfmtItem->getType())
         {
@@ -165,9 +168,8 @@ void MainWindow::on_actionSave_changes_triggered()
 
 void MainWindow::addGameDB(TFile &tFile, unsigned int index)
 {
-    std::shared_ptr<GameDB> gameDB(new GameDB(tFile, index));
     auto parentItem = ui->filesTree->findItems(tFile.getFilename(), Qt::MatchExactly).front();
-    auto gameDBTreeItem = new KFMTTreeWidgetItem(parentItem, gameDB);
+    auto gameDBTreeItem = new KFMTTreeWidgetItem(parentItem, tFile, index, KFMTDataType::KFMT_GAMEDB);
     gameDBTreeItem->setText(0, "Game Database");
 
     parentItem->addChild(gameDBTreeItem);
@@ -179,9 +181,8 @@ void MainWindow::addMap(TFile &tFile, unsigned int index)
     if (prettyName.isEmpty())
         prettyName = tFile.getFilename() + ' ' + QString::number(index);
     
-    std::shared_ptr<Map> map(new Map(tFile, index));
     auto parentItem = ui->filesTree->findItems(tFile.getFilename(), Qt::MatchExactly).front();
-    auto mapTreeItem = new KFMTTreeWidgetItem(parentItem, map);
+    auto mapTreeItem = new KFMTTreeWidgetItem(parentItem, tFile, index, KFMTDataType::KFMT_MAP);
     mapTreeItem->setText(0, prettyName);
 
     parentItem->addChild(mapTreeItem);
@@ -193,9 +194,8 @@ void MainWindow::addModel(TFile &tFile, unsigned int index)
     if (prettyName.isEmpty())
         prettyName = tFile.getFilename() + ' ' + QString::number(index);
     
-    std::shared_ptr<Model> model(new Model(tFile, index));
     auto parentItem = ui->filesTree->findItems(tFile.getFilename(), Qt::MatchExactly).front();
-    auto modelTreeItem = new KFMTTreeWidgetItem(parentItem, model);
+    auto modelTreeItem = new KFMTTreeWidgetItem(parentItem, tFile, index, KFMTDataType::KFMT_MODEL);
     modelTreeItem->setText(0, prettyName);
     parentItem->addChild(modelTreeItem);
 }
@@ -206,9 +206,8 @@ void MainWindow::addTexture(TFile & tFile, unsigned int index)
     if (prettyName.isEmpty())
         prettyName = tFile.getFilename() + ' ' + QString::number(index);
     
-    std::shared_ptr<TextureDB> texture(new TextureDB(tFile, index));
     auto parentItem = ui->filesTree->findItems(tFile.getFilename(), Qt::MatchExactly).front();
-    auto textureTreeItem = new KFMTTreeWidgetItem(parentItem, texture);
+    auto textureTreeItem = new KFMTTreeWidgetItem(parentItem, tFile, index, KFMTDataType::KFMT_TEXTUREDB);
     textureTreeItem->setText(0, prettyName);
     parentItem->addChild(textureTreeItem);
 }
