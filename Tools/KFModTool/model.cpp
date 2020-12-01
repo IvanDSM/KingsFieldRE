@@ -359,7 +359,14 @@ QDataStream &operator>>(QDataStream & in, Model::Primitive & primitive)
     
     in >> tempByte;
     primitive.mode = static_cast<Model::Primitive::PrimitiveMode>(tempByte);
-
+    
+    if (tempByte < 0x20 || tempByte > 0x7e)
+    {
+        KFMTError::error(QString::asprintf("Model: TMD: Invalid mode 0x%x.", tempByte));
+        in.skipRawData(primitive.ilen);
+        return in;
+    }
+    
     switch(primitive.mode)
     {
         case(Model::Primitive::PrimitiveMode::x22TriFlatNoTexTranslucentLit):
