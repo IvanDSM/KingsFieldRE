@@ -39,18 +39,12 @@ void KFMTTreeWidgetItem::build()
 
 void KFMTTreeWidgetItem::writeChanges()
 {
-    switch (getType())
-    {
-        case KFMTDataType::KFMT_GAMEDB:
-            dbPtr->writeChanges();
-            break;
-        case KFMTDataType::KFMT_MAP:
-            mapPtr->writeChanges();
-            break;
-        case KFMTDataType::KFMT_TEXTUREDB:
-            texDBPtr->writeChanges();
-            break;
-        default:
-            break;
-    }
+    if (getType() == KFMTDataType::KFMT_GAMEDB && dbPtr != nullptr)
+        dbPtr->writeChanges();
+    else if (getType() == KFMTDataType::KFMT_MAP && mapPtr != nullptr)
+        mapPtr->writeChanges();
+//    else if (getType() == KFMTDataType::KFMT_MODEL && modelPtr != nullptr)
+//        modelPtr->writeChanges();
+    else if (getType() == KFMTDataType::KFMT_TEXTUREDB && texDBPtr != nullptr)
+        texDBPtr->writeChanges();
 }
