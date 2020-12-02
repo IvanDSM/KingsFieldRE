@@ -68,8 +68,9 @@ void TextureDBViewer::replaceTexture(bool smooth)
 
 void TextureDBViewer::updateTextureLabel()
 {
-    ui->texWidget->setPixmap(curTexPixmap.scaled(ui->texWidget->size(), Qt::KeepAspectRatio,
-                                                 Qt::FastTransformation));
+    if (!curTexPixmap.isNull())
+        ui->texWidget->setPixmap(curTexPixmap.scaled(ui->texWidget->size(), Qt::KeepAspectRatio,
+                                                     Qt::FastTransformation));
 }
 
 void TextureDBViewer::updateTextureViewer()

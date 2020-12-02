@@ -16,8 +16,7 @@ public:
     void setTextureDB(std::shared_ptr<TextureDB> textureDB);
     
 protected:
-    void paintEvent(QPaintEvent *e) override { QWidget::paintEvent(e); updateTextureLabel(); }
-    void resizeEvent(QResizeEvent *e) override { QWidget::resizeEvent(e); updateTextureLabel(); }
+    void resizeEvent(QResizeEvent *e) override { updateTextureLabel(); }
     
 private slots:
     void on_exportBtn_clicked();
