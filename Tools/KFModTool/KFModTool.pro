@@ -6,6 +6,13 @@ CONFIG += c++17
 
 DEFINES += QT_DEPRECATED_WARNINGS
 
+# libimagequant stuff
+INCLUDEPATH += $$PWD/libs
+DEPENDPATH += $$PWD/libs
+
+unix:!macx: LIBS += -L$$PWD/libs/ -limagequant_2.13.1
+win32: LIBS += -L$$PWD/libs/ -limagequant_2.13.1.dll
+
 # Inherit system CFLAGS/CXXFLAGS into qmake
 QMAKE_CFLAGS += $$(CFLAGS) -isystem $$[QT_INSTALL_HEADERS]
 QMAKE_CXXFLAGS += $$(CXXFLAGS) -isystem $$[QT_INSTALL_HEADERS]
@@ -106,10 +113,3 @@ DISTFILES += \
     litStatic.vert \
     unlitSimple.frag \
     unlitSimple.vert
-
-
-INCLUDEPATH += $$PWD/libs
-DEPENDPATH += $$PWD/libs
-
-unix:!macx: LIBS += -L$$PWD/libs/ -limagequant_2.13.1
-win32: LIBS += -L$$PWD/libs/ -llibimagequant_2.13.1.dll
