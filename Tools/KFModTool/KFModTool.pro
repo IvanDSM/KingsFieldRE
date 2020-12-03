@@ -6,12 +6,22 @@ CONFIG += c++17
 
 DEFINES += QT_DEPRECATED_WARNINGS
 
-# libimagequant stuff
-INCLUDEPATH += $$PWD/libs
-DEPENDPATH += $$PWD/libs
+# Stuff to build libimagequant
+HEADERS += libimagequant/blur.h \
+           libimagequant/kmeans.h \
+           libimagequant/libimagequant.h \
+           libimagequant/mediancut.h \
+           libimagequant/mempool.h \
+           libimagequant/nearest.h \
+           libimagequant/pam.h \
 
-unix:!macx: LIBS += -L$$PWD/libs/ -limagequant_2.13.1
-win32: LIBS += -L$$PWD/libs/ -limagequant_2.13.1.dll
+SOURCES += libimagequant/blur.c \
+           libimagequant/kmeans.c \
+           libimagequant/libimagequant.c \
+           libimagequant/mediancut.c \
+           libimagequant/mempool.c \
+           libimagequant/nearest.c \
+           libimagequant/pam.c \
 
 # Inherit system CFLAGS/CXXFLAGS into qmake
 QMAKE_CFLAGS += $$(CFLAGS) -isystem $$[QT_INSTALL_HEADERS]
