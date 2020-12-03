@@ -85,14 +85,14 @@ void ModelGLView::paintGL()
     camRotZ = qMin(qMax(-89.999f, camRotZ * 57.2958f), 89.999f) * 0.0174533f;
 
     //Apply Rotation to glCamFrom
-    glCamFrom.setX(qCos(camRotY) * qCos(camRotZ) * camZoom);
-    glCamFrom.setY(qSin(camRotZ) * camZoom);
-    glCamFrom.setZ(qSin(camRotY) * qCos(camRotZ) * camZoom);
+    glCamFrom.setX(std::cos(camRotY) * std::cos(camRotZ) * camZoom);
+    glCamFrom.setY(std::sin(camRotZ) * camZoom);
+    glCamFrom.setZ(std::sin(camRotY) * std::cos(camRotZ) * camZoom);
 
     //Build View Matrix
     glMatView.setToIdentity();
     glMatView.lookAt(glCamFrom, glCamTo, glCamUp);
-    glMatView.translate(qSin(camRotY) * camTranslateX , camTranslateY, qCos(camRotY) * camTranslateX);
+    glMatView.translate(std::sin(camRotY) * camTranslateX , camTranslateY, std::cos(camRotY) * camTranslateX);
 
     //Build World Matrix
     glMatWorld.setToIdentity();
@@ -512,9 +512,9 @@ void ModelGLView::BuildGrid()
     glFuncs->glBindBuffer(GL_ARRAY_BUFFER, glGridVBO);
     glFuncs->glBufferData(GL_ARRAY_BUFFER, sizeof(gridVertices), gridVertices.data(), GL_STATIC_DRAW);
 
-    glFuncs->glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 24, (void*)0);
+    glFuncs->glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 24, reinterpret_cast<void *>(0));
     glFuncs->glEnableVertexAttribArray(0);
-    glFuncs->glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 24, (void*)12);
+    glFuncs->glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 24, reinterpret_cast<void *>(12));
     glFuncs->glEnableVertexAttribArray(1);
 
     glFuncs->glBindBuffer(GL_ARRAY_BUFFER, 0);
