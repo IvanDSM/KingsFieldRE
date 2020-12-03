@@ -2,7 +2,7 @@ name: Build all projects
 
 on:
   push:
-    branches: [ master ]
+    branches: [ master, kfmt-moview ]
   pull_request:
     branches: [ master ]
 
