@@ -23,7 +23,7 @@ void TextureDBViewer::setTextureDB(std::shared_ptr<TextureDB> textureDB)
 void TextureDBViewer::on_exportBtn_clicked()
 {
     QFileDialog exportDlg(this, "Export texture", QDir::currentPath(),
-                          "BMP (*.bmp);;PNG (*.png);;PPM (*.ppm);;XBM (*.xbm);;XPM (*.xpm)");
+                          "PNG (*.png);;BMP (*.bmp);;PPM (*.ppm);;XBM (*.xbm);;XPM (*.xpm)");
     
     exportDlg.setAcceptMode(QFileDialog::AcceptSave);
     exportDlg.setFileMode(QFileDialog::ExistingFile);
@@ -31,7 +31,7 @@ void TextureDBViewer::on_exportBtn_clicked()
     if (!exportDlg.exec())
         return;
     
-    QString &fileName = exportDlg.selectedFiles().first();
+    QString fileName = exportDlg.selectedFiles().first();
     const char *format = exportDlg.selectedNameFilter().left(3).toStdString().c_str();
     
     curTextureDB->getTexture(curTexture).image.save(fileName, format, 0);
