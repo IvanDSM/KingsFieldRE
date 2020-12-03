@@ -156,22 +156,22 @@ struct Model::Primitive
      * \brief Returns r0, g0 and b0 as a QVector4D
      * \return QVector4D with colour
      */
-    QVector4D Colour0() { return {r0 / 255.f, g0 / 255.f, b0 / 255.f, alpha / 255.f }; }
-    QVector4D Colour1() { return {r1 / 255.f, g1 / 255.f, b1 / 255.f, alpha / 255.f }; }
-    QVector4D Colour2() { return {r2 / 255.f, g2 / 255.f, b2 / 255.f, alpha / 255.f }; }
-    QVector4D Colour3() { return {r3 / 255.f, g3 / 255.f, b3 / 255.f, alpha / 255.f }; }
+    QVector4D Colour0() const { return {r0 / 255.f, g0 / 255.f, b0 / 255.f, alpha / 255.f }; }
+    QVector4D Colour1() const { return {r1 / 255.f, g1 / 255.f, b1 / 255.f, alpha / 255.f }; }
+    QVector4D Colour2() const { return {r2 / 255.f, g2 / 255.f, b2 / 255.f, alpha / 255.f }; }
+    QVector4D Colour3() const { return {r3 / 255.f, g3 / 255.f, b3 / 255.f, alpha / 255.f }; }
 
     /*!
      * \brief Checks whether this is a gradation primitive.
      * \return Whether this is a gradation primitive.
      */
-    bool isGradation() { return static_cast<uint8_t>(flag) > 3; }
+    bool isGradation() const { return static_cast<uint8_t>(flag) > 3; }
     
     /*!
      * \brief Checks whether this is a triangle primitive.
      * \return Whether this is a triangle primitive.
      */
-    bool isTriangle() 
+    bool isTriangle() const
     { 
         auto mode_ = static_cast<uint8_t>(mode);
         return (mode_ >> 5) && !((mode_ >> 3) & 1);
@@ -181,7 +181,7 @@ struct Model::Primitive
      * \brief Checks whether this is a quadrilateral primitive.
      * \return Whether this is a quadrilateral primitive.
      */
-    bool isQuad() 
+    bool isQuad() const
     { 
         auto mode_ = static_cast<uint8_t>(mode);
         return (mode_ >> 5) && ((mode_ >> 3) & 1);
@@ -191,7 +191,7 @@ struct Model::Primitive
      * \brief Checks whether this primitive is flat shaded.
      * \return Whether this is a flat shade primitive.
      */
-    bool isSmooth()
+    bool isSmooth() const
     {
         auto mode_ = static_cast<uint8_t>(mode);
         return (mode_ >> 4) & 1;
@@ -201,7 +201,7 @@ struct Model::Primitive
      * \brief Checks whether this primitive is textured.
      * \return Whether this is a textured primitive.
      */
-    bool isTextured()
+    bool isTextured() const
     {
         auto mode_ = static_cast<uint8_t>(mode);
         return (mode_ >> 2) & 1;
@@ -211,7 +211,7 @@ struct Model::Primitive
      * \brief Checks if a primitive is double sided.
      * \return Whether this is a double sided primitive.
      */
-    bool isDoubleSided()
+    bool isDoubleSided() const
     {
         auto flag_ = static_cast<uint8_t>(flag);
         return (flag_ >> 1) & 1;

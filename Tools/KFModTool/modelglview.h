@@ -16,6 +16,9 @@
  * function.
  * \return Generated 3D grid
  */
+#if __GNUC__ < 7
+std::array<QVector3D, 92> __weiVLGledoM_generateGrid()
+#else
 constexpr std::array<QVector3D, 92> __weiVLGledoM_generateGrid()
 { 
     std::array<QVector3D, 92> grid;
@@ -63,6 +66,7 @@ constexpr std::array<QVector3D, 92> __weiVLGledoM_generateGrid()
     
     return grid;
 }
+#endif
 
 class ModelGLView : public QOpenGLWidget
 {
@@ -197,7 +201,11 @@ private:
     
     QTimer refreshTimer{this};
     
+#if __GNUC__ < 7
+    static const std::array<QVector3D, 92> gridVertices = __weiVLGledoM_generateGrid();
+#else
     static constexpr std::array<QVector3D, 92> gridVertices = __weiVLGledoM_generateGrid();
+#endif
 
     // Some Vectors the Qt OpenGL libraries should have...
     static constexpr QVector3D vecLeft  = {1.f, 0.f, 0.f};

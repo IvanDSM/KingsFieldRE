@@ -559,7 +559,7 @@ class PrettyNamer
 
             {"RTIM.T0", "Western Shore Texture Database"},
             {"RTIM.T1", "Garrison Texture Database"},
-            {"RTIM.T2", "Central Village Texture Datanase"},
+            {"RTIM.T2", "Central Village Texture Database"},
             {"RTIM.T3", "East Village Texture Database"},
             {"RTIM.T4", "Cathedral Texture Database"},
             {"RTIM.T5", "Big Mine Texture Database"},
