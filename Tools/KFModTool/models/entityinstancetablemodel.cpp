@@ -88,7 +88,7 @@ bool EntityInstanceTableModel::setData(const QModelIndex &index, const QVariant 
                     uShortValue = value.toString().chopped(1).toUInt() / KingsField::rotationCoefficient;
                 else
                     uShortValue = value.toUInt() % 4096;
-                entityInstance.ZRotation = static_cast<quint16>(uShortValue);
+                entityInstance.ZRotation = uShortValue;
                 break;
             case 9: entityInstance.FineWEXPos = shortValue; break;
             case 10: entityInstance.FineNSYPos = shortValue; break;
