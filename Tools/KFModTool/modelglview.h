@@ -202,7 +202,7 @@ private:
     QTimer refreshTimer{this};
     
 #if __GNUC__ < 7
-    static const std::array<QVector3D, 92> gridVertices = __weiVLGledoM_generateGrid();
+    const std::array<QVector3D, 92> gridVertices = __weiVLGledoM_generateGrid();
 #else
     static constexpr std::array<QVector3D, 92> gridVertices = __weiVLGledoM_generateGrid();
 #endif
