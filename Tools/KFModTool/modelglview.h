@@ -84,6 +84,12 @@ public:
         QVector4D colour;
         QVector2D texcoord;
     };
+
+    struct GLMesh {
+        unsigned int numVertex;
+        unsigned int VBO;
+        unsigned int VAO;
+    };
     
     explicit ModelGLView(QWidget *parent = nullptr, std::shared_ptr<Model> model_ = nullptr) : 
         QOpenGLWidget(parent), model(model_) 
@@ -109,34 +115,21 @@ public:
 
         if(model != nullptr)
         {
+            for(GLMesh mesh : meshes)
+            {
+                glFuncs->glDeleteVertexArrays(1, &mesh.VAO);
+                glFuncs->glDeleteBuffers(1, &mesh.VBO);
+            }
+            meshes.clear();
+
             if(model->animFrames.empty())
             {
-                //Clear TMD Objects
-                for(Model::Mesh &mesh : model->baseObjects)
-                {
-                    glFuncs->glDeleteBuffers(1, &mesh.oglVertexBufferObject);
-                    glFuncs->glDeleteVertexArrays(1, &mesh.oglVertexArrayObject);
-                    mesh.oglVertexNum = 0;
-                    mesh.oglVertexBufferObject = 0;
-                    mesh.oglVertexArrayObject = 0;
-                }
-
                 //Clear Shader
                 glTMDProgram.release();
                 glTMDProgram.removeAllShaders();
             }
             else
             {
-                //Clear MO Frames
-                for(Model::MOFrame &frame : model->animFrames)
-                {
-                    glFuncs->glDeleteBuffers(1, &frame.glVBO);
-                    glFuncs->glDeleteVertexArrays(1, &frame.glVAO);
-                    frame.glVertexNum = 0;
-                    frame.glVBO = 0;
-                    frame.glVAO = 0;
-                }
-
                 //Clear Shader
                 glMOProgram.release();
                 glMOProgram.removeAllShaders();
@@ -146,13 +139,11 @@ public:
         }
 
         //Clear Grid
-        glFuncs->glDeleteBuffers(1, &glGridVBO);
-        glFuncs->glDeleteVertexArrays(1, &glGridVAO);
+        glFuncs->glDeleteVertexArrays(1, &gridMesh.VAO);
+        glFuncs->glDeleteBuffers(1, &gridMesh.VBO);
 
         glSimpleProgram.release();
         glSimpleProgram.removeAllShaders();
-
-        KFMTError::log("If this shows, something still janky with mo :(");
     }
     
     bool setCurAnim(int animationIndex)
@@ -168,6 +159,11 @@ public:
 
         animFrame = 0;
         animFrameDelta = 0.f;
+
+        KFMTError::log("Changed Animation: " + QString::number(curAnim));
+
+        if(glFuncs != nullptr)
+            BuildMOAnimation();
 
         return true;
     }
@@ -225,6 +221,9 @@ private:
     QMatrix4x4 glMatView;
     QMatrix4x4 glMatWorld;
 
+    //Meshes
+    std::vector<GLMesh> meshes;
+
     //MO Stuff
     QOpenGLShaderProgram glMOProgram;
     unsigned int glMOProgramMVP = 12345678;
@@ -259,9 +258,7 @@ private:
     //
     QOpenGLShaderProgram glSimpleProgram;
     unsigned int glSimpleProgramMVP = 0;
-
-    unsigned int glGridVBO = 0;
-    unsigned int glGridVAO = 0;
+    GLMesh gridMesh;
 };
 
 #endif // MODELGLVIEW_H

@@ -39,10 +39,6 @@ public:
         std::vector<Primitive> primitives;
         
         bool visible = true;
-        
-        unsigned int oglVertexBufferObject;
-        unsigned int oglVertexArrayObject;
-        unsigned int oglVertexNum;
 
         Vec3 &operator[](size_t vertex) {return vertices[vertex];}
     };
@@ -105,11 +101,6 @@ struct Model::MOFrame
     {
         targets.resize(targetAmount);
     }
-
-    //Ogl
-    unsigned int glVBO = 0;
-    unsigned int glVAO = 0;
-    unsigned int glVertexNum = 0;
 };
 
 struct Model::MOPacket

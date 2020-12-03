@@ -29,7 +29,6 @@ void ModelGLView::initializeGL()
     else
     {
         setCurAnim(0);
-        BuildMOAnimation();
     }
 }
 
@@ -82,7 +81,7 @@ void ModelGLView::paintGL()
     glFuncs->glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     //Stop camera flipping :)
-    camRotZ = qMin(qMax(-89.999f, camRotZ * 57.2958f), 89.999f) * 0.0174533f;
+    camRotZ = qMin(qMax(-1.570750f, camRotZ), 1.570750f);
 
     //Apply Rotation to glCamFrom
     glCamFrom.setX(std::cos(camRotY) * std::cos(camRotZ) * camZoom);
@@ -117,6 +116,17 @@ void ModelGLView::paintGL()
 //
 void ModelGLView::BuildMOAnimation()
 {
+    //Clear GLMesh if a new TMD is built
+    glFuncs->glBindVertexArray(0);
+    glFuncs->glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+    for(GLMesh mesh : meshes)
+    {
+        glFuncs->glDeleteBuffers(1, &mesh.VBO);
+        glFuncs->glDeleteVertexArrays(1, &mesh.VAO);
+    }
+    meshes.clear();
+
     //Get the animation from the model
     Model::MOAnimation Anim = model->animations[curAnim];
     Model::Mesh frame1;
@@ -127,12 +137,6 @@ void ModelGLView::BuildMOAnimation()
 
     for(size_t frameID : Anim.frameIndexes)
     {
-         Model::MOFrame &moFrame = model->animFrames[frameID];
-
-         //My little, not very safe safe guard.
-         if(moFrame.glVAO > 0)
-             continue;
-
         if(i == Anim.frameIndexes.size()-1)
         {
             frame1 = model->morphTargets[model->animFrames[Anim.frameIndexes[Anim.frameIndexes.size()-1]].frameID];
@@ -148,6 +152,8 @@ void ModelGLView::BuildMOAnimation()
 
         //Now build the actual frame!
         std::vector<MOVertex> vertices;
+        GLMesh glMesh;
+
         for(Model::Primitive &prim : model->baseObjects[0].primitives)
         {
             if(prim.isTriangle())
@@ -228,14 +234,14 @@ void ModelGLView::BuildMOAnimation()
         }
 
         //Begin Generating OpenGL stuff for this frame
-        glFuncs->glGenBuffers(1, &moFrame.glVBO);
-        glFuncs->glGenVertexArrays(1, &moFrame.glVAO);
+        glFuncs->glGenBuffers(1, &glMesh.VBO);
+        glFuncs->glGenVertexArrays(1, &glMesh.VAO);
 
         //Bind array buffer
-        glFuncs->glBindVertexArray(moFrame.glVAO);
+        glFuncs->glBindVertexArray(glMesh.VAO);
 
         //bind vertex buffer, and copy the data to it
-        glFuncs->glBindBuffer(GL_ARRAY_BUFFER, moFrame.glVBO);
+        glFuncs->glBindBuffer(GL_ARRAY_BUFFER, glMesh.VBO);
         glFuncs->glBufferData(GL_ARRAY_BUFFER, 60 * vertices.size(), &vertices.front(), GL_STATIC_DRAW);
 
         //Set up the offsets and strides of each component of the vertex...
@@ -261,11 +267,14 @@ void ModelGLView::BuildMOAnimation()
         glFuncs->glEnableVertexAttribArray(4);
 
         //Unbind buffers
-        glFuncs->glBindBuffer(GL_ARRAY_BUFFER, 0);
         glFuncs->glBindVertexArray(0);
 
         //Set vertex number for draw...
-        moFrame.glVertexNum = vertices.size();
+        glMesh.numVertex = vertices.size();
+
+        meshes.push_back(glMesh);
+        vertices.clear();
+
         i++;
     }
 
@@ -298,11 +307,8 @@ void ModelGLView::DrawMOAnimation()
     glMOProgram.setUniformValue(glMOProgramWeight, animFrameDelta);
 
     //Draw it...
-    //Get current animation
-    uint convertedInd = model->animations[curAnim].frameIndexes[animFrame];
-
-    glFuncs->glBindVertexArray(model->animFrames[convertedInd].glVAO);
-    glFuncs->glDrawArrays(GL_TRIANGLES, 0, model->animFrames[convertedInd].glVertexNum);
+    glFuncs->glBindVertexArray(meshes[animFrame].VAO);
+    glFuncs->glDrawArrays(GL_TRIANGLES, 0, meshes[animFrame].numVertex);
 
     glFuncs->glBindVertexArray(0);
 
@@ -312,7 +318,7 @@ void ModelGLView::DrawMOAnimation()
     {
         animFrame++;
 
-        if(animFrame >= model->animations[curAnim].frameIndexes.size())
+        if(animFrame >= meshes.size())
         {
             animFrame = 0;
         }
@@ -325,13 +331,20 @@ void ModelGLView::DrawMOAnimation()
 //
 void ModelGLView::BuildTMDModel()
 {
-    //
-    // To-do : refactor this gigantic mess
-    //    
-    std::vector<TMDVertex> vertices;
+    //Clear GLMesh if a new TMD is built
+    for(GLMesh mesh : meshes)
+    {
+        glFuncs->glDeleteVertexArrays(1, &mesh.VAO);
+        glFuncs->glDeleteBuffers(1, &mesh.VBO);
+    }
+    meshes.clear();
 
+    //Build each TMDObject as a GLMesh
     for(Model::Mesh& tmdObj : model->baseObjects)
     {
+        std::vector<TMDVertex> vertices;
+        GLMesh mesh;
+
         for(Model::Primitive tmdPrim : tmdObj.primitives)
         {
             if(tmdPrim.isTriangle())
@@ -427,14 +440,14 @@ void ModelGLView::BuildTMDModel()
         }
 
         //Begin Generating OpenGL stuff for this object
-        glFuncs->glGenBuffers(1, &tmdObj.oglVertexBufferObject);
-        glFuncs->glGenVertexArrays(1, &tmdObj.oglVertexArrayObject);
+        glFuncs->glGenBuffers(1, &mesh.VBO);
+        glFuncs->glGenVertexArrays(1, &mesh.VAO);
 
         //Bind array buffer
-        glFuncs->glBindVertexArray(tmdObj.oglVertexArrayObject);
+        glFuncs->glBindVertexArray(mesh.VAO);
 
         //bind vertex buffer, and copy the data to it
-        glFuncs->glBindBuffer(GL_ARRAY_BUFFER, tmdObj.oglVertexBufferObject);
+        glFuncs->glBindBuffer(GL_ARRAY_BUFFER, mesh.VBO);
         glFuncs->glBufferData(GL_ARRAY_BUFFER, 48 * vertices.size(), &vertices.front(), GL_STATIC_DRAW);
 
         //Set up the offsets and strides of each component of the vertex...
@@ -456,13 +469,12 @@ void ModelGLView::BuildTMDModel()
         glFuncs->glEnableVertexAttribArray(3);
 
         //Unbind buffers
-        glFuncs->glBindBuffer(GL_ARRAY_BUFFER, 0);
         glFuncs->glBindVertexArray(0);
 
         //Set vertex number for draw...
-        tmdObj.oglVertexNum = vertices.size();
+        mesh.numVertex = vertices.size();
 
-        vertices.clear();
+        meshes.push_back(mesh);
     }
 
     //Now we build the shaders required for rendering
@@ -488,15 +500,16 @@ void ModelGLView::DrawTMDModel()
     glTMDProgram.setUniformValue(glTMDProgramModel, glMatWorld);
     glTMDProgram.setUniformValue(glTMDProgramLightPos, glCamFrom);
 
-    for(const Model::Mesh& tmdObj : model->baseObjects)
+    //Render each object
+    for(size_t i = 0; i < model->baseObjects.size(); ++i)
     {
-        if(tmdObj.visible)
-        {
-            glFuncs->glBindVertexArray(tmdObj.oglVertexArrayObject);
-            glFuncs->glDrawArrays(GL_TRIANGLES, 0, tmdObj.oglVertexNum);
+        //Don't render this object if it is not visible.
+        if(!model->baseObjects[i].visible)
+            continue;
 
-            glFuncs->glBindVertexArray(0);
-        }
+        glFuncs->glBindVertexArray(meshes[i].VAO);
+        glFuncs->glDrawArrays(GL_TRIANGLES, 0, meshes[i].numVertex);
+        glFuncs->glBindVertexArray(0);
     }
 }
 
@@ -505,11 +518,11 @@ void ModelGLView::DrawTMDModel()
 //
 void ModelGLView::BuildGrid()
 {
-    glFuncs->glGenBuffers(1, &glGridVBO);
-    glFuncs->glGenVertexArrays(1, &glGridVAO);
+    glFuncs->glGenBuffers(1, &gridMesh.VBO);
+    glFuncs->glGenVertexArrays(1, &gridMesh.VAO);
 
-    glFuncs->glBindVertexArray(glGridVAO);
-    glFuncs->glBindBuffer(GL_ARRAY_BUFFER, glGridVBO);
+    glFuncs->glBindVertexArray(gridMesh.VAO);
+    glFuncs->glBindBuffer(GL_ARRAY_BUFFER, gridMesh.VBO);
     glFuncs->glBufferData(GL_ARRAY_BUFFER, sizeof(gridVertices), gridVertices.data(), GL_STATIC_DRAW);
 
     glFuncs->glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 24, reinterpret_cast<void *>(0));
@@ -539,7 +552,7 @@ void ModelGLView::DrawGrid()
     glSimpleProgram.bind();
     glSimpleProgram.setUniformValue(glSimpleProgramMVP, (glMatProj * glMatView));
 
-    glFuncs->glBindVertexArray(glGridVAO);
+    glFuncs->glBindVertexArray(gridMesh.VAO);
     glFuncs->glDrawArrays(GL_LINES, 0, 46);
 
     glFuncs->glBindVertexArray(0);
