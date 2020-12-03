@@ -111,6 +111,8 @@ QString TFile::getFiletype(unsigned int trueFileNumber) const
             return "MAP2";
         if (isMAP3(checkFile))
             return "MAP3";
+        if (isGameDB(checkFile))
+            return "GAMEDB";
     }
 
     return "DAT";
@@ -156,6 +158,18 @@ std::vector<unsigned int> TFile::getTrueFileOffsets()
 unsigned int TFile::getTrueNumFiles() const
 {
     return fileOffsets.size();
+}
+
+bool TFile::isGameDB(const QByteArray & file)
+{
+    if (file.mid(4, 6).compare(QByteArray::fromHex("4010FF000000")) != 0)
+        return false;
+    
+    if (file.mid(20, 14).compare(QByteArray::fromHex("00000000000000004010FF000000")) != 0)
+        return false;
+    
+    return true;
+
 }
 
 bool TFile::isMAP1(const QByteArray &file)

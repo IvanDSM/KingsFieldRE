@@ -6,6 +6,7 @@
 
 #include <QDataStream>
 #include <QString>
+#include "kfmterror.h"
 
 #if __GNUC__ >= 10
 #include <unordered_map>
@@ -1086,7 +1087,11 @@ namespace KingsField
             in >> classDecl.Scale;
             in >> classDecl.UknBitField34;
             for (size_t i = 0; i < 16; i++)
+            {
                 in >> classDecl.SomePointers[i];
+                //if (classDecl.SomePointers[i] != 0xffffffff)
+                    //KFMTError::log("0x" + QString::number(classDecl.SomePointers[i], 16));
+            }
 
             return in;
         }

@@ -97,10 +97,34 @@ public:
         return file;
     }
     
+    static bool isGameDB(const QByteArray &file);
+    
+    /*!
+     * \brief Checks whether a file is the first file of a map.
+     * This is done in a very naive manner that checks if the first 4 bytes of the file are equal to
+     * {0x00, 0xFA, 0x00, 0x00}. FIXME: We can probably do a better heuristic for this.
+     * \param file File to check.
+     * \return Whether the file is the first file of a map.
+     */
     static bool isMAP1(const QByteArray &file);
     
+    /*!
+     * \brief Checks whether a file is the second file of a map.
+     * This is done in a very naive manner that checks if the first 4 bytes of the file are equal to
+     * {0xC0 0x32 0x00 0x00}. FIXME: We can probably do a better heuristic for this.
+     * \param file File to check.
+     * \return Whether the file is the second file of a map.
+     */
     static bool isMAP2(const QByteArray &file);
     
+    /*!
+     * \brief Checks whether a file is the third file of a map.
+     * This is done by assuming that we have a table of 32 pointers at the start of the file,
+     * as a third map file would. We then check if the most significant byte in all of them is 0x80.
+     * If so, this is a third map file.
+     * \param file File to check
+     * \return Whether the file is the third file of a map.
+     */
     static bool isMAP3(const QByteArray &file);
     
     /*!

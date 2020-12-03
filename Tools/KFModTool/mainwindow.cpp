@@ -242,6 +242,8 @@ void MainWindow::loadTFile(TFile &tFile, std::unique_ptr<QTreeWidgetItem> &tFile
             addModel(tFile, fileIndex);
         else if (TFile::isMAP1(file))
             addMap(tFile, fileIndex);
+        else if (TFile::isGameDB(file))
+            addGameDB(tFile, fileIndex);
     }
 }
 

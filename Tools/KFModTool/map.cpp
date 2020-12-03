@@ -23,6 +23,8 @@ Map::Map(TFile &tFile_, unsigned int index): tFile(tFile_),  fileIndex(index),
     for (auto &declaration : entityClassDeclarations)
         map2Stream >> declaration;
 
+    KFMTError::log("Map: entity state info at 0x" + QString::number(map2Stream.device()->pos(), 16));
+    
     map2Stream.device()->seek(0x32C8); // Skip state info section and entity instance declaration section size
     for (auto &instance : entityInstances)
         map2Stream >> instance;
