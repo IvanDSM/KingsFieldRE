@@ -10,6 +10,7 @@ GameDB::GameDB(TFile &tFile_, unsigned int index_) : tFile(tFile_), database(tFi
 
     quint32 sectionSize; ///< I just use this to skip crap
 
+    // Section 1 - Object Class Declarations
     dbStream >> sectionSize;
 
     for (size_t i = 0; i < objClassDeclarationsSize; i++)
@@ -19,6 +20,7 @@ GameDB::GameDB(TFile &tFile_, unsigned int index_) : tFile(tFile_), database(tFi
         objClassDeclarations.at(i) = objClassDecl;
     }
 
+    // Section 2 - Weapon Stats
     dbStream >> sectionSize;
 
     for (size_t i = 0; i < weaponStatsSize; i++)
@@ -32,12 +34,13 @@ GameDB::GameDB(TFile &tFile_, unsigned int index_) : tFile(tFile_), database(tFi
     dbStream >> sectionSize;
     dbStream >> sectionSize;
 
-    // Skip this unknown stuff (section 3)
+    // Section 3 - Armor Stats
     dbStream >> sectionSize;
 
     for (auto &armor : armorStats)
         dbStream >> armor;
 
+    // Section 4 - Player Level Data
     dbStream >> sectionSize;
 
     for (size_t i = 0; i < lvlDataSize; i++)
@@ -47,6 +50,7 @@ GameDB::GameDB(TFile &tFile_, unsigned int index_) : tFile(tFile_), database(tFi
         lvlData.at(i) = level;
     }
 
+    // Section 5 - Magic Data
     dbStream >> sectionSize;
 
     for (size_t i = 0; i < magicDataSize; i++)
