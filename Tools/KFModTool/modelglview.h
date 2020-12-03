@@ -20,6 +20,7 @@
 std::array<QVector3D, 92> __weiVLGledoM_generateGrid()
 #else
 constexpr std::array<QVector3D, 92> __weiVLGledoM_generateGrid()
+#endif
 { 
     std::array<QVector3D, 92> grid;
     
@@ -66,7 +67,6 @@ constexpr std::array<QVector3D, 92> __weiVLGledoM_generateGrid()
     
     return grid;
 }
-#endif
 
 class ModelGLView : public QOpenGLWidget
 {
