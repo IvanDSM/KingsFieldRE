@@ -332,7 +332,7 @@ void ModelGLView::DrawMOAnimation()
 void ModelGLView::BuildTMDModel()
 {
     //Clear GLMesh if a new TMD is built
-    for(GLMesh mesh : meshes)
+    for(GLMesh &mesh : meshes)
     {
         glFuncs->glDeleteVertexArrays(1, &mesh.VAO);
         glFuncs->glDeleteBuffers(1, &mesh.VBO);
@@ -345,7 +345,7 @@ void ModelGLView::BuildTMDModel()
         std::vector<TMDVertex> vertices;
         GLMesh mesh;
 
-        for(Model::Primitive tmdPrim : tmdObj.primitives)
+        for(const Model::Primitive &tmdPrim : tmdObj.primitives)
         {
             if(tmdPrim.isTriangle())
             {
