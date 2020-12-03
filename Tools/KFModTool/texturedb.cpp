@@ -1,6 +1,6 @@
 #include "kfmterror.h"
 #include "texturedb.h"
-#include <libimagequant.h>
+#include "libimagequant/libimagequant.h"
 #include <memory>
 
 TextureDB::TextureDB(TFile &tFile_, unsigned int index) : tFile(tFile_), fileIndex(index)
