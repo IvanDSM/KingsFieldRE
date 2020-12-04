@@ -38,13 +38,13 @@ public:
      * \brief Returns the T file's filename, without the path or extension.
      * \return T file name without path or extension.
      */
-    QString getBaseFilename();
+    QString getBaseFilename() const;
 
     /*!
      * \brief Returns the T file's filename, without the path.
      * \return T file name without path.
      */
-    QString getFilename();
+    QString getFilename() const;
 
     /*!
      * \brief Returns a QByteArray that contains the desired file.
@@ -64,27 +64,27 @@ public:
      * \brief Retrieves the vector of de-duplicated file offsets before multiplying.
      * \return Vector of de-duplicated file offsets with no multiplication.
      */
-    std::vector<unsigned int> getFileOffsets();
+    std::vector<unsigned int> getFileOffsets() const;
 
     /*!
      * \brief Returns the T file's MD5 hash.
      * \return MD5 hash for the T file.
      */
-    QByteArray &getHash();
+    QByteArray &getHash() const;
     
     /*!
      * \brief Retrieves the number of files reported by the T file, including duplicates.
      * \return Number of files reported by the T file, including duplicates.
      */
-    unsigned int getNumFiles();
+    unsigned int getNumFiles() const;
     
-    QString getPrettyName(size_t index);
+    QString getPrettyName(size_t index) const;
 
     /*!
      * \brief Retrieves the vector of de-duplicated and multiplied file offsets.
      * \return Vector of de-duplicated and multiplied file offsets.
      */
-    std::vector<unsigned int> getTrueFileOffsets();
+    std::vector<unsigned int> getTrueFileOffsets() const;
 
     /*!
      * \brief Retrieves the number of actual files in the T file, with duplicates removed.

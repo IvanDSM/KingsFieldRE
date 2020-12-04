@@ -19,7 +19,6 @@ bool TFile::extractFiles()
         curFileData = file.mid(fileOffsets[index], fileOffsets[index + 1] - fileOffsets[index]);
 
         // We try to identify the file type.
-        QByteArray signatureBytes = curFileData.left(4); // Signature in PSX format
 
         QString curFileExt = getFiletype(index);
         
@@ -60,12 +59,12 @@ bool TFile::extractFiles()
     return true;
 }
 
-QString TFile::getBaseFilename()
+QString TFile::getBaseFilename() const
 {
     return fileName.left(getFilename().indexOf('.'));
 }
 
-QString TFile::getFilename()
+QString TFile::getFilename() const
 {
     return fileName;
 }
@@ -118,7 +117,7 @@ QString TFile::getFiletype(unsigned int trueFileNumber) const
     return "DAT";
 }
 
-std::vector<unsigned int> TFile::getFileOffsets()
+std::vector<unsigned int> TFile::getFileOffsets() const
 {
     // FIXME: This is ugly, remake this when it's not 6 in the morning.
     std::vector<unsigned int> deMultiplied;
@@ -130,17 +129,17 @@ std::vector<unsigned int> TFile::getFileOffsets()
     return deMultiplied;
 }
 
-QByteArray &TFile::getHash()
+QByteArray &TFile::getHash() const
 {
     return hash;
 }
 
-unsigned int TFile::getNumFiles()
+unsigned int TFile::getNumFiles() const
 {
     return nFiles;
 }
 
-QString TFile::getPrettyName(size_t index)
+QString TFile::getPrettyName(size_t index) const
 {
     auto prettyNameIt = prettyMap.find(getFilename() + QString::number(index));
     
@@ -150,7 +149,7 @@ QString TFile::getPrettyName(size_t index)
     return "";
 }
 
-std::vector<unsigned int> TFile::getTrueFileOffsets()
+std::vector<unsigned int> TFile::getTrueFileOffsets() const
 {
     return fileOffsets;
 }
