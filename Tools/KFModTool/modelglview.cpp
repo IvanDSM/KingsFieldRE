@@ -208,7 +208,7 @@ void ModelGLView::BuildMOAnimation()
         std::vector<MOVertex> vertices;
         GLMesh glMesh;
 
-        for(Model::Primitive &prim : model->baseObjects[0].primitives)
+        for(const Model::Primitive &prim : model->baseObjects[0].primitives)
         {
             if(prim.isTriangle())
             {
