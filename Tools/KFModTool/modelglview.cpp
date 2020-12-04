@@ -10,7 +10,7 @@ constexpr ModelGLView::QVector3D vecUp;
 constexpr ModelGLView::QVector3D vecFront;
 #endif
 
-std::array<QVector3D, _Tp2> __weiVLGledoM_generateGrid()
+std::array<QVector3D, 92> __weiVLGledoM_generateGrid()
 { 
     std::array<QVector3D, 92> grid;
     
