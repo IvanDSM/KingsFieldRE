@@ -10,54 +10,6 @@ constexpr QVector3D ModelGLView::vecUp;
 constexpr QVector3D ModelGLView::vecFront;
 #endif
 
-std::array<QVector3D, 92> __weiVLGledoM_generateGrid()
-{ 
-    std::array<QVector3D, 92> grid;
-    
-    float cellSize = 32.f;
-    int   gridOff = 0;
-    
-    for(int i = 0; i <= 10; ++i)
-    {
-        if(i == 5)
-        {
-            //Axis X
-            grid[gridOff + 0] = {-2048.f, 0.f, 0.f};
-            grid[gridOff + 1] = {1.f, 0.f, 0.f};
-            grid[gridOff + 2] = { 2048.f, 0.f, 0.f};
-            grid[gridOff + 3] = {1.f, 0.f, 0.f};
-            
-            //Axis Z
-            grid[gridOff + 4] = {0.f, 0.f, -2048.f};
-            grid[gridOff + 5] = {0.f, 0.f, 1.f};
-            grid[gridOff + 6] = {0.f, 0.f,  2048.f};
-            grid[gridOff + 7] = {0.f, 0.f, 1.f};
-        }
-        else
-        {
-            grid[gridOff + 0] = {-160.f + (cellSize * i), 0.f, -160.f };
-            grid[gridOff + 1] = {1.f, 1.f, 1.f};
-            grid[gridOff + 2] = {-160.f + (cellSize * i), 0.f, 160.f };
-            grid[gridOff + 3] = {1.f, 1.f, 1.f};
-            
-            grid[gridOff + 4] = {-160.f, 0.f, -160.f + (cellSize * i) };
-            grid[gridOff + 5] = {1.f, 1.f, 1.f};
-            grid[gridOff + 6] = {160.f, 0.f, -160.f + (cellSize * i) };
-            grid[gridOff + 7] = {1.f, 1.f, 1.f};
-        }
-        
-        gridOff += 8;
-    }
-    
-    //Axis Y
-    grid[gridOff + 0] = {0.f, -160.f, 0.f};
-    grid[gridOff + 1] = {0.f, 1.f, 0.f};
-    grid[gridOff + 2] = {0.f, 160.f, 0.f };
-    grid[gridOff + 3] = {0.f, 1.f, 0.f};
-    
-    return grid;
-}
-
 void ModelGLView::setModel(std::shared_ptr<Model> model_)
 {    
     model = std::move(model_);
