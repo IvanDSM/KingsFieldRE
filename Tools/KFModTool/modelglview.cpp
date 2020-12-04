@@ -5,9 +5,9 @@
 #include <utility>
 
 #if __GNUC__ < 7
-constexpr ModelGLView::QVector3D vecLeft;
-constexpr ModelGLView::QVector3D vecUp;
-constexpr ModelGLView::QVector3D vecFront;
+constexpr QVector3D ModelGLView::vecLeft;
+constexpr QVector3D ModelGLView::vecUp;
+constexpr QVector3D ModelGLView::vecFront;
 #endif
 
 std::array<QVector3D, 92> __weiVLGledoM_generateGrid()
