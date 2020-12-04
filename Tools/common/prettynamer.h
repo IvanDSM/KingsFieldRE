@@ -563,7 +563,7 @@ class PrettyNamer
             {"RTIM.T3", "East Village Texture Database"},
             {"RTIM.T4", "Cathedral Texture Database"},
             {"RTIM.T5", "Big Mine Texture Database"},
-            {"RTIM.T6", "Necron's Colosseum Texture Database"},
+            {"RTIM.T6", "Necron's Coliseum Texture Database"},
             {"RTIM.T7", "Guyra's Lair Texture Database"},
             {"RTIM.T8", "Weird Debug Map Texture Database"},
             {"RTIM.T16", "Picture of a King"},
@@ -578,7 +578,7 @@ class PrettyNamer
             {"RTMD.T3", "East Village Tileset"},
             {"RTMD.T4", "Cathedral Tileset"},
             {"RTMD.T5", "Big Mine Tileset"},
-            {"RTMD.T6", "Necron's Colosseum Tileset"},
+            {"RTMD.T6", "Necron's Coliseum Tileset"},
             {"RTMD.T7", "Guyra's Lair Tileset"},
             {"RTMD.T8", "Weird Debug Map Tileset"},
 
