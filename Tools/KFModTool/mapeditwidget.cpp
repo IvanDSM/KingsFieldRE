@@ -1,6 +1,7 @@
 #include "mapeditwidget.h"
 #include "models/entityclasstablemodel.h"
 #include "models/entityinstancetablemodel.h"
+#include "models/entitystatetablemodel.h"
 #include "models/objectinstancetablemodel.h"
 #include "models/vfxinstancetablemodel.h"
 #include <QFileDialog>
@@ -24,14 +25,14 @@ MapEditWidget::MapEditWidget(QWidget *parent) :
     connect(ui->mapViewWidget, &MapViewer::vfxInstanceHovered,
             this, &MapEditWidget::vfxInstanceHovered);
 
-    ui->entityCDTable->horizontalHeader()->show();
-    ui->entityCDTable->verticalHeader()->show();
+//    ui->entityCDTable->horizontalHeader()->show();
+//    ui->entityCDTable->verticalHeader()->show();
 
-    ui->entityInstanceTable->horizontalHeader()->show();
-    ui->entityInstanceTable->verticalHeader()->show();
+//    ui->entityInstanceTable->horizontalHeader()->show();
+//    ui->entityInstanceTable->verticalHeader()->show();
 
-    ui->objectInstanceTable->horizontalHeader()->show();
-    ui->objectInstanceTable->verticalHeader()->show();
+//    ui->objectInstanceTable->horizontalHeader()->show();
+//    ui->objectInstanceTable->verticalHeader()->show();
 }
 
 void MapEditWidget::setMap(const std::shared_ptr<Map> &map)
@@ -39,6 +40,8 @@ void MapEditWidget::setMap(const std::shared_ptr<Map> &map)
     curMap = map;
     ui->mapViewWidget->setMap(map);
     fillEntityCDCombo();
+    ui->stateTable->setModel(new EntityStateTableModel(ui->stateTable, 
+                                                       curMap->getEntityStateBlobOffset(0)));
 }
 
 void MapEditWidget::on_layer1Radio_toggled(bool checked)
@@ -283,4 +286,25 @@ void MapEditWidget::on_entityInstanceExport_clicked()
                                      "Entity Instance Declaration exported successfully!");
         }
     }
+}
+
+void MapEditWidget::on_entityCDTable_activated(const QModelIndex &index)
+{
+    if (index.row() > 30) // Is a state pointer
+    {
+        if (index.data() != "Null")
+        {
+            auto offset = index.data().toString().leftRef(4).toUInt();
+            
+            ui->offsetSpin->setValue(offset);
+            
+            ui->infoTabs->setCurrentWidget(ui->entityStateTab);
+        }
+    }
+}
+
+void MapEditWidget::on_offsetSpin_valueChanged(int arg1)
+{
+    ui->stateTable->setModel(new EntityStateTableModel(ui->stateTable, 
+                                                       curMap->getEntityStateBlobOffset(arg1)));
 }

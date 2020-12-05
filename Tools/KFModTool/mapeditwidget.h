@@ -12,6 +12,8 @@ class MapEditWidget : public QWidget
 
 public:
     explicit MapEditWidget(QWidget *parent = nullptr);
+    ~MapEditWidget() { delete ui; }
+    
     void setMap(const std::shared_ptr<Map> &map);
 
 private slots:
@@ -56,13 +58,17 @@ private slots:
 
     void on_moveModeButton_clicked();
 
+    void on_entityCDTable_activated(const QModelIndex &index);
+    
+    void on_offsetSpin_valueChanged(int arg1);
+    
 private:
     void fillEntityCDCombo();
     byte currentEntityInstance = 255;
     size_t currentObjectInstance = 65536;
     KingsField::VFXInstanceDeclaration *currentVFXInstance = nullptr;
     std::shared_ptr<Map> curMap;
-    std::unique_ptr<Ui::MapEditWidget> ui;
+    Ui::MapEditWidget *ui;
 };
 
 #endif // MAPDOCKWIDGET_H

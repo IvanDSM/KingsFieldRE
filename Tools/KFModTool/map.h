@@ -70,6 +70,11 @@ public:
     {
         return objInstances;
     }
+    
+    uint8_t *getEntityStateBlobOffset(size_t offset)
+    {
+        return reinterpret_cast<uint8_t *>(entityStateBlob.data() + offset);
+    }
 
     KingsField::Tile& getTile(size_t line, size_t column)
     {
@@ -114,6 +119,7 @@ private:
     QByteArray map3;
     std::array<KingsField::EntityClassDeclaration, 40> entityClassDeclarations {};
     std::array<KingsField::EntityInstance, 200> entityInstances {};
+    QByteArray entityStateBlob;
     std::array<KingsField::ObjectInstanceDeclaration, 350> objInstances {};
     std::array<KingsField::VFXInstanceDeclaration, 128> vfxInstances {};
 };

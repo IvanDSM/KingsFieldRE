@@ -53,6 +53,7 @@ SOURCES += \
     models/armorstatstablemodel.cpp \
     models/entityclasstablemodel.cpp \
     models/entityinstancetablemodel.cpp \
+    models/entitystatetablemodel.cpp \
     models/magictablemodel.cpp \
     models/modelanimationlistmodel.cpp \
     models/modelobjecttablemodel.cpp \
@@ -86,6 +87,7 @@ HEADERS += \
     models/armorstatstablemodel.h \
     models/entityclasstablemodel.h \
     models/entityinstancetablemodel.h \
+    models/entitystatetablemodel.h \
     models/magictablemodel.h \
     models/modelanimationlistmodel.h \
     models/modelobjecttablemodel.h \
