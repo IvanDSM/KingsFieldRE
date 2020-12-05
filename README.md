@@ -7,7 +7,7 @@ This is the fruit of the community's efforts in understanding how the game works
 
 The tools are available in the repository, and documentation is available in the wiki. As of writing, the wiki is incomplete and it is often outdated, but it is updated whenever possible.
 
-If you need help with the tools or would like to discuss King's Field internals and reverse engineering, join the [#the-laboratory channel on ImJecht's Discord](https://discord.gg/JmhFRRXf)!
+If you need help with the tools or would like to discuss King's Field internals and reverse engineering, join the [#the-laboratory channel on ImJecht's Discord](https://discord.gg/Uq56AKF)!
 
 # Tools
 
