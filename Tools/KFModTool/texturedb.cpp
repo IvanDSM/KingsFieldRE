@@ -89,7 +89,7 @@ void TextureDB::replaceTexture(QImage & newTexture, size_t textureIndex, bool sm
         for (size_t entryIndex = 0; entryIndex < iQPal->count; entryIndex++)
         {
             auto entry = iQPal->entries[entryIndex];
-            clut.push_back(QColor(entry.r, entry.g, entry.b, entry.a).rgb());
+            clut.push_back(QColor(entry.r, entry.g, entry.b, entry.a).rgba());
         }
         
         texture.image.setColorTable(clut);
