@@ -68,7 +68,7 @@ QVariant ObjectClassTableModel::headerData(int section, Qt::Orientation orientat
                 case 18: return "Unknown 13";
                 case 19: return "Unknown 14";
                 case 20: return "Unknown 15";
-                case 21: return "Unknown 16";
+                case 21: return "Sound Effect";
                 case 22: return "Unknown 17";
                 default: break;
             }

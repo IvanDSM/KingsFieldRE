@@ -12,7 +12,8 @@ QVariant EntityStateTableModel::headerData(int section, Qt::Orientation orientat
             switch (section)
             {
                 case 0: return "State ID";
-                case 1: return "Animation?";
+                case 1: return "Animation";
+                case 4: return "Entity Sound Effect";
                 case 8: return "Look At Margin? Low Byte";
                 case 9: return "Look At Margin? High Byte";
                 case 10: return "Tick Something? Low Byte";
