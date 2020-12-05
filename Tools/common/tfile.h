@@ -70,7 +70,7 @@ public:
      * \brief Returns the T file's MD5 hash.
      * \return MD5 hash for the T file.
      */
-    QByteArray &getHash() const;
+    QByteArray getHash() const;
     
     /*!
      * \brief Retrieves the number of files reported by the T file, including duplicates.

@@ -129,7 +129,7 @@ std::vector<unsigned int> TFile::getFileOffsets() const
     return deMultiplied;
 }
 
-QByteArray &TFile::getHash() const
+QByteArray TFile::getHash() const
 {
     return hash;
 }
