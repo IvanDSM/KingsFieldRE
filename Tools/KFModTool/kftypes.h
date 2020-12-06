@@ -14,24 +14,28 @@
 #include <map>
 #endif
 
-typedef quint8 byte;
+typedef uint8_t byte;
 typedef byte undefined;
 #if (defined(__GNUC__) && defined(__MINGW32__)) || defined(EMSCRIPTEN)
-typedef quint16 u_short;
-typedef quint32 u_int;
+typedef uint16_t u_short;
+typedef uint32_t u_int;
 #endif
 
 #pragma once
 
 namespace KingsField
 {
+    // Unknown string
+
+    static const QString unknownString = "???";
 
     // Enums
 
     /*!
      * \brief Enum for the entity meshes in King's Field.
      */
-    enum class EntityMeshID {
+    enum class EntityMeshID 
+    {
         AlHunt=83,
         Archer=18,
         Baltail=4,
@@ -146,6 +150,25 @@ namespace KingsField
         Unused9=57
     };
 
+    /*!
+     * \brief Enum for the possible entity state IDs in King's Field.
+     */
+    enum class EntityStateID 
+    {
+        FlyingWander=10,
+        MagicAttack=25,
+        ApproachingPlayer=5,
+        Wander=1,
+        MeleeAttack=4,
+        TakingDamage=2,
+        None=255,
+        MeleeAttack3=24,
+        MeleeAttack2=23,
+        Idle=0,
+        Dialogue=112,
+        Dying=3
+    };
+    
     /*!
      * \brief Enum for the Magic IDs in King's Field.
      */
@@ -561,6 +584,26 @@ namespace KingsField
     };
 
 #if __GNUC__ >= 10
+    static const std::unordered_map<const EntityStateID, const QString> entityStateIdNameMap =
+#else
+    static const std::map<const EntityMeshID, const QString> entityStateIdNameMap =
+#endif
+    {
+        {EntityStateID::FlyingWander, "Flying Wander"},
+        {EntityStateID::MagicAttack, "Magic Attack"},
+        {EntityStateID::ApproachingPlayer, "Approaching Player"},
+        {EntityStateID::Wander, "Wander"},
+        {EntityStateID::MeleeAttack, "Melee Attack"},
+        {EntityStateID::TakingDamage, "Taking Damage"},
+        {EntityStateID::None, "None"},
+        {EntityStateID::MeleeAttack3, "Melee Attack 3"},
+        {EntityStateID::MeleeAttack2, "Melee Attack 2"},
+        {EntityStateID::Idle, "Idle"},
+        {EntityStateID::Dialogue, "Dialogue"},
+        {EntityStateID::Dying, "Dying"}
+    };
+    
+#if __GNUC__ >= 10
     static const std::unordered_map<const MagicID, const QString> magicIdNameMap =
 #else
     static const std::map<const MagicID, const QString> magicIdNameMap =
@@ -861,7 +904,7 @@ namespace KingsField
         if (entityMeshIdNameMap.count(entityMeshId) == 1)
             return entityMeshIdNameMap.at(entityMeshId);
 
-        return entityMeshIdNameMap.at(EntityMeshID::None);
+        return unknownString;
     }
 
     static EntityMeshID getEntityMeshIDFromByte(byte meshId)
@@ -874,12 +917,30 @@ namespace KingsField
         return static_cast<byte>(entityMeshId);
     }
 
+    static const QString &getEntityStateIDName(EntityStateID entityStateId)
+    {
+        if (entityStateIdNameMap.count(entityStateId) == 1)
+            return entityStateIdNameMap.at(entityStateId);
+
+        return unknownString;
+    }
+    
+    static EntityStateID getEntityStateIDFromByte(byte stateId)
+    {
+        return static_cast<EntityStateID>(stateId);
+    }
+    
+    static byte getEntityStateIDAsByte(EntityStateID entityStateId)
+    {
+        return static_cast<byte>(entityStateId);
+    }
+    
     static const QString &getMagicIDName(MagicID magicId)
     {
         if (magicIdNameMap.count(magicId) == 1)
             return magicIdNameMap.at(magicId);
 
-        return magicIdNameMap.at(MagicID::None);
+        return unknownString;
     }
 
     static MagicID getMagicIDFromByte(byte magicId)
@@ -897,7 +958,7 @@ namespace KingsField
         if (objectIdNameMap.count(itemId) == 1)
             return objectIdNameMap.at(itemId);
 
-        return objectIdNameMap.at(ObjectID::None);
+        return unknownString;
     }
 
     static ObjectID getObjectIDFromByte(byte objectId)
