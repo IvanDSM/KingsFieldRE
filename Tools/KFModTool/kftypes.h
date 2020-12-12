@@ -155,6 +155,7 @@ namespace KingsField
      */
     enum class EntityStateID 
     {
+        FlyingAttackMaybe=11,
         FlyingWander=10,
         MagicAttack=25,
         ApproachingPlayer=5,
@@ -589,6 +590,7 @@ namespace KingsField
     static const std::map<const EntityMeshID, const QString> entityStateIdNameMap =
 #endif
     {
+        {EntityStateID::FlyingAttackMaybe, "Flying Attack?"},
         {EntityStateID::FlyingWander, "Flying Wander"},
         {EntityStateID::MagicAttack, "Magic Attack"},
         {EntityStateID::ApproachingPlayer, "Approaching Player"},
