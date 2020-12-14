@@ -504,7 +504,7 @@
          <enum>QTabWidget::Rounded</enum>
         </property>
         <property name="currentIndex">
-         <number>1</number>
+         <number>0</number>
         </property>
         <property name="elideMode">
          <enum>Qt::ElideNone</enum>
@@ -560,6 +560,9 @@
               <number>0</number>
              </property>
              <item>
+              <widget class="QComboBox" name="entityInstanceCombo"/>
+             </item>
+             <item>
               <widget class="QTableView" name="entityInstanceTable">
                <property name="inputMethodHints">
                 <set>Qt::ImhDigitsOnly</set>
@@ -571,21 +574,14 @@
                 <enum>QAbstractItemView::ScrollPerPixel</enum>
                </property>
                <attribute name="horizontalHeaderVisible">
-                <bool>false</bool>
+                <bool>true</bool>
                </attribute>
                <attribute name="horizontalHeaderStretchLastSection">
                 <bool>true</bool>
                </attribute>
                <attribute name="verticalHeaderVisible">
-                <bool>false</bool>
+                <bool>true</bool>
                </attribute>
-              </widget>
-             </item>
-             <item>
-              <widget class="QLabel" name="entityInstanceAddrLabel">
-               <property name="text">
-                <string>Instance X, at address </string>
-               </property>
               </widget>
              </item>
              <item>
@@ -866,6 +862,9 @@
               <number>0</number>
              </property>
              <item>
+              <widget class="QComboBox" name="objectInstanceCombo"/>
+             </item>
+             <item>
               <widget class="QTableView" name="objectInstanceTable">
                <property name="inputMethodHints">
                 <set>Qt::ImhDigitsOnly</set>
@@ -873,13 +872,6 @@
                <attribute name="horizontalHeaderStretchLastSection">
                 <bool>true</bool>
                </attribute>
-              </widget>
-             </item>
-             <item>
-              <widget class="QLabel" name="objectInstanceAddrLabel">
-               <property name="text">
-                <string>Instance X, at address </string>
-               </property>
               </widget>
              </item>
             </layout>

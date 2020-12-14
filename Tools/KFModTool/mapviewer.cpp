@@ -232,7 +232,7 @@ void MapViewer::processMouse(QMouseEvent *event)
         if (curMode == MapViewerMode::MODE_POKE)
         {
             size_t index = 0;
-            for (auto entityInstance : mapPtr->getEntityInstances())
+            for (const auto &entityInstance : mapPtr->getEntityInstances())
             {
                 if (trueX == entityInstance.WEXTilePos && trueY == entityInstance.NSYTilePos &&
                     ((entityInstance.Layer == 1 && curLayer == MapLayer::LAYER_1) ||
@@ -242,7 +242,7 @@ void MapViewer::processMouse(QMouseEvent *event)
             }
 
             index = 0;
-            for (auto objInstance : mapPtr->getObjectInstanceDeclarations())
+            for (const auto &objInstance : mapPtr->getObjectInstanceDeclarations())
             {
                 if (trueX == objInstance.WEXTilePos && trueY == objInstance.NSYTilePos &&
                     ((objInstance.TileLayer == 1 && curLayer == MapLayer::LAYER_1) ||
@@ -251,7 +251,7 @@ void MapViewer::processMouse(QMouseEvent *event)
                 index++;
             }
 
-            for (auto vfx : vfxAt(trueX, trueY))
+            for (const auto &vfx : vfxAt(trueX, trueY))
                 emit vfxInstanceHovered(vfx);
 
             auto tile = mapPtr->getTile(trueX, trueY);

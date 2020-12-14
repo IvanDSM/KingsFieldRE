@@ -1,8 +1,8 @@
 #ifndef ENTITYCLASSTABLEMODEL_H
 #define ENTITYCLASSTABLEMODEL_H
 
-#include <QAbstractTableModel>
 #include <kftypes.h>
+#include <QAbstractTableModel>
 
 class EntityClassTableModel : public QAbstractTableModel
 {

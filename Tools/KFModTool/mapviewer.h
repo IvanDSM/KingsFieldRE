@@ -80,11 +80,11 @@ public:
 
 signals:
     void curMousePosChanged(qint8 x, qint8 y);
-    void entityInstanceHovered(byte instance);
+    void entityInstanceHovered(int instance);
     void hoveredTileInfo(byte elevation, byte rotation, byte collisionThing, byte zoneDelimiter,
                          byte tileId);
-    void objectInstanceHovered(size_t instance);
-    void vfxInstanceHovered(size_t instance);
+    void objectInstanceHovered(int instance);
+    void vfxInstanceHovered(int instance);
 
 public slots:
     void leaveEvent(QEvent *event) override;

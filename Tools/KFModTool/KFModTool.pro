@@ -13,7 +13,7 @@ HEADERS += libimagequant/blur.h \
            libimagequant/mediancut.h \
            libimagequant/mempool.h \
            libimagequant/nearest.h \
-           libimagequant/pam.h \
+           libimagequant/pam.h
 
 SOURCES += libimagequant/blur.c \
            libimagequant/kmeans.c \
@@ -21,7 +21,7 @@ SOURCES += libimagequant/blur.c \
            libimagequant/mediancut.c \
            libimagequant/mempool.c \
            libimagequant/nearest.c \
-           libimagequant/pam.c \
+           libimagequant/pam.c
 
 # Inherit system CFLAGS/CXXFLAGS into qmake
 QMAKE_CFLAGS += $$(CFLAGS) -isystem $$[QT_INSTALL_HEADERS]
@@ -52,12 +52,14 @@ SOURCES += \
     modelglview.cpp \
     models/armorstatstablemodel.cpp \
     models/entityclasstablemodel.cpp \
+    models/entityinstancelistmodel.cpp \
     models/entityinstancetablemodel.cpp \
     models/entitystatetablemodel.cpp \
     models/magictablemodel.cpp \
     models/modelanimationlistmodel.cpp \
     models/modelobjecttablemodel.cpp \
     models/objectclasstablemodel.cpp \
+    models/objectinstancelistmodel.cpp \
     models/objectinstancetablemodel.cpp \
     models/playerleveldatatablemodel.cpp \
     models/texturelistmodel.cpp \
@@ -86,12 +88,14 @@ HEADERS += \
     modelglview.h \
     models/armorstatstablemodel.h \
     models/entityclasstablemodel.h \
+    models/entityinstancelistmodel.h \
     models/entityinstancetablemodel.h \
     models/entitystatetablemodel.h \
     models/magictablemodel.h \
     models/modelanimationlistmodel.h \
     models/modelobjecttablemodel.h \
     models/objectclasstablemodel.h \
+    models/objectinstancelistmodel.h \
     models/objectinstancetablemodel.h \
     models/playerleveldatatablemodel.h \
     models/texturelistmodel.h \
