@@ -36,6 +36,7 @@ QMAKE_CXXFLAGS += -isystem "$$[QT_INSTALL_HEADERS]/qt5" -isystem "$$[QT_INSTALL_
                   -isystem "$$[QT_INSTALL_HEADERS]/QtCore"
 
 SOURCES += \
+    ../common/mixfile.cpp \
     ../common/prettynamer.cpp \
     ../common/tfile.cpp \
     aboutdialog.cpp \
@@ -71,6 +72,7 @@ SOURCES += \
     texturedbviewer.cpp
 
 HEADERS += \
+    ../common/mixfile.h \
     ../common/prettynamer.h \
     ../common/tfile.h \
     aboutdialog.h \
