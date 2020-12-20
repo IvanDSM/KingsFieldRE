@@ -30,6 +30,22 @@ namespace KingsField
     static const QString unknownString = "???";
 
     // Enums
+    
+    /*!
+     * \brief Enum for the games supported by KFModTool.
+     */
+    enum class GameID
+    {
+        None,
+        KingsFieldJDemo, ///< Enum value for the DemoDemo PlayStation Soukan-gou Vol. 1 demo of the Japan-only King's Field I.
+        KingsFieldJ, ///< Enum value for the Japan-only King's Field I
+        KingsField2J, ///< Enum value for King's Field II (American King's Field I)
+        KingsFieldEU, ///< Enum value for the European release of King's Field II
+        KingsField3J, ///< Enum value for King's Field III (American King's Field II)
+        KingsFieldPilotStyle, ///< Enum value for the Japan-only King's Field III: Pilot Style
+        //FIXME: Implement Shadow Tower support
+        //ShadowTower ///< Enum value for Shadow Tower
+    };
 
     /*!
      * \brief Enum for the entity meshes in King's Field.
@@ -587,7 +603,7 @@ namespace KingsField
 #if __GNUC__ >= 10
     static const std::unordered_map<const EntityStateID, const QString> entityStateIdNameMap =
 #else
-    static const std::map<const EntityMeshID, const QString> entityStateIdNameMap =
+    static const std::map<const EntityStateID, const QString> entityStateIdNameMap =
 #endif
     {
         {EntityStateID::FlyingAttackMaybe, "Flying Attack?"},
