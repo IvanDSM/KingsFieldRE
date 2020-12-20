@@ -12,7 +12,7 @@ TextureDB::TextureDB(TFile &tFile_, unsigned int index) : tFile(tFile_), fileInd
         loadTIM(file);
     else if (TFile::isRTIM(file))
     {
-        isRtim = true;
+        type = TexDBType::RTIM;
         loadRTIM(file);
     }
 }
@@ -114,10 +114,7 @@ void TextureDB::writeChanges()
     QDataStream outStream(&outFile, QIODevice::WriteOnly);
     outStream.setByteOrder(QDataStream::LittleEndian);
     
-    if (!isRtim) // TIM File
-    {
-    }
-    else // RTIM File
+    if (type == TexDBType::RTIM) // RTIM File
     {
         for (auto &texture : textures)
         {
@@ -312,7 +309,7 @@ void TextureDB::loadTIM(const QByteArray &file)
 
 void TextureDB::readCLUT(QDataStream & stream, Texture & targetTex)
 {
-    if (!isRtim)
+    if (type != TexDBType::RTIM)
     {
         stream >> targetTex.clutSize;
         stream >> targetTex.clutVramX;
@@ -361,7 +358,7 @@ void TextureDB::readCLUT(QDataStream & stream, Texture & targetTex)
 
 void TextureDB::readPixelData(QDataStream & stream, Texture & targetTex)
 {
-    if (!isRtim)
+    if (type != TexDBType::RTIM)
         stream >> targetTex.pxDataSize;
     stream >> targetTex.pxVramX;
     stream >> targetTex.pxVramY;
@@ -369,7 +366,7 @@ void TextureDB::readPixelData(QDataStream & stream, Texture & targetTex)
     stream >> targetTex.pxHeight;
     
     // If this is an RTIM, skip the DX/DY and W/X dupes
-    if (isRtim)
+    if (type == TexDBType::RTIM)
         stream.skipRawData(8);
     
     // Adjust width properly

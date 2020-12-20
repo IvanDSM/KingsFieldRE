@@ -8,6 +8,13 @@
 class TextureDB
 {
 public:
+    enum TexDBType
+    {
+        RTIM,
+        MIX,
+        TIM
+    };
+    
     /*!
      * \brief Structure for representing a single texture (CLUT + Pixel Data).
      */
@@ -37,7 +44,7 @@ private:
     void readCLUT(QDataStream &stream, Texture &targetTex);
     void readPixelData(QDataStream &stream, Texture &targetTex);
         
-    bool isRtim = false;
+    TexDBType type;
     
     TFile &tFile;
     unsigned int fileIndex;
