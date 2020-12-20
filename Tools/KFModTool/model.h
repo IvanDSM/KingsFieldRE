@@ -160,7 +160,23 @@ struct Model::Primitive
     QVector4D Colour1() const { return {r1 / 255.f, g1 / 255.f, b1 / 255.f, alpha / 255.f }; }
     QVector4D Colour2() const { return {r2 / 255.f, g2 / 255.f, b2 / 255.f, alpha / 255.f }; }
     QVector4D Colour3() const { return {r3 / 255.f, g3 / 255.f, b3 / 255.f, alpha / 255.f }; }
-
+    
+    /*!
+     * \brief Checks if a primitive is double sided.
+     * \return Whether this is a double sided primitive.
+     */
+    bool isDoubleSided() const
+    {
+        auto flag_ = static_cast<uint8_t>(flag);
+        return (flag_ >> 1) & 1;
+    }
+    
+    /*!
+     * \brief Checks whether this is a Gouraud shaded primitive.
+     * \return Whether this is a Gouraud shaded primitive.
+     */
+    bool isGouraud() const { return ((static_cast<uint8_t>(mode) >> 5) & 1) == 1; }
+    
     /*!
      * \brief Checks whether this is a gradation primitive.
      * \return Whether this is a gradation primitive.
@@ -168,14 +184,10 @@ struct Model::Primitive
     bool isGradation() const { return static_cast<uint8_t>(flag) > 3; }
     
     /*!
-     * \brief Checks whether this is a triangle primitive.
-     * \return Whether this is a triangle primitive.
+     * \brief Checks whether this is a lit primitive.
+     * \return Whether this is a lit primitive.
      */
-    bool isTriangle() const
-    { 
-        auto mode_ = static_cast<uint8_t>(mode);
-        return (mode_ >> 5) && !((mode_ >> 3) & 1);
-    }
+    bool isLit() const { return (static_cast<uint8_t>(flag) & 1) == 0; }
     
     /*!
      * \brief Checks whether this is a quadrilateral primitive.
@@ -206,15 +218,15 @@ struct Model::Primitive
         auto mode_ = static_cast<uint8_t>(mode);
         return (mode_ >> 2) & 1;
     }
-
+    
     /*!
-     * \brief Checks if a primitive is double sided.
-     * \return Whether this is a double sided primitive.
+     * \brief Checks whether this is a triangle primitive.
+     * \return Whether this is a triangle primitive.
      */
-    bool isDoubleSided() const
-    {
-        auto flag_ = static_cast<uint8_t>(flag);
-        return (flag_ >> 1) & 1;
+    bool isTriangle() const
+    { 
+        auto mode_ = static_cast<uint8_t>(mode);
+        return (mode_ >> 5) && !((mode_ >> 3) & 1);
     }
 };
 
