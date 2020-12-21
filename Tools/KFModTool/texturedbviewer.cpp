@@ -101,7 +101,7 @@ void TextureDBViewer::updateTextureViewer()
     case TextureDB::PixelMode::Direct15Bit:
         pixelModeString = "Direct 15bpp";
         break;
-    case TextureDB::PixelMode::Dir24Bit:
+    case TextureDB::PixelMode::Direct24Bit:
         pixelModeString = "Direct 24bpp";
         break;
     case TextureDB::PixelMode::Mixed:

@@ -5,7 +5,7 @@
 #include "map.h"
 #include "model.h"
 #include "texturedb.h"
-#include "../common/tfile.h"
+#include "tfile.h"
 #include <QTreeWidgetItem>
 
 enum class KFMTDataType
@@ -19,8 +19,9 @@ enum class KFMTDataType
 class KFMTTreeWidgetItem : public QTreeWidgetItem
 {
 public:
-    explicit KFMTTreeWidgetItem(QTreeWidgetItem *parent,
-                                TFile &tFile_, unsigned int fileIndex, KFMTDataType type);
+    explicit KFMTTreeWidgetItem(QTreeWidgetItem *parent, QByteArray &file_, KFMTDataType type);
+    explicit KFMTTreeWidgetItem(QTreeWidgetItem *parent, QByteArray &mapFile1, 
+                                QByteArray &mapFile2_, QByteArray &mapFile3_, KFMTDataType type);
     
     /*!
      * \brief Builds the file into the appropriate structure.
@@ -65,8 +66,10 @@ public:
 
 private:
     KFMTDataType dataType;
-    TFile &tFile;
-    unsigned int index;
+    QByteArray &file;
+    // FIXME: This is TERRIBLE, AWFUL, DISASTROUS. I hope we can find a better way to do this.
+    QByteArray *mapFile2 = nullptr;
+    QByteArray *mapFile3 = nullptr;
     
     std::shared_ptr<GameDB> dbPtr = nullptr;
     std::shared_ptr<Map> mapPtr = nullptr;

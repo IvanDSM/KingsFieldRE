@@ -3,7 +3,6 @@
 
 #include "kfmterror.h"
 #include "kftypes.h"
-#include "../common/tfile.h"
 #include <QVector3D>
 #include <QVector4D>
 
@@ -58,7 +57,7 @@ public:
      */
     struct MOPacket;
     
-    explicit Model(TFile &tFile, unsigned int fileIndex);
+    explicit Model(QByteArray &modelFile);
     
     std::vector<Mesh> baseObjects;
     float scale = 1.0f;

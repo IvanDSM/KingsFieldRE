@@ -3,12 +3,12 @@
 
 #include "kfmterror.h"
 #include "kftypes.h"
-#include "../common/tfile.h"
+#include "tfile.h"
 
 class GameDB
 {
 public:
-    explicit GameDB(TFile &tFile_, unsigned int index_);
+    explicit GameDB(QByteArray &file);
 
     KingsField::ArmorStats &getArmorStats(size_t armorIndex)
     {
@@ -22,7 +22,7 @@ public:
         }
     }
 
-    KingsField::PlayerLvlData &getLevel(byte levelIndex)
+    KingsField::PlayerLvlData &getLevel(size_t levelIndex)
     {
         try
         {
@@ -34,7 +34,7 @@ public:
         }
     }
 
-    KingsField::Magic &getMagic(byte magicIndex)
+    KingsField::Magic &getMagic(size_t magicIndex)
     {
         try
         {
@@ -46,7 +46,7 @@ public:
         }
     }
 
-    KingsField::ObjectClassDeclaration &getObjClass(unsigned short objClassIndex)
+    KingsField::ObjectClassDeclaration &getObjClass(size_t objClassIndex)
     {
         try
         {
@@ -58,7 +58,7 @@ public:
         }
     }
 
-    KingsField::WeaponStats &getWeaponStats(byte weaponIndex)
+    KingsField::WeaponStats &getWeaponStats(size_t weaponIndex)
     {
         try
         {
@@ -79,9 +79,7 @@ public:
     static constexpr size_t weaponStatsSize = 18;
 
 private:
-    TFile &tFile;
-    QByteArray database;
-    unsigned int index;
+    QByteArray &database;
     
     
     std::array<KingsField::ArmorStats, armorStatsSize> armorStats {};

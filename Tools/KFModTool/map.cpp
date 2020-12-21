@@ -1,10 +1,10 @@
 #include "map.h"
 #include <QDataStream>
 
-Map::Map(TFile &tFile_, unsigned int index): tFile(tFile_),  fileIndex(index),
-    map1(tFile_.getFile(index)),
-    map2(tFile_.getFile(index + 1)),
-    map3(tFile_.getFile(index + 2))
+Map::Map(QByteArray & file1, QByteArray & file2, QByteArray & file3):
+    map1(file1),
+    map2(file2),
+    map3(file3)
 {
     QDataStream map1Stream(map1);
     map1Stream.skipRawData(4);
@@ -79,8 +79,4 @@ void Map::writeChanges()
     Checksum::calculateAndWriteChecksum(map1);
     Checksum::calculateAndWriteChecksum(map2);
     Checksum::calculateAndWriteChecksum(map3);
-
-    tFile.writeFile(map1, static_cast<int>(fileIndex));
-    tFile.writeFile(map2, static_cast<int>(fileIndex) + 1);
-    tFile.writeFile(map3, static_cast<int>(fileIndex) + 2);
 }

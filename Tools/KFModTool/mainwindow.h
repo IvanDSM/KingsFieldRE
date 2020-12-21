@@ -1,10 +1,11 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
-#include "../common/tfile.h"
-#include "kfmttreewidgetitem.h"
-#include "ui_mainwindow.h"
 #include "aboutdialog.h"
+#include "kfmttreewidgetitem.h"
+#include "mixfile.h"
+#include "tfile.h"
+#include "ui_mainwindow.h"
 #include <QDir>
 #include <QMainWindow>
 #include <QMessageBox>
@@ -25,7 +26,6 @@ public:
     {
         ui->setupUi(this);
         KFMTError::setParent(this);
-        //std::fill(openMaps.begin(), openMaps.end(), -1);
     }
 
 private slots:
@@ -61,40 +61,50 @@ private slots:
     }
 
 private:
-    void addGameDB(TFile & tFile, unsigned int index);
-    void addMap(TFile &tFile, unsigned int index);
-    void addModel(TFile &tFile, unsigned int index);
-    void addTexture(TFile &tFile, unsigned int index);
+    struct KFMTFile
+    {
+        enum class KFMTFileType
+        {
+            MIX,
+            Raw,
+            T
+        };
+        KFMTFile(QString srcDir, QString path, KFMTFileType fileType);
+        
+        KFMTFileType type;
+        
+        std::unique_ptr<MIXFile> mixFile = nullptr;
+        QString plainName;
+        QByteArray rawFileData;
+        QString rawPath;
+        std::unique_ptr<QTreeWidgetItem> treeItem = nullptr;
+        std::unique_ptr<TFile> tFile = nullptr;
+    };
     
-    void loadFdat();
-    void loadMo();
-    void loadRtmd();
+    void addGameDB(QTreeWidgetItem *parent, QByteArray &file);
+    void addMap(QTreeWidgetItem *parent, QByteArray &file1, QByteArray & file2, QByteArray & file3, const QString &filename);
+    void addModel(QTreeWidgetItem *parent, QByteArray &file, const QString &filename);
+    void addTexture(QTreeWidgetItem *parent, QByteArray &file, const QString &filename);
     
-    void loadTFile(TFile & tFile, std::unique_ptr<QTreeWidgetItem> &tFileTreeItem);
+    void loadJDemo();
+    void loadJ();
+    void load2J();
+    void loadEU();
+    void load3JorPS();
+    
+    void loadMIXFile(QString path);
+    void loadRawFile(QString path);
+    void loadTFile(QString path);
     void writeTFile(TFile & tFile, QDir directory);
     
     std::unique_ptr<Ui::MainWindow> ui;
 
     QString curSourceDirectory;
+    KingsField::GameID currentGame;
+
+    std::list<KFMTFile> files;
     
     // TODO: Implement this stuff
-    std::unordered_map<QString, QWidget *> openTabs; 
-
-    // T File pointers
-    std::unique_ptr<TFile> fdat = nullptr;
-    std::unique_ptr<TFile> item = nullptr;
-    std::unique_ptr<TFile> mo = nullptr;
-    std::unique_ptr<TFile> rtim = nullptr;
-    std::unique_ptr<TFile> rtmd = nullptr;
-    std::unique_ptr<TFile> talk = nullptr;
-    
-    // T file tree item pointers
-    std::unique_ptr<QTreeWidgetItem> fdatTreeItem = nullptr;
-    std::unique_ptr<QTreeWidgetItem> itemTreeItem = nullptr;
-    std::unique_ptr<QTreeWidgetItem> moTreeItem = nullptr;
-    std::unique_ptr<QTreeWidgetItem> rtimTreeItem = nullptr;
-    std::unique_ptr<QTreeWidgetItem> rtmdTreeItem = nullptr;
-    std::unique_ptr<QTreeWidgetItem> talkTreeItem = nullptr;
-    
+    std::unordered_map<QString, QWidget *> openTabs;
 };
 #endif // MAINWINDOW_H

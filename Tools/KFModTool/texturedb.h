@@ -1,7 +1,7 @@
 #ifndef TEXTUREDB_H
 #define TEXTUREDB_H
 
-#include "../common/tfile.h"
+#include "tfile.h"
 #include <QImage>
 #include <QPainter>
 
@@ -24,11 +24,11 @@ public:
         CLUT4Bit = 0,
         CLUT8Bit = 1,
         Direct15Bit = 2,
-        Dir24Bit = 3,
+        Direct24Bit = 3,
         Mixed = 4
     };
     
-    explicit TextureDB(TFile &tFile_, unsigned int index);
+    explicit TextureDB(QByteArray &textureDBFile);
     
     QPoint getFramebufferCoordinate(size_t textureIndex);
     Texture &getTexture(size_t textureIndex);
@@ -43,14 +43,11 @@ private:
     
     void readCLUT(QDataStream &stream, Texture &targetTex);
     void readPixelData(QDataStream &stream, Texture &targetTex);
+    
         
-    TexDBType type;
-    
-    TFile &tFile;
-    unsigned int fileIndex;
-    
     std::vector<Texture> textures;
-    QString fileId;
+    QByteArray &file;
+    TexDBType type;
 };
 
 struct TextureDB::Texture

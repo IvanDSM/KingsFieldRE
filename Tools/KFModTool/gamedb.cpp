@@ -1,8 +1,7 @@
 #include "gamedb.h"
 #include "checksum.h"
 
-GameDB::GameDB(TFile &tFile_, unsigned int index_) : tFile(tFile_), database(tFile_.getFile(index_)), 
-    index(index_)
+GameDB::GameDB(QByteArray &file) : database(file)
 {
 
     QDataStream dbStream(database);
@@ -101,6 +100,4 @@ void GameDB::writeChanges()
         dbStream << magicData.at(i);
 
     Checksum::calculateAndWriteChecksum(database);
-
-    tFile.writeFile(database, index);
 }

@@ -36,9 +36,7 @@ QMAKE_CXXFLAGS += -isystem "$$[QT_INSTALL_HEADERS]/qt5" -isystem "$$[QT_INSTALL_
                   -isystem "$$[QT_INSTALL_HEADERS]/QtCore"
 
 SOURCES += \
-    ../common/mixfile.cpp \
     ../common/prettynamer.cpp \
-    ../common/tfile.cpp \
     aboutdialog.cpp \
     gamedb.cpp \
     gamedbeditwidget.cpp \
@@ -49,6 +47,7 @@ SOURCES += \
     map.cpp \
     mapeditwidget.cpp \
     mapviewer.cpp \
+    mixfile.cpp \
     model.cpp \
     modelglview.cpp \
     models/armorstatstablemodel.cpp \
@@ -69,12 +68,11 @@ SOURCES += \
     modelviewerwidget.cpp \
     soundbank.cpp \
     texturedb.cpp \
-    texturedbviewer.cpp
+    texturedbviewer.cpp \
+    tfile.cpp
 
 HEADERS += \
-    ../common/mixfile.h \
     ../common/prettynamer.h \
-    ../common/tfile.h \
     aboutdialog.h \
     checksum.h \
     gamedb.h \
@@ -86,6 +84,7 @@ HEADERS += \
     map.h \
     mapeditwidget.h \
     mapviewer.h \
+    mixfile.h \
     model.h \
     modelglview.h \
     models/armorstatstablemodel.h \
@@ -107,6 +106,7 @@ HEADERS += \
     soundbank.h \
     texturedb.h \
     texturedbviewer.h \
+    tfile.h \
     utilities.h
 
 FORMS += \

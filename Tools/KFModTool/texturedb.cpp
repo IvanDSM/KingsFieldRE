@@ -1,16 +1,16 @@
 #include "kfmterror.h"
 #include "texturedb.h"
+#include "utilities.h"
 #include "libimagequant/libimagequant.h"
 #include <memory>
 
-TextureDB::TextureDB(TFile &tFile_, unsigned int index) : tFile(tFile_), fileIndex(index)
+TextureDB::TextureDB(QByteArray &textureDBFile) : file(textureDBFile)
 {
-    auto file = tFile_.getFile(index);
-    fileId = tFile_.getFilename() + QString::number(index);
+    //fileId = tFile_.getFilename() + QString::number(index);
     
-    if (TFile::isTIM(file))
+    if (Utilities::fileIsTIM(file))
         loadTIM(file);
-    else if (TFile::isRTIM(file))
+    else if (Utilities::fileIsRTIM(file))
     {
         type = TexDBType::RTIM;
         loadRTIM(file);
@@ -110,8 +110,7 @@ void TextureDB::replaceTexture(QImage & newTexture, size_t textureIndex, bool sm
 
 void TextureDB::writeChanges()
 {
-    QByteArray outFile;
-    QDataStream outStream(&outFile, QIODevice::WriteOnly);
+    QDataStream outStream(file);
     outStream.setByteOrder(QDataStream::LittleEndian);
     
     if (type == TexDBType::RTIM) // RTIM File
@@ -194,8 +193,6 @@ void TextureDB::writeChanges()
             }
         }
     }
-    
-    tFile.writeFile(outFile, fileIndex);
 }
 
 void TextureDB::loadRTIM(const QByteArray &file)
@@ -242,7 +239,6 @@ void TextureDB::loadRTIM(const QByteArray &file)
         {
             textures.pop_back();
             KFMTError::log("Texture: Invalid RTIM header.");
-            KFMTError::log(QString("%1 @ %2").arg(fileId).arg(rtimStream.device()->pos() - 16, 0, 16));
             KFMTError::log(QString::asprintf("vramx = %u, vramy = %u clutentries = %u clutcnt = %u",
                                              clutVramX, clutVramY, clutEntryAmount, clutAmount));
             return;
@@ -309,6 +305,8 @@ void TextureDB::loadTIM(const QByteArray &file)
 
 void TextureDB::readCLUT(QDataStream & stream, Texture & targetTex)
 {
+    size_t clutAmount = 0;
+    
     if (type != TexDBType::RTIM)
     {
         stream >> targetTex.clutSize;
@@ -316,20 +314,16 @@ void TextureDB::readCLUT(QDataStream & stream, Texture & targetTex)
         stream >> targetTex.clutVramY;
         stream >> targetTex.clutWidth;
         stream >> targetTex.clutHeight;
+        clutAmount = targetTex.clutWidth * targetTex.clutHeight;
     }
-    
-    size_t clutAmount = 0;
-    
-    if (targetTex.pMode == PixelMode::CLUT4Bit)
-        clutAmount = 16;
-    else if (targetTex.pMode == PixelMode::CLUT8Bit)
-        clutAmount = 255;
     else
     {
-        KFMTError::error("Texture: Tried to read CLUT when pixel mode isn't a CLUT mode.");
-        return;
+        if (targetTex.pMode == PixelMode::CLUT4Bit)
+            clutAmount = 16;
+        else if (targetTex.pMode == PixelMode::CLUT8Bit)
+            clutAmount = 255;
     }
-    
+        
     for (size_t curEntry = 0; curEntry < clutAmount; curEntry++)
     {
         uint16_t clutEntry;
@@ -358,6 +352,7 @@ void TextureDB::readCLUT(QDataStream & stream, Texture & targetTex)
 
 void TextureDB::readPixelData(QDataStream & stream, Texture & targetTex)
 {
+    KFMTError::log(QString::number(stream.device()->pos(), 16));
     if (type != TexDBType::RTIM)
         stream >> targetTex.pxDataSize;
     stream >> targetTex.pxVramX;
@@ -379,9 +374,14 @@ void TextureDB::readPixelData(QDataStream & stream, Texture & targetTex)
     targetTex.framebufferCoordinate.setX(targetTex.pxVramX);
     targetTex.framebufferCoordinate.setY(targetTex.pxVramY);
     
-    // Set texture size
-    targetTex.image = QImage(targetTex.pxWidth, targetTex.pxHeight, QImage::Format_Indexed8);
-    targetTex.image.setColorTable(targetTex.clutColorTable);
+    // Initialize texture
+    if (targetTex.pMode == PixelMode::CLUT4Bit || targetTex.pMode == PixelMode::CLUT8Bit)
+    {
+        targetTex.image = QImage(targetTex.pxWidth, targetTex.pxHeight, QImage::Format_Indexed8);
+        targetTex.image.setColorTable(targetTex.clutColorTable);
+    }
+    else if (targetTex.pMode == PixelMode::Direct15Bit)
+        targetTex.image = QImage(targetTex.pxWidth, targetTex.pxHeight, QImage::Format_RGB555);
     
     int curPixel = 0;
     
@@ -421,6 +421,25 @@ void TextureDB::readPixelData(QDataStream & stream, Texture & targetTex)
                 curPixel++;
                 targetTex.image.setPixel(curPixel % targetTex.pxWidth, curPixel / targetTex.pxWidth,
                                          pixel1);
+                curPixel++;
+                break;
+            }
+            case (PixelMode::Direct15Bit):
+            {
+                const uint8_t r = (block0 & 31) * 8;
+                const uint8_t g = ((block0 >> 5) & 31) * 8;
+                const uint8_t b = ((block0 >> 10) & 31) * 8;
+                uint8_t a = block0 >> 15;
+                if (a == 0 && r == 0 && g == 0 && b == 0)
+                    a = 0;
+                else if (a == 0 && (r != 0 || g != 0 || b != 0))
+                    a = 255;
+                else if (a == 1 && (r != 0 || g != 0 || b != 0))
+                    a = 127;
+                else if (a == 1 && r == 0 && g == 0 && b == 0)
+                    a = 255;
+                targetTex.image.setPixelColor(curPixel % targetTex.pxWidth, curPixel / targetTex.pxWidth, 
+                                              QColor(r, g, b, a));
                 curPixel++;
                 break;
             }

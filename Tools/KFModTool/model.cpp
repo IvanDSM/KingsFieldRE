@@ -1,20 +1,17 @@
 #include "model.h"
+#include "utilities.h"
 #include <iostream>
 
-Model::Model(TFile & tFile, unsigned int fileIndex)
+Model::Model(QByteArray & modelFile)
 {
-    auto file = tFile.getFile(fileIndex);
-    if (!file.isEmpty())
-    {
-        if (TFile::isMO(file)) // MO File
-            loadMO(file);
-        else if (TFile::isRTMD(file)) // RTMD File
-            loadRTMD(file);
-        else if (TFile::isTMD(file)) // TMD File
-            loadTMD(file);
-        else
-            KFMTError::error("Model: Tried to build a model from a file that's not MO, RTMD or TMD.");
-    }
+    if (Utilities::fileIsMO(modelFile)) // MO File
+        loadMO(modelFile);
+    else if (Utilities::fileIsRTMD(modelFile)) // RTMD File
+        loadRTMD(modelFile);
+    else if (Utilities::fileIsTMD(modelFile)) // TMD File
+        loadTMD(modelFile);
+    else
+        KFMTError::error("Model: Tried to build a model from a file that's not MO, RTMD or TMD.");
 }
 
 void Model::loadMO(const QByteArray &file)

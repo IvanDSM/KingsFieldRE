@@ -4,7 +4,6 @@
 #include "checksum.h"
 #include "kfmterror.h"
 #include "kftypes.h"
-#include "../common/tfile.h"
 #include <QMessageBox>
 
 typedef quint8 byte;
@@ -12,7 +11,7 @@ typedef quint8 byte;
 class Map
 {
 public:
-    Map(TFile &tFile_, unsigned int index);
+    Map(QByteArray& file1, QByteArray& file2, QByteArray& file3);
 
     KingsField::EntityClassDeclaration &getEntityClassDeclaration(byte classDeclIndex)
     {
@@ -37,7 +36,7 @@ public:
         return entityInstances;
     }
 
-    KingsField::EntityInstance &getEntityInstance(byte instanceIndex)
+    KingsField::EntityInstance &getEntityInstance(size_t instanceIndex)
     {
         try
         {
@@ -48,12 +47,7 @@ public:
             KFMTError::outOfRange(instanceIndex, "entity instance declaration", exception.what());
         }
     }
-
-    const unsigned int &getIndex() const
-    {
-        return fileIndex;
-    }
-
+    
     KingsField::ObjectInstanceDeclaration &getObjectInstance(size_t instanceIndex)
     {
         try
@@ -110,13 +104,10 @@ public:
     void writeChanges();
 
 private:
-    TFile &tFile;
-    unsigned int fileIndex;
-    
     KingsField::Tile tileMap[80][80] {};
-    QByteArray map1;
-    QByteArray map2;
-    QByteArray map3;
+    QByteArray &map1;
+    QByteArray &map2;
+    QByteArray &map3;
     std::array<KingsField::EntityClassDeclaration, 40> entityClassDeclarations {};
     std::array<KingsField::EntityInstance, 200> entityInstances {};
     QByteArray entityStateBlob;

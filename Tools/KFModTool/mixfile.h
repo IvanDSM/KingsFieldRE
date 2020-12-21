@@ -9,13 +9,15 @@ class MIXFile
 {
 public:
     explicit MIXFile(const QString &filename);
+    QByteArray &getFile(size_t index);
+    size_t size() const { return files.size(); }
     void write(const QDir & outDir);
     
 private:
-    void load(QFile &fileHandle);
+    void load(const QByteArray & file);
     
-    void loadHasSizes(QDataStream &stream);
-    void loadNoSizes(QDataStream &stream);
+    void loadHasSizes(const QByteArray &mixFile);
+    void loadNoSizes(const QByteArray &mixFile);
     
     bool loaded = false;
     bool hasSizes = true;
