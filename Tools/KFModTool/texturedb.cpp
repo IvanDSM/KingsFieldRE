@@ -352,7 +352,6 @@ void TextureDB::readCLUT(QDataStream & stream, Texture & targetTex)
 
 void TextureDB::readPixelData(QDataStream & stream, Texture & targetTex)
 {
-    KFMTError::log(QString::number(stream.device()->pos(), 16));
     if (type != TexDBType::RTIM)
         stream >> targetTex.pxDataSize;
     stream >> targetTex.pxVramX;

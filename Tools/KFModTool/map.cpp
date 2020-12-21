@@ -28,8 +28,6 @@ Map::Map(QByteArray & file1, QByteArray & file2, QByteArray & file3):
     entityStateBlob.resize(entityStateBlobSize);
     map2Stream.readRawData(entityStateBlob.data(), entityStateBlobSize);
     
-    KFMTError::log("Map: read entity state info, now at 0x" + QString::number(map2Stream.device()->pos(), 16));
-    
     map2Stream.skipRawData(4); // Skip entity instance declaration section size
     for (auto &instance : entityInstances)
         map2Stream >> instance;

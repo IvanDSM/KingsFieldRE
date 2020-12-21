@@ -17,6 +17,12 @@
    <iconset resource="resources.qrc">
     <normaloff>:/tex_icon.png</normaloff>:/tex_icon.png</iconset>
   </property>
+  <property name="styleSheet">
+   <string notr="true">QLabel#texWidget 
+{
+	background-image: url(&quot;:/checker.png&quot;);
+}</string>
+  </property>
   <layout class="QHBoxLayout" name="horizontalLayout" stretch="2,1">
    <item>
     <widget class="QLabel" name="texWidget">
