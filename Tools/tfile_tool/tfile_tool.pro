@@ -12,13 +12,13 @@ QMAKE_LFLAGS += $$(LDFLAGS)
 DEFINES += QT_DEPRECATED_WARNINGS
 
 HEADERS += \
-		../common/prettynamer.h \
-		../common/tfile.h
+	../common/prettynamer.h \
+	tfile.h
 
 SOURCES += \
         main.cpp \
         ../common/prettynamer.cpp \
-        ../common/tfile.cpp
+        tfile.cpp
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

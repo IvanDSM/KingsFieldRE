@@ -1,6 +1,6 @@
 #include <QCoreApplication>
 #include <QDebug>
-#include "../common/tfile.h"
+#include "tfile.h"
 
 int main(int argc, char *argv[])
 {
