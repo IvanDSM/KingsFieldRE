@@ -27,11 +27,10 @@ void MainWindow::on_actionLoad_files_triggered()
     else if ((srcDir.exists("SLUS_001.58") || srcDir.exists("SLPS_910.03") || srcDir.exists("PSX.EXE"))
         && srcDir.exists("END.EXE"))
         load2J();
-    else if (srcDir.exists("SCES_005.10") && srcDir.exists("END.EXE") & srcDir.exists("LICENSEE.DAT"))
+    else if (srcDir.exists("SCES_005.10") && srcDir.exists("END.EXE") && srcDir.exists("LICENSEE.DAT"))
         loadEU();
-    else if ((srcDir.exists("SLUS_002.55") || srcDir.exists("SLPS_003.77")) && srcDir.exists("LOAD.MSG"))
-        load3JorPS();
-    else if (srcDir.exists("SLPM_800.29") && srcDir.exists("LOAD.MSG"))
+    else if ((srcDir.exists("SLUS_002.55") || srcDir.exists("SLPS_003.77") || srcDir.exists("SLPM_800.29")) 
+             && srcDir.exists("LOAD.MSG"))
         load3JorPS();
     
     for (int tab = ui->editorTabs->count() - 1; tab >= 0; tab++)
@@ -104,19 +103,6 @@ void MainWindow::on_filesTree_itemDoubleClicked(QTreeWidgetItem *item_, int)
 
 void MainWindow::on_actionSave_changes_triggered()
 {
-    auto tFileItemCount = ui->filesTree->topLevelItemCount();
-    
-    // Bail out if files weren't loaded
-    if (tFileItemCount == 0)
-            return;
-    
-    for (auto tFileItemIndex = 0; tFileItemIndex < tFileItemCount; tFileItemIndex++)
-    {
-        auto tFileItem = ui->filesTree->topLevelItem(tFileItemIndex);
-        for (auto childIndex = 0; childIndex < tFileItem->childCount(); childIndex++)
-            dynamic_cast<KFMTTreeWidgetItem *>(tFileItem->child(childIndex))->writeChanges();
-    }
-    
     auto dirPath = QFileDialog::getExistingDirectory(this, "Select where to save the changed files",
                                                      QDir::homePath());
     
@@ -134,15 +120,12 @@ void MainWindow::on_actionSave_changes_triggered()
     
     QDir dir(dirPath);
     
-//    writeTFile(*fdat, dir);
-//    writeTFile(*item, dir);
-//    writeTFile(*rtim, dir);
-//    writeTFile(*talk, dir);
+    writeFiles(dir);
     
     QMessageBox::information(this, "Changes saved successfully!", "Your changes have been saved!");
 }
 
-void MainWindow::addGameDB(QTreeWidgetItem * parent, QByteArray &file)
+KFMTTreeWidgetItem *MainWindow::addGameDB(QTreeWidgetItem * parent, QByteArray &file)
 {
     auto gameDBTreeItem = new KFMTTreeWidgetItem(parent, file, KFMTDataType::KFMT_GAMEDB);
     gameDBTreeItem->setText(0, "Game Database");
@@ -151,9 +134,12 @@ void MainWindow::addGameDB(QTreeWidgetItem * parent, QByteArray &file)
         parent->addChild(gameDBTreeItem);
     else
         ui->filesTree->addTopLevelItem(gameDBTreeItem);
+    
+    return gameDBTreeItem;
 }
 
-void MainWindow::addMap(QTreeWidgetItem * parent, QByteArray &file1, QByteArray &file2, QByteArray &file3, const QString &filename)
+KFMTTreeWidgetItem *MainWindow::addMap(QTreeWidgetItem *parent, QByteArray &file1, QByteArray &file2, 
+                                       QByteArray &file3, const QString &filename)
 {
     auto mapTreeItem = new KFMTTreeWidgetItem(parent, file1, file2, file3, KFMTDataType::KFMT_MAP);
     mapTreeItem->setText(0, filename);
@@ -162,9 +148,11 @@ void MainWindow::addMap(QTreeWidgetItem * parent, QByteArray &file1, QByteArray 
         parent->addChild(mapTreeItem);
     else
         ui->filesTree->addTopLevelItem(mapTreeItem);
+    
+    return mapTreeItem;
 }
 
-void MainWindow::addModel(QTreeWidgetItem * parent, QByteArray &file, const QString &filename)
+KFMTTreeWidgetItem *MainWindow::addModel(QTreeWidgetItem *parent, QByteArray &file, const QString &filename)
 {
     auto modelTreeItem = new KFMTTreeWidgetItem(parent, file, KFMTDataType::KFMT_MODEL);
     modelTreeItem->setText(0, filename);
@@ -173,9 +161,11 @@ void MainWindow::addModel(QTreeWidgetItem * parent, QByteArray &file, const QStr
         parent->addChild(modelTreeItem);
     else
         ui->filesTree->addTopLevelItem(modelTreeItem);
+    
+    return modelTreeItem;
 }
 
-void MainWindow::addTexture(QTreeWidgetItem * parent, QByteArray &file, const QString &filename)
+KFMTTreeWidgetItem *MainWindow::addTexture(QTreeWidgetItem *parent, QByteArray &file, const QString &filename)
 {
     auto textureTreeItem = new KFMTTreeWidgetItem(parent, file, KFMTDataType::KFMT_TEXTUREDB);
     textureTreeItem->setText(0, filename);
@@ -184,6 +174,8 @@ void MainWindow::addTexture(QTreeWidgetItem * parent, QByteArray &file, const QS
         parent->addChild(textureTreeItem);
     else
         ui->filesTree->addTopLevelItem(textureTreeItem);
+    
+    return textureTreeItem;
 }
 
 void MainWindow::loadJDemo()
@@ -682,19 +674,19 @@ void MainWindow::loadMIXFile(QString path)
     
     loadedFile.treeItem = std::make_unique<QTreeWidgetItem>(ui->filesTree);
     loadedFile.treeItem->setIcon(0, QIcon(":/tfile_icon.png"));
-    loadedFile.treeItem->setText(0, loadedFile.plainName);
+    loadedFile.treeItem->setText(0, loadedFile.filePath);
     
     for (size_t fileIndex = 0; fileIndex < mixFile.size(); fileIndex++)
     {
         QByteArray &file = mixFile.getFile(fileIndex);
         if (Utilities::fileIsTMD(file))
-            addModel(loadedFile.treeItem.get(), file, loadedFile.plainName + QString::number(fileIndex));
+            addModel(loadedFile.treeItem.get(), file, loadedFile.filePath + QString::number(fileIndex));
         else if (Utilities::fileIsTIM(file) || Utilities::fileIsRTIM(file))
-            addTexture(loadedFile.treeItem.get(), file, loadedFile.plainName + QString::number(fileIndex));
+            addTexture(loadedFile.treeItem.get(), file, loadedFile.filePath + QString::number(fileIndex));
         else if (Utilities::fileIsRTMD(file))
-            addModel(loadedFile.treeItem.get(), file, loadedFile.plainName + QString::number(fileIndex));
+            addModel(loadedFile.treeItem.get(), file, loadedFile.filePath + QString::number(fileIndex));
         else if (Utilities::fileIsMO(file))
-            addModel(loadedFile.treeItem.get(), file, loadedFile.plainName + QString::number(fileIndex));
+            addModel(loadedFile.treeItem.get(), file, loadedFile.filePath + QString::number(fileIndex));
     }
 }
 
@@ -709,15 +701,19 @@ void MainWindow::loadRawFile(QString path)
         return;
     
     auto &loadedFile = files.emplace_back(curSourceDirectory, path, KFMTFile::KFMTFileType::Raw);
+    KFMTTreeWidgetItem *treeItem = nullptr;
     
     if (Utilities::fileIsTMD(loadedFile.rawFileData))
-        addModel(loadedFile.treeItem.get(), loadedFile.rawFileData, loadedFile.plainName);
+        treeItem = addModel(loadedFile.treeItem.get(), loadedFile.rawFileData, loadedFile.filePath);
     else if (Utilities::fileIsTIM(loadedFile.rawFileData) || Utilities::fileIsRTIM(loadedFile.rawFileData))
-        addTexture(loadedFile.treeItem.get(), loadedFile.rawFileData, loadedFile.plainName);
+        treeItem = addTexture(loadedFile.treeItem.get(), loadedFile.rawFileData, loadedFile.filePath);
     else if (Utilities::fileIsRTMD(loadedFile.rawFileData))
-        addModel(loadedFile.treeItem.get(), loadedFile.rawFileData, loadedFile.plainName);
+        treeItem = addModel(loadedFile.treeItem.get(), loadedFile.rawFileData, loadedFile.filePath);
     else if (Utilities::fileIsMO(loadedFile.rawFileData))
-        addModel(loadedFile.treeItem.get(), loadedFile.rawFileData, loadedFile.plainName);
+        treeItem = addModel(loadedFile.treeItem.get(), loadedFile.rawFileData, loadedFile.filePath);
+    
+    if (treeItem != nullptr)
+        loadedFile.treeItem.reset(treeItem);
 }
 
 void MainWindow::loadTFile(QString path)
@@ -734,7 +730,7 @@ void MainWindow::loadTFile(QString path)
     auto &tFile = *loadedFile.tFile;
     loadedFile.treeItem = std::make_unique<QTreeWidgetItem>(ui->filesTree);
     loadedFile.treeItem->setIcon(0, QIcon(":/tfile_icon.png"));
-    loadedFile.treeItem->setText(0, loadedFile.plainName);
+    loadedFile.treeItem->setText(0, loadedFile.filePath);
     ui->filesTree->addTopLevelItem(loadedFile.treeItem.get());
     
     for (size_t fileIndex = 0; fileIndex < tFile.getNumFiles(); fileIndex++)
@@ -759,19 +755,20 @@ void MainWindow::loadTFile(QString path)
     }
 }
 
-void MainWindow::writeTFile(TFile &tFile, QDir directory)
+void MainWindow::writeFiles(QDir &outDir)
 {
-//    QFile tFileOut(directory.filePath(tFile.getFilename()));
-//    tFileOut.open(QIODevice::WriteOnly);
-//    tFileOut.write(tFile.getTFile());
-//    tFileOut.close();
+    for (auto &file : files)
+    {
+        file.saveChanges();
+        file.writeFile(outDir);
+    }
 }
 
-MainWindow::KFMTFile::KFMTFile(QString srcDir, QString path, MainWindow::KFMTFile::KFMTFileType fileType) :
+MainWindow::KFMTFile::KFMTFile(const QString& srcDir, const QString& path, MainWindow::KFMTFile::KFMTFileType fileType) :
     type(fileType)
 {
-    rawPath = srcDir + path;
-    plainName = path;
+    srcPath = srcDir + path;
+    filePath = path.mid(1);
     
     if (type == KFMTFileType::MIX)
     {
@@ -788,4 +785,34 @@ MainWindow::KFMTFile::KFMTFile(QString srcDir, QString path, MainWindow::KFMTFil
     {
         tFile = std::make_unique<TFile>(srcDir + path);
     }
+}
+
+void MainWindow::KFMTFile::saveChanges()
+{
+    if (type == KFMTFileType::Raw)
+        dynamic_cast<KFMTTreeWidgetItem *>(treeItem.get())->writeChanges();
+    else // MIX or T
+    {
+        for (int childId = 0; childId < treeItem->childCount(); childId++)
+            dynamic_cast<KFMTTreeWidgetItem *>(treeItem->child(childId))->writeChanges();
+    }
+}
+
+void MainWindow::KFMTFile::writeFile(const QDir& outDir)
+{
+    QString dirToCreate = filePath.left(filePath.lastIndexOf(QRegExp("[\\/]")) + 1);
+    outDir.mkpath(dirToCreate);
+    
+    QFile output(outDir.filePath(filePath));
+    if (!output.open(QIODevice::WriteOnly))
+        KFMTError::fatalError("Unable to open output file for " + filePath);
+    
+    if (type == KFMTFileType::MIX)
+        mixFile->writeTo(output);
+    else if (type == KFMTFileType::Raw)
+        output.write(rawFileData);
+    else if (type == KFMTFileType::T)
+        tFile->writeTo(output);
+    
+    output.close();
 }

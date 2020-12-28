@@ -114,7 +114,7 @@ void MapEditWidget::curMousePosChanged(qint8 x, qint8 y)
 {
     static const QString baseText = "Current Mouse Position: X: %1 Y: %2";
     if (x < 0 && y < 0)
-        ui->curMousePos->setText(baseText.arg("--").arg("--"));
+        ui->curMousePos->setText(baseText.arg("--", "--"));
     else
         ui->curMousePos->setText(baseText.arg(x).arg(y));
 }

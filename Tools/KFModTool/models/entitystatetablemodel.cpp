@@ -18,7 +18,7 @@ QVariant EntityStateTableModel::headerData(int section, Qt::Orientation orientat
                 case 8: return "Look At Margin? Low Byte";
                 case 9: return "Look At Margin? High Byte";
                 case 10: return "Tick Something? Low Byte";
-                case 11: return "Tick Something? Low Byte";
+                case 11: return "Tick Something? High Byte";
                 case 12: 
                     if (*statePointer == 0x70)
                         return "Dialogue Base Low Byte";

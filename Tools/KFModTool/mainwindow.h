@@ -69,22 +69,24 @@ private:
             Raw,
             T
         };
-        KFMTFile(QString srcDir, QString path, KFMTFileType fileType);
+        KFMTFile(const QString& srcDir, const QString& path, KFMTFileType fileType);
+        void saveChanges();
+        void writeFile(const QDir& outDir);
         
         KFMTFileType type;
         
         std::unique_ptr<MIXFile> mixFile = nullptr;
-        QString plainName;
+        QString filePath;
         QByteArray rawFileData;
-        QString rawPath;
+        QString srcPath;
         std::unique_ptr<QTreeWidgetItem> treeItem = nullptr;
         std::unique_ptr<TFile> tFile = nullptr;
     };
     
-    void addGameDB(QTreeWidgetItem *parent, QByteArray &file);
-    void addMap(QTreeWidgetItem *parent, QByteArray &file1, QByteArray & file2, QByteArray & file3, const QString &filename);
-    void addModel(QTreeWidgetItem *parent, QByteArray &file, const QString &filename);
-    void addTexture(QTreeWidgetItem *parent, QByteArray &file, const QString &filename);
+    KFMTTreeWidgetItem *addGameDB(QTreeWidgetItem *parent, QByteArray &file);
+    KFMTTreeWidgetItem *addMap(QTreeWidgetItem *parent, QByteArray &file1, QByteArray & file2, QByteArray & file3, const QString &filename);
+    KFMTTreeWidgetItem *addModel(QTreeWidgetItem *parent, QByteArray &file, const QString &filename);
+    KFMTTreeWidgetItem *addTexture(QTreeWidgetItem *parent, QByteArray &file, const QString &filename);
     
     void loadJDemo();
     void loadJ();
@@ -95,7 +97,8 @@ private:
     void loadMIXFile(QString path);
     void loadRawFile(QString path);
     void loadTFile(QString path);
-    void writeTFile(TFile & tFile, QDir directory);
+    
+    void writeFiles(QDir &outDir);
     
     std::unique_ptr<Ui::MainWindow> ui;
 

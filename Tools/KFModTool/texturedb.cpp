@@ -1,19 +1,17 @@
 #include "kfmterror.h"
+#include "libimagequant/libimagequant.h"
 #include "texturedb.h"
 #include "utilities.h"
-#include "libimagequant/libimagequant.h"
 #include <memory>
 
 TextureDB::TextureDB(QByteArray &textureDBFile) : file(textureDBFile)
 {
-    //fileId = tFile_.getFilename() + QString::number(index);
-    
     if (Utilities::fileIsTIM(file))
-        loadTIM(file);
+        loadTIM();
     else if (Utilities::fileIsRTIM(file))
     {
         type = TexDBType::RTIM;
-        loadRTIM(file);
+        loadRTIM();
     }
 }
 
@@ -41,7 +39,7 @@ void TextureDB::replaceTexture(QImage & newTexture, size_t textureIndex, bool sm
 {
     if (textureIndex >= textures.size())
     {
-        KFMTError::error("Texture: Tried to replace a non-existent texture.");
+        KFMTError::error("TextureDB: Tried to replace a non-existent texture.");
         return;
     }
     
@@ -67,19 +65,19 @@ void TextureDB::replaceTexture(QImage & newTexture, size_t textureIndex, bool sm
         
         if (liq_set_speed(iQAttr, 1) != LIQ_OK)
         {
-            KFMTError::error("Texture: Failed to set libimagequant speed to 1, will use default.");
+            KFMTError::error("TextureDB: Failed to set libimagequant speed to 1, will use default.");
         }
         
         if (liq_image_quantize(iQImg, iQAttr, &iQRes) != LIQ_OK)
         {
-            KFMTError::error("Texture: libimagequant failed to quantize the new texture.");
+            KFMTError::error("TextureDB: libimagequant failed to quantize the new texture.");
             liq_attr_destroy(iQAttr);
             return;
         }
         
         if (liq_set_dithering_level(iQRes, 1.0) != LIQ_OK)
         {
-            KFMTError::error("Texture: Failed to set libimagequant dither level to 1.0, will use default.");
+            KFMTError::error("TextureDB: Failed to set libimagequant dither level to 1.0, will use default.");
         }
         
         const liq_palette *iQPal = liq_get_palette(iQRes);
@@ -103,178 +101,39 @@ void TextureDB::replaceTexture(QImage & newTexture, size_t textureIndex, bool sm
     }
     else
     {
-        KFMTError::error("Texture: Unhandled pixel mode for replacing textures.");
+        KFMTError::error("TextureDB: Unhandled pixel mode for replacing textures.");
         return;
     }
 }
 
 void TextureDB::writeChanges()
 {
-    QDataStream outStream(file);
-    outStream.setByteOrder(QDataStream::LittleEndian);
-    
     if (type == TexDBType::RTIM) // RTIM File
-    {
-        for (auto &texture : textures)
-        {
-            uint16_t clutEntryAmount = 16;
-            if (texture.pMode == PixelMode::CLUT8Bit)
-                clutEntryAmount = 256;
-            
-            // Write CLUT header
-            outStream << texture.clutVramX;
-            outStream << texture.clutVramY;
-            outStream << clutEntryAmount;
-            outStream << static_cast<uint16_t>(1);
-            
-            // Write CLUT header dupe
-            outStream << texture.clutVramX;
-            outStream << texture.clutVramY;
-            outStream << clutEntryAmount;
-            outStream << static_cast<uint16_t>(1);
-            
-            // Write CLUT
-            for (auto entry : texture.getCLUTEntries())
-                outStream << entry;
-            
-            // Adjust width before writing
-            uint16_t fixedPixelWidth = texture.pxWidth;
-            if (texture.pMode == PixelMode::CLUT4Bit)
-                fixedPixelWidth /= 4;
-            else if (texture.pMode == PixelMode::CLUT8Bit)
-                fixedPixelWidth /= 2;
-            
-            // Write pixel data header
-            outStream << texture.pxVramX;
-            outStream << texture.pxVramY;
-            outStream << fixedPixelWidth;
-            outStream << texture.pxHeight;
-            
-            // Write pixel data header dupe
-            outStream << texture.pxVramX;
-            outStream << texture.pxVramY;
-            outStream << fixedPixelWidth;
-            outStream << texture.pxHeight;
-            
-            auto imageByteData = texture.image.bits();
-            auto imagePixelSize = texture.image.width() * texture.image.height();
-            auto imageCurPixel = 0;
-            
-            while (imageCurPixel < imagePixelSize)
-            {
-                switch (texture.pMode)
-                {
-                case PixelMode::CLUT4Bit:
-                {
-                    uint8_t px0 = imageByteData[imageCurPixel] & 15;
-                    uint8_t px1 = imageByteData[imageCurPixel + 1] & 15;
-                    uint8_t px2 = imageByteData[imageCurPixel + 2] & 15;
-                    uint8_t px3 = imageByteData[imageCurPixel + 3] & 15;
-                    
-                    uint16_t packet = px0 | (px1 << 4) | (px2 << 8) | (px3 << 12);
-                    
-                    outStream << packet;
-                    
-                    imageCurPixel += 4;
-                }
-                break;
-                case PixelMode::CLUT8Bit:
-                {
-                    outStream << imageByteData[imageCurPixel];
-                    outStream << imageByteData[imageCurPixel + 1];
-                    imageCurPixel += 2;
-                }
-                break;
-                default:
-                    KFMTError::error("Texture: Unhandled pixel mode!");
-                    return;
-                    break;
-                }
-            }
-        }
-    }
+        writeRTIM();
+    else if (type == TexDBType::TIM) // TIM File
+        writeTIM();
 }
 
-void TextureDB::loadRTIM(const QByteArray &file)
+void TextureDB::loadRTIM()
 {
     QDataStream rtimStream(file);
     rtimStream.setByteOrder(QDataStream::LittleEndian);
-    
-    uint16_t clutEntryAmount;
-    uint16_t clutAmount;
-    
-    uint16_t clutVramXDupe;
-    uint16_t clutVramYDupe;
-    uint16_t clutEntryAmountDupe;
-    uint16_t clutAmountDupe;
-    
     
     while (!rtimStream.atEnd())
     {        
         textures.emplace_back();
         
-        uint16_t &clutVramX = textures.back().clutVramX;
-        uint16_t &clutVramY = textures.back().clutVramY;
-        
-        rtimStream >> clutVramX;
-        rtimStream >> clutVramY;
-        
-        rtimStream >> clutEntryAmount;
-        if (clutEntryAmount == 16)
-            textures.back().pMode = PixelMode::CLUT4Bit;
-        else if (clutEntryAmount == 256)
-            textures.back().pMode = PixelMode::CLUT8Bit;
-        
-        rtimStream >> clutAmount;
-        
-        rtimStream >> clutVramXDupe;
-        rtimStream >> clutVramYDupe;
-        rtimStream >> clutEntryAmountDupe;
-        rtimStream >> clutAmountDupe;
-        
-        if (clutVramX != clutVramXDupe || clutVramY != clutVramYDupe ||
-            clutEntryAmount != clutEntryAmountDupe || clutAmount != clutAmountDupe ||
-            (clutVramX == 0 && clutVramY == 0 && clutEntryAmount == 0 && clutAmount == 0) ||
-            (clutVramX == 0xFFFF && clutVramY == 0xFFFF && clutEntryAmount == 0xFFFF && clutAmount == 0xFFFF))
+        if (!readCLUT(rtimStream, textures.back()))
         {
             textures.pop_back();
-            KFMTError::log("Texture: Invalid RTIM header.");
-            KFMTError::log(QString::asprintf("vramx = %u, vramy = %u clutentries = %u clutcnt = %u",
-                                             clutVramX, clutVramY, clutEntryAmount, clutAmount));
-            return;
+            break;
         }
-//        else if (clutVramX == 0xFFFF && clutVramY == 0xFFFF && clutEntryAmount == 0xFFFF && clutAmount == 0xFFFF)
-//        {
-//            // FIXME: VERY JANKY LOADING THING FOR THE WEIRD PICTURE
-//            rtimStream.skipRawData(48);
-//            int curPixel = 0;
-//            textures.back().image = QImage(96, 8, QImage::Format_RGB888);
-            
-//            while (!rtimStream.atEnd())
-//            {
-//                uint8_t pixel;
-//                rtimStream >> pixel;
-                
-//                textures.back().image.setPixel(curPixel % 96, curPixel / 96, qRgb(pixel, pixel, pixel));
-//                curPixel++;
-//            }
-            
-//            break;
-//        }
-        
-        if (clutAmount != 1)
-        {
-            KFMTError::error("Texture: Unsupported RTIM CLUT amount " + QString::number(clutAmount));
-            return;
-        }
-        
-        readCLUT(rtimStream, textures.back());
         
         readPixelData(rtimStream, textures.back());
     }
 }
 
-void TextureDB::loadTIM(const QByteArray &file)
+void TextureDB::loadTIM()
 {
     QDataStream timStream(file);
     timStream.setByteOrder(QDataStream::LittleEndian);
@@ -285,73 +144,95 @@ void TextureDB::loadTIM(const QByteArray &file)
     timStream >> id;
     if (id != 0x10)
     {
-        KFMTError::error("Texture: TIM ID is not 0x10. Bailing out.");
+        KFMTError::error("TextureDB: TIM ID is not 0x10. Bailing out.");
         return;
     }
     
     textures.emplace_back();
     
     timStream >> flag;
-    textures.back().pMode = static_cast<PixelMode>(flag & 0b111);
-    textures.back().cf = static_cast<bool>((flag >> 3) & 1);
+    textures.back().pMode = static_cast<PixelMode>(flag & 0b111u);
+    textures.back().cf = static_cast<bool>((flag >> 3u) & 1u);
+    
+    bool clutOk = false;
     
     if (textures.back().cf)
-    {
-        readCLUT(timStream, textures.back());
-    }
+        clutOk = readCLUT(timStream, textures.back());
     
-    readPixelData(timStream, textures.back());
+    if (clutOk || !textures.back().cf)
+        readPixelData(timStream, textures.back());
+    else
+        textures.pop_back();
 }
 
-void TextureDB::readCLUT(QDataStream & stream, Texture & targetTex)
+bool TextureDB::readCLUT(QDataStream & stream, Texture & targetTex)
 {
-    size_t clutAmount = 0;
-    
+    // RTIM does not have the clut size at the beginning of the header.
     if (type != TexDBType::RTIM)
-    {
         stream >> targetTex.clutSize;
-        stream >> targetTex.clutVramX;
-        stream >> targetTex.clutVramY;
-        stream >> targetTex.clutWidth;
-        stream >> targetTex.clutHeight;
-        clutAmount = targetTex.clutWidth * targetTex.clutHeight;
-    }
-    else
+    stream >> targetTex.clutVramX;
+    stream >> targetTex.clutVramY;
+    stream >> targetTex.clutWidth;
+    stream >> targetTex.clutHeight;
+    
+    // For RTIM, read the clut header dupe
+    if (type == TexDBType::RTIM)
     {
-        if (targetTex.pMode == PixelMode::CLUT4Bit)
-            clutAmount = 16;
-        else if (targetTex.pMode == PixelMode::CLUT8Bit)
-            clutAmount = 255;
-    }
+        uint16_t clutVramXDupe;
+        uint16_t clutVramYDupe;
+        uint16_t clutWidthDupe;
+        uint16_t clutHeightDupe;
+        stream >> clutVramXDupe;
+        stream >> clutVramYDupe;
+        stream >> clutWidthDupe;
+        stream >> clutHeightDupe;
         
-    for (size_t curEntry = 0; curEntry < clutAmount; curEntry++)
+        // We check if the dupes match the original values
+        if (targetTex.clutVramX != clutVramXDupe || targetTex.clutVramY != clutVramYDupe ||
+            targetTex.clutWidth != clutWidthDupe || targetTex.clutHeight != clutHeightDupe)
+        {
+            KFMTError::error("Texture: Invalid RTIM CLUT Header: Dupes don't match.");
+            return false;
+        }
+        
+        // This next if checks whether the values on the CLUT header are all the same. This only
+        // happens when we're at the weird texture section (all 00 or FF).
+        if (targetTex.clutVramX == targetTex.clutVramY && targetTex.clutVramY == targetTex.clutWidth
+            && targetTex.clutWidth == targetTex.clutHeight)
+            return false;
+    }
+    
+    const auto clutAmount = targetTex.clutWidth * targetTex.clutHeight;
+        
+    for (auto curEntry = 0; curEntry < clutAmount; curEntry++)
     {
         uint16_t clutEntry;
         stream >> clutEntry;
         
-        const uint8_t r = (clutEntry & 31) * 8;
-        const uint8_t g = ((clutEntry >> 5) & 31) * 8;
-        const uint8_t b = ((clutEntry >> 10) & 31) * 8;
-        uint8_t a = clutEntry >> 15;
+        const uint8_t r = (clutEntry & 31u) * 8;
+        const uint8_t g = (static_cast<uint8_t>(clutEntry >> 5u) & 31u) * 8;
+        const uint8_t b = (static_cast<uint8_t>(clutEntry >> 10u) & 31u) * 8;
+        uint8_t a = clutEntry >> 15u;
         if (a == 0 && r == 0 && g == 0 && b == 0)
             a = 0;
-        else if (a == 0 && (r != 0 || g != 0 || b != 0))
+        else if ((a == 0 && (r != 0 || g != 0 || b != 0)) || (a == 1 && r == 0 && g == 0 && b == 0))
             a = 255;
         else if (a == 1 && (r != 0 || g != 0 || b != 0))
             a = 127;
-        else if (a == 1 && r == 0 && g == 0 && b == 0)
-            a = 255;
         
-        unsigned int color = b | (g << 8) | (r << 16) | (a << 24);
+        const unsigned int color = b | static_cast<unsigned int>(g << 8u) | 
+                static_cast<unsigned int>(r << 16u) | static_cast<unsigned int>(a << 24u);
         
         targetTex.clutColorTable.push_back(color);
     }
     
     targetTex.image.setColorTable(targetTex.clutColorTable);
+    return true;
 }
 
 void TextureDB::readPixelData(QDataStream & stream, Texture & targetTex)
 {
+    // RTIM does not have the pixel data size at the beginning of the header.
     if (type != TexDBType::RTIM)
         stream >> targetTex.pxDataSize;
     stream >> targetTex.pxVramX;
@@ -359,6 +240,7 @@ void TextureDB::readPixelData(QDataStream & stream, Texture & targetTex)
     stream >> targetTex.pxWidth;
     stream >> targetTex.pxHeight;
     
+    // FIXME: We should check the dupes just like we do for the CLUT.
     // If this is an RTIM, skip the DX/DY and W/X dupes
     if (type == TexDBType::RTIM)
         stream.skipRawData(8);
@@ -393,10 +275,10 @@ void TextureDB::readPixelData(QDataStream & stream, Texture & targetTex)
         {
             case (PixelMode::CLUT4Bit):
             {
-                uint8_t pixel0 = block0 & 0b1111;
-                uint8_t pixel1 = (block0 >> 4) & 0b1111;
-                uint8_t pixel2 = (block0 >> 8) & 0b1111;
-                uint8_t pixel3 = (block0 >> 12) & 0b1111;
+                const uint8_t pixel0 = block0 & 0b1111u;
+                const uint8_t pixel1 = static_cast<uint8_t>(block0 >> 4u) & 0b1111u;
+                const uint8_t pixel2 = static_cast<uint8_t>(block0 >> 8u) & 0b1111u;
+                const uint8_t pixel3 = static_cast<uint8_t>(block0 >> 12u) & 0b1111u;
                 targetTex.image.setPixel(curPixel % targetTex.pxWidth, curPixel / targetTex.pxWidth,
                                          pixel0);
                 curPixel++;
@@ -413,8 +295,8 @@ void TextureDB::readPixelData(QDataStream & stream, Texture & targetTex)
             }
             case (PixelMode::CLUT8Bit):
             {
-                uint8_t pixel0 = block0 & 0xFF;
-                uint8_t pixel1 = (block0 >> 8) & 0xFF;
+                const uint8_t pixel0 = block0 & 0xFFu;
+                const uint8_t pixel1 = static_cast<uint8_t>(block0 >> 8u) & 0xFFu;
                 targetTex.image.setPixel(curPixel % targetTex.pxWidth, curPixel / targetTex.pxWidth,
                                          pixel0);
                 curPixel++;
@@ -425,64 +307,195 @@ void TextureDB::readPixelData(QDataStream & stream, Texture & targetTex)
             }
             case (PixelMode::Direct15Bit):
             {
-                const uint8_t r = (block0 & 31) * 8;
-                const uint8_t g = ((block0 >> 5) & 31) * 8;
-                const uint8_t b = ((block0 >> 10) & 31) * 8;
-                uint8_t a = block0 >> 15;
+                const uint8_t r = (block0 & 31u) * 8;
+                const uint8_t g = (static_cast<uint8_t>(block0 >> 5u) & 31u) * 8;
+                const uint8_t b = (static_cast<uint8_t>(block0 >> 10u) & 31u) * 8;
+                uint8_t a = block0 >> 15u;
                 if (a == 0 && r == 0 && g == 0 && b == 0)
                     a = 0;
-                else if (a == 0 && (r != 0 || g != 0 || b != 0))
+                else if ((a == 0 && (r != 0 || g != 0 || b != 0)) || (a == 1 && r == 0 && g == 0 && b == 0))
                     a = 255;
                 else if (a == 1 && (r != 0 || g != 0 || b != 0))
                     a = 127;
-                else if (a == 1 && r == 0 && g == 0 && b == 0)
-                    a = 255;
                 targetTex.image.setPixelColor(curPixel % targetTex.pxWidth, curPixel / targetTex.pxWidth, 
                                               QColor(r, g, b, a));
                 curPixel++;
                 break;
             }
             default:
-                KFMTError::error("Texture: Unimplemented pixel mode 0x" + 
+                KFMTError::error("TextureDB: Unimplemented pixel mode 0x" + 
                                  QString::number(static_cast<int>(targetTex.pMode), 16));
                 return;
         }
     }
 }
 
-std::vector<uint16_t> TextureDB::Texture::getCLUTEntries()
+void TextureDB::writeRTIM()
 {
-    std::vector<uint16_t> result;
-    if (pMode == PixelMode::CLUT4Bit)
-        result.reserve(16);
-    else if (pMode == PixelMode::CLUT8Bit)
-        result.reserve(256);
-    else
+    QDataStream outStream(file);
+    outStream.setByteOrder(QDataStream::LittleEndian);
+    
+    for (const auto &texture : textures)
     {
-        KFMTError::error("Texture: Tried to get CLUT entries when pixel mode isn't a CLUT mode.");
-        return {};
+        writeCLUT(outStream, texture, TexDBType::RTIM);
+        writePixelData(outStream, texture, TexDBType::RTIM);
+    }
+}
+
+void TextureDB::writeTIM()
+{
+    QDataStream outStream(file);
+    outStream.setByteOrder(QDataStream::LittleEndian);
+    
+    auto &texture = textures.front();
+    
+    uint32_t id = 0x10;
+    uint32_t flag = static_cast<uint32_t>(texture.pMode) | (static_cast<uint32_t>(texture.cf) << 3u);
+    
+    outStream << id;
+    outStream << flag;
+
+    writeCLUT(outStream, texture, TexDBType::TIM);
+    writePixelData(outStream, texture, TexDBType::TIM);
+}
+
+void TextureDB::writeCLUT(QDataStream &stream, const TextureDB::Texture &targetTex, TexDBType type)
+{
+    // RTIM does not have the clut size at the beginning of the header.
+    if (type != TexDBType::RTIM)
+        stream << targetTex.clutSize;
+    stream << targetTex.clutVramX;
+    stream << targetTex.clutVramY;
+    stream << targetTex.clutWidth;
+    stream << targetTex.clutHeight;
+    
+    // For RTIM, write the clut header dupe
+    if (type == TexDBType::RTIM)
+    {
+        stream << targetTex.clutVramX;
+        stream << targetTex.clutVramY;
+        stream << targetTex.clutWidth;
+        stream << targetTex.clutHeight;
     }
     
-    for (auto &color : image.colorTable())
+    for (const auto entry : targetTex.getCLUTEntries())
+        stream << entry;
+}
+
+void TextureDB::writePixelData(QDataStream &stream, const TextureDB::Texture &targetTex, TexDBType type)
+{
+    // Adjust width before writing
+    uint16_t fixedPixelWidth = targetTex.pxWidth;
+    if (targetTex.pMode == PixelMode::CLUT4Bit)
+        fixedPixelWidth /= 4;
+    else if (targetTex.pMode == PixelMode::CLUT8Bit)
+        fixedPixelWidth /= 2;
+    
+    // RTIM does not have the pixel data size at the beginning of the header.
+    if (type != TexDBType::RTIM)
+        stream << targetTex.pxDataSize;
+    stream << targetTex.pxVramX;
+    stream << targetTex.pxVramY;
+    stream << fixedPixelWidth;
+    stream << targetTex.pxHeight;
+    
+    // For RTIM, write the pixel data header dupe
+    if (type == TexDBType::RTIM)
     {
-        uint8_t r = (color >> 16) & 0xFF;
-        uint8_t g = (color >> 8) & 0xFF;
-        uint8_t b = color & 0xFF;
-        uint8_t a = (color >> 24) & 0xFF;
-        if (a == 0 && r == 0 && g == 0 && b == 0)
-            a = 0;
-        else if (a == 255 && (r != 0 || g != 0 || b != 0))
-            a = 0;
-        else if (a == 127)
-            a = 1;
-        else if (a == 255 && r == 0 && g == 0 && b == 0)
-            a = 1;
+        stream << targetTex.pxVramX;
+        stream << targetTex.pxVramY;
+        stream << fixedPixelWidth;
+        stream << targetTex.pxHeight;
+    }
+    
+    auto *imageByteData = targetTex.image.bits();
+    auto imagePixelSize = targetTex.image.width() * targetTex.image.height();
+    auto imageCurPixel = 0;
+    
+    while (imageCurPixel < imagePixelSize)
+    {
+        switch (targetTex.pMode)
+        {
+            case (PixelMode::CLUT4Bit):
+            {
+                const uint8_t px0 = imageByteData[imageCurPixel] & 15u;
+                const uint8_t px1 = imageByteData[imageCurPixel + 1] & 15u;
+                const uint8_t px2 = imageByteData[imageCurPixel + 2] & 15u;
+                const uint8_t px3 = imageByteData[imageCurPixel + 3] & 15u;
+                
+                const uint16_t packet = px0 | static_cast<uint16_t>(px1 << 4u) | 
+                        static_cast<uint16_t>(px2 << 8u) | static_cast<uint16_t>(px3 << 12u);
+                
+                stream << packet;
+                
+                imageCurPixel += 4;
+                break;
+            }
+            case (PixelMode::CLUT8Bit):
+            {
+                stream << imageByteData[imageCurPixel];
+                stream << imageByteData[imageCurPixel + 1];
+                imageCurPixel += 2;
+                break;
+            }
+            case (PixelMode::Direct15Bit):
+            {
+                const auto pxColor = targetTex.image.pixelColor(imageCurPixel % targetTex.pxWidth,
+                                                                imageCurPixel / targetTex.pxWidth);
+                // FIXME: Figure this out, too sleepy to do it right now.
+                uint8_t true_a = 0;
+                const uint8_t r = std::min(pxColor.red() / 8u, 31u);
+                const uint8_t g = std::min(pxColor.green() / 8u, 31u);
+                const uint8_t b = std::min(pxColor.blue() / 8u, 31u);
+                
+                if (pxColor.alpha() == 127)
+                    true_a = 1u;
+                else if (pxColor.alpha() == 255)
+                {
+                    if ((r != 0 || g != 0 || b != 0))
+                        true_a = 0u;
+                    else if (r == 0 && g == 0 && b == 0)
+                        true_a = 1u;
+                }
+                
+                const uint16_t packet = r | (g << 5u) | (b << 10u) | (true_a << 15u);
+                stream << packet;
+                imageCurPixel++;
+                break;
+            }
+            default:
+                KFMTError::fatalError("Texture: Unhandled pixel mode!");
+                return;
+        }
+    }
+}
+
+std::vector<uint16_t> TextureDB::Texture::getCLUTEntries() const
+{
+    std::vector<uint16_t> result;
+    if (pMode != PixelMode::CLUT4Bit && pMode != PixelMode::CLUT8Bit)
+    {
+        KFMTError::error("TextureDB: Tried to get CLUT entries when pixel mode isn't a CLUT mode.");
+        return {};
+    }
+    result.reserve(clutWidth * clutHeight);
+    
+    for (const auto &color : image.colorTable())
+    {
+        uint8_t r = (color >> 16u) & 0xFFu;
+        uint8_t g = (color >> 8u) & 0xFFu;
+        uint8_t b = color & 0xFFu;
+        uint8_t a = (color >> 24u) & 0xFFu;
+        if ((a == 0 && r == 0 && g == 0 && b == 0) || (a == 255u && (r != 0 || g != 0 || b != 0)))
+            a = 0u;
+        else if (a == 127u || (a == 255u && r == 0 && g == 0 && b == 0))
+            a = 1u;
         
-        r /= 8;
-        g /= 8;
-        b /= 8;
+        r /= 8u;
+        g /= 8u;
+        b /= 8u;
         
-        result.push_back(r | ((g & 31) << 5) | ((b & 31) << 10) | ((a & 1) << 15)) ;
+        result.push_back(r | ((g & 31u) << 5u) | ((b & 31u) << 10u) | ((a & 1u) << 15u)) ;
     }
     
     return result;

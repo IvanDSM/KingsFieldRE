@@ -24,14 +24,17 @@ QByteArray &MIXFile::getFile(size_t index)
     return files[index];
 }
 
-void MIXFile::write(const QDir &outDir)
+void MIXFile::writeTo(QFile &outFile) const
 {
-    QFile outFile(outDir.path() + fileName);
-    if (!outFile.open(QIODevice::WriteOnly))
-        return;
+    QDataStream outStream(&outFile);
+    outStream.setByteOrder(QDataStream::LittleEndian);
+    
     for (const auto &file : files)
-        outFile.write(file);
-    outFile.close();
+    {
+        if (hasSizes)
+            outStream << static_cast<uint32_t>(file.size());
+        outStream.writeRawData(file.data(), file.size());
+    }
 }
 
 void MIXFile::load(const QByteArray &file)
@@ -84,7 +87,7 @@ void MIXFile::loadNoSizes(const QByteArray &mixFile)
             uint32_t clutSize = 0;
             uint32_t pDataSize = 0;
             // If the pixel mode is Direct 15 or 24 bit, we have no CLUT.
-            auto data = mixFile.data() + curOffset;
+            const auto *data = mixFile.data() + curOffset;
             uint8_t timFlag = data[4];
             if (timFlag == 0x02 || timFlag == 0x03)
                 pDataSize = *reinterpret_cast<const uint32_t *>(&data[8]);
@@ -109,6 +112,9 @@ void MIXFile::loadNoSizes(const QByteArray &mixFile)
     offsets.push_back(mixFile.size());
     
     // Read the individual files from the MIX file based on the offsets.
-    for (auto offset = offsets.cbegin(); offset != offsets.cend() - 1; offset++)
-        files.emplace_back(mixFile.mid(*offset, *(offset + 1)));
+    for (auto offset = offsets.cbegin(), nextoffset = offsets.cbegin() + 1; 
+         nextoffset != offsets.cend(); offset++, nextoffset++)
+    {
+        files.emplace_back(mixFile.mid(*offset, *nextoffset - *offset));
+    }
 }

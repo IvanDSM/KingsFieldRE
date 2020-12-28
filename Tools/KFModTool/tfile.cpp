@@ -7,6 +7,7 @@
 #include <QDebug>
 #include <QDir>
 #include <QtEndian>
+#include <cmath>
 
 TFile::TFile(const QString & filename) : 
     fileName(filename.mid(filename.lastIndexOf(QRegExp("[\\/]")) + 1))
@@ -90,26 +91,48 @@ QString TFile::getPrettyName(size_t index) const
     return getFilename() + ' ' + QString::number(index);
 }
 
-void TFile::writeFileMap()
+void TFile::writeTo(QFile &outFile) const
 {
-    QDir outputDir(getBaseFilename());
-    if (!outputDir.exists())
-        outputDir.mkpath(".");
-
-    qInfo() << "Writing file map for" << getFilename();
-
-    QFile mapOutFile(outputDir.path() + QDir::separator() + getBaseFilename() + "_MAP.csv");
-    if (!mapOutFile.open(QIODevice::WriteOnly))
-        qInfo() << "Creating map for " << getFilename() << " failed!";
-    else
-    {
-        QTextStream mapWriteStream(&mapOutFile);
-        mapWriteStream << getBaseFilename() << ",MAP" << "\n";
-        for (const auto &mapping : fileMap)
-            mapWriteStream << mapping.first << "," << mapping.second << "\n";
-    }
-
+    // Create data blob
+    QByteArray dataBlob;
     
+    std::vector<uint16_t> newTrueOffsets;
+    
+    for (const auto &file : files)
+    {
+        QByteArray alignedFile;
+        auto alignedSize = static_cast<uint16_t>(file.size() / 2048u);
+        if (file.size() % 2048u != 0)
+            alignedSize += 1;
+        
+        alignedFile.resize(alignedSize * 2048u);
+        alignedFile.fill(0);
+        mempcpy(alignedFile.data(), file.data(), file.size());
+        
+        newTrueOffsets.push_back((dataBlob.size() + 2048u) / 2048u);
+        dataBlob.append(file);
+    }
+    
+    // Add EOF to the offset vector
+    newTrueOffsets.push_back((dataBlob.size() + 2048u) / 2048u);
+    
+    // Create stream for writing to the file
+    QDataStream outStream(&outFile);
+    outStream.setByteOrder(QDataStream::LittleEndian);
+    
+    // Write number of (fake) files
+    outStream << static_cast<uint16_t>(fileMap.size() - 1);
+    
+    // Write pointers
+    for (size_t fileNum = 0; fileNum < fileMap.size(); fileNum++)
+        outStream << newTrueOffsets.at(fileMap.find(fileNum)->second);
+    
+    // Pad out pointer table to 2048 bytes.
+    // FIXME: I think this is pretty slow, but I can't think of a way around it right now.
+    while(outStream.device()->pos() < 2048)
+        outStream << static_cast<uint8_t>(0);
+    
+    outStream.writeRawData(dataBlob.data(), dataBlob.size());
 }
 
 void TFile::load(const QByteArray &tFileBlob)

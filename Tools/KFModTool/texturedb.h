@@ -11,7 +11,6 @@ public:
     enum TexDBType
     {
         RTIM,
-        MIX,
         TIM
     };
     
@@ -38,13 +37,18 @@ public:
     
 private:
     
-    void loadRTIM(const QByteArray &file);
-    void loadTIM(const QByteArray &file);
+    void loadRTIM();
+    void loadTIM();
     
-    void readCLUT(QDataStream &stream, Texture &targetTex);
+    bool readCLUT(QDataStream &stream, Texture &targetTex);
     void readPixelData(QDataStream &stream, Texture &targetTex);
     
+    void writeRTIM();
+    void writeTIM();
         
+    static void writeCLUT(QDataStream &stream, const Texture &targetTex, TexDBType type);
+    static void writePixelData(QDataStream &stream, const Texture &targetTex, TexDBType type);
+    
     std::vector<Texture> textures;
     QByteArray &file;
     TexDBType type;
@@ -73,7 +77,7 @@ struct TextureDB::Texture
     uint16_t pxHeight;
     QImage image;
     
-    std::vector<uint16_t> getCLUTEntries();
+    std::vector<uint16_t> getCLUTEntries() const;
 };
 
 #endif // TEXTUREDB_H

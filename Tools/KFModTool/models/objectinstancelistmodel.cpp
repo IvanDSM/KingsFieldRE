@@ -1,7 +1,9 @@
 #include "objectinstancelistmodel.h"
 
+#include <utility>
+
 ObjectInstanceListModel::ObjectInstanceListModel(QObject *parent, std::shared_ptr<Map> map_)
-    : QAbstractListModel(parent), map(map_)
+    : QAbstractListModel(parent), map(std::move(map_))
 {
 }
 

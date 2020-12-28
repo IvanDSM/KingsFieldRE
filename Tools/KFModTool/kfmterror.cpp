@@ -48,6 +48,6 @@ void KFMTError::warning(const QString & warningMessage)
 void KFMTError::outOfRange(const size_t &index, const QString &arrayName, const std::string &exceptionWhat)
 {
     QString errorMessage = "Tried to access index %1 of the %2 array.\n%3";
-    errorMessage = errorMessage.arg(index).arg(arrayName).arg(QString::fromStdString(exceptionWhat));
+    errorMessage = errorMessage.arg(index).arg(arrayName, QString::fromStdString(exceptionWhat));
     fatalError(errorMessage);
 }

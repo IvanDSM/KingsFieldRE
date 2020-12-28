@@ -1,6 +1,6 @@
 #include "models/texturelistmodel.h"
-#include "texturedbviewer.h"
 #include "QFileDialog"
+#include "texturedbviewer.h"
 
 TextureDBViewer::TextureDBViewer(QWidget *parent) :
     QWidget(parent),
@@ -28,13 +28,13 @@ void TextureDBViewer::on_exportBtn_clicked()
     exportDlg.setAcceptMode(QFileDialog::AcceptSave);
     exportDlg.setFileMode(QFileDialog::ExistingFile);
     
-    if (!exportDlg.exec())
+    if (exportDlg.exec() != QDialog::Accepted)
         return;
     
-    QString fileName = exportDlg.selectedFiles().first();
-    const char *format = exportDlg.selectedNameFilter().left(3).toStdString().c_str();
+    const QString fileName = exportDlg.selectedFiles().first();
+    const std::string format = exportDlg.selectedNameFilter().left(3).toStdString();
     
-    curTextureDB->getTexture(curTexture).image.save(fileName, format, 0);
+    curTextureDB->getTexture(curTexture).image.save(fileName, format.c_str(), 0);
 }
 
 void TextureDBViewer::on_texList_activated(const QModelIndex &index)
@@ -55,7 +55,7 @@ void TextureDBViewer::on_replaceSBtn_clicked()
 
 void TextureDBViewer::replaceTexture(bool smooth)
 {
-    auto filter = "Images (*.bmp *.gif *.jpg *.jpeg *.png *.ppm *.xbm *.xpm)";
+    const auto *filter = "Images (*.bmp *.gif *.jpg *.jpeg *.png *.ppm *.xbm *.xpm)";
     auto fileName = QFileDialog::getOpenFileName(this, "Import image", QDir::currentPath(), filter);
     
     if (fileName.isEmpty())

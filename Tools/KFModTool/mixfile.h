@@ -11,7 +11,7 @@ public:
     explicit MIXFile(const QString &filename);
     QByteArray &getFile(size_t index);
     size_t size() const { return files.size(); }
-    void write(const QDir & outDir);
+    void writeTo(QFile & outFile) const;
     
 private:
     void load(const QByteArray & file);

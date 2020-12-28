@@ -2,6 +2,7 @@
 #define TFILE_H
 
 #include <QDataStream>
+#include <QDir>
 #include <QFile>
 #include <QString>
 #include <unordered_map>
@@ -50,11 +51,8 @@ public:
     size_t getNumFiles() const;
     
     QString getPrettyName(size_t index) const;
-
-    /*!
-     * \brief Writes the T file's file map to a csv file.
-     */
-    void writeFileMap();
+    
+    void writeTo(QFile &outFile) const;
 
 private:
     
@@ -62,7 +60,7 @@ private:
      * \brief Private function for actually loading from the 'file' member attribute.
      * \param tFileBlob QByteArray containing the entirety of the T file.
      */
-    void load(const QByteArray & tFileBlob);
+    void load(const QByteArray &tFileBlob);
 
     bool loaded = false; ///< Whether the T file was successfully loaded.
     QByteArray hash; ///< MD5 hash of the file for getting pretty names.
