@@ -223,7 +223,11 @@ bool TextureDB::readCLUT(QDataStream & stream, Texture & targetTex)
         else if ((a == 0 && (r != 0 || g != 0 || b != 0)) || (a == 1 && r == 0 && g == 0 && b == 0))
             a = 255;
         else if (a == 1 && (r != 0 || g != 0 || b != 0))
-            a = 127;
+        // The commented "a = 127" below is an actual PS1 TIM case, but KF doesn't seem to use it ever.
+        // Since it results in stuff being semi-transparent when it shouldn't, I'm disabling
+        // it for now.
+            //a = 127;
+            a = 255;
         
         const unsigned int color = b | static_cast<unsigned int>(g << 8u) | 
                 static_cast<unsigned int>(r << 16u) | static_cast<unsigned int>(a << 24u);
@@ -321,7 +325,11 @@ void TextureDB::readPixelData(QDataStream & stream, Texture & targetTex)
                 else if ((a == 0 && (r != 0 || g != 0 || b != 0)) || (a == 1 && r == 0 && g == 0 && b == 0))
                     a = 255;
                 else if (a == 1 && (r != 0 || g != 0 || b != 0))
-                    a = 127;
+                // The commented "a = 127" below is an actual PS1 TIM case, but KF doesn't seem to use it ever.
+                // Since it results in stuff being semi-transparent when it shouldn't, I'm disabling
+                // it for now.
+                    //a = 127;
+                    a = 255;
                 targetTex.image.setPixelColor(curPixel % targetTex.pxWidth, curPixel / targetTex.pxWidth, 
                                               QColor(r, g, b, a));
                 curPixel++;

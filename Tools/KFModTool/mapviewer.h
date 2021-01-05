@@ -119,7 +119,7 @@ private:
     byte curBrush = 127;
     MapElement curBrushElement = MapElement::MAP_COLLISIONTHING;
     MapElement curElement = MapElement::MAP_COLLISIONTHING;
-    MapLayer curLayer = MapLayer::LAYER_1;
+    MapLayer curLayer = MapLayer::LAYER_2;
     MapViewerMode curMode = MapViewerMode::MODE_POKE;
     QPainter painter;
     QPoint mousePos = QPoint(39, 39);
