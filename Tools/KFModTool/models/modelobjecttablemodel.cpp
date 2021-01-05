@@ -6,7 +6,7 @@ QVariant ModelObjectTableModel::data(const QModelIndex & index, int role) const
     {
         if (index.column() == textColumn && role == Qt::DisplayRole)
             return "Object " + QString::number(index.row());
-        else if (index.column() == tickColumn && role == Qt::CheckStateRole)
+        if (index.column() == tickColumn && role == Qt::CheckStateRole)
             return model->baseObjects.at(index.row()).visible ? Qt::Checked : Qt::Unchecked;
     }
     

@@ -41,7 +41,7 @@ void MainWindow::on_filesTree_itemDoubleClicked(QTreeWidgetItem *item_, int)
 {
     if (item_->type() == QTreeWidgetItem::UserType)
     {
-        auto kfmtItem = dynamic_cast<KFMTTreeWidgetItem *>(item_);
+        auto *kfmtItem = dynamic_cast<KFMTTreeWidgetItem *>(item_);
         
         // Check to see if there is already a tab for this item
         auto tabForItem = openTabs.find(kfmtItem->text(0));
@@ -60,7 +60,7 @@ void MainWindow::on_filesTree_itemDoubleClicked(QTreeWidgetItem *item_, int)
         {
             case KFMTDataType::KFMT_GAMEDB:
             {
-                auto gameDBEditor = new GameDBEditWidget(ui->editorTabs, kfmtItem->getDB());
+                auto *gameDBEditor = new GameDBEditWidget(ui->editorTabs, kfmtItem->getDB());
                 ui->editorTabs->addTab(gameDBEditor, "Game Database");
                 ui->editorTabs->setCurrentWidget(gameDBEditor);
                 ui->editorTabs->setTabIcon(ui->editorTabs->currentIndex(), QIcon(":/db_icon.png"));
@@ -127,7 +127,7 @@ void MainWindow::on_actionSave_changes_triggered()
 
 KFMTTreeWidgetItem *MainWindow::addGameDB(QTreeWidgetItem * parent, QByteArray &file)
 {
-    auto gameDBTreeItem = new KFMTTreeWidgetItem(parent, file, KFMTDataType::KFMT_GAMEDB);
+    auto *gameDBTreeItem = new KFMTTreeWidgetItem(parent, file, KFMTDataType::KFMT_GAMEDB);
     gameDBTreeItem->setText(0, "Game Database");
 
     if (parent != nullptr)
@@ -141,7 +141,7 @@ KFMTTreeWidgetItem *MainWindow::addGameDB(QTreeWidgetItem * parent, QByteArray &
 KFMTTreeWidgetItem *MainWindow::addMap(QTreeWidgetItem *parent, QByteArray &file1, QByteArray &file2, 
                                        QByteArray &file3, const QString &filename)
 {
-    auto mapTreeItem = new KFMTTreeWidgetItem(parent, file1, file2, file3, KFMTDataType::KFMT_MAP);
+    auto *mapTreeItem = new KFMTTreeWidgetItem(parent, file1, file2, file3, KFMTDataType::KFMT_MAP);
     mapTreeItem->setText(0, filename);
 
     if (parent != nullptr)
@@ -154,7 +154,7 @@ KFMTTreeWidgetItem *MainWindow::addMap(QTreeWidgetItem *parent, QByteArray &file
 
 KFMTTreeWidgetItem *MainWindow::addModel(QTreeWidgetItem *parent, QByteArray &file, const QString &filename)
 {
-    auto modelTreeItem = new KFMTTreeWidgetItem(parent, file, KFMTDataType::KFMT_MODEL);
+    auto *modelTreeItem = new KFMTTreeWidgetItem(parent, file, KFMTDataType::KFMT_MODEL);
     modelTreeItem->setText(0, filename);
     
     if (parent != nullptr)
@@ -167,7 +167,7 @@ KFMTTreeWidgetItem *MainWindow::addModel(QTreeWidgetItem *parent, QByteArray &fi
 
 KFMTTreeWidgetItem *MainWindow::addTexture(QTreeWidgetItem *parent, QByteArray &file, const QString &filename)
 {
-    auto textureTreeItem = new KFMTTreeWidgetItem(parent, file, KFMTDataType::KFMT_TEXTUREDB);
+    auto *textureTreeItem = new KFMTTreeWidgetItem(parent, file, KFMTDataType::KFMT_TEXTUREDB);
     textureTreeItem->setText(0, filename);
     
     if (parent != nullptr)

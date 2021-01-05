@@ -7,7 +7,10 @@
 TextureDB::TextureDB(QByteArray &textureDBFile) : file(textureDBFile)
 {
     if (Utilities::fileIsTIM(file))
+    {
+        type = TexDBType::TIM;
         loadTIM();
+    }
     else if (Utilities::fileIsRTIM(file))
     {
         type = TexDBType::RTIM;
@@ -112,6 +115,8 @@ void TextureDB::writeChanges()
         writeRTIM();
     else if (type == TexDBType::TIM) // TIM File
         writeTIM();
+    else
+        KFMTError::error("TextureDB: Invalid type " + QString::number(type, 16));
 }
 
 void TextureDB::loadRTIM()
@@ -332,7 +337,7 @@ void TextureDB::readPixelData(QDataStream & stream, Texture & targetTex)
 
 void TextureDB::writeRTIM()
 {
-    QDataStream outStream(file);
+    QDataStream outStream(&file, QIODevice::WriteOnly);
     outStream.setByteOrder(QDataStream::LittleEndian);
     
     for (const auto &texture : textures)
@@ -344,7 +349,7 @@ void TextureDB::writeRTIM()
 
 void TextureDB::writeTIM()
 {
-    QDataStream outStream(file);
+    QDataStream outStream(&file, QIODevice::WriteOnly);
     outStream.setByteOrder(QDataStream::LittleEndian);
     
     auto &texture = textures.front();
