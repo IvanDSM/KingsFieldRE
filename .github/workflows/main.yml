@@ -19,9 +19,9 @@ jobs:
     - name: Install Qt
       uses: jurplel/install-qt-action@v2
 
-    - name: Install libxcb-iccm
+    - name: Install libxcb stuff
       run: |
-        sudo apt install -y libxcb-icccm4
+        sudo apt install -y libxcb*
 
     - name: Get linuxdeployqt
       run: | 
