@@ -18,8 +18,6 @@ jobs:
 
     - name: Install Qt
       uses: jurplel/install-qt-action@v2
-      with:
-        version: 5.14.2 
 
     - name: Get linuxdeployqt
       run: | 
@@ -113,8 +111,7 @@ jobs:
     - name: Install Qt
       uses: jurplel/install-qt-action@v2
       with:
-        arch: win64_mingw73
-        version: 5.14.2 
+        arch: win64_mingw81
 
     - name: Build checksum_tool
       run: |
