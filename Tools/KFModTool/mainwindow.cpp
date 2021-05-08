@@ -32,9 +32,10 @@ void MainWindow::on_actionLoad_files_triggered()
     else if ((srcDir.exists("SLUS_002.55") || srcDir.exists("SLPS_003.77") || srcDir.exists("SLPM_800.29")) 
              && srcDir.exists("LOAD.MSG"))
         load3JorPS();
-    
-    for (int tab = ui->editorTabs->count() - 1; tab >= 0; tab++)
-        ui->editorTabs->removeTab(tab);
+    else if (srcDir.exists("SLPS_009.00"))
+        loadACProto();
+
+    for (int tab = ui->editorTabs->count() - 1; tab >= 0; tab++) ui->editorTabs->removeTab(tab);
 }
 
 void MainWindow::on_filesTree_itemDoubleClicked(QTreeWidgetItem *item_, int)
@@ -657,6 +658,29 @@ void MainWindow::load3JorPS()
     loadTFile("CD/COM/VAB.T");
     loadMIXFile("OP/OP.D");
     loadRawFile("LOAD.MSG");
+}
+
+void MainWindow::loadACProto()
+{
+    loadTFile("GG/COM/FDAT.T");
+    loadTFile("GG/COM/RTIM.T");
+    loadTFile("GG/MS/ARMS_T.T");
+    loadTFile("GG/MS/BST_T.T");
+    loadTFile("GG/MS/BWL_T.T");
+    loadTFile("GG/MS/BWR_T.T");
+    loadTFile("GG/MS/COMP_T.T");
+    loadTFile("GG/MS/CORE_T.T");
+    loadTFile("GG/MS/GENE_T.T");
+    loadTFile("GG/MS/HEAD_T.T");
+    loadTFile("GG/MS/LEG_T.T");
+    loadTFile("GG/MS/MENU_TIM.T");
+    loadTFile("GG/MS/MENU_TMD.T");
+    loadTFile("GG/MS/MENU_VAB.T");
+    loadTFile("GG/MS/MIS.T");
+    loadTFile("GG/MS/SPEC_T.T");
+    loadTFile("GG/MS/WEL_T.T");
+    loadTFile("GG/MS/WER_T.T");
+    // We don't support anything from the P0/P1/P2/P3 folders yet
 }
 
 void MainWindow::loadMIXFile(QString path)

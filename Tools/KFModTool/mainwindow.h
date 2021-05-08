@@ -93,7 +93,10 @@ private:
     void load2J();
     void loadEU();
     void load3JorPS();
-    
+
+    // Test
+    void loadACProto();
+
     void loadMIXFile(QString path);
     void loadRawFile(QString path);
     void loadTFile(QString path);
