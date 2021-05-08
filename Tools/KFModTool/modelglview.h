@@ -119,7 +119,7 @@ public:
 
         if(model != nullptr)
         {
-            for(GLMesh mesh : meshes)
+            for(GLMesh &mesh : meshes)
             {
                 glFuncs->glDeleteVertexArrays(1, &mesh.VAO);
                 glFuncs->glDeleteBuffers(1, &mesh.VBO);

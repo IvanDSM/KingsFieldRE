@@ -1,4 +1,4 @@
-##@package KFMiniScripts
+# @package KFMiniScripts
 # Mini scripts relevant to King's Field (II) reverse engineering
 
 import numpy

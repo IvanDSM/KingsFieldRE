@@ -174,7 +174,7 @@ void ModelGLView::BuildMOAnimation()
     glFuncs->glBindVertexArray(0);
     glFuncs->glBindBuffer(GL_ARRAY_BUFFER, 0);
 
-    for(GLMesh mesh : meshes)
+    for(GLMesh &mesh : meshes)
     {
         glFuncs->glDeleteBuffers(1, &mesh.VBO);
         glFuncs->glDeleteVertexArrays(1, &mesh.VAO);
