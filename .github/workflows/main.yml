@@ -19,6 +19,10 @@ jobs:
     - name: Install Qt
       uses: jurplel/install-qt-action@v2
 
+	- name: Install libxcb-iccm
+	  run: |
+		sudo apt install libxcb-icccm4
+
     - name: Get linuxdeployqt
       run: | 
         wget "https://github.com/probonopd/linuxdeployqt/releases/download/continuous/linuxdeployqt-continuous-x86_64.AppImage" -P ~/
