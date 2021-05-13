@@ -1,6 +1,6 @@
+#include "texturedb.h"
 #include "kfmterror.h"
 #include "libimagequant/libimagequant.h"
-#include "texturedb.h"
 #include "utilities.h"
 #include <memory>
 
@@ -158,12 +158,11 @@ void TextureDB::loadTIM()
     timStream >> flag;
     textures.back().pMode = static_cast<PixelMode>(flag & 0b111u);
     textures.back().cf = static_cast<bool>((flag >> 3u) & 1u);
-    
+
     bool clutOk = false;
-    
-    if (textures.back().cf)
-        clutOk = readCLUT(timStream, textures.back());
-    
+
+    if (textures.back().cf) clutOk = readCLUT(timStream, textures.back());
+
     if (clutOk || !textures.back().cf)
         readPixelData(timStream, textures.back());
     else

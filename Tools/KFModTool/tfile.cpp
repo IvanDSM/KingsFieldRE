@@ -43,30 +43,18 @@ QByteArray &TFile::getFile(size_t index)
 
 QString TFile::getFiletype(QByteArray &file) const
 {
-    if (Utilities::fileIsTMD(file))
-        return "TMD";
-    if (Utilities::fileIsTIM(file))
-        return "TIM";
-    if (Utilities::fileIsVH(file))
-        return "VH";
-    if (Utilities::fileIsSEQ(file))
-        return "SEQ";
-    if (Utilities::fileIsVB(file))
-        return "VB";
-    if (Utilities::fileIsRTIM(file))
-        return "RTIM";
-    if (Utilities::fileIsRTMD(file))
-        return "RTMD";
-    if (Utilities::fileIsMO(file))
-        return "MO";
-    if (Utilities::fileIsMAP1(file))
-        return "MAP1";
-    if (Utilities::fileIsMAP2(file))
-        return "MAP2";
-    if (Utilities::fileIsMAP3(file))
-        return "MAP3";
-    if (Utilities::fileIsGameDB(file))
-        return "GAMEDB";
+    if (Utilities::fileIsTMD(file)) return "TMD";
+    if (Utilities::fileIsTIM(file)) return "TIM";
+    if (Utilities::fileIsVH(file)) return "VH";
+    if (Utilities::fileIsSEQ(file)) return "SEQ";
+    if (Utilities::fileIsVB(file)) return "VB";
+    if (Utilities::fileIsMAP1(file)) return "MAP1";
+    if (Utilities::fileIsMAP2(file)) return "MAP2";
+    if (Utilities::fileIsMAP3(file)) return "MAP3";
+    if (Utilities::fileIsRTIM(file)) return "RTIM";
+    if (Utilities::fileIsRTMD(file)) return "RTMD";
+    if (Utilities::fileIsMO(file)) return "MO";
+    if (Utilities::fileIsGameDB(file)) return "GAMEDB";
 
     return "DATA";
 }

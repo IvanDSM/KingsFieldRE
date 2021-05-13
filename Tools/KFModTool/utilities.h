@@ -69,15 +69,19 @@ namespace Utilities
      */
     inline bool fileIsMAP3(const QByteArray &file)
     {
-        return file.at(0x07) == '\x80' && 
-               file.at(0x07) == file.at(0x0b) && file.at(0x0b) == file.at(0x0f) && file.at(0x13) == file.at(0x17) &&
-               file.at(0x17) == file.at(0x1b) && file.at(0x1b) == file.at(0x1f) && file.at(0x23) == file.at(0x27) && 
-               file.at(0x27) == file.at(0x2b) && file.at(0x2b) == file.at(0x2f) && file.at(0x33) == file.at(0x37) && 
-               file.at(0x37) == file.at(0x3b) && file.at(0x3b) == file.at(0x3f) && file.at(0x43) == file.at(0x47) && 
-               file.at(0x47) == file.at(0x4b) && file.at(0x4b) == file.at(0x4f) && file.at(0x53) == file.at(0x57) && 
-               file.at(0x57) == file.at(0x5b) && file.at(0x5b) == file.at(0x5f) && file.at(0x63) == file.at(0x67) && 
-               file.at(0x67) == file.at(0x6b) && file.at(0x6b) == file.at(0x6f) && file.at(0x73) == file.at(0x77) && 
-               file.at(0x77) == file.at(0x7b) && file.at(0x7b) == file.at(0x7f);
+        return file.at(0x03) == '\x80' && file.at(0x07) == file.at(0x0b)
+               && file.at(0x0b) == file.at(0x0f) && file.at(0x13) == file.at(0x17)
+               && file.at(0x17) == file.at(0x1b) && file.at(0x1b) == file.at(0x1f)
+            /*&& file.at(0x23) == file.at(0x27) && file.at(0x27) == file.at(0x2b)
+               && file.at(0x2b) == file.at(0x2f) && file.at(0x33) == file.at(0x37)
+               && file.at(0x37) == file.at(0x3b) && file.at(0x3b) == file.at(0x3f)
+               && file.at(0x43) == file.at(0x47) && file.at(0x47) == file.at(0x4b)
+               && file.at(0x4b) == file.at(0x4f) && file.at(0x53) == file.at(0x57)
+               && file.at(0x57) == file.at(0x5b) && file.at(0x5b) == file.at(0x5f)
+               && file.at(0x63) == file.at(0x67) && file.at(0x67) == file.at(0x6b)
+               && file.at(0x6b) == file.at(0x6f) && file.at(0x73) == file.at(0x77)
+               && file.at(0x77) == file.at(0x7b) && file.at(0x7b) == file.at(0x7f)*/
+            ;
     }
     
     /*!
@@ -110,16 +114,18 @@ namespace Utilities
                          (file.mid(4, 4).compare(QByteArray::fromHex("12000000")) == 0 ||
                           file.mid(4, 4).compare(QByteArray::fromHex("10000000")) == 0);
     }
-    
+
     /*!
      * \brief Checks whether a file is an RTIM file (should only be run after checking for TIM).
      * This is done by checking if the file's first 8 bytes are equal to the next 8 bytes.
+     * We also make sure the first 4 bytes aren't equal to the next 4 bytes. This is necessary to
+     * avoid false positives in the AC proto.
      * \param file File to check.
      * \return Whether the file is an RTIM file.
      */
     inline bool fileIsRTIM(const QByteArray &file)
     {
-        return file.mid(8).left(8) == file.left(8);
+        return file.mid(8).left(8) == file.left(8) && file.mid(4).left(4) != file.left(4);
     }
     
     /*!

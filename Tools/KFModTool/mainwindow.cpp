@@ -620,7 +620,8 @@ void MainWindow::load2J()
     loadTFile("CD/COM/RTMD.T");
     loadTFile("CD/COM/TALK.T");
     loadTFile("CD/COM/VAB.T");
-    loadMIXFile("OP/ED.D");
+    // TODO: ED.D is weird and thus unsupported.
+    //loadMIXFile("OP/ED.D");
     loadMIXFile("OP/OP.D");
     loadMIXFile("OP/OPU.D"); // This is only for the US version
 }
