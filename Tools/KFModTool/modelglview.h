@@ -21,9 +21,9 @@ constexpr std::array<QVector3D, 92> __weiVLGledoM_generateGrid()
     std::array<QVector3D, 92> grid;
     
     float cellSize = 32.f;
-    int   gridOff = 0;
-    
-    for(int i = 0; i <= 10; ++i)
+    int gridOff = 0;
+
+    for (int i = 0; i <= 10; ++i)
     {
         if(i == 5)
         {
@@ -87,7 +87,7 @@ public:
 
     struct GLMesh {
         unsigned int numVertex;
-        unsigned int VBO;
+        std::vector<unsigned int> frames;
         unsigned int VAO;
     };
     
@@ -118,7 +118,7 @@ public:
             for(GLMesh &mesh : meshes)
             {
                 glFuncs->glDeleteVertexArrays(1, &mesh.VAO);
-                glFuncs->glDeleteBuffers(1, &mesh.VBO);
+                glFuncs->glDeleteBuffers(mesh.frames.size(), mesh.frames.data());
             }
             meshes.clear();
 
@@ -140,7 +140,7 @@ public:
 
         //Clear Grid
         glFuncs->glDeleteVertexArrays(1, &gridMesh.VAO);
-        glFuncs->glDeleteBuffers(1, &gridMesh.VBO);
+        glFuncs->glDeleteBuffers(gridMesh.frames.size(), gridMesh.frames.data());
 
         glSimpleProgram.release();
         glSimpleProgram.removeAllShaders();
@@ -154,16 +154,12 @@ public:
                              QString::number(animationIndex));
             return false;
         }
-        
-        curAnim = animationIndex;
 
+        curAnim = animationIndex;
         animFrame = 0;
         animFrameDelta = 0.f;
 
         KFMTError::log("Changed Animation: " + QString::number(curAnim));
-
-        if(glFuncs != nullptr)
-            BuildMOAnimation();
 
         return true;
     }

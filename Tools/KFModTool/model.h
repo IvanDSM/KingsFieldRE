@@ -236,9 +236,9 @@ struct Model::Vec3
     float z;
     
     void applyPacket(const MOPacket &packet);
-    void readSVECTOR(QDataStream &in);
-    
-    operator QVector3D() { return {x, y, z}; }
+    void readSVECTOR(QDataStream& in);
+
+    operator QVector3D() const { return {x, y, z}; }
 };
 
 

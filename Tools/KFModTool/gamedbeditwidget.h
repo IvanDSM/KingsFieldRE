@@ -53,7 +53,7 @@ private:
     void fillArmorStatsCombo()
     {
         const QString itemStrStd = "%1 %2";
-        QString itemName = "";
+        QString itemName;
         for (byte i = 0; i < GameDB::armorStatsSize; i++)
         {
             if (i < 39)
