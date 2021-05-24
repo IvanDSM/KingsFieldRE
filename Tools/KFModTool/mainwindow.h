@@ -94,8 +94,9 @@ private:
     void loadEU();
     void load3JorPS();
 
-    // Test
+    // We don't support anything from the Armored Core P*.T files yet
     void loadACProto();
+    void loadACSampler4Demo();
 
     void loadMIXFile(QString path);
     void loadRawFile(QString path);

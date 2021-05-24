@@ -34,6 +34,8 @@ void MainWindow::on_actionLoad_files_triggered()
         load3JorPS();
     else if (srcDir.exists("SLPS_009.00"))
         loadACProto();
+    else if (srcDir.exists("USA10.EXE"))
+        loadACSampler4Demo();
 
     for (int tab = ui->editorTabs->count() - 1; tab >= 0; tab++) ui->editorTabs->removeTab(tab);
 }
@@ -681,7 +683,28 @@ void MainWindow::loadACProto()
     loadTFile("GG/MS/SPEC_T.T");
     loadTFile("GG/MS/WEL_T.T");
     loadTFile("GG/MS/WER_T.T");
-    // We don't support anything from the P0/P1/P2/P3 folders yet
+}
+
+void MainWindow::loadACSampler4Demo()
+{
+    loadTFile("COM/FDAT.T");
+    loadTFile("COM/RTIM.T");
+    loadTFile("MS/ARMS_T.T");
+    loadTFile("MS/BST_T.T");
+    loadTFile("MS/BWL_T.T");
+    loadTFile("MS/BWR_T.T");
+    loadTFile("MS/COMP_T.T");
+    loadTFile("MS/CORE_T.T");
+    loadTFile("MS/GENE_T.T");
+    loadTFile("MS/HEAD_T.T");
+    loadTFile("MS/LEG_T.T");
+    loadTFile("MS/MENU_TIM.T");
+    loadTFile("MS/MENU_TMD.T");
+    loadTFile("MS/MENU_VAB.T");
+    loadTFile("MS/MIS.T");
+    loadTFile("MS/SPEC_T.T");
+    loadTFile("MS/WEL_T.T");
+    loadTFile("MS/WER_T.T");
 }
 
 void MainWindow::loadMIXFile(QString path)
