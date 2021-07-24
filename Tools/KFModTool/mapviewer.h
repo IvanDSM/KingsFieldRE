@@ -80,11 +80,11 @@ public:
 
 signals:
     void curMousePosChanged(qint8 x, qint8 y);
-    void entityInstanceHovered(byte instance);
+    void entityInstanceHovered(int instance);
     void hoveredTileInfo(byte elevation, byte rotation, byte collisionThing, byte zoneDelimiter,
                          byte tileId);
-    void objectInstanceHovered(size_t instance);
-    void vfxInstanceHovered(size_t instance);
+    void objectInstanceHovered(int instance);
+    void vfxInstanceHovered(int instance);
 
 public slots:
     void leaveEvent(QEvent *event) override;
@@ -119,7 +119,7 @@ private:
     byte curBrush = 127;
     MapElement curBrushElement = MapElement::MAP_COLLISIONTHING;
     MapElement curElement = MapElement::MAP_COLLISIONTHING;
-    MapLayer curLayer = MapLayer::LAYER_1;
+    MapLayer curLayer = MapLayer::LAYER_2;
     MapViewerMode curMode = MapViewerMode::MODE_POKE;
     QPainter painter;
     QPoint mousePos = QPoint(39, 39);

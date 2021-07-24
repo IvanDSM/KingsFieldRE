@@ -1,8 +1,8 @@
 #ifndef ENTITYCLASSTABLEMODEL_H
 #define ENTITYCLASSTABLEMODEL_H
 
-#include <QAbstractTableModel>
 #include <kftypes.h>
+#include <QAbstractTableModel>
 
 class EntityClassTableModel : public QAbstractTableModel
 {
@@ -61,8 +61,7 @@ private:
             if (somePtrValue == static_cast<unsigned int>(-1))
                 return "Null";
             else
-                return QString::number(somePtrValue)
-                       + " (0x" + QString::number(somePtrValue, 16) +")";
+                return QString::asprintf("%04u (0x%x)", somePtrValue, somePtrValue);
         }
 
         return "Ivan screwed up! Report this on GitHub!";

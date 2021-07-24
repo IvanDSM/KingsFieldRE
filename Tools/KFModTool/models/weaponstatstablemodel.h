@@ -46,7 +46,7 @@ public:
 
     bool setHeaderData(int section, Qt::Orientation orientation, const QVariant &value, int role = Qt::EditRole) override
     {
-        Q_UNUSED(section) Q_UNUSED(value) Q_UNUSED(role)
+        Q_UNUSED(section) Q_UNUSED(orientation) Q_UNUSED(value) Q_UNUSED(role)
         return false;
     }
 private:

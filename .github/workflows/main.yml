@@ -2,22 +2,26 @@ name: Build all projects
 
 on:
   push:
-    branches: [ master ]
+    branches: [ master, kfmt-moview ]
   pull_request:
     branches: [ master ]
 
 jobs:
   linux-build:
-    runs-on: ubuntu-16.04
+    runs-on: ubuntu-18.04
 
     steps:
     - name: Checkout repo
       uses: actions/checkout@v2
+      with:
+        submodules: 'recursive'
 
     - name: Install Qt
       uses: jurplel/install-qt-action@v2
-      with:
-        version: 5.14.2 
+
+    - name: Install libxcb stuff
+      run: |
+        sudo apt install -y libxcb*
 
     - name: Get linuxdeployqt
       run: | 
@@ -103,17 +107,15 @@ jobs:
     runs-on: 	windows-latest
     
     steps:
-    - name: Set up Git for properly handling symlinks on Windows
-      run: git config --global core.symlinks true
-
     - name: Checkout repo
       uses: actions/checkout@v2
+      with:
+        submodules: 'recursive'
 
     - name: Install Qt
       uses: jurplel/install-qt-action@v2
       with:
-        arch: win64_mingw73
-        version: 5.14.2 
+        arch: win64_mingw81
 
     - name: Build checksum_tool
       run: |

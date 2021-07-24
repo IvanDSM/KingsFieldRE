@@ -31,15 +31,6 @@
         <string>Files</string>
        </property>
       </column>
-      <item>
-       <property name="text">
-        <string>FDAT.T</string>
-       </property>
-       <property name="icon">
-        <iconset resource="resources.qrc">
-         <normaloff>:/tfile_icon.png</normaloff>:/tfile_icon.png</iconset>
-       </property>
-      </item>
      </widget>
     </item>
     <item>
@@ -51,7 +42,7 @@
        <bool>false</bool>
       </property>
       <property name="tabsClosable">
-       <bool>false</bool>
+       <bool>true</bool>
       </property>
      </widget>
     </item>
@@ -123,8 +114,6 @@
    </property>
   </action>
  </widget>
- <resources>
-  <include location="resources.qrc"/>
- </resources>
+ <resources/>
  <connections/>
 </ui>

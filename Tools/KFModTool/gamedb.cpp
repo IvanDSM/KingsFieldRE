@@ -1,7 +1,7 @@
 #include "gamedb.h"
 #include "checksum.h"
 
-GameDB::GameDB(TFile &fdatTFile) : fdat(fdatTFile), database(fdat.getFile(28))
+GameDB::GameDB(QByteArray &file) : database(file)
 {
 
     QDataStream dbStream(database);
@@ -9,6 +9,7 @@ GameDB::GameDB(TFile &fdatTFile) : fdat(fdatTFile), database(fdat.getFile(28))
 
     quint32 sectionSize; ///< I just use this to skip crap
 
+    // Section 1 - Object Class Declarations
     dbStream >> sectionSize;
 
     for (size_t i = 0; i < objClassDeclarationsSize; i++)
@@ -18,6 +19,7 @@ GameDB::GameDB(TFile &fdatTFile) : fdat(fdatTFile), database(fdat.getFile(28))
         objClassDeclarations.at(i) = objClassDecl;
     }
 
+    // Section 2 - Weapon Stats
     dbStream >> sectionSize;
 
     for (size_t i = 0; i < weaponStatsSize; i++)
@@ -31,12 +33,13 @@ GameDB::GameDB(TFile &fdatTFile) : fdat(fdatTFile), database(fdat.getFile(28))
     dbStream >> sectionSize;
     dbStream >> sectionSize;
 
-    // Skip this unknown stuff (section 3)
+    // Section 3 - Armor Stats
     dbStream >> sectionSize;
 
     for (auto &armor : armorStats)
         dbStream >> armor;
 
+    // Section 4 - Player Level Data
     dbStream >> sectionSize;
 
     for (size_t i = 0; i < lvlDataSize; i++)
@@ -46,6 +49,7 @@ GameDB::GameDB(TFile &fdatTFile) : fdat(fdatTFile), database(fdat.getFile(28))
         lvlData.at(i) = level;
     }
 
+    // Section 5 - Magic Data
     dbStream >> sectionSize;
 
     for (size_t i = 0; i < magicDataSize; i++)
@@ -96,6 +100,4 @@ void GameDB::writeChanges()
         dbStream << magicData.at(i);
 
     Checksum::calculateAndWriteChecksum(database);
-
-    fdat.writeFile(database, 28);
 }

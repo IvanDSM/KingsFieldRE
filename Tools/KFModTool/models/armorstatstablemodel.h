@@ -14,7 +14,7 @@ public:
 
     int columnCount(const QModelIndex &parent) const override
     {
-        Q_UNUSED(parent);
+        Q_UNUSED(parent)
         return 1;
     }
 

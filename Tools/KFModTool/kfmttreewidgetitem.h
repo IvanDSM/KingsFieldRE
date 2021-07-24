@@ -1,21 +1,32 @@
 #ifndef KFMTTREEWIDGETITEM_H
 #define KFMTTREEWIDGETITEM_H
 
-#include <QTreeWidgetItem>
 #include "gamedb.h"
 #include "map.h"
+#include "model.h"
+#include "texturedb.h"
+#include "tfile.h"
+#include <QTreeWidgetItem>
 
 enum class KFMTDataType
 {
+    KFMT_GAMEDB,
     KFMT_MAP,
-    KFMT_GAMEDB
+    KFMT_MODEL,
+    KFMT_TEXTUREDB
 };
 
 class KFMTTreeWidgetItem : public QTreeWidgetItem
 {
 public:
-    explicit KFMTTreeWidgetItem(QTreeWidgetItem *parent, std::shared_ptr<Map> kfmtMap);
-    explicit KFMTTreeWidgetItem(QTreeWidgetItem *parent, std::shared_ptr<GameDB> kfmtDB);
+    explicit KFMTTreeWidgetItem(QTreeWidgetItem *parent, QByteArray &file_, KFMTDataType type);
+    explicit KFMTTreeWidgetItem(QTreeWidgetItem *parent, QByteArray &mapFile1, 
+                                QByteArray &mapFile2_, QByteArray &mapFile3_, KFMTDataType type);
+    
+    /*!
+     * \brief Builds the file into the appropriate structure.
+     */
+    void build();
 
     std::shared_ptr<GameDB> getDB()
     {
@@ -32,16 +43,38 @@ public:
         else
             return nullptr;
     }
-
-    KFMTDataType getType()
+    
+    std::shared_ptr<Model> getModel()
     {
-        return dataType;
+        if (dataType == KFMTDataType::KFMT_MODEL)
+            return modelPtr;
+        else
+            return nullptr;
     }
+    
+    std::shared_ptr<TextureDB> getTextureDB()
+    {
+        if (dataType == KFMTDataType::KFMT_TEXTUREDB)
+            return texDBPtr;
+        else
+            return nullptr;
+    }
+
+    KFMTDataType getType() const { return dataType; } 
+    
+    void writeChanges();
 
 private:
     KFMTDataType dataType;
-    std::shared_ptr<GameDB> dbPtr;
-    std::shared_ptr<Map> mapPtr;
+    QByteArray &file;
+    // FIXME: This is TERRIBLE, AWFUL, DISASTROUS. I hope we can find a better way to do this.
+    QByteArray *mapFile2 = nullptr;
+    QByteArray *mapFile3 = nullptr;
+    
+    std::shared_ptr<GameDB> dbPtr = nullptr;
+    std::shared_ptr<Map> mapPtr = nullptr;
+    std::shared_ptr<Model> modelPtr = nullptr;
+    std::shared_ptr<TextureDB> texDBPtr = nullptr;
 };
 
 #endif // KFMTTREEWIDGETITEM_H

@@ -1,11 +1,16 @@
 #ifndef KFMTERROR_H
 #define KFMTERROR_H
 
+#include <queue>
 #include <QWidget>
 
 namespace _KFMTErrorInternal
 {
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wunused-variable"
     static QWidget *_KFMTErrorParent;
+    static std::queue<QString> lastErrors {};
+#pragma GCC diagnostic pop
 }
 
 class KFMTError
@@ -27,7 +32,13 @@ class KFMTError
          * \brief Displays a fatal error message.
          * \param errorMessage Error message to display.
          */
-        static void fatalError(const QString &fatalErrorMessage);
+        [[noreturn]] static void fatalError(const QString &fatalErrorMessage);
+
+        /*!
+         * \brief Writes a quiet log message to stderr.
+         * \param logMessage Log message to write.
+         */
+        static void log(const QString &logMessage);
 
         /*!
          * \brief Displays a non-fatal warning message.
@@ -41,7 +52,7 @@ class KFMTError
          * \param arrayName Name of the array (e.g. "object class declaration").
          * \param exceptionWhat Result of the exception's .what() method.
          */
-        static void outOfRange(const size_t &index, const QString &arrayName, const std::string &exceptionWhat);
+        [[noreturn]] static void outOfRange(const size_t &index, const QString &arrayName, const std::string &exceptionWhat);
 };
 
 #endif // KFMTERROR_H

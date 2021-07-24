@@ -12,9 +12,21 @@ class MapEditWidget : public QWidget
 
 public:
     explicit MapEditWidget(QWidget *parent = nullptr);
+    ~MapEditWidget() { delete ui; }
+    
     void setMap(const std::shared_ptr<Map> &map);
 
 private slots:
+    // Current X changes
+    
+    void changeEntityInstance(int instanceIndex);
+    
+    void changeObjectInstance(int instanceIndex);
+
+    void changeVFXInstance(int instanceIndex);
+
+    // Other stuff    
+    
     void on_layer1Radio_toggled(bool checked);
 
     void on_layer2Radio_toggled(bool checked);
@@ -23,14 +35,8 @@ private slots:
 
     void curMousePosChanged(qint8 x, qint8 y);
 
-    void entityInstanceHovered(byte instanceIndex);
-
     void hoveredTileInfo(byte elevation, byte rotation, byte collisionThing, byte zoneDelimiter,
                          byte tileId);
-
-    void objectInstanceHovered(size_t instanceIndex);
-
-    void vfxInstanceHovered(size_t instanceIndex);
 
     void on_zoneDelimCheck_stateChanged(int arg1);
 
@@ -56,13 +62,20 @@ private slots:
 
     void on_moveModeButton_clicked();
 
+    void on_entityCDTable_activated(const QModelIndex &index);
+    
+    void on_offsetSpin_valueChanged(int arg1);
+    
 private:
     void fillEntityCDCombo();
-    byte currentEntityInstance = 255;
-    size_t currentObjectInstance = 65536;
-    KingsField::VFXInstanceDeclaration *currentVFXInstance = nullptr;
+    void updateEntityInstanceTable();
+    void updateObjectInstanceTable();
+    void updateVFXInstanceTable();
+    int curEntityInstance = -1;
+    int curObjectInstance = -1;
+    int curVFXInstance = -1;
     std::shared_ptr<Map> curMap;
-    std::unique_ptr<Ui::MapEditWidget> ui;
+    Ui::MapEditWidget *ui;
 };
 
 #endif // MAPDOCKWIDGET_H

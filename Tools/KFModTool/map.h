@@ -4,7 +4,6 @@
 #include "checksum.h"
 #include "kfmterror.h"
 #include "kftypes.h"
-#include "tfile.h"
 #include <QMessageBox>
 
 typedef quint8 byte;
@@ -12,7 +11,7 @@ typedef quint8 byte;
 class Map
 {
 public:
-    Map(TFile &fdatTFile, unsigned int index, QString name);
+    Map(QByteArray& file1, QByteArray& file2, QByteArray& file3);
 
     KingsField::EntityClassDeclaration &getEntityClassDeclaration(byte classDeclIndex)
     {
@@ -37,7 +36,7 @@ public:
         return entityInstances;
     }
 
-    KingsField::EntityInstance &getEntityInstance(byte instanceIndex)
+    KingsField::EntityInstance &getEntityInstance(size_t instanceIndex)
     {
         try
         {
@@ -48,17 +47,7 @@ public:
             KFMTError::outOfRange(instanceIndex, "entity instance declaration", exception.what());
         }
     }
-
-    const unsigned int &getIndex() const
-    {
-        return mapIndex;
-    }
-
-    const QString &getName() const
-    {
-        return mapName;
-    }
-
+    
     KingsField::ObjectInstanceDeclaration &getObjectInstance(size_t instanceIndex)
     {
         try
@@ -74,6 +63,11 @@ public:
     const std::array<KingsField::ObjectInstanceDeclaration, 350> &getObjectInstanceDeclarations() const
     {
         return objInstances;
+    }
+    
+    uint8_t *getEntityStateBlobOffset(size_t offset)
+    {
+        return reinterpret_cast<uint8_t *>(entityStateBlob.data() + offset);
     }
 
     KingsField::Tile& getTile(size_t line, size_t column)
@@ -110,16 +104,13 @@ public:
     void writeChanges();
 
 private:
-    TFile &fdat;
-
     KingsField::Tile tileMap[80][80] {};
-    unsigned int mapIndex;
-    QByteArray map1;
-    QByteArray map2;
-    QByteArray map3;
-    QString mapName;
+    QByteArray &map1;
+    QByteArray &map2;
+    QByteArray &map3;
     std::array<KingsField::EntityClassDeclaration, 40> entityClassDeclarations {};
     std::array<KingsField::EntityInstance, 200> entityInstances {};
+    QByteArray entityStateBlob;
     std::array<KingsField::ObjectInstanceDeclaration, 350> objInstances {};
     std::array<KingsField::VFXInstanceDeclaration, 128> vfxInstances {};
 };

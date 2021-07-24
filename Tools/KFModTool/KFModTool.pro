@@ -4,18 +4,39 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 CONFIG += c++17
 
-# The following define makes your compiler emit warnings if you use
-# any Qt feature that has been marked deprecated (the exact warnings
-# depend on your compiler). Please consult the documentation of the
-# deprecated API in order to know how to port your code away from it.
 DEFINES += QT_DEPRECATED_WARNINGS
 
-# You can also make your code fail to compile if it uses deprecated APIs.
-# In order to do so, uncomment the following line.
-# You can also select to disable deprecated APIs only up to a certain version of Qt.
-#DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
+# Stuff to build libimagequant
+HEADERS += libimagequant/blur.h \
+           libimagequant/kmeans.h \
+           libimagequant/libimagequant.h \
+           libimagequant/mediancut.h \
+           libimagequant/mempool.h \
+           libimagequant/nearest.h \
+           libimagequant/pam.h
+
+SOURCES += libimagequant/blur.c \
+           libimagequant/kmeans.c \
+           libimagequant/libimagequant.c \
+           libimagequant/mediancut.c \
+           libimagequant/mempool.c \
+           libimagequant/nearest.c \
+           libimagequant/pam.c
+
+# Inherit system CFLAGS/CXXFLAGS into qmake
+QMAKE_CFLAGS += $$(CFLAGS) -isystem $$[QT_INSTALL_HEADERS]
+QMAKE_CXXFLAGS += $$(CXXFLAGS) -isystem $$[QT_INSTALL_HEADERS]
+
+# Supress warnings for Qt stuff
+QMAKE_CFLAGS += -isystem "$$[QT_INSTALL_HEADERS]/qt5" -isystem "$$[QT_INSTALL_HEADERS]/qt5/QtWidgets" \
+                -isystem "$$[QT_INSTALL_HEADERS]/QtXml" -isystem "/usr/include/qt5/QtGui" \
+                -isystem "$$[QT_INSTALL_HEADERS]/QtCore"
+QMAKE_CXXFLAGS += -isystem "$$[QT_INSTALL_HEADERS]/qt5" -isystem "$$[QT_INSTALL_HEADERS]/qt5/QtWidgets" \
+                  -isystem "$$[QT_INSTALL_HEADERS]/QtXml" -isystem "/usr/include/qt5/QtGui" \
+                  -isystem "$$[QT_INSTALL_HEADERS]/QtCore"
 
 SOURCES += \
+    ../common/prettynamer.cpp \
     aboutdialog.cpp \
     gamedb.cpp \
     gamedbeditwidget.cpp \
@@ -26,20 +47,32 @@ SOURCES += \
     map.cpp \
     mapeditwidget.cpp \
     mapviewer.cpp \
+    mixfile.cpp \
+    model.cpp \
+    modelglview.cpp \
     models/armorstatstablemodel.cpp \
     models/entityclasstablemodel.cpp \
+    models/entityinstancelistmodel.cpp \
     models/entityinstancetablemodel.cpp \
+    models/entitystatetablemodel.cpp \
     models/magictablemodel.cpp \
+    models/modelanimationlistmodel.cpp \
+    models/modelobjecttablemodel.cpp \
     models/objectclasstablemodel.cpp \
+    models/objectinstancelistmodel.cpp \
     models/objectinstancetablemodel.cpp \
     models/playerleveldatatablemodel.cpp \
+    models/texturelistmodel.cpp \
     models/vfxinstancetablemodel.cpp \
     models/weaponstatstablemodel.cpp \
-    prettynamer.cpp \
-    texture.cpp \
+    modelviewerwidget.cpp \
+    soundbank.cpp \
+    texturedb.cpp \
+    texturedbviewer.cpp \
     tfile.cpp
 
 HEADERS += \
+    ../common/prettynamer.h \
     aboutdialog.h \
     checksum.h \
     gamedb.h \
@@ -51,17 +84,28 @@ HEADERS += \
     map.h \
     mapeditwidget.h \
     mapviewer.h \
+    mixfile.h \
+    model.h \
+    modelglview.h \
     models/armorstatstablemodel.h \
     models/entityclasstablemodel.h \
+    models/entityinstancelistmodel.h \
     models/entityinstancetablemodel.h \
+    models/entitystatetablemodel.h \
     models/magictablemodel.h \
+    models/modelanimationlistmodel.h \
+    models/modelobjecttablemodel.h \
     models/objectclasstablemodel.h \
+    models/objectinstancelistmodel.h \
     models/objectinstancetablemodel.h \
     models/playerleveldatatablemodel.h \
+    models/texturelistmodel.h \
     models/vfxinstancetablemodel.h \
     models/weaponstatstablemodel.h \
-    prettynamer.h \
-    texture.h \
+    modelviewerwidget.h \
+    soundbank.h \
+    texturedb.h \
+    texturedbviewer.h \
     tfile.h \
     utilities.h
 
@@ -69,7 +113,9 @@ FORMS += \
     aboutdialog.ui \
     gamedbeditwidget.ui \
     mainwindow.ui \
-    mapeditwidget.ui
+    mapeditwidget.ui \
+    modelviewerwidget.ui \
+    texturedbviewer.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
@@ -78,3 +124,10 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 
 RESOURCES += \
 	resources.qrc
+
+DISTFILES += \
+    litCommon.frag \
+    litMime.vert \
+    litStatic.vert \
+    unlitSimple.frag \
+    unlitSimple.vert
