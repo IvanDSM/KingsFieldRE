@@ -159,8 +159,6 @@ public:
         animFrame = 0;
         animFrameDelta = 0.f;
 
-        KFMTError::log("Changed Animation: " + QString::number(curAnim));
-
         return true;
     }
     

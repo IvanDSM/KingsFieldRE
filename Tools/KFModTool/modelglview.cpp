@@ -314,7 +314,8 @@ void ModelGLView::DrawMOAnimation()
 
     //Some quick 'n' dirty logic to make things move
     animFrameDelta += animFrameAdd;
-    if(animFrameDelta >= 1.f)
+
+    if (animFrameDelta >= 1.f)
     {
         animFrame = (animFrame + 1) % meshes[curAnim].frames.size();
         animFrameDelta = 0.f;
@@ -477,6 +478,11 @@ void ModelGLView::BuildTMDModel()
         mesh.numVertex = vertices.size();
 
         meshes.push_back(mesh);
+    }
+
+    if (model->baseObjects.size() > 1)
+    {
+        for (size_t i = 1; i < meshes.size(); i++) model->baseObjects[i].visible = false;
     }
 
     //Now we build the shaders required for rendering
