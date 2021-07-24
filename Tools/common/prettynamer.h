@@ -13,8 +13,7 @@ class PrettyNamer
 
     private:
         const std::unordered_map<QString, QString> emptyMap {};
-        const std::unordered_map<QString, QString> kfUSPrettyMap
-        {
+        const std::unordered_map<QString, QString> kfUSPrettyMap{
             {"FDAT.T0", "Western Shore Tilemap"},
             {"FDAT.T1", "Western Shore Map DB"},
             {"FDAT.T2", "Western Shore Script"},
@@ -60,7 +59,7 @@ class PrettyNamer
             {"FDAT.T42", "Dark Slayer Viewmodel"},
             {"FDAT.T43", "Bow Viewmodel"},
             {"FDAT.T44", "Arbalest Viewmodel"},
-                
+
             {"ITEM.T0", "Dagger Model"},
             {"ITEM.T1", "Short Sword Model"},
             {"ITEM.T2", "Knight Sword Model"},
@@ -196,26 +195,40 @@ class PrettyNamer
             {"ITEM.T132", "Text: Royal Treasure House"},
             {"ITEM.T133", "Text: The Magic Cave Of Fire"},
             {"ITEM.T134", "Text: Warriors Who Were Killed By Guyras Legion Are Buried Here"},
-            {"ITEM.T135", "Text: The Souls Of The Guards Who Were Killed Are Waiting To Watch The Next Fight"},
-            {"ITEM.T136", "Text: The King Of Winds King Harvine IIIHad Started To Construct His Castle Here"},
-            {"ITEM.T137", "Text: The Castle Of The Great Ruler Of The Northern Continent King Harvine III"},
+            {"ITEM.T135",
+             "Text: The Souls Of The Guards Who Were Killed Are Waiting To Watch The Next Fight"},
+            {"ITEM.T136",
+             "Text: The King Of Winds King Harvine IIIHad Started To Construct His Castle Here"},
+            {"ITEM.T137",
+             "Text: The Castle Of The Great Ruler Of The Northern Continent King Harvine III"},
             {"ITEM.T138", "Text: Danger Ahead"},
-            {"ITEM.T139", "Text: In The Name Of The Great Mage No One Can Enter This Cave Of Earth Soul"},
-            {"ITEM.T140", "Text: Galth Free The Demon Of The Darkside Died With The High Elves He Is APhantom Of The World"},
+            {"ITEM.T139",
+             "Text: In The Name Of The Great Mage No One Can Enter This Cave Of Earth Soul"},
+            {"ITEM.T140",
+             "Text: Galth Free The Demon Of The Darkside Died With The High Elves He Is APhantom "
+             "Of The World"},
             {"ITEM.T141", "Text: AMessage From The East Land Rest In Peace Here"},
-            {"ITEM.T142", "Text: Most Soldiers Have Already Died There Is No Way To Leave The Island We Realize That There Is No Way Back Home"},
-            {"ITEM.T143", "Text: In The Name Of Tsedeck The Mage Of Fire Who Defeated King Harvine IIIAnd Ruled The Northern Continent"},
+            {"ITEM.T142",
+             "Text: Most Soldiers Have Already Died There Is No Way To Leave The Island We Realize "
+             "That There Is No Way Back Home"},
+            {"ITEM.T143",
+             "Text: In The Name Of Tsedeck The Mage Of Fire Who Defeated King Harvine IIIAnd Ruled "
+             "The Northern Continent"},
             {"ITEM.T144", "Text: Gigis House Sandler"},
             {"ITEM.T145", "Text: They Can Be Attacked By Bows Take Good Aim"},
             {"ITEM.T146", "Text: Do Not Enter Old Hand"},
             {"ITEM.T147", "Text: Medical Herbs For Sale Al Hunt"},
             {"ITEM.T148", "Text: The South Graveyard To The Small Mine"},
             {"ITEM.T149", "Text: Termites Nest Ahead Watch Your Step"},
-            {"ITEM.T150", "Text: My Beloved Son You Have Fought For Me And Have Lost Your Life For Me May You Rest In Peace"},
+            {"ITEM.T150",
+             "Text: My Beloved Son You Have Fought For Me And Have Lost Your Life For Me May You "
+             "Rest In Peace"},
             {"ITEM.T151", "Text: Do Not Get Closer Krakens Nest"},
             {"ITEM.T152", "Text: Dangerous No Exit"},
             {"ITEM.T153", "Text: The Elf Cave"},
-            {"ITEM.T154", "Text: By And By AMan Who Comes Here Beats The Black Dragon With The Blessing Of Seath"},
+            {"ITEM.T154",
+             "Text: By And By AMan Who Comes Here Beats The Black Dragon With The Blessing Of "
+             "Seath"},
             {"ITEM.T155", "Text: The Cave Of The Darkside This Is Hell"},
             {"ITEM.T156", "Text: Offer Everything To Guyra Who Rules The Light And The Dark"},
             {"ITEM.T157", "Text: They Are Creating Devils Be Careful"},
@@ -441,7 +454,7 @@ class PrettyNamer
             {"ITEM.T400", "Text: Truth Glass The Research Office"},
             {"ITEM.T401", "Text: Truth Glass The Village Of The Wind"},
             {"ITEM.T402", "Text: Truth Glass The East Seaside"},
-                
+
             {"MO.T0", "Slime"},
             {"MO.T1", "Poison Slime"},
             {"MO.T2", "Sigill"},
@@ -571,6 +584,7 @@ class PrettyNamer
             {"RTIM.T24", "Village House 02"},
             {"RTIM.T28", "Seath's Door"},
             {"RTIM.T29", "The Picture of Warriors"},
+            {"RTIM.T65", "Seath's Floor and Door"},
 
             {"RTMD.T0", "Western Shore Tileset"},
             {"RTMD.T1", "Garrison Tileset"},
