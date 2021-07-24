@@ -20,17 +20,18 @@ protected:
     
 private slots:
     void on_exportBtn_clicked();
-    
-    void on_texList_activated(const QModelIndex &index);
-    
+
+    void on_exportAllBtn_clicked();
+
+    void on_texList_activated(const QModelIndex& index);
+
     void on_replaceNBtn_clicked();
-    
+
     void on_replaceSBtn_clicked();
-    
-    
+
 private:
-    void replaceTexture(bool smooth);
-    
+    void replaceTexture(Qt::TransformationMode mode);
+
     void updateTextureLabel();
     void updateTextureViewer();
     

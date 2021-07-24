@@ -11,12 +11,14 @@ TextureDBViewer::TextureDBViewer(QWidget *parent) :
     ui->pixelFbPosLabel->setText(pixelFbPosLabelPrefix);
     ui->pixelModeLabel->setText(pixelModePrefix);
     ui->pixelSizeLabel->setText(pixelSizePrefix);
+    ui->exportAllBtn->setVisible(false);
 }
 
 void TextureDBViewer::setTextureDB(std::shared_ptr<TextureDB> textureDB)
 {
     curTextureDB = textureDB;
     ui->texList->setModel(new TextureListModel(ui->texList, textureDB));
+    ui->exportAllBtn->setVisible(curTextureDB->getTextureCount() > 1);
     updateTextureViewer();
 }
 
@@ -37,6 +39,17 @@ void TextureDBViewer::on_exportBtn_clicked()
     curTextureDB->getTexture(curTexture).image.save(fileName, format.c_str(), 0);
 }
 
+void TextureDBViewer::on_exportAllBtn_clicked()
+{
+    auto dir = QFileDialog::getExistingDirectory(this, "Export all textures", QDir::currentPath());
+    if (dir.isEmpty()) return;
+
+    for (size_t i = 0; i < curTextureDB->getTextureCount(); i++)
+        curTextureDB->getTexture(i).image.save(dir + QDir::separator() + "Texture"
+                                                   + QString::number(i) + ".png",
+                                               "png");
+}
+
 void TextureDBViewer::on_texList_activated(const QModelIndex &index)
 {
     curTexture = index.row();
@@ -45,15 +58,15 @@ void TextureDBViewer::on_texList_activated(const QModelIndex &index)
 
 void TextureDBViewer::on_replaceNBtn_clicked()
 {
-    replaceTexture(false);
+    replaceTexture(Qt::FastTransformation);
 }
 
 void TextureDBViewer::on_replaceSBtn_clicked()
 {
-    replaceTexture(true);
+    replaceTexture(Qt::SmoothTransformation);
 }
 
-void TextureDBViewer::replaceTexture(bool smooth)
+void TextureDBViewer::replaceTexture(Qt::TransformationMode mode)
 {
     const auto *filter = "Images (*.bmp *.gif *.jpg *.jpeg *.png *.ppm *.xbm *.xpm)";
     auto fileName = QFileDialog::getOpenFileName(this, "Import image", QDir::currentPath(), filter);
@@ -62,7 +75,7 @@ void TextureDBViewer::replaceTexture(bool smooth)
         return;
     
     QImage replacement(fileName);
-    curTextureDB->replaceTexture(replacement, curTexture, smooth);
+    curTextureDB->replaceTexture(replacement, curTexture, mode);
     updateTextureViewer();
 }
 

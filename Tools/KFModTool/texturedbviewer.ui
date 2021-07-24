@@ -129,11 +129,25 @@
           </widget>
          </item>
          <item>
-          <widget class="QPushButton" name="exportBtn">
-           <property name="text">
-            <string>Export as...</string>
+          <layout class="QHBoxLayout" name="exportLayout">
+           <property name="topMargin">
+            <number>0</number>
            </property>
-          </widget>
+           <item>
+            <widget class="QPushButton" name="exportBtn">
+             <property name="text">
+              <string>Export as...</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QPushButton" name="exportAllBtn">
+             <property name="text">
+              <string>Export all...</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
          </item>
          <item>
           <widget class="QFrame" name="replaceFrame">
@@ -159,14 +173,14 @@
             <item>
              <widget class="QPushButton" name="replaceSBtn">
               <property name="text">
-               <string>Replace (smooth)</string>
+               <string>Replace... (smooth)</string>
               </property>
              </widget>
             </item>
             <item>
              <widget class="QPushButton" name="replaceNBtn">
               <property name="text">
-               <string>Replace (nearest)</string>
+               <string>Replace... (nearest)</string>
               </property>
              </widget>
             </item>

@@ -38,7 +38,7 @@ TextureDB::Texture & TextureDB::getTexture(size_t textureIndex)
     }
 }
 
-void TextureDB::replaceTexture(QImage & newTexture, size_t textureIndex, bool smooth)
+void TextureDB::replaceTexture(QImage& newTexture, size_t textureIndex, Qt::TransformationMode mode)
 {
     if (textureIndex >= textures.size())
     {
@@ -47,13 +47,10 @@ void TextureDB::replaceTexture(QImage & newTexture, size_t textureIndex, bool sm
     }
     
     auto &texture = textures[textureIndex];
-    
-    
-    
-    auto newTex = newTexture.scaled(texture.pxWidth, texture.pxHeight, Qt::IgnoreAspectRatio,
-                                    static_cast<Qt::TransformationMode>(smooth))
-                            .convertToFormat(QImage::Format_RGBA8888, Qt::DiffuseDither);
-    
+
+    auto newTex = newTexture.scaled(texture.pxWidth, texture.pxHeight, Qt::IgnoreAspectRatio, mode)
+                      .convertToFormat(QImage::Format_RGBA8888, Qt::DiffuseDither);
+
     if (texture.pMode == PixelMode::CLUT4Bit || texture.pMode == PixelMode::CLUT8Bit)
     {
         liq_attr *iQAttr = liq_attr_create();

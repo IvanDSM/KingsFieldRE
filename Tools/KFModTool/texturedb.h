@@ -32,7 +32,7 @@ public:
     QPoint getFramebufferCoordinate(size_t textureIndex);
     Texture &getTexture(size_t textureIndex);
     size_t getTextureCount() { return textures.size(); }
-    void replaceTexture(QImage &newTexture, size_t textureIndex, bool smooth);
+    void replaceTexture(QImage& newTexture, size_t textureIndex, Qt::TransformationMode mode);
     void writeChanges();
     
 private:
