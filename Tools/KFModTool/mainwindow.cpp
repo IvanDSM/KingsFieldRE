@@ -5,8 +5,8 @@
 #include "modelviewerwidget.h"
 #include "texturedbviewer.h"
 #include "utilities.h"
-#include <QFileDialog>
 #include <memory>
+#include <QFileDialog>
 
 void MainWindow::on_actionLoad_files_triggered()
 {
@@ -24,8 +24,9 @@ void MainWindow::on_actionLoad_files_triggered()
     else if (srcDir.exists("PSX.EXE") && srcDir.exists("E0") && srcDir.exists("E1") 
              && srcDir.exists("E2") && srcDir.exists("E3"))
         loadJ();
-    else if ((srcDir.exists("SLUS_001.58") || srcDir.exists("SLPS_910.03") || srcDir.exists("PSX.EXE"))
-        && srcDir.exists("END.EXE"))
+    else if ((srcDir.exists("SLUS_001.58") || srcDir.exists("SLPS_910.03")
+              || (srcDir.exists("PSX.EXE") && srcDir.exists("LICENSEJ.DAT")))
+             && srcDir.exists("END.EXE"))
         load2J();
     else if (srcDir.exists("SCES_005.10") && srcDir.exists("END.EXE") && srcDir.exists("LICENSEE.DAT"))
         loadEU();
@@ -36,6 +37,10 @@ void MainWindow::on_actionLoad_files_triggered()
         loadACProto();
     else if (srcDir.exists("USA10.EXE"))
         loadACSampler4Demo();
+    else if (srcDir.exists("END.EXE") && srcDir.exists("ST.EXE") && srcDir.exists("OPTXT.EXE"))
+        loadSTower();
+    else if (srcDir.exists("ST.EXE") && srcDir.exists("TITLE.MIC") && srcDir.exists("TITLE.XA"))
+        loadSTowerDemo();
 
     for (int tab = ui->editorTabs->count() - 1; tab >= 0; tab++) ui->editorTabs->removeTab(tab);
 }
@@ -705,6 +710,53 @@ void MainWindow::loadACSampler4Demo()
     loadTFile("MS/SPEC_T.T");
     loadTFile("MS/WEL_T.T");
     loadTFile("MS/WER_T.T");
+}
+
+void MainWindow::loadSTower()
+{
+    for (int i = 0; i <= 4; i++)
+    {
+        for (int j = 0; j <= (i == 4 ? 7 : 9); j++)
+        {
+            loadTFile(QString("ST/CHR%1/M%1%2.T").arg(i).arg(j));
+        }
+    }
+    loadTFile("ST/COM/CRT.T");
+    loadTFile("ST/COM/EQUIP.T");
+    loadTFile("ST/COM/FDAT.T");
+    loadTFile("ST/COM/ICON.T");
+    loadTFile("ST/COM/ITEM.T");
+    loadTFile("ST/COM/MO.T");
+    loadTFile("ST/COM/STAT.T");
+    loadTFile("ST/COM/TALKMSG.T");
+    loadMIXFile("ST/OPTXT/OPTXT.MIC");
+    loadRawFile("ST/STR/COPYRIGT.TIM");
+    loadRawFile("ST/STR/D_TITLE.TIM");
+    loadRawFile("ST/STR/FLOGO320.TIM");
+    loadRawFile("ST/STR/POISON.TIM");
+    loadMIXFile("ST/STR/STAFF.MIC");
+    loadMIXFile("ST/TITLE/TITLE.MIC");
+    loadTFile("ST/VS/STAT.T");
+    loadTFile("ST/VS/VS_CRT.T");
+    loadTFile("ST/VS/VS_ETC.T");
+    loadRawFile("LOAD02.TIM");
+}
+
+void MainWindow::loadSTowerDemo()
+{
+    loadTFile("CHR0/M04.T");
+    loadTFile("CHR0/M05.T");
+    loadTFile("COM/CRT.T");
+    loadTFile("COM/EQUIP.T");
+    loadTFile("COM/FDAT.T");
+    loadTFile("COM/ICON.T");
+    loadTFile("COM/ITEM.T");
+    loadTFile("COM/MO.T");
+    loadTFile("COM/STAT.T");
+    loadTFile("COM/TALKMSG.T");
+    loadRawFile("END.TIM");
+    loadRawFile("LOAD02.TIM");
+    loadMIXFile("TITLE.MIC");
 }
 
 void MainWindow::loadMIXFile(QString path)

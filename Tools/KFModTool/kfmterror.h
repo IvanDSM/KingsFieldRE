@@ -33,9 +33,9 @@ class KFMTError
          * \param errorMessage Error message to display.
          */
         [[noreturn]] static void fatalError(const QString &fatalErrorMessage);
-        
+
         /*!
-         * \brief Writes a quiet log message to stderr;
+         * \brief Writes a quiet log message to stderr.
          * \param logMessage Log message to write.
          */
         static void log(const QString &logMessage);

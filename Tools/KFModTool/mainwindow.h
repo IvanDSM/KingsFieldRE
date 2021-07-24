@@ -98,6 +98,15 @@ private:
     void loadACProto();
     void loadACSampler4Demo();
 
+    /*!
+     * \brief Loads the retail Shadow Tower CD.
+     */
+    void loadSTower();
+    /*!
+     * \brief Loads the Shadow Tower demo from the PlayStation Undeground v2.4 CD (SCUS-94298)
+     */
+    void loadSTowerDemo();
+
     void loadMIXFile(QString path);
     void loadRawFile(QString path);
     void loadTFile(QString path);
