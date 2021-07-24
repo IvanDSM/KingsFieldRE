@@ -36,8 +36,14 @@ void Model::loadMO(const QByteArray &file)
     
     // Here we do things a bit backwards: We'll read the TMD first
     auto tmdSection = file.mid(tmdOffset);
+    if (!Utilities::fileIsTMD(tmdSection))
+    {
+        KFMTError::error("Model::loadMO: Did not find a TMD at the expected location!");
+        return;
+    }
+
     loadTMD(tmdSection);
-    
+
     // If there are no animations, we pack up and go. This MO serves as just a TMD encapsulator.
     if (animationAmount_ == 0)
         return;
@@ -368,6 +374,7 @@ QDataStream &operator>>(QDataStream & in, Model::Primitive & primitive)
     {
         case(Model::Primitive::PrimitiveMode::x22TriFlatNoTexTranslucentLit):
             primitive.alpha = 127;
+            [[fallthrough]];
         case(Model::Primitive::PrimitiveMode::x20TriFlatNoTexOpaqueLit):
             in >> primitive.r0;
             in >> primitive.g0;
@@ -381,6 +388,7 @@ QDataStream &operator>>(QDataStream & in, Model::Primitive & primitive)
             break;
         case(Model::Primitive::PrimitiveMode::x26TriFlatTexTranslucentLit):
             primitive.alpha = 127;
+            [[fallthrough]];
         case(Model::Primitive::PrimitiveMode::x24TriFlatTexOpaqueLit):
             in >> primitive.u0;
             in >> primitive.v0;
@@ -398,6 +406,7 @@ QDataStream &operator>>(QDataStream & in, Model::Primitive & primitive)
             break;
         case(Model::Primitive::PrimitiveMode::x27TriFlatTexTranslucentUnlit):
             primitive.alpha = 127;
+            [[fallthrough]];
         case(Model::Primitive::PrimitiveMode::x25TriFlatTexOpaqueUnlit):
             in >> primitive.u0;
             in >> primitive.v0;
@@ -420,6 +429,7 @@ QDataStream &operator>>(QDataStream & in, Model::Primitive & primitive)
             break;
         case(Model::Primitive::PrimitiveMode::x2aQuadFlatNoTexTranslucentLit):
             primitive.alpha = 127;
+            [[fallthrough]];
         case(Model::Primitive::PrimitiveMode::x28QuadFlatNoTexOpaqueLit):
             in >> primitive.r0;
             in >> primitive.g0;
@@ -435,6 +445,7 @@ QDataStream &operator>>(QDataStream & in, Model::Primitive & primitive)
             break;
         case(Model::Primitive::PrimitiveMode::x2eQuadFlatTexTranslucentLit):
             primitive.alpha = 127;
+            [[fallthrough]];
         case(Model::Primitive::PrimitiveMode::x2cQuadFlatTexOpaqueLit):
             in >> primitive.u0;
             in >> primitive.v0;
@@ -457,6 +468,7 @@ QDataStream &operator>>(QDataStream & in, Model::Primitive & primitive)
             break;
         case(Model::Primitive::PrimitiveMode::x32TriGouraudNoTexTranslucentLit):
             primitive.alpha = 127;
+            [[fallthrough]];
         case(Model::Primitive::PrimitiveMode::x30TriGouraudNoTexOpaqueLit):
             in >> primitive.r0;
             in >> primitive.g0;
@@ -472,6 +484,7 @@ QDataStream &operator>>(QDataStream & in, Model::Primitive & primitive)
             break;
         case(Model::Primitive::PrimitiveMode::x36TriGouraudTexTranslucentLit):
             primitive.alpha = 127;
+            [[fallthrough]];
         case(Model::Primitive::PrimitiveMode::x34TriGouraudTexOpaqueLit):
             in >> primitive.u0;
             in >> primitive.v0;
@@ -491,6 +504,7 @@ QDataStream &operator>>(QDataStream & in, Model::Primitive & primitive)
             break;
         case(Model::Primitive::PrimitiveMode::x3aQuadGouraudNoTexTranslucentLit):
             primitive.alpha = 127;
+            [[fallthrough]];
         case(Model::Primitive::PrimitiveMode::x38QuadGouraudNoTexOpaqueLit):
             in >> primitive.r0;
             in >> primitive.g0;
@@ -508,6 +522,7 @@ QDataStream &operator>>(QDataStream & in, Model::Primitive & primitive)
             break;
         case(Model::Primitive::PrimitiveMode::x3eQuadGouraudTexTranslucentLit):
             primitive.alpha = 127;
+            [[fallthrough]];
         case(Model::Primitive::PrimitiveMode::x3cQuadGouraudTexOpaqueLit):
             in >> primitive.u0;
             in >> primitive.v0;
@@ -531,7 +546,8 @@ QDataStream &operator>>(QDataStream & in, Model::Primitive & primitive)
             in >> primitive.vertex3;
             break;
         default:
-            KFMTError::error(QString::asprintf("Model: TMD: Unsupported mode 0x%x. Please implement!\n",
+            KFMTError::error(QString::asprintf("Model: TMD: Unsupported mode 0x%x. Please "
+                                               "implement!\n",
                                                static_cast<unsigned int>(primitive.mode)));
             in.skipRawData(primitive.ilen * 4);
             break;

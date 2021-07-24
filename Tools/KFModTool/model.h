@@ -93,10 +93,9 @@ struct Model::MOFrame
     short Weight = 0;
     short frameID = 0;
     std::vector<uint16_t> targets;
-    
-    MOFrame(short Unknown00_, short Weight_, short frameID_, short targetAmount) :
-            Unknown00(Unknown00_), Weight(Weight_),
-            frameID(frameID_)
+
+    MOFrame(short Unknown00_, short Weight_, short frameID_, short targetAmount)
+        : Unknown00(Unknown00_), Weight(Weight_), frameID(frameID_)
     {
         targets.resize(targetAmount);
     }

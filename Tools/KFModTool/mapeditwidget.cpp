@@ -31,8 +31,10 @@ MapEditWidget::MapEditWidget(QWidget *parent) :
     // Connect similar UI signals
     connect(ui->entityInstanceCombo, QOverload<int>::of(&QComboBox::currentIndexChanged),
             this, &MapEditWidget::changeEntityInstance);
-    connect(ui->objectInstanceCombo, QOverload<int>::of(&QComboBox::currentIndexChanged),
-            this, &MapEditWidget::changeObjectInstance);
+    connect(ui->objectInstanceCombo,
+            QOverload<int>::of(&QComboBox::currentIndexChanged),
+            this,
+            &MapEditWidget::changeObjectInstance);
 }
 
 void MapEditWidget::setMap(const std::shared_ptr<Map> &map)
@@ -49,7 +51,7 @@ void MapEditWidget::setMap(const std::shared_ptr<Map> &map)
     changeVFXInstance(0);
     changeObjectInstance(0);
     changeEntityInstance(0);
-    
+
     ui->infoTabs->setCurrentWidget(ui->entityTab);
 }
 
