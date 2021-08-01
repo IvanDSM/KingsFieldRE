@@ -1,14 +1,14 @@
 #ifndef MAGICTABLEMODEL_H
 #define MAGICTABLEMODEL_H
 
+#include "kf2types.h"
 #include <QAbstractTableModel>
-#include "kftypes.h"
 
 class MagicTableModel : public QAbstractTableModel
 {
     Q_OBJECT
 public:
-    MagicTableModel(QObject *parent, KingsField::Magic &spell_) : QAbstractTableModel(parent),
+    MagicTableModel(QObject *parent, KingsFieldII::Magic &spell_) : QAbstractTableModel(parent),
         spell(spell_) {}
 
     int columnCount(const QModelIndex &parent) const override
@@ -49,7 +49,7 @@ public:
     }
 
 private:
-    KingsField::Magic &spell;
+    KingsFieldII::Magic &spell;
 };
 
 #endif // MAGICTABLEMODEL_H

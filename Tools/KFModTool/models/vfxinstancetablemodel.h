@@ -1,15 +1,15 @@
 #ifndef VFXINSTANCETABLEMODEL_H
 #define VFXINSTANCETABLEMODEL_H
 
+#include "kf2types.h"
 #include <QAbstractTableModel>
-#include "kftypes.h"
 
 class VFXInstanceTableModel : public QAbstractTableModel
 {
     Q_OBJECT
 public:
     VFXInstanceTableModel(QObject * parent,
-                          KingsField::VFXInstanceDeclaration &vfxInstance_) :
+                          KingsFieldII::VFXInstanceDeclaration &vfxInstance_) :
         QAbstractTableModel(parent), vfxInstance(vfxInstance_) {}
 
     int columnCount(const QModelIndex &parent) const override
@@ -50,7 +50,7 @@ public:
     }
 
 private:
-    KingsField::VFXInstanceDeclaration &vfxInstance;
+    KingsFieldII::VFXInstanceDeclaration &vfxInstance;
 };
 
 #endif // VFXINSTANCETABLEMODEL_H

@@ -79,7 +79,7 @@ HEADERS += \
     gamedbeditwidget.h \
     kfmterror.h \
     kfmttreewidgetitem.h \
-    kftypes.h \
+    kf2types.h \
     mainwindow.h \
     map.h \
     mapeditwidget.h \

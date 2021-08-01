@@ -96,17 +96,17 @@ void MapEditWidget::changeVFXInstance(int instanceIndex)
 
 void MapEditWidget::on_layer1Radio_toggled(bool checked)
 {
-    if (checked) ui->mapViewWidget->setLayer(MapViewer::MapLayer::LAYER_1);
+    if (checked) ui->mapViewWidget->setLayer(MapViewer::MapLayer::Layer1);
 }
 
 void MapEditWidget::on_layer2Radio_toggled(bool checked)
 {
-    if (checked) ui->mapViewWidget->setLayer(MapViewer::MapLayer::LAYER_2);
+    if (checked) ui->mapViewWidget->setLayer(MapViewer::MapLayer::Layer2);
 }
 
 void MapEditWidget::on_entityCDCombo_currentIndexChanged(int index)
 {
-    KingsField::EntityClassDeclaration &entityClassDecl = curMap->getEntityClassDeclaration(index);
+    KingsFieldII::EntityClassDeclaration &entityClassDecl = curMap->getEntityClassDeclaration(index);
 
     ui->entityCDTable->setModel(new EntityClassTableModel(ui->entityCDTable, entityClassDecl));
 
@@ -144,12 +144,12 @@ void MapEditWidget::on_elementCombo_currentIndexChanged(int index)
 
 void MapEditWidget::on_pokeModeButton_clicked()
 {
-    ui->mapViewWidget->setMode(MapViewer::MapViewerMode::MODE_POKE);
+    ui->mapViewWidget->setMode(MapViewer::MapViewerMode::Poke);
 }
 
 void MapEditWidget::on_paintModeButton_clicked()
 {
-    ui->mapViewWidget->setMode(MapViewer::MapViewerMode::MODE_PAINT);
+    ui->mapViewWidget->setMode(MapViewer::MapViewerMode::Paint);
 }
 
 void MapEditWidget::on_brushSpin_valueChanged(int arg1)
@@ -160,7 +160,7 @@ void MapEditWidget::on_brushSpin_valueChanged(int arg1)
 void MapEditWidget::on_brushElemCombo_currentIndexChanged(int index)
 {
     auto newElem = static_cast<MapViewer::MapElement>(index);
-    if (newElem == MapViewer::MapElement::MAP_ROTATION)
+    if (newElem == MapViewer::MapElement::Rotation)
         ui->brushSpin->setMaximum(3);
     else
         ui->brushSpin->setMaximum(255);
@@ -169,12 +169,12 @@ void MapEditWidget::on_brushElemCombo_currentIndexChanged(int index)
 
 void MapEditWidget::on_fillModeButton_clicked()
 {
-    ui->mapViewWidget->setMode(MapViewer::MapViewerMode::MODE_FILL);
+    ui->mapViewWidget->setMode(MapViewer::MapViewerMode::Fill);
 }
 
 void MapEditWidget::on_moveModeButton_clicked()
 {
-    ui->mapViewWidget->setMode(MapViewer::MapViewerMode::MODE_MOVE);
+    ui->mapViewWidget->setMode(MapViewer::MapViewerMode::Move);
 }
 
 void MapEditWidget::on_entityCDImport_clicked()
@@ -306,14 +306,14 @@ void MapEditWidget::fillEntityCDCombo()
     byte curEntityIndex = 0;
     for (auto entityCD : curMap->getEntityClassDeclarations())
     {
-        ui->entityCDCombo->addItem(QString::number(curEntityIndex) + ": " + KingsField::getEntityMeshName(entityCD.MeshID));
+        ui->entityCDCombo->addItem(QString::number(curEntityIndex) + ": " + KingsFieldII::getEntityMeshName(entityCD.MeshID));
         curEntityIndex++;
     }
 }
 
 void MapEditWidget::updateEntityInstanceTable()
 {
-    KingsField::EntityInstance &instance = curMap->getEntityInstance(curEntityInstance);
+    KingsFieldII::EntityInstance &instance = curMap->getEntityInstance(curEntityInstance);
 
     ui->entityInstanceTable->setModel(new EntityInstanceTableModel(ui->entityInstanceTable,
                                                                    instance));
@@ -321,7 +321,7 @@ void MapEditWidget::updateEntityInstanceTable()
 
 void MapEditWidget::updateObjectInstanceTable()
 {
-    KingsField::ObjectInstanceDeclaration &instance = curMap->getObjectInstance(curObjectInstance);
+    KingsFieldII::ObjectInstanceDeclaration &instance = curMap->getObjectInstance(curObjectInstance);
 
     ui->objectInstanceTable->setModel(new ObjectInstanceTableModel(ui->entityInstanceTable,
                                                                    instance));
@@ -329,7 +329,7 @@ void MapEditWidget::updateObjectInstanceTable()
 
 void MapEditWidget::updateVFXInstanceTable()
 {
-    KingsField::VFXInstanceDeclaration &vfx = curMap->getVFXInstance(curVFXInstance);
+    KingsFieldII::VFXInstanceDeclaration &vfx = curMap->getVFXInstance(curVFXInstance);
 
     auto address = QString::number(0x80195174 + (curVFXInstance * 0x10), 16);
     ui->vfxInstanceAddrLabel->setText("Instance " + QString::number(curVFXInstance) +

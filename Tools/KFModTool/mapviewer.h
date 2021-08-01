@@ -13,25 +13,25 @@ class MapViewer : public QWidget
 public:
     enum class MapLayer
     {
-        LAYER_1 = 1,
-        LAYER_2 = 2
+        Layer1 = 1,
+        Layer2 = 2
     };
 
     enum class MapElement
     {
-        MAP_COLLISIONTHING,
-        MAP_ELEV,
-        MAP_ROTATION,
-        MAP_TILEID,
-        MAP_ZONEDELIMITER
+        CollisionThing,
+        Elevation,
+        Rotation,
+        TileID,
+        ZoneDelimiter
     };
 
     enum class MapViewerMode
     {
-        MODE_POKE,
-        MODE_PAINT,
-        MODE_FILL,
-        MODE_MOVE
+        Poke,
+        Paint,
+        Fill,
+        Move
     };
 
     explicit MapViewer(QWidget *parent = nullptr) : QWidget(parent)
@@ -117,10 +117,10 @@ private:
     // Internal stuff
     bool drawZoneDelimiters = false;
     byte curBrush = 127;
-    MapElement curBrushElement = MapElement::MAP_COLLISIONTHING;
-    MapElement curElement = MapElement::MAP_COLLISIONTHING;
-    MapLayer curLayer = MapLayer::LAYER_2;
-    MapViewerMode curMode = MapViewerMode::MODE_POKE;
+    MapElement curBrushElement = MapElement::CollisionThing;
+    MapElement curElement = MapElement::CollisionThing;
+    MapLayer curLayer = MapLayer::Layer2;
+    MapViewerMode curMode = MapViewerMode::Poke;
     QPainter painter;
     QPoint mousePos = QPoint(39, 39);
     QRect selection = QRect(-2,-2,0,0);

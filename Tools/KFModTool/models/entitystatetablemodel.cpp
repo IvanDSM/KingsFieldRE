@@ -1,5 +1,5 @@
 #include "entitystatetablemodel.h"
-#include "kftypes.h"
+#include "kf2types.h"
 
 QVariant EntityStateTableModel::headerData(int section, Qt::Orientation orientation, int role) const
 {
@@ -79,8 +79,8 @@ QVariant EntityStateTableModel::data(const QModelIndex &index, int role) const
     
     if (index.row() == 0)
     {
-        auto stateId = KingsField::getEntityStateIDFromByte(*statePointer);
-        auto stateName = KingsField::getEntityStateIDName(stateId).toStdString();
+        auto stateId = KingsFieldII::getEntityStateIDFromByte(*statePointer);
+        auto stateName = KingsFieldII::getEntityStateIDName(stateId).toStdString();
         return QString::asprintf("%02x (%s)", *statePointer, stateName.c_str());
     }
                 

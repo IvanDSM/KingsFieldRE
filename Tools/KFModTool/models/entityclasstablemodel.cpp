@@ -7,9 +7,9 @@ QVariant EntityClassTableModel::data(const QModelIndex &index, int role) const
     {
         switch (index.row())
         {
-            case 0: result.setValue(QString::number(KingsField::getEntityMeshIDAsByte(entityClassDecl.MeshID)) +
+            case 0: result.setValue(QString::number(KingsFieldII::getEntityMeshIDAsByte(entityClassDecl.MeshID)) +
                                     " (" +
-                                    KingsField::getEntityMeshName(entityClassDecl.MeshID) +
+                                    KingsFieldII::getEntityMeshName(entityClassDecl.MeshID) +
                                     ')'); break;
             case 1: result.setValue(QString::number(entityClassDecl.FourOrForty)); break;
             case 2: result.setValue(QString::number(entityClassDecl.field_0x2)); break;
@@ -140,7 +140,7 @@ bool EntityClassTableModel::setData(const QModelIndex &index, const QVariant &va
 
         switch (index.row())
         {
-            case 0: entityClassDecl.MeshID = KingsField::getEntityMeshIDFromByte(byteValue); break;
+            case 0: entityClassDecl.MeshID = KingsFieldII::getEntityMeshIDFromByte(byteValue); break;
             case 1: entityClassDecl.FourOrForty = byteValue; break;
             case 2: entityClassDecl.field_0x2 = byteValue; break;
             case 3: entityClassDecl.KnockbackResistance = uShortValue; break;

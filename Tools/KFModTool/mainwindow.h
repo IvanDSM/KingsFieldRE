@@ -116,7 +116,6 @@ private:
     std::unique_ptr<Ui::MainWindow> ui;
 
     QString curSourceDirectory;
-    KingsField::GameID currentGame;
 
     std::list<KFMTFile> files;
     

@@ -1,8 +1,8 @@
 #ifndef GAMEDB_H
 #define GAMEDB_H
 
+#include "kf2types.h"
 #include "kfmterror.h"
-#include "kftypes.h"
 #include "tfile.h"
 
 class GameDB
@@ -10,7 +10,7 @@ class GameDB
 public:
     explicit GameDB(QByteArray &file);
 
-    KingsField::ArmorStats &getArmorStats(size_t armorIndex)
+    KingsFieldII::ArmorStats &getArmorStats(size_t armorIndex)
     {
         try
         {
@@ -22,7 +22,7 @@ public:
         }
     }
 
-    KingsField::PlayerLvlData &getLevel(size_t levelIndex)
+    KingsFieldII::PlayerLvlData &getLevel(size_t levelIndex)
     {
         try
         {
@@ -34,7 +34,7 @@ public:
         }
     }
 
-    KingsField::Magic &getMagic(size_t magicIndex)
+    KingsFieldII::Magic &getMagic(size_t magicIndex)
     {
         try
         {
@@ -46,7 +46,7 @@ public:
         }
     }
 
-    KingsField::ObjectClassDeclaration &getObjClass(size_t objClassIndex)
+    KingsFieldII::ObjectClassDeclaration &getObjClass(size_t objClassIndex)
     {
         try
         {
@@ -58,7 +58,7 @@ public:
         }
     }
 
-    KingsField::WeaponStats &getWeaponStats(size_t weaponIndex)
+    KingsFieldII::WeaponStats &getWeaponStats(size_t weaponIndex)
     {
         try
         {
@@ -82,11 +82,11 @@ private:
     QByteArray &database;
     
     
-    std::array<KingsField::ArmorStats, armorStatsSize> armorStats {};
-    std::array<KingsField::ObjectClassDeclaration, objClassDeclarationsSize> objClassDeclarations {};
-    std::array<KingsField::PlayerLvlData, lvlDataSize> lvlData {};
-    std::array<KingsField::Magic, magicDataSize> magicData {};
-    std::array<KingsField::WeaponStats, weaponStatsSize> weaponStats {};
+    std::array<KingsFieldII::ArmorStats, armorStatsSize> armorStats {};
+    std::array<KingsFieldII::ObjectClassDeclaration, objClassDeclarationsSize> objClassDeclarations {};
+    std::array<KingsFieldII::PlayerLvlData, lvlDataSize> lvlData {};
+    std::array<KingsFieldII::Magic, magicDataSize> magicData {};
+    std::array<KingsFieldII::WeaponStats, weaponStatsSize> weaponStats {};
 };
 
 #endif // GAMEDB_H

@@ -11,13 +11,13 @@ QVariant WeaponStatsTableModel::data(const QModelIndex &index, int role) const
             case 0: result.setValue(QString::number(weaponStats.SoundEffect)); break;
             case 1: result.setValue(QString::number(weaponStats.StrStaminaCost)); break;
             case 2: result.setValue(QString::number(weaponStats.Unknown_x02)); break;
-            case 3: result.setValue(QString::number(KingsField::getMagicIDAsByte(weaponStats.Spell1)) +
+            case 3: result.setValue(QString::number(KingsFieldII::getMagicIDAsByte(weaponStats.Spell1)) +
                                     " (" +
-                                    KingsField::getMagicIDName(weaponStats.Spell1) +
+                                    KingsFieldII::getMagicIDName(weaponStats.Spell1) +
                                     ')'); break;
-            case 4: result.setValue(QString::number(KingsField::getMagicIDAsByte(weaponStats.Spell2)) +
+            case 4: result.setValue(QString::number(KingsFieldII::getMagicIDAsByte(weaponStats.Spell2)) +
                                     " (" +
-                                    KingsField::getMagicIDName(weaponStats.Spell2) +
+                                    KingsFieldII::getMagicIDName(weaponStats.Spell2) +
                                     ')'); break;
             case 5: result.setValue(QString::number(weaponStats.Spell1ShotAmount)); break;
             case 6: result.setValue(QString::number(weaponStats.OffSlash)); break;
@@ -122,8 +122,8 @@ bool WeaponStatsTableModel::setData(const QModelIndex &index, const QVariant &va
             case 0: weaponStats.SoundEffect = Utilities::clampToByte(uIntValue); break;
             case 1: weaponStats.StrStaminaCost = Utilities::clampToByte(uIntValue); break;
             case 2: weaponStats.Unknown_x02 = Utilities::clampToByte(uIntValue); break;
-            case 3: weaponStats.Spell1 = KingsField::getMagicIDFromByte(Utilities::clampToByte(uIntValue)); break;
-            case 4: weaponStats.Spell2 = KingsField::getMagicIDFromByte(Utilities::clampToByte(uIntValue)); break;
+            case 3: weaponStats.Spell1 = KingsFieldII::getMagicIDFromByte(Utilities::clampToByte(uIntValue)); break;
+            case 4: weaponStats.Spell2 = KingsFieldII::getMagicIDFromByte(Utilities::clampToByte(uIntValue)); break;
             case 5: weaponStats.Spell1ShotAmount = Utilities::clampToByte(uIntValue); break;
             case 6: weaponStats.OffSlash = Utilities::clampToUShort(uIntValue); break;
             case 7: weaponStats.OffChop = Utilities::clampToUShort(uIntValue); break;

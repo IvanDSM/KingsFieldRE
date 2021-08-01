@@ -2,8 +2,8 @@
 #define MAP_H
 
 #include "checksum.h"
+#include "kf2types.h"
 #include "kfmterror.h"
-#include "kftypes.h"
 #include <QMessageBox>
 
 typedef quint8 byte;
@@ -13,7 +13,7 @@ class Map
 public:
     Map(QByteArray& file1, QByteArray& file2, QByteArray& file3);
 
-    KingsField::EntityClassDeclaration &getEntityClassDeclaration(byte classDeclIndex)
+    KingsFieldII::EntityClassDeclaration &getEntityClassDeclaration(byte classDeclIndex)
     {
         try
         {
@@ -26,17 +26,17 @@ public:
 
     }
 
-    const std::array<KingsField::EntityClassDeclaration, 40> getEntityClassDeclarations() const
+    const std::array<KingsFieldII::EntityClassDeclaration, 40> getEntityClassDeclarations() const
     {
         return entityClassDeclarations;
     }
 
-    const std::array<KingsField::EntityInstance, 200> getEntityInstances() const
+    const std::array<KingsFieldII::EntityInstance, 200> getEntityInstances() const
     {
         return entityInstances;
     }
 
-    KingsField::EntityInstance &getEntityInstance(size_t instanceIndex)
+    KingsFieldII::EntityInstance &getEntityInstance(size_t instanceIndex)
     {
         try
         {
@@ -48,7 +48,7 @@ public:
         }
     }
     
-    KingsField::ObjectInstanceDeclaration &getObjectInstance(size_t instanceIndex)
+    KingsFieldII::ObjectInstanceDeclaration &getObjectInstance(size_t instanceIndex)
     {
         try
         {
@@ -60,7 +60,7 @@ public:
         }
     }
 
-    const std::array<KingsField::ObjectInstanceDeclaration, 350> &getObjectInstanceDeclarations() const
+    const std::array<KingsFieldII::ObjectInstanceDeclaration, 350> &getObjectInstanceDeclarations() const
     {
         return objInstances;
     }
@@ -70,7 +70,7 @@ public:
         return reinterpret_cast<uint8_t *>(entityStateBlob.data() + offset);
     }
 
-    KingsField::Tile& getTile(size_t line, size_t column)
+    KingsFieldII::Tile& getTile(size_t line, size_t column)
     {
         try
         {
@@ -84,7 +84,7 @@ public:
         }
     }
 
-    KingsField::VFXInstanceDeclaration &getVFXInstance(size_t instanceIndex)
+    KingsFieldII::VFXInstanceDeclaration &getVFXInstance(size_t instanceIndex)
     {
         try
         {
@@ -96,7 +96,7 @@ public:
         }
     }
 
-    const std::array<KingsField::VFXInstanceDeclaration, 128> &getVFXInstanceDeclarations() const
+    const std::array<KingsFieldII::VFXInstanceDeclaration, 128> &getVFXInstanceDeclarations() const
     {
         return vfxInstances;
     }
@@ -104,15 +104,15 @@ public:
     void writeChanges();
 
 private:
-    KingsField::Tile tileMap[80][80] {};
+    KingsFieldII::Tile tileMap[80][80] {};
     QByteArray &map1;
     QByteArray &map2;
     QByteArray &map3;
-    std::array<KingsField::EntityClassDeclaration, 40> entityClassDeclarations {};
-    std::array<KingsField::EntityInstance, 200> entityInstances {};
+    std::array<KingsFieldII::EntityClassDeclaration, 40> entityClassDeclarations {};
+    std::array<KingsFieldII::EntityInstance, 200> entityInstances {};
     QByteArray entityStateBlob;
-    std::array<KingsField::ObjectInstanceDeclaration, 350> objInstances {};
-    std::array<KingsField::VFXInstanceDeclaration, 128> vfxInstances {};
+    std::array<KingsFieldII::ObjectInstanceDeclaration, 350> objInstances {};
+    std::array<KingsFieldII::VFXInstanceDeclaration, 128> vfxInstances {};
 };
 
 #endif // MAP_H

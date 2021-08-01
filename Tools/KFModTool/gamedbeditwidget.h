@@ -57,7 +57,7 @@ private:
         for (byte i = 0; i < GameDB::armorStatsSize; i++)
         {
             if (i < 39)
-                itemName = KingsField::getObjectName(KingsField::getObjectIDFromByte(i + 0x15));
+                itemName = KingsFieldII::getObjectName(KingsFieldII::getObjectIDFromByte(i + 0x15));
             else
                 itemName = "Unused";
             ui->armorCombo->addItem(itemStrStd.arg(i).arg(itemName));
@@ -69,7 +69,7 @@ private:
         for (byte i = 0; i < GameDB::magicDataSize; i++)
         {
             ui->magicCombo->addItem(QString::number(i) + " (0x" + QString::number(i, 16) + ") " +
-                                    KingsField::getMagicIDName(KingsField::getMagicIDFromByte(i)));
+                                    KingsFieldII::getMagicIDName(KingsFieldII::getMagicIDFromByte(i)));
         }
     }
 
@@ -77,7 +77,7 @@ private:
     {
         for (unsigned short i = 0; i < GameDB::objClassDeclarationsSize; i++)
             ui->objClassCombo->addItem(QString::number(i) + " (0x" + QString::number(i, 16) + ") " +
-                                       KingsField::getObjectName(KingsField::getObjectIDFromUShort(i)));
+                                       KingsFieldII::getObjectName(KingsFieldII::getObjectIDFromUShort(i)));
     }
 
     void fillWeaponStatsCombo()
@@ -85,7 +85,7 @@ private:
         for (byte i = 0; i < GameDB::weaponStatsSize; i++)
         {
             ui->weaponCombo->addItem(QString::number(i) + " (0x" + QString::number(i, 16) + ") " +
-                                     KingsField::getWeaponStatsName(i));
+                                     KingsFieldII::getWeaponStatsName(i));
         }
     }
 

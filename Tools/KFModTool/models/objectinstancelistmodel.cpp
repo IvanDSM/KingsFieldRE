@@ -25,6 +25,6 @@ QVariant ObjectInstanceListModel::data(const QModelIndex &index, int role) const
         return QVariant();
     
     return QString::number(index.row()) + ": " + 
-           KingsField::getObjectName(map->getObjectInstance(index.row()).ObjectID) + 
+           KingsFieldII::getObjectName(map->getObjectInstance(index.row()).ObjectID) + 
            " @ 0x" + QString::number(0x80177714 + (index.row() * 0x44), 16);
 }

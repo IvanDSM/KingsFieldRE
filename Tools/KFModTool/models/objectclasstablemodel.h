@@ -1,15 +1,15 @@
 #ifndef OBJECTCLASSTABLEMODEL_H
 #define OBJECTCLASSTABLEMODEL_H
 
+#include "kf2types.h"
 #include <QAbstractTableModel>
-#include <kftypes.h>
 
 class ObjectClassTableModel : public QAbstractTableModel
 {
     Q_OBJECT
 public:
     ObjectClassTableModel(QObject *parent,
-                          KingsField::ObjectClassDeclaration &objClass_) :
+                          KingsFieldII::ObjectClassDeclaration &objClass_) :
         QAbstractTableModel(parent),
         objClass(objClass_) {}
 
@@ -51,7 +51,7 @@ public:
     }
 
 private:
-    KingsField::ObjectClassDeclaration &objClass;
+    KingsFieldII::ObjectClassDeclaration &objClass;
 };
 
 #endif // OBJECTCLASSTABLEMODEL_H

@@ -1,7 +1,7 @@
 #ifndef ENTITYCLASSTABLEMODEL_H
 #define ENTITYCLASSTABLEMODEL_H
 
-#include <kftypes.h>
+#include "kf2types.h"
 #include <QAbstractTableModel>
 
 class EntityClassTableModel : public QAbstractTableModel
@@ -9,7 +9,7 @@ class EntityClassTableModel : public QAbstractTableModel
     Q_OBJECT
 public:
     explicit EntityClassTableModel(QObject *parent,
-                                   KingsField::EntityClassDeclaration &entityClassDecl_) :
+                                   KingsFieldII::EntityClassDeclaration &entityClassDecl_) :
         QAbstractTableModel(parent),
         entityClassDecl(entityClassDecl_) {}
 
@@ -51,7 +51,7 @@ public:
     }
 
 private:
-    KingsField::EntityClassDeclaration &entityClassDecl;
+    KingsFieldII::EntityClassDeclaration &entityClassDecl;
 
     const QString getSomePointer(size_t somePtrIndex) const
     {

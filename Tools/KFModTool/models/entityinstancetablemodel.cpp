@@ -15,12 +15,12 @@ QVariant EntityInstanceTableModel::data(const QModelIndex &index, int role) cons
             case 3: result.setValue(QString::number(entityInstance.WEXTilePos)); break;
             case 4: result.setValue(QString::number(entityInstance.NSYTilePos)); break;
             case 5: result.setValue(QString::number(entityInstance.RespawnChance)); break;
-            case 6: result.setValue(QString::number(KingsField::getObjectIDAsByte(entityInstance.DroppedItem)) + " ("
-                                + KingsField::getObjectName(entityInstance.DroppedItem) + ")");
+            case 6: result.setValue(QString::number(KingsFieldII::getObjectIDAsByte(entityInstance.DroppedItem)) + " ("
+                                + KingsFieldII::getObjectName(entityInstance.DroppedItem) + ")");
                 break;
             case 7: result.setValue(QString::number(entityInstance.Layer)); break;
             case 8: result.setValue(QString::number(entityInstance.ZRotation) + " ("
-                                + QString::number(entityInstance.ZRotation * KingsField::rotationCoefficient)
+                                + QString::number(entityInstance.ZRotation * KingsFieldII::rotationCoefficient)
                                 + "°)"); break;
             case 9: result.setValue(QString::number(entityInstance.FineWEXPos)); break;
             case 10: result.setValue(QString::number(entityInstance.FineNSYPos)); break;
@@ -80,12 +80,12 @@ bool EntityInstanceTableModel::setData(const QModelIndex &index, const QVariant 
             case 3: entityInstance.WEXTilePos = byteValue; break;
             case 4: entityInstance.NSYTilePos = byteValue; break;
             case 5: entityInstance.RespawnChance = byteValue; break;
-            case 6: entityInstance.DroppedItem = static_cast<KingsField::ObjectID>(uShortValue); break;
+            case 6: entityInstance.DroppedItem = static_cast<KingsFieldII::ObjectID>(uShortValue); break;
             case 7: entityInstance.Layer = byteValue; break;
             case 8:
                 if (value.toString().right(1) == "°" || value.toString().right(1) == "º" ||
                     value.toString().right(1) == "ª")
-                    uShortValue = value.toString().chopped(1).toUInt() / KingsField::rotationCoefficient;
+                    uShortValue = value.toString().chopped(1).toUInt() / KingsFieldII::rotationCoefficient;
                 else
                     uShortValue = value.toUInt() % 4096;
                 entityInstance.ZRotation = uShortValue;

@@ -157,9 +157,9 @@ void TFile::load(const QByteArray &tFileBlob)
     }
     
     // Read the files in the T file
-    for (auto offset = fileOffsets.begin() + 1; offset != fileOffsets.end(); offset++)
+    for (auto fileOffset = fileOffsets.begin() + 1; fileOffset != fileOffsets.end(); fileOffset++)
     {
-        files.push_back(tFileBlob.mid(*(offset - 1), *offset - *(offset - 1)));
+        files.push_back(tFileBlob.mid(*(fileOffset - 1), *fileOffset - *(fileOffset - 1)));
     }
 
     PrettyNamer prettyNamer; ///< Instance of the PrettyNamer class.

@@ -1,15 +1,15 @@
 #ifndef PLAYERLEVELDATATABLEMODEL_H
 #define PLAYERLEVELDATATABLEMODEL_H
 
+#include "kf2types.h"
 #include <QAbstractTableModel>
-#include "kftypes.h"
 
 class PlayerLevelDataTableModel : public QAbstractTableModel
 {
     Q_OBJECT
 public:
     PlayerLevelDataTableModel(QObject *parent,
-                          KingsField::PlayerLvlData &playerLvl_) :
+                          KingsFieldII::PlayerLvlData &playerLvl_) :
         QAbstractTableModel(parent), playerLvl(playerLvl_) {}
 
     int columnCount(const QModelIndex &parent) const override
@@ -50,7 +50,7 @@ public:
     }
 
 private:
-    KingsField::PlayerLvlData &playerLvl;
+    KingsFieldII::PlayerLvlData &playerLvl;
 };
 
 #endif // PLAYERLEVELDATATABLEMODEL_H

@@ -1,15 +1,15 @@
 #ifndef OBJECTINSTANCETABLEMODEL_H
 #define OBJECTINSTANCETABLEMODEL_H
 
+#include "kf2types.h"
 #include <QAbstractTableModel>
-#include <kftypes.h>
 
 class ObjectInstanceTableModel : public QAbstractTableModel
 {
     Q_OBJECT
 public:
     explicit ObjectInstanceTableModel(QObject *parent,
-                                      KingsField::ObjectInstanceDeclaration &objInstance_) :
+                                      KingsFieldII::ObjectInstanceDeclaration &objInstance_) :
         QAbstractTableModel(parent),
         objInstance(objInstance_) {}
 
@@ -51,7 +51,7 @@ public:
     }
 
 private:
-    KingsField::ObjectInstanceDeclaration &objInstance;
+    KingsFieldII::ObjectInstanceDeclaration &objInstance;
 };
 
 #endif // OBJECTINSTANCETABLEMODEL_H

@@ -1,15 +1,15 @@
 #ifndef WEAPONSTATSTABLEMODEL_H
 #define WEAPONSTATSTABLEMODEL_H
 
+#include "kf2types.h"
 #include <QAbstractTableModel>
-#include <kftypes.h>
 
 class WeaponStatsTableModel : public QAbstractTableModel
 {
     Q_OBJECT
 public:
     WeaponStatsTableModel(QObject *parent,
-                          KingsField::WeaponStats &weaponStats_) :
+                          KingsFieldII::WeaponStats &weaponStats_) :
         QAbstractTableModel(parent),
         weaponStats(weaponStats_) {}
 
@@ -50,7 +50,7 @@ public:
         return false;
     }
 private:
-    KingsField::WeaponStats &weaponStats;
+    KingsFieldII::WeaponStats &weaponStats;
 
 };
 

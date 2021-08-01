@@ -14,7 +14,7 @@ GameDB::GameDB(QByteArray &file) : database(file)
 
     for (size_t i = 0; i < objClassDeclarationsSize; i++)
     {
-        KingsField::ObjectClassDeclaration objClassDecl{};
+        KingsFieldII::ObjectClassDeclaration objClassDecl{};
         dbStream >> objClassDecl;
         objClassDeclarations.at(i) = objClassDecl;
     }
@@ -24,7 +24,7 @@ GameDB::GameDB(QByteArray &file) : database(file)
 
     for (size_t i = 0; i < weaponStatsSize; i++)
     {
-        KingsField::WeaponStats weaponStat{};
+        KingsFieldII::WeaponStats weaponStat{};
         dbStream >> weaponStat;
         weaponStats.at(i) = weaponStat;
     }
@@ -44,7 +44,7 @@ GameDB::GameDB(QByteArray &file) : database(file)
 
     for (size_t i = 0; i < lvlDataSize; i++)
     {
-        KingsField::PlayerLvlData level{};
+        KingsFieldII::PlayerLvlData level{};
         dbStream >> level;
         lvlData.at(i) = level;
     }
@@ -54,7 +54,7 @@ GameDB::GameDB(QByteArray &file) : database(file)
 
     for (size_t i = 0; i < magicDataSize; i++)
     {
-        KingsField::Magic magic{};
+        KingsFieldII::Magic magic{};
         dbStream >> magic;
         magicData.at(i) = magic;
     }

@@ -11,11 +11,11 @@ QVariant ObjectInstanceTableModel::data(const QModelIndex &index, int role) cons
             case 1: result.setValue(QString::number(objInstance.WEXTilePos)); break;
             case 2: result.setValue(QString::number(objInstance.NSYTilePos)); break;
             case 3: result.setValue(QString::number(objInstance.field_0x3)); break;
-            case 4: result.setValue(QString::number(KingsField::getObjectIDAsByte(objInstance.ObjectID))
+            case 4: result.setValue(QString::number(KingsFieldII::getObjectIDAsByte(objInstance.ObjectID))
                                     + " ("
-                                    + KingsField::getObjectName(objInstance.ObjectID) + ")"); break;
+                                    + KingsFieldII::getObjectName(objInstance.ObjectID) + ")"); break;
             case 5: result.setValue(QString::number(objInstance.ZRotation) + " (" +
-                                    QString::number(objInstance.ZRotation * KingsField::rotationCoefficient) +
+                                    QString::number(objInstance.ZRotation * KingsFieldII::rotationCoefficient) +
                                     "°)"); break;
             case 6: result.setValue(QString::number(objInstance.FineWEXPos)); break;
             case 7: result.setValue(QString::number(objInstance.FineNSYPos)); break;
@@ -118,7 +118,7 @@ bool ObjectInstanceTableModel::setData(const QModelIndex &index, const QVariant 
                 uIntValue = value.toUInt();
                 if (uIntValue < 65536)
                 {
-                    objInstance.ObjectID = KingsField::getObjectIDFromUShort(static_cast<unsigned short>(uIntValue));
+                    objInstance.ObjectID = KingsFieldII::getObjectIDFromUShort(static_cast<unsigned short>(uIntValue));
                     result = true;
                 }
                 break;
@@ -126,7 +126,7 @@ bool ObjectInstanceTableModel::setData(const QModelIndex &index, const QVariant 
                 if (value.toString().right(1) == "°" ||
                     value.toString().right(1) == "º" ||
                     value.toString().right(1) == "ª")
-                    uIntValue = static_cast<unsigned int>(value.toString().chopped(1).toUInt() / KingsField::rotationCoefficient);
+                    uIntValue = static_cast<unsigned int>(value.toString().chopped(1).toUInt() / KingsFieldII::rotationCoefficient);
                 else
                     uIntValue = value.toUInt() % 4096;
                 objInstance.ZRotation = static_cast<u_short>(uIntValue);

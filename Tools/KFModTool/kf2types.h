@@ -8,12 +8,6 @@
 #include <QString>
 #include "kfmterror.h"
 
-#if __GNUC__ >= 10
-#include <unordered_map>
-#else
-#include <map>
-#endif
-
 typedef uint8_t byte;
 typedef byte undefined;
 #if (defined(__GNUC__) && defined(__MINGW32__)) || defined(EMSCRIPTEN)
@@ -23,29 +17,13 @@ typedef uint32_t u_int;
 
 #pragma once
 
-namespace KingsField
+namespace KingsFieldII
 {
     // Unknown string
 
     static const QString unknownString = "???";
 
     // Enums
-    
-    /*!
-     * \brief Enum for the games supported by KFModTool.
-     */
-    enum class GameID
-    {
-        None,
-        KingsFieldJDemo, ///< Enum value for the DemoDemo PlayStation Soukan-gou Vol. 1 demo of the Japan-only King's Field I.
-        KingsFieldJ, ///< Enum value for the Japan-only King's Field I
-        KingsField2J, ///< Enum value for King's Field II (American King's Field I)
-        KingsFieldEU, ///< Enum value for the European release of King's Field II
-        KingsField3J, ///< Enum value for King's Field III (American King's Field II)
-        KingsFieldPilotStyle, ///< Enum value for the Japan-only King's Field III: Pilot Style
-        //FIXME: Implement Shadow Tower support
-        //ShadowTower ///< Enum value for Shadow Tower
-    };
 
     /*!
      * \brief Enum for the entity meshes in King's Field.
@@ -478,528 +456,495 @@ namespace KingsField
         XFeetTable=258
     };
 
-    // Maps
-
-#if __GNUC__ >= 10
-    static const std::unordered_map<const EntityMeshID, const QString> entityMeshIdNameMap =
-#else
-    static const std::map<const EntityMeshID, const QString> entityMeshIdNameMap =
-#endif
-    {
-        {EntityMeshID::AlHunt, "AlHunt"},
-        {EntityMeshID::Archer, "Archer"},
-        {EntityMeshID::Baltail, "Baltail"},
-        {EntityMeshID::BaltailTail, "BaltailTail"},
-        {EntityMeshID::Billent, "Billent"},
-        {EntityMeshID::Bitt, "Bitt"},
-        {EntityMeshID::Cable, "Cable"},
-        {EntityMeshID::CellfyFoss, "CellfyFoss"},
-        {EntityMeshID::CellfyFoss2, "CellfyFoss2"},
-        {EntityMeshID::CliffLore, "CliffLore"},
-        {EntityMeshID::CopperKnight, "CopperKnight"},
-        {EntityMeshID::DalfVice, "DalfVice"},
-        {EntityMeshID::DavidTabler, "DavidTabler"},
-        {EntityMeshID::DemonLord, "DemonLord"},
-        {EntityMeshID::DiasBagil, "DiasBagil"},
-        {EntityMeshID::DragonGrass, "DragonGrass"},
-        {EntityMeshID::EarnestClyde, "EarnestClyde"},
-        {EntityMeshID::EarnestClydeSitting, "EarnestClydeSitting"},
-        {EntityMeshID::EarthElemental, "EarthElemental"},
-        {EntityMeshID::FaiFadlin, "FaiFadlin"},
-        {EntityMeshID::FireElemental, "FireElemental"},
-        {EntityMeshID::Ghost, "Ghost"},
-        {EntityMeshID::GiantTermite, "GiantTermite"},
-        {EntityMeshID::GigiBudwell, "GigiBudwell"},
-        {EntityMeshID::GigiBudwellWatering, "GigiBudwellWatering"},
-        {EntityMeshID::GreenSlime, "GreenSlime"},
-        {EntityMeshID::GreenSlime2, "GreenSlime2"},
-        {EntityMeshID::GreenSlime3, "GreenSlime3"},
-        {EntityMeshID::GreenSlime4, "GreenSlime4"},
-        {EntityMeshID::GreenSlimeDeath, "GreenSlimeDeath"},
-        {EntityMeshID::GreenSlimeDeath2, "GreenSlimeDeath2"},
-        {EntityMeshID::GreenSlimeDeath3, "GreenSlimeDeath3"},
-        {EntityMeshID::GreenSlimeDeath4, "GreenSlimeDeath4"},
-        {EntityMeshID::Guyra, "Guyra"},
-        {EntityMeshID::HarrisCarvitto, "HarrisCarvitto"},
-        {EntityMeshID::HeadEater, "HeadEater"},
-        {EntityMeshID::JoseHarven, "JoseHarven"},
-        {EntityMeshID::JoseHavenDeath, "JoseHavenDeath"},
-        {EntityMeshID::JoseHavenDeath2, "JoseHavenDeath2"},
-        {EntityMeshID::Kald, "Kald"},
-        {EntityMeshID::KarenShore, "KarenShore"},
-        {EntityMeshID::KarenShoreChair, "KarenShoreChair"},
-        {EntityMeshID::KehlHunt, "KehlHunt"},
-        {EntityMeshID::KehlHunt2, "KehlHunt2"},
-        {EntityMeshID::KrakenBody, "KrakenBody"},
-        {EntityMeshID::KrakenHead, "KrakenHead"},
-        {EntityMeshID::KrolaAmgun, "KrolaAmgun"},
-        {EntityMeshID::KrolaAmgunCooking, "KrolaAmgunCooking"},
-        {EntityMeshID::LeonShore, "LeonShore"},
-        {EntityMeshID::LeonShoreWatering, "LeonShoreWatering"},
-        {EntityMeshID::LogStalker, "LogStalker"},
-        {EntityMeshID::MagesCandlesticks, "MagesCandlesticks"},
-        {EntityMeshID::MarkWozz, "MarkWozz"},
-        {EntityMeshID::MechaDemonLord, "MechaDemonLord"},
-        {EntityMeshID::MechaReik, "MechaReik"},
-        {EntityMeshID::MechaTermite, "MechaTermite"},
-        {EntityMeshID::Meryl, "Meryl"},
-        {EntityMeshID::Miria, "Miria"},
-        {EntityMeshID::Mogle, "Mogle"},
-        {EntityMeshID::NolaBagil, "NolaBagil"},
-        {EntityMeshID::None, "None"},
-        {EntityMeshID::PoisonSlime, "PoisonSlime"},
-        {EntityMeshID::Psythe, "Psythe"},
-        {EntityMeshID::RaddBilheim, "RaddBilheim"},
-        {EntityMeshID::RaffyFoss, "RaffyFoss"},
-        {EntityMeshID::RandFerrer, "RandFerrer"},
-        {EntityMeshID::RedSpikeBall, "RedSpikeBall"},
-        {EntityMeshID::Refma, "Refma"},
-        {EntityMeshID::Refma2, "Refma2"},
-        {EntityMeshID::Reik, "Reik"},
-        {EntityMeshID::SKnight, "SKnight"},
-        {EntityMeshID::SaintGrave, "SaintGrave"},
-        {EntityMeshID::Salamander, "Salamander"},
-        {EntityMeshID::SandlerAmgun, "SandlerAmgun"},
-        {EntityMeshID::SandlerAmgun2, "SandlerAmgun2"},
-        {EntityMeshID::Sigill, "Sigill"},
-        {EntityMeshID::Skeleton, "Skeleton"},
-        {EntityMeshID::SkeletonOfOneEyedGiant, "SkeletonOfOneEyedGiant"},
-        {EntityMeshID::Soldier, "Soldier"},
-        {EntityMeshID::StingFly, "StingFly"},
-        {EntityMeshID::StingFlyTail, "StingFlyTail"},
-        {EntityMeshID::Tarn, "Tarn"},
-        {EntityMeshID::TeoBudwell, "TeoBudwell"},
-        {EntityMeshID::TeoBudwellMowing, "TeoBudwellMowing"},
-        {EntityMeshID::TeoBudwellWithGigi, "TeoBudwellWithGigi"},
-        {EntityMeshID::Termite, "Termite"},
-        {EntityMeshID::ThePictureOfAKing, "ThePictureOfAKing"},
-        {EntityMeshID::Transparent, "Transparent"},
-        {EntityMeshID::Unused, "Unused"},
-        {EntityMeshID::Unused10, "Unused10"},
-        {EntityMeshID::Unused11, "Unused11"},
-        {EntityMeshID::Unused12, "Unused12"},
-        {EntityMeshID::Unused13, "Unused13"},
-        {EntityMeshID::Unused14, "Unused14"},
-        {EntityMeshID::Unused15, "Unused15"},
-        {EntityMeshID::Unused16, "Unused16"},
-        {EntityMeshID::Unused17, "Unused17"},
-        {EntityMeshID::Unused18, "Unused18"},
-        {EntityMeshID::Unused19, "Unused19"},
-        {EntityMeshID::Unused2, "Unused2"},
-        {EntityMeshID::Unused20, "Unused20"},
-        {EntityMeshID::Unused21, "Unused21"},
-        {EntityMeshID::Unused22, "Unused22"},
-        {EntityMeshID::Unused23, "Unused23"},
-        {EntityMeshID::Unused24, "Unused24"},
-        {EntityMeshID::Unused3, "Unused3"},
-        {EntityMeshID::Unused4, "Unused4"},
-        {EntityMeshID::Unused5, "Unused5"},
-        {EntityMeshID::Unused6, "Unused6"},
-        {EntityMeshID::Unused7, "Unused7"},
-        {EntityMeshID::Unused8, "Unused8"},
-        {EntityMeshID::Unused9, "Unused9"}
-    };
-
-#if __GNUC__ >= 10
-    static const std::unordered_map<const EntityStateID, const QString> entityStateIdNameMap =
-#else
-    static const std::map<const EntityStateID, const QString> entityStateIdNameMap =
-#endif
-    {
-        {EntityStateID::FlyingAttackMaybe, "Flying Attack?"},
-        {EntityStateID::FlyingWander, "Flying Wander"},
-        {EntityStateID::MagicAttack, "Magic Attack"},
-        {EntityStateID::ApproachingPlayer, "Approaching Player"},
-        {EntityStateID::Wander, "Wander"},
-        {EntityStateID::MeleeAttack, "Melee Attack"},
-        {EntityStateID::TakingDamage, "Taking Damage"},
-        {EntityStateID::None, "None"},
-        {EntityStateID::MeleeAttack3, "Melee Attack 3"},
-        {EntityStateID::MeleeAttack2, "Melee Attack 2"},
-        {EntityStateID::Idle, "Idle"},
-        {EntityStateID::Dialogue, "Dialogue"},
-        {EntityStateID::Dying, "Dying"}
-    };
-    
-#if __GNUC__ >= 10
-    static const std::unordered_map<const MagicID, const QString> magicIdNameMap =
-#else
-    static const std::map<const MagicID, const QString> magicIdNameMap =
-#endif
-        {
-        {MagicID::ArcherArrow, "ArcherArrow"},
-        {MagicID::ArcherParalyzeArrow, "ArcherParalyzeArrow"},
-        {MagicID::Breath, "Breath"},
-        {MagicID::DarkSlayerMagicA, "DarkSlayerMagicA"},
-        {MagicID::DarkSlayerMagicB, "DarkSlayerMagicB"},
-        {MagicID::Dispoison, "Dispoison"},
-        {MagicID::DoubleFireball, "DoubleFireball"},
-        {MagicID::EarthHeal, "EarthHeal"},
-        {MagicID::EarthWave, "EarthWave"},
-        {MagicID::EnemyEarthMagic, "EnemyEarthMagic"},
-        {MagicID::EnemyHomingEarthMagic, "EnemyHomingEarthMagic"},
-        {MagicID::EnemyLightningVolt, "EnemyLightningVolt"},
-        {MagicID::FireBall, "FireBall"},
-        {MagicID::FireStorm, "FireStorm"},
-        {MagicID::FireWall, "FireWall"},
-        {MagicID::Flame, "Flame"},
-        {MagicID::FlameSwordMagicA, "FlameSwordMagicA"},
-        {MagicID::FlameSwordMagicB, "FlameSwordMagicB"},
-        {MagicID::Flash, "Flash"},
-        {MagicID::Freeze, "Freeze"},
-        {MagicID::IceBladeMagicA, "IceBladeMagicA"},
-        {MagicID::IceBladeMagicB, "IceBladeMagicB"},
-        {MagicID::IceStorm, "IceStorm"},
-        {MagicID::Light, "Light"},
-        {MagicID::LightningVolt, "LightningVolt"},
-        {MagicID::Meteor, "Meteor"},
-        {MagicID::MissileShield, "MissileShield"},
-        {MagicID::MoonlightSwordMagicA, "MoonlightSwordMagicA"},
-        {MagicID::MoonlightSwordMagicB, "MoonlightSwordMagicB"},
-        {MagicID::None, "None"},
-        {MagicID::PsytheCurseOrb, "PsytheCurseOrb"},
-        {MagicID::ResistFire, "ResistFire"},
-        {MagicID::SKnightPoisonBreath, "SKnightPoisonBreath"},
-        {MagicID::Seath, "Seath"},
-        {MagicID::SeathsSwordMagicA, "SeathsSwordMagicA"},
-        {MagicID::ShidenMagicA, "ShidenMagicA"},
-        {MagicID::ShidenMagicB, "ShidenMagicB"},
-        {MagicID::SpiderSwordMagicA, "SpiderSwordMagicA"},
-        {MagicID::SpiderSwordMagicB, "SpiderSwordMagicB"},
-        {MagicID::Stone, "Stone"},
-        {MagicID::TarnWindMagic, "TarnWindMagic"},
-        {MagicID::WaterFall, "WaterFall"},
-        {MagicID::WindCutter, "WindCutter"}
-    };
-
-#if __GNUC__ >= 10
-    static const std::unordered_map<const ObjectID, const QString> objectIdNameMap =
-#else
-    static const std::map<const ObjectID, const QString> objectIdNameMap =
-#endif
-    {
-        {ObjectID::ABrokenSword, "ABrokenSword"},
-        {ObjectID::ASoldierOfVerdite, "ASoldierOfVerdite"},
-        {ObjectID::ArmsA, "ArmsA"},
-        {ObjectID::ArmsDemonsHands, "ArmsDemonsHands"},
-        {ObjectID::ArmsIronGloves, "ArmsIronGloves"},
-        {ObjectID::ArmsRuinousGloves, "ArmsRuinousGloves"},
-        {ObjectID::ArmsSilverArms, "ArmsSilverArms"},
-        {ObjectID::ArmsStoneHands, "ArmsStoneHands"},
-        {ObjectID::Barrel, "Barrel"},
-        {ObjectID::Bed, "Bed"},
-        {ObjectID::BigGreyDoorLeft, "BigGreyDoorLeft"},
-        {ObjectID::BigGreyDoorRight, "BigGreyDoorRight"},
-        {ObjectID::BigRoughStoneDoor, "BigRoughStoneDoor"},
-        {ObjectID::BigStoneDoor, "BigStoneDoor"},
-        {ObjectID::BodyA, "BodyA"},
-        {ObjectID::BodyBreastPlate, "BodyBreastPlate"},
-        {ObjectID::BodyDarkArmor, "BodyDarkArmor"},
-        {ObjectID::BodyIceArmor, "BodyIceArmor"},
-        {ObjectID::BodyKnightPlate, "BodyKnightPlate"},
-        {ObjectID::BodySeathsArmor, "BodySeathsArmor"},
-        {ObjectID::Bones, "Bones"},
-        {ObjectID::Bones2, "Bones2"},
-        {ObjectID::Bucket, "Bucket"},
-        {ObjectID::CeilingTorch, "CeilingTorch"},
-        {ObjectID::Chair, "Chair"},
-        {ObjectID::ColosseumDoor, "ColosseumDoor"},
-        {ObjectID::CopperKnightStatue, "CopperKnightStatue"},
-        {ObjectID::CrossFeetTable, "CrossFeetTable"},
-        {ObjectID::DaytimeSkybox, "DaytimeSkybox"},
-        {ObjectID::DeadCrystalMiner, "DeadCrystalMiner"},
-        {ObjectID::DeadDudeRENAME_ME, "DeadDudeRENAME_ME"},
-        {ObjectID::DemonLordFromMadScientistTube, "DemonLordFromMadScientistTube"},
-        {ObjectID::DemonLordStatue, "DemonLordStatue"},
-        {ObjectID::DragonGrass, "DragonGrass"},
-        {ObjectID::DragonStoneSlot, "DragonStoneSlot"},
-        {ObjectID::DrawbridgeSwitch, "DrawbridgeSwitch"},
-        {ObjectID::DummyItem1, "DummyItem1"},
-        {ObjectID::DummyItem2, "DummyItem2"},
-        {ObjectID::DummyItem3, "DummyItem3"},
-        {ObjectID::DummyItem4, "DummyItem4"},
-        {ObjectID::DummyItem5, "DummyItem5"},
-        {ObjectID::DummyItem6, "DummyItem6"},
-        {ObjectID::DummyItem7, "DummyItem7"},
-        {ObjectID::EarthElementalStatue, "EarthElementalStatue"},
-        {ObjectID::ElfsGrave, "ElfsGrave"},
-        {ObjectID::EquipItemAmuletOfMist, "EquipItemAmuletOfMist"},
-        {ObjectID::EquipItemEarthRing, "EquipItemEarthRing"},
-        {ObjectID::EquipItemLightwaveRing, "EquipItemLightwaveRing"},
-        {ObjectID::EquipItemPsycprosCollar, "EquipItemPsycprosCollar"},
-        {ObjectID::EquipItemScorpionsBracelet, "EquipItemScorpionsBracelet"},
-        {ObjectID::EquipItemSeathsBracelet, "EquipItemSeathsBracelet"},
-        {ObjectID::EquipItemSeathsTear, "EquipItemSeathsTear"},
-        {ObjectID::FeetA, "FeetA"},
-        {ObjectID::FeetDeathWalkers, "FeetDeathWalkers"},
-        {ObjectID::FeetIronBoots, "FeetIronBoots"},
-        {ObjectID::FeetLegGuarders, "FeetLegGuarders"},
-        {ObjectID::FeetRuinousBoots, "FeetRuinousBoots"},
-        {ObjectID::FeetSilverBoots, "FeetSilverBoots"},
-        {ObjectID::GoldenThingRENAME_ME, "GoldenThingRENAME_ME"},
-        {ObjectID::GreenWallFloorTrap, "GreenWallFloorTrap"},
-        {ObjectID::GreenWallSecretDoor, "GreenWallSecretDoor"},
-        {ObjectID::GreenWallWithSecret1, "GreenWallWithSecret1"},
-        {ObjectID::GreenWallWithSecret2, "GreenWallWithSecret2"},
-        {ObjectID::GreenWallWithSpikeTrap, "GreenWallWithSpikeTrap"},
-        {ObjectID::Guidepost, "Guidepost"},
-        {ObjectID::GuyraTeleportCube, "GuyraTeleportCube"},
-        {ObjectID::HarvineCastleSign, "HarvineCastleSign"},
-        {ObjectID::HarvinesCastleDoor, "HarvinesCastleDoor"},
-        {ObjectID::HarvinesThrone, "HarvinesThrone"},
-        {ObjectID::HeadA, "HeadA"},
-        {ObjectID::HeadBloodCrown, "HeadBloodCrown"},
-        {ObjectID::HeadGreatHelm, "HeadGreatHelm"},
-        {ObjectID::HeadIronMask, "HeadIronMask"},
-        {ObjectID::HeadKnightHelm, "HeadKnightHelm"},
-        {ObjectID::HeadLightningHelm, "HeadLightningHelm"},
-        {ObjectID::HeadSeathsHelm, "HeadSeathsHelm"},
-        {ObjectID::InvisibleObject, "InvisibleObject"},
-        {ObjectID::ItemAHerb, "ItemAHerb"},
-        {ObjectID::ItemAHerb2, "ItemAHerb2"},
-        {ObjectID::ItemAPotion, "ItemAPotion"},
-        {ObjectID::ItemARing, "ItemARing"},
-        {ObjectID::ItemAntidote, "ItemAntidote"},
-        {ObjectID::ItemArrowForTheBow, "ItemArrowForTheBow"},
-        {ObjectID::ItemBloodStone, "ItemBloodStone"},
-        {ObjectID::ItemBluePotion, "ItemBluePotion"},
-        {ObjectID::ItemCrystal, "ItemCrystal"},
-        {ObjectID::ItemCrystalFlask, "ItemCrystalFlask"},
-        {ObjectID::ItemCrystalShard, "ItemCrystalShard"},
-        {ObjectID::ItemDarkCrystal, "ItemDarkCrystal"},
-        {ObjectID::ItemDemonsPick, "ItemDemonsPick"},
-        {ObjectID::ItemDragonCrystal, "ItemDragonCrystal"},
-        {ObjectID::ItemDragonStone, "ItemDragonStone"},
-        {ObjectID::ItemEarthCrystal, "ItemEarthCrystal"},
-        {ObjectID::ItemEarthHerb, "ItemEarthHerb"},
-        {ObjectID::ItemElfsBolt, "ItemElfsBolt"},
-        {ObjectID::ItemElfsKey, "ItemElfsKey"},
-        {ObjectID::ItemFigureOfSeath, "ItemFigureOfSeath"},
-        {ObjectID::ItemFireCrystal, "ItemFireCrystal"},
-        {ObjectID::ItemGoldCoin, "ItemGoldCoin"},
-        {ObjectID::ItemGoldKey, "ItemGoldKey"},
-        {ObjectID::ItemGoldPotion, "ItemGoldPotion"},
-        {ObjectID::ItemGreenPotion, "ItemGreenPotion"},
-        {ObjectID::ItemGroundBell, "ItemGroundBell"},
-        {ObjectID::ItemHarvinesFlute, "ItemHarvinesFlute"},
-        {ObjectID::ItemHarvinesKey, "ItemHarvinesKey"},
-        {ObjectID::ItemJailKey, "ItemJailKey"},
-        {ObjectID::ItemLightCrystal, "ItemLightCrystal"},
-        {ObjectID::ItemMagiciansKey, "ItemMagiciansKey"},
-        {ObjectID::ItemMinersMap, "ItemMinersMap"},
-        {ObjectID::ItemMoonGate, "ItemMoonGate"},
-        {ObjectID::ItemMoonKey, "ItemMoonKey"},
-        {ObjectID::ItemMoonStone, "ItemMoonStone"},
-        {ObjectID::ItemNecronsMap, "ItemNecronsMap"},
-        {ObjectID::ItemPhantomRod, "ItemPhantomRod"},
-        {ObjectID::ItemPiratesKey, "ItemPiratesKey"},
-        {ObjectID::ItemPiratesMap, "ItemPiratesMap"},
-        {ObjectID::ItemRedPotion, "ItemRedPotion"},
-        {ObjectID::ItemRhombusKey, "ItemRhombusKey"},
-        {ObjectID::ItemSeathsPlume, "ItemSeathsPlume"},
-        {ObjectID::ItemShrineKey, "ItemShrineKey"},
-        {ObjectID::ItemSilverKey, "ItemSilverKey"},
-        {ObjectID::ItemSkullKey, "ItemSkullKey"},
-        {ObjectID::ItemStarGate, "ItemStarGate"},
-        {ObjectID::ItemStarKey, "ItemStarKey"},
-        {ObjectID::ItemSunGate, "ItemSunGate"},
-        {ObjectID::ItemSunKey, "ItemSunKey"},
-        {ObjectID::ItemTruthGlass, "ItemTruthGlass"},
-        {ObjectID::ItemVerdite, "ItemVerdite"},
-        {ObjectID::ItemWaterCrystal, "ItemWaterCrystal"},
-        {ObjectID::ItemWindCrystal, "ItemWindCrystal"},
-        {ObjectID::JailDoor, "JailDoor"},
-        {ObjectID::KnockerDoorLeft, "KnockerDoorLeft"},
-        {ObjectID::KnockerDoorRight, "KnockerDoorRight"},
-        {ObjectID::Lantern, "Lantern"},
-        {ObjectID::LoadArea, "LoadArea"},
-        {ObjectID::MadScientistBox, "MadScientistBox"},
-        {ObjectID::MadScientistLightCrystalMachine, "MadScientistLightCrystalMachine"},
-        {ObjectID::MadScientistTube, "MadScientistTube"},
-        {ObjectID::MarbleWallFloorTrap, "MarbleWallFloorTrap"},
-        {ObjectID::MineSign, "MineSign"},
-        {ObjectID::Minecart, "Minecart"},
-        {ObjectID::MinersGraveMaybe, "MinersGraveMaybe"},
-        {ObjectID::Moon, "Moon"},
-        {ObjectID::MountainSkybox, "MountainSkybox"},
-        {ObjectID::NighttimeSkybox, "NighttimeSkybox"},
-        {ObjectID::NighttimeSkybox2, "NighttimeSkybox2"},
-        {ObjectID::None, "None"},
-        {ObjectID::PillarOfWind, "PillarOfWind"},
-        {ObjectID::RedFlower, "RedFlower"},
-        {ObjectID::RhombusKeyDoor, "RhombusKeyDoor"},
-        {ObjectID::RhombusKeySlot, "RhombusKeySlot"},
-        {ObjectID::SamuraisGrave, "SamuraisGrave"},
-        {ObjectID::Savepoint, "Savepoint"},
-        {ObjectID::SeathsFountainDoorLeft, "SeathsFountainDoorLeft"},
-        {ObjectID::SeathsFountainDoorRight, "SeathsFountainDoorRight"},
-        {ObjectID::SeathsFountainPillar, "SeathsFountainPillar"},
-        {ObjectID::SecretDoor, "SecretDoor"},
-        {ObjectID::Shelf, "Shelf"},
-        {ObjectID::ShieldA, "ShieldA"},
-        {ObjectID::ShieldCrystalGuard, "ShieldCrystalGuard"},
-        {ObjectID::ShieldLargeShield, "ShieldLargeShield"},
-        {ObjectID::ShieldLeatherShield, "ShieldLeatherShield"},
-        {ObjectID::ShieldMoonGuard, "ShieldMoonGuard"},
-        {ObjectID::ShieldSeathsShield, "ShieldSeathsShield"},
-        {ObjectID::ShieldSkullShield, "ShieldSkullShield"},
-        {ObjectID::ShovelAndHammer, "ShovelAndHammer"},
-        {ObjectID::ShrineKeySlot, "ShrineKeySlot"},
-        {ObjectID::Sign, "Sign"},
-        {ObjectID::SimpleStoolMaybeRENAME_ME, "SimpleStoolMaybeRENAME_ME"},
-        {ObjectID::SkullKeySlot, "SkullKeySlot"},
-        {ObjectID::SkullKeyWaterObstacle, "SkullKeyWaterObstacle"},
-        {ObjectID::SlotForSomethingRENAME_ME, "SlotForSomethingRENAME_ME"},
-        {ObjectID::SmallBed, "SmallBed"},
-        {ObjectID::SmallStackOfLogs, "SmallStackOfLogs"},
-        {ObjectID::SmallTable, "SmallTable"},
-        {ObjectID::SmallWeirdPillarRENAME_ME, "SmallWeirdPillarRENAME_ME"},
-        {ObjectID::SomeBrokenGrave, "SomeBrokenGrave"},
-        {ObjectID::SomeBrokenGrave2, "SomeBrokenGrave2"},
-        {ObjectID::SomeDoorHandleRENAME_ME, "SomeDoorHandleRENAME_ME"},
-        {ObjectID::SomeGrave, "SomeGrave"},
-        {ObjectID::SquareWell, "SquareWell"},
-        {ObjectID::StoneChestBody, "StoneChestBody"},
-        {ObjectID::StoneChestLid, "StoneChestLid"},
-        {ObjectID::StoneGobletWithLavaRENAME_ME, "StoneGobletWithLavaRENAME_ME"},
-        {ObjectID::StonePillar, "StonePillar"},
-        {ObjectID::StoneThing2RENAME_ME, "StoneThing2RENAME_ME"},
-        {ObjectID::StoneThing3RENAME_ME, "StoneThing3RENAME_ME"},
-        {ObjectID::StoneThingRENAME_ME, "StoneThingRENAME_ME"},
-        {ObjectID::Stool, "Stool"},
-        {ObjectID::SwingingScythe, "SwingingScythe"},
-        {ObjectID::SwingingSpikeBall, "SwingingSpikeBall"},
-        {ObjectID::TableWithThingie, "TableWithThingie"},
-        {ObjectID::TarnStatue, "TarnStatue"},
-        {ObjectID::TheMagiciansLamp, "TheMagiciansLamp"},
-        {ObjectID::TheSoldiersGrave, "TheSoldiersGrave"},
-        {ObjectID::ThreeStones, "ThreeStones"},
-        {ObjectID::TinyXFeetTable, "TinyXFeetTable"},
-        {ObjectID::Tree, "Tree"},
-        {ObjectID::WHATTHEFUCKStatue, "WHATTHEFUCKStatue"},
-        {ObjectID::WTF, "WTF"},
-        {ObjectID::WallTorch, "WallTorch"},
-        {ObjectID::WallWithSecret, "WallWithSecret"},
-        {ObjectID::WallWithSecret2, "WallWithSecret2"},
-        {ObjectID::WallWithSpikeTrap, "WallWithSpikeTrap"},
-        {ObjectID::WallWriting, "WallWriting"},
-        {ObjectID::WallWriting2, "WallWriting2"},
-        {ObjectID::WallWriting3, "WallWriting3"},
-        {ObjectID::WaterWell, "WaterWell"},
-        {ObjectID::WeaponA1, "WeaponA1"},
-        {ObjectID::WeaponA2, "WeaponA2"},
-        {ObjectID::WeaponA3, "WeaponA3"},
-        {ObjectID::WeaponA4, "WeaponA4"},
-        {ObjectID::WeaponA5, "WeaponA5"},
-        {ObjectID::WeaponArbalest, "WeaponArbalest"},
-        {ObjectID::WeaponBastardSword, "WeaponBastardSword"},
-        {ObjectID::WeaponBattleHammer, "WeaponBattleHammer"},
-        {ObjectID::WeaponBow, "WeaponBow"},
-        {ObjectID::WeaponCrescentAxe, "WeaponCrescentAxe"},
-        {ObjectID::WeaponDagger, "WeaponDagger"},
-        {ObjectID::WeaponDarkSlayer, "WeaponDarkSlayer"},
-        {ObjectID::WeaponFlameSword, "WeaponFlameSword"},
-        {ObjectID::WeaponIceBlade, "WeaponIceBlade"},
-        {ObjectID::WeaponKnightSword, "WeaponKnightSword"},
-        {ObjectID::WeaponMoonlightSword, "WeaponMoonlightSword"},
-        {ObjectID::WeaponMorningStar, "WeaponMorningStar"},
-        {ObjectID::WeaponSeathsSword, "WeaponSeathsSword"},
-        {ObjectID::WeaponShiden, "WeaponShiden"},
-        {ObjectID::WeaponShortSword, "WeaponShortSword"},
-        {ObjectID::WeaponSpider, "WeaponSpider"},
-        {ObjectID::WeirdPillarRENAME_ME, "WeirdPillarRENAME_ME"},
-        {ObjectID::WhitePinkFlower, "WhitePinkFlower"},
-        {ObjectID::WoodenChestBody, "WoodenChestBody"},
-        {ObjectID::WoodenChestLid, "WoodenChestLid"},
-        {ObjectID::WoodenThingRENAME_ME, "WoodenThingRENAME_ME"},
-        {ObjectID::XFeetTable, "XFeetTable"}
-    };
-
     // Functions
 
-    static const QString &getEntityMeshName(EntityMeshID entityMeshId)
+    static const QString getEntityMeshName(const EntityMeshID entityMeshId)
     {
-        if (entityMeshIdNameMap.count(entityMeshId) == 1)
-            return entityMeshIdNameMap.at(entityMeshId);
-
-        return unknownString;
+        switch (entityMeshId)
+        {
+            case EntityMeshID::AlHunt: return "AlHunt";
+            case EntityMeshID::Archer: return "Archer";
+            case EntityMeshID::Baltail: return "Baltail";
+            case EntityMeshID::BaltailTail: return "BaltailTail";
+            case EntityMeshID::Billent: return "Billent";
+            case EntityMeshID::Bitt: return "Bitt";
+            case EntityMeshID::Cable: return "Cable";
+            case EntityMeshID::CellfyFoss: return "CellfyFoss";
+            case EntityMeshID::CellfyFoss2: return "CellfyFoss2";
+            case EntityMeshID::CliffLore: return "CliffLore";
+            case EntityMeshID::CopperKnight: return "CopperKnight";
+            case EntityMeshID::DalfVice: return "DalfVice";
+            case EntityMeshID::DavidTabler: return "DavidTabler";
+            case EntityMeshID::DemonLord: return "DemonLord";
+            case EntityMeshID::DiasBagil: return "DiasBagil";
+            case EntityMeshID::DragonGrass: return "DragonGrass";
+            case EntityMeshID::EarnestClyde: return "EarnestClyde";
+            case EntityMeshID::EarnestClydeSitting: return "EarnestClydeSitting";
+            case EntityMeshID::EarthElemental: return "EarthElemental";
+            case EntityMeshID::FaiFadlin: return "FaiFadlin";
+            case EntityMeshID::FireElemental: return "FireElemental";
+            case EntityMeshID::Ghost: return "Ghost";
+            case EntityMeshID::GiantTermite: return "GiantTermite";
+            case EntityMeshID::GigiBudwell: return "GigiBudwell";
+            case EntityMeshID::GigiBudwellWatering: return "GigiBudwellWatering";
+            case EntityMeshID::GreenSlime: return "GreenSlime";
+            case EntityMeshID::GreenSlime2: return "GreenSlime2";
+            case EntityMeshID::GreenSlime3: return "GreenSlime3";
+            case EntityMeshID::GreenSlime4: return "GreenSlime4";
+            case EntityMeshID::GreenSlimeDeath: return "GreenSlimeDeath";
+            case EntityMeshID::GreenSlimeDeath2: return "GreenSlimeDeath2";
+            case EntityMeshID::GreenSlimeDeath3: return "GreenSlimeDeath3";
+            case EntityMeshID::GreenSlimeDeath4: return "GreenSlimeDeath4";
+            case EntityMeshID::Guyra: return "Guyra";
+            case EntityMeshID::HarrisCarvitto: return "HarrisCarvitto";
+            case EntityMeshID::HeadEater: return "HeadEater";
+            case EntityMeshID::JoseHarven: return "JoseHarven";
+            case EntityMeshID::JoseHavenDeath: return "JoseHavenDeath";
+            case EntityMeshID::JoseHavenDeath2: return "JoseHavenDeath2";
+            case EntityMeshID::Kald: return "Kald";
+            case EntityMeshID::KarenShore: return "KarenShore";
+            case EntityMeshID::KarenShoreChair: return "KarenShoreChair";
+            case EntityMeshID::KehlHunt: return "KehlHunt";
+            case EntityMeshID::KehlHunt2: return "KehlHunt2";
+            case EntityMeshID::KrakenBody: return "KrakenBody";
+            case EntityMeshID::KrakenHead: return "KrakenHead";
+            case EntityMeshID::KrolaAmgun: return "KrolaAmgun";
+            case EntityMeshID::KrolaAmgunCooking: return "KrolaAmgunCooking";
+            case EntityMeshID::LeonShore: return "LeonShore";
+            case EntityMeshID::LeonShoreWatering: return "LeonShoreWatering";
+            case EntityMeshID::LogStalker: return "LogStalker";
+            case EntityMeshID::MagesCandlesticks: return "MagesCandlesticks";
+            case EntityMeshID::MarkWozz: return "MarkWozz";
+            case EntityMeshID::MechaDemonLord: return "MechaDemonLord";
+            case EntityMeshID::MechaReik: return "MechaReik";
+            case EntityMeshID::MechaTermite: return "MechaTermite";
+            case EntityMeshID::Meryl: return "Meryl";
+            case EntityMeshID::Miria: return "Miria";
+            case EntityMeshID::Mogle: return "Mogle";
+            case EntityMeshID::NolaBagil: return "NolaBagil";
+            case EntityMeshID::None: return "None";
+            case EntityMeshID::PoisonSlime: return "PoisonSlime";
+            case EntityMeshID::Psythe: return "Psythe";
+            case EntityMeshID::RaddBilheim: return "RaddBilheim";
+            case EntityMeshID::RaffyFoss: return "RaffyFoss";
+            case EntityMeshID::RandFerrer: return "RandFerrer";
+            case EntityMeshID::RedSpikeBall: return "RedSpikeBall";
+            case EntityMeshID::Refma: return "Refma";
+            case EntityMeshID::Refma2: return "Refma2";
+            case EntityMeshID::Reik: return "Reik";
+            case EntityMeshID::SKnight: return "SKnight";
+            case EntityMeshID::SaintGrave: return "SaintGrave";
+            case EntityMeshID::Salamander: return "Salamander";
+            case EntityMeshID::SandlerAmgun: return "SandlerAmgun";
+            case EntityMeshID::SandlerAmgun2: return "SandlerAmgun2";
+            case EntityMeshID::Sigill: return "Sigill";
+            case EntityMeshID::Skeleton: return "Skeleton";
+            case EntityMeshID::SkeletonOfOneEyedGiant: return "SkeletonOfOneEyedGiant";
+            case EntityMeshID::Soldier: return "Soldier";
+            case EntityMeshID::StingFly: return "StingFly";
+            case EntityMeshID::StingFlyTail: return "StingFlyTail";
+            case EntityMeshID::Tarn: return "Tarn";
+            case EntityMeshID::TeoBudwell: return "TeoBudwell";
+            case EntityMeshID::TeoBudwellMowing: return "TeoBudwellMowing";
+            case EntityMeshID::TeoBudwellWithGigi: return "TeoBudwellWithGigi";
+            case EntityMeshID::Termite: return "Termite";
+            case EntityMeshID::ThePictureOfAKing: return "ThePictureOfAKing";
+            case EntityMeshID::Transparent: return "Transparent";
+            case EntityMeshID::Unused: return "Unused";
+            case EntityMeshID::Unused10: return "Unused10";
+            case EntityMeshID::Unused11: return "Unused11";
+            case EntityMeshID::Unused12: return "Unused12";
+            case EntityMeshID::Unused13: return "Unused13";
+            case EntityMeshID::Unused14: return "Unused14";
+            case EntityMeshID::Unused15: return "Unused15";
+            case EntityMeshID::Unused16: return "Unused16";
+            case EntityMeshID::Unused17: return "Unused17";
+            case EntityMeshID::Unused18: return "Unused18";
+            case EntityMeshID::Unused19: return "Unused19";
+            case EntityMeshID::Unused2: return "Unused2";
+            case EntityMeshID::Unused20: return "Unused20";
+            case EntityMeshID::Unused21: return "Unused21";
+            case EntityMeshID::Unused22: return "Unused22";
+            case EntityMeshID::Unused23: return "Unused23";
+            case EntityMeshID::Unused24: return "Unused24";
+            case EntityMeshID::Unused3: return "Unused3";
+            case EntityMeshID::Unused4: return "Unused4";
+            case EntityMeshID::Unused5: return "Unused5";
+            case EntityMeshID::Unused6: return "Unused6";
+            case EntityMeshID::Unused7: return "Unused7";
+            case EntityMeshID::Unused8: return "Unused8";
+            case EntityMeshID::Unused9: return "Unused9";
+            default: return unknownString;
+        }
     }
 
-    static EntityMeshID getEntityMeshIDFromByte(byte meshId)
+    inline static EntityMeshID getEntityMeshIDFromByte(const byte meshId)
     {
         return static_cast<EntityMeshID>(meshId);
     }
 
-    static byte getEntityMeshIDAsByte(EntityMeshID entityMeshId)
+    inline static byte getEntityMeshIDAsByte(const EntityMeshID entityMeshId)
     {
         return static_cast<byte>(entityMeshId);
     }
 
-    static const QString &getEntityStateIDName(EntityStateID entityStateId)
+    static const QString getEntityStateIDName(const EntityStateID entityStateId)
     {
-        if (entityStateIdNameMap.count(entityStateId) == 1)
-            return entityStateIdNameMap.at(entityStateId);
-
-        return unknownString;
+        switch (entityStateId)
+        {
+            case EntityStateID::FlyingAttackMaybe: return "Flying Attack?";
+            case EntityStateID::FlyingWander: return "Flying Wander";
+            case EntityStateID::MagicAttack: return "Magic Attack";
+            case EntityStateID::ApproachingPlayer: return "Approaching Player";
+            case EntityStateID::Wander: return "Wander";
+            case EntityStateID::MeleeAttack: return "Melee Attack";
+            case EntityStateID::TakingDamage: return "Taking Damage";
+            case EntityStateID::None: return "None";
+            case EntityStateID::MeleeAttack3: return "Melee Attack 3";
+            case EntityStateID::MeleeAttack2: return "Melee Attack 2";
+            case EntityStateID::Idle: return "Idle";
+            case EntityStateID::Dialogue: return "Dialogue";
+            case EntityStateID::Dying: return "Dying";
+            default: return unknownString;
+        }
     }
-    
-    static EntityStateID getEntityStateIDFromByte(byte stateId)
+
+    inline static EntityStateID getEntityStateIDFromByte(const byte stateId)
     {
         return static_cast<EntityStateID>(stateId);
     }
-    
-    static byte getEntityStateIDAsByte(EntityStateID entityStateId)
+
+    inline static byte getEntityStateIDAsByte(const EntityStateID entityStateId)
     {
         return static_cast<byte>(entityStateId);
     }
-    
-    static const QString &getMagicIDName(MagicID magicId)
-    {
-        if (magicIdNameMap.count(magicId) == 1)
-            return magicIdNameMap.at(magicId);
 
-        return unknownString;
+    static const QString getMagicIDName(const MagicID magicId)
+    {
+        switch (magicId)
+        {
+            case MagicID::ArcherArrow: return "ArcherArrow";
+            case MagicID::ArcherParalyzeArrow: return "ArcherParalyzeArrow";
+            case MagicID::Breath: return "Breath";
+            case MagicID::DarkSlayerMagicA: return "DarkSlayerMagicA";
+            case MagicID::DarkSlayerMagicB: return "DarkSlayerMagicB";
+            case MagicID::Dispoison: return "Dispoison";
+            case MagicID::DoubleFireball: return "DoubleFireball";
+            case MagicID::EarthHeal: return "EarthHeal";
+            case MagicID::EarthWave: return "EarthWave";
+            case MagicID::EnemyEarthMagic: return "EnemyEarthMagic";
+            case MagicID::EnemyHomingEarthMagic: return "EnemyHomingEarthMagic";
+            case MagicID::EnemyLightningVolt: return "EnemyLightningVolt";
+            case MagicID::FireBall: return "FireBall";
+            case MagicID::FireStorm: return "FireStorm";
+            case MagicID::FireWall: return "FireWall";
+            case MagicID::Flame: return "Flame";
+            case MagicID::FlameSwordMagicA: return "FlameSwordMagicA";
+            case MagicID::FlameSwordMagicB: return "FlameSwordMagicB";
+            case MagicID::Flash: return "Flash";
+            case MagicID::Freeze: return "Freeze";
+            case MagicID::IceBladeMagicA: return "IceBladeMagicA";
+            case MagicID::IceBladeMagicB: return "IceBladeMagicB";
+            case MagicID::IceStorm: return "IceStorm";
+            case MagicID::Light: return "Light";
+            case MagicID::LightningVolt: return "LightningVolt";
+            case MagicID::Meteor: return "Meteor";
+            case MagicID::MissileShield: return "MissileShield";
+            case MagicID::MoonlightSwordMagicA: return "MoonlightSwordMagicA";
+            case MagicID::MoonlightSwordMagicB: return "MoonlightSwordMagicB";
+            case MagicID::None: return "None";
+            case MagicID::PsytheCurseOrb: return "PsytheCurseOrb";
+            case MagicID::ResistFire: return "ResistFire";
+            case MagicID::SKnightPoisonBreath: return "SKnightPoisonBreath";
+            case MagicID::Seath: return "Seath";
+            case MagicID::SeathsSwordMagicA: return "SeathsSwordMagicA";
+            case MagicID::ShidenMagicA: return "ShidenMagicA";
+            case MagicID::ShidenMagicB: return "ShidenMagicB";
+            case MagicID::SpiderSwordMagicA: return "SpiderSwordMagicA";
+            case MagicID::SpiderSwordMagicB: return "SpiderSwordMagicB";
+            case MagicID::Stone: return "Stone";
+            case MagicID::TarnWindMagic: return "TarnWindMagic";
+            case MagicID::WaterFall: return "WaterFall";
+            case MagicID::WindCutter: return "WindCutter";
+            default: return unknownString;
+        }
     }
 
-    static MagicID getMagicIDFromByte(byte magicId)
+    inline static MagicID getMagicIDFromByte(const byte magicId)
     {
         return static_cast<MagicID>(magicId);
     }
 
-    static byte getMagicIDAsByte(MagicID magicId)
+    inline static byte getMagicIDAsByte(const MagicID magicId)
     {
         return static_cast<byte>(magicId);
     }
 
-    static const QString &getObjectName(ObjectID itemId)
+    static const QString getObjectName(const ObjectID itemId)
     {
-        if (objectIdNameMap.count(itemId) == 1)
-            return objectIdNameMap.at(itemId);
-
-        return unknownString;
+        switch (itemId)
+        {
+            case ObjectID::ABrokenSword: return "ABrokenSword";
+            case ObjectID::ASoldierOfVerdite: return "ASoldierOfVerdite";
+            case ObjectID::ArmsA: return "ArmsA";
+            case ObjectID::ArmsDemonsHands: return "ArmsDemonsHands";
+            case ObjectID::ArmsIronGloves: return "ArmsIronGloves";
+            case ObjectID::ArmsRuinousGloves: return "ArmsRuinousGloves";
+            case ObjectID::ArmsSilverArms: return "ArmsSilverArms";
+            case ObjectID::ArmsStoneHands: return "ArmsStoneHands";
+            case ObjectID::Barrel: return "Barrel";
+            case ObjectID::Bed: return "Bed";
+            case ObjectID::BigGreyDoorLeft: return "BigGreyDoorLeft";
+            case ObjectID::BigGreyDoorRight: return "BigGreyDoorRight";
+            case ObjectID::BigRoughStoneDoor: return "BigRoughStoneDoor";
+            case ObjectID::BigStoneDoor: return "BigStoneDoor";
+            case ObjectID::BodyA: return "BodyA";
+            case ObjectID::BodyBreastPlate: return "BodyBreastPlate";
+            case ObjectID::BodyDarkArmor: return "BodyDarkArmor";
+            case ObjectID::BodyIceArmor: return "BodyIceArmor";
+            case ObjectID::BodyKnightPlate: return "BodyKnightPlate";
+            case ObjectID::BodySeathsArmor: return "BodySeathsArmor";
+            case ObjectID::Bones: return "Bones";
+            case ObjectID::Bones2: return "Bones2";
+            case ObjectID::Bucket: return "Bucket";
+            case ObjectID::CeilingTorch: return "CeilingTorch";
+            case ObjectID::Chair: return "Chair";
+            case ObjectID::ColosseumDoor: return "ColosseumDoor";
+            case ObjectID::CopperKnightStatue: return "CopperKnightStatue";
+            case ObjectID::CrossFeetTable: return "CrossFeetTable";
+            case ObjectID::DaytimeSkybox: return "DaytimeSkybox";
+            case ObjectID::DeadCrystalMiner: return "DeadCrystalMiner";
+            case ObjectID::DeadDudeRENAME_ME: return "DeadDudeRENAME_ME";
+            case ObjectID::DemonLordFromMadScientistTube: return "DemonLordFromMadScientistTube";
+            case ObjectID::DemonLordStatue: return "DemonLordStatue";
+            case ObjectID::DragonGrass: return "DragonGrass";
+            case ObjectID::DragonStoneSlot: return "DragonStoneSlot";
+            case ObjectID::DrawbridgeSwitch: return "DrawbridgeSwitch";
+            case ObjectID::DummyItem1: return "DummyItem1";
+            case ObjectID::DummyItem2: return "DummyItem2";
+            case ObjectID::DummyItem3: return "DummyItem3";
+            case ObjectID::DummyItem4: return "DummyItem4";
+            case ObjectID::DummyItem5: return "DummyItem5";
+            case ObjectID::DummyItem6: return "DummyItem6";
+            case ObjectID::DummyItem7: return "DummyItem7";
+            case ObjectID::EarthElementalStatue: return "EarthElementalStatue";
+            case ObjectID::ElfsGrave: return "ElfsGrave";
+            case ObjectID::EquipItemAmuletOfMist: return "EquipItemAmuletOfMist";
+            case ObjectID::EquipItemEarthRing: return "EquipItemEarthRing";
+            case ObjectID::EquipItemLightwaveRing: return "EquipItemLightwaveRing";
+            case ObjectID::EquipItemPsycprosCollar: return "EquipItemPsycprosCollar";
+            case ObjectID::EquipItemScorpionsBracelet: return "EquipItemScorpionsBracelet";
+            case ObjectID::EquipItemSeathsBracelet: return "EquipItemSeathsBracelet";
+            case ObjectID::EquipItemSeathsTear: return "EquipItemSeathsTear";
+            case ObjectID::FeetA: return "FeetA";
+            case ObjectID::FeetDeathWalkers: return "FeetDeathWalkers";
+            case ObjectID::FeetIronBoots: return "FeetIronBoots";
+            case ObjectID::FeetLegGuarders: return "FeetLegGuarders";
+            case ObjectID::FeetRuinousBoots: return "FeetRuinousBoots";
+            case ObjectID::FeetSilverBoots: return "FeetSilverBoots";
+            case ObjectID::GoldenThingRENAME_ME: return "GoldenThingRENAME_ME";
+            case ObjectID::GreenWallFloorTrap: return "GreenWallFloorTrap";
+            case ObjectID::GreenWallSecretDoor: return "GreenWallSecretDoor";
+            case ObjectID::GreenWallWithSecret1: return "GreenWallWithSecret1";
+            case ObjectID::GreenWallWithSecret2: return "GreenWallWithSecret2";
+            case ObjectID::GreenWallWithSpikeTrap: return "GreenWallWithSpikeTrap";
+            case ObjectID::Guidepost: return "Guidepost";
+            case ObjectID::GuyraTeleportCube: return "GuyraTeleportCube";
+            case ObjectID::HarvineCastleSign: return "HarvineCastleSign";
+            case ObjectID::HarvinesCastleDoor: return "HarvinesCastleDoor";
+            case ObjectID::HarvinesThrone: return "HarvinesThrone";
+            case ObjectID::HeadA: return "HeadA";
+            case ObjectID::HeadBloodCrown: return "HeadBloodCrown";
+            case ObjectID::HeadGreatHelm: return "HeadGreatHelm";
+            case ObjectID::HeadIronMask: return "HeadIronMask";
+            case ObjectID::HeadKnightHelm: return "HeadKnightHelm";
+            case ObjectID::HeadLightningHelm: return "HeadLightningHelm";
+            case ObjectID::HeadSeathsHelm: return "HeadSeathsHelm";
+            case ObjectID::InvisibleObject: return "InvisibleObject";
+            case ObjectID::ItemAHerb: return "ItemAHerb";
+            case ObjectID::ItemAHerb2: return "ItemAHerb2";
+            case ObjectID::ItemAPotion: return "ItemAPotion";
+            case ObjectID::ItemARing: return "ItemARing";
+            case ObjectID::ItemAntidote: return "ItemAntidote";
+            case ObjectID::ItemArrowForTheBow: return "ItemArrowForTheBow";
+            case ObjectID::ItemBloodStone: return "ItemBloodStone";
+            case ObjectID::ItemBluePotion: return "ItemBluePotion";
+            case ObjectID::ItemCrystal: return "ItemCrystal";
+            case ObjectID::ItemCrystalFlask: return "ItemCrystalFlask";
+            case ObjectID::ItemCrystalShard: return "ItemCrystalShard";
+            case ObjectID::ItemDarkCrystal: return "ItemDarkCrystal";
+            case ObjectID::ItemDemonsPick: return "ItemDemonsPick";
+            case ObjectID::ItemDragonCrystal: return "ItemDragonCrystal";
+            case ObjectID::ItemDragonStone: return "ItemDragonStone";
+            case ObjectID::ItemEarthCrystal: return "ItemEarthCrystal";
+            case ObjectID::ItemEarthHerb: return "ItemEarthHerb";
+            case ObjectID::ItemElfsBolt: return "ItemElfsBolt";
+            case ObjectID::ItemElfsKey: return "ItemElfsKey";
+            case ObjectID::ItemFigureOfSeath: return "ItemFigureOfSeath";
+            case ObjectID::ItemFireCrystal: return "ItemFireCrystal";
+            case ObjectID::ItemGoldCoin: return "ItemGoldCoin";
+            case ObjectID::ItemGoldKey: return "ItemGoldKey";
+            case ObjectID::ItemGoldPotion: return "ItemGoldPotion";
+            case ObjectID::ItemGreenPotion: return "ItemGreenPotion";
+            case ObjectID::ItemGroundBell: return "ItemGroundBell";
+            case ObjectID::ItemHarvinesFlute: return "ItemHarvinesFlute";
+            case ObjectID::ItemHarvinesKey: return "ItemHarvinesKey";
+            case ObjectID::ItemJailKey: return "ItemJailKey";
+            case ObjectID::ItemLightCrystal: return "ItemLightCrystal";
+            case ObjectID::ItemMagiciansKey: return "ItemMagiciansKey";
+            case ObjectID::ItemMinersMap: return "ItemMinersMap";
+            case ObjectID::ItemMoonGate: return "ItemMoonGate";
+            case ObjectID::ItemMoonKey: return "ItemMoonKey";
+            case ObjectID::ItemMoonStone: return "ItemMoonStone";
+            case ObjectID::ItemNecronsMap: return "ItemNecronsMap";
+            case ObjectID::ItemPhantomRod: return "ItemPhantomRod";
+            case ObjectID::ItemPiratesKey: return "ItemPiratesKey";
+            case ObjectID::ItemPiratesMap: return "ItemPiratesMap";
+            case ObjectID::ItemRedPotion: return "ItemRedPotion";
+            case ObjectID::ItemRhombusKey: return "ItemRhombusKey";
+            case ObjectID::ItemSeathsPlume: return "ItemSeathsPlume";
+            case ObjectID::ItemShrineKey: return "ItemShrineKey";
+            case ObjectID::ItemSilverKey: return "ItemSilverKey";
+            case ObjectID::ItemSkullKey: return "ItemSkullKey";
+            case ObjectID::ItemStarGate: return "ItemStarGate";
+            case ObjectID::ItemStarKey: return "ItemStarKey";
+            case ObjectID::ItemSunGate: return "ItemSunGate";
+            case ObjectID::ItemSunKey: return "ItemSunKey";
+            case ObjectID::ItemTruthGlass: return "ItemTruthGlass";
+            case ObjectID::ItemVerdite: return "ItemVerdite";
+            case ObjectID::ItemWaterCrystal: return "ItemWaterCrystal";
+            case ObjectID::ItemWindCrystal: return "ItemWindCrystal";
+            case ObjectID::JailDoor: return "JailDoor";
+            case ObjectID::KnockerDoorLeft: return "KnockerDoorLeft";
+            case ObjectID::KnockerDoorRight: return "KnockerDoorRight";
+            case ObjectID::Lantern: return "Lantern";
+            case ObjectID::LoadArea: return "LoadArea";
+            case ObjectID::MadScientistBox: return "MadScientistBox";
+            case ObjectID::MadScientistLightCrystalMachine:
+                return "MadScientistLightCrystalMachine";
+            case ObjectID::MadScientistTube: return "MadScientistTube";
+            case ObjectID::MarbleWallFloorTrap: return "MarbleWallFloorTrap";
+            case ObjectID::MineSign: return "MineSign";
+            case ObjectID::Minecart: return "Minecart";
+            case ObjectID::MinersGraveMaybe: return "MinersGraveMaybe";
+            case ObjectID::Moon: return "Moon";
+            case ObjectID::MountainSkybox: return "MountainSkybox";
+            case ObjectID::NighttimeSkybox: return "NighttimeSkybox";
+            case ObjectID::NighttimeSkybox2: return "NighttimeSkybox2";
+            case ObjectID::None: return "None";
+            case ObjectID::PillarOfWind: return "PillarOfWind";
+            case ObjectID::RedFlower: return "RedFlower";
+            case ObjectID::RhombusKeyDoor: return "RhombusKeyDoor";
+            case ObjectID::RhombusKeySlot: return "RhombusKeySlot";
+            case ObjectID::SamuraisGrave: return "SamuraisGrave";
+            case ObjectID::Savepoint: return "Savepoint";
+            case ObjectID::SeathsFountainDoorLeft: return "SeathsFountainDoorLeft";
+            case ObjectID::SeathsFountainDoorRight: return "SeathsFountainDoorRight";
+            case ObjectID::SeathsFountainPillar: return "SeathsFountainPillar";
+            case ObjectID::SecretDoor: return "SecretDoor";
+            case ObjectID::Shelf: return "Shelf";
+            case ObjectID::ShieldA: return "ShieldA";
+            case ObjectID::ShieldCrystalGuard: return "ShieldCrystalGuard";
+            case ObjectID::ShieldLargeShield: return "ShieldLargeShield";
+            case ObjectID::ShieldLeatherShield: return "ShieldLeatherShield";
+            case ObjectID::ShieldMoonGuard: return "ShieldMoonGuard";
+            case ObjectID::ShieldSeathsShield: return "ShieldSeathsShield";
+            case ObjectID::ShieldSkullShield: return "ShieldSkullShield";
+            case ObjectID::ShovelAndHammer: return "ShovelAndHammer";
+            case ObjectID::ShrineKeySlot: return "ShrineKeySlot";
+            case ObjectID::Sign: return "Sign";
+            case ObjectID::SimpleStoolMaybeRENAME_ME: return "SimpleStoolMaybeRENAME_ME";
+            case ObjectID::SkullKeySlot: return "SkullKeySlot";
+            case ObjectID::SkullKeyWaterObstacle: return "SkullKeyWaterObstacle";
+            case ObjectID::SlotForSomethingRENAME_ME: return "SlotForSomethingRENAME_ME";
+            case ObjectID::SmallBed: return "SmallBed";
+            case ObjectID::SmallStackOfLogs: return "SmallStackOfLogs";
+            case ObjectID::SmallTable: return "SmallTable";
+            case ObjectID::SmallWeirdPillarRENAME_ME: return "SmallWeirdPillarRENAME_ME";
+            case ObjectID::SomeBrokenGrave: return "SomeBrokenGrave";
+            case ObjectID::SomeBrokenGrave2: return "SomeBrokenGrave2";
+            case ObjectID::SomeDoorHandleRENAME_ME: return "SomeDoorHandleRENAME_ME";
+            case ObjectID::SomeGrave: return "SomeGrave";
+            case ObjectID::SquareWell: return "SquareWell";
+            case ObjectID::StoneChestBody: return "StoneChestBody";
+            case ObjectID::StoneChestLid: return "StoneChestLid";
+            case ObjectID::StoneGobletWithLavaRENAME_ME: return "StoneGobletWithLavaRENAME_ME";
+            case ObjectID::StonePillar: return "StonePillar";
+            case ObjectID::StoneThing2RENAME_ME: return "StoneThing2RENAME_ME";
+            case ObjectID::StoneThing3RENAME_ME: return "StoneThing3RENAME_ME";
+            case ObjectID::StoneThingRENAME_ME: return "StoneThingRENAME_ME";
+            case ObjectID::Stool: return "Stool";
+            case ObjectID::SwingingScythe: return "SwingingScythe";
+            case ObjectID::SwingingSpikeBall: return "SwingingSpikeBall";
+            case ObjectID::TableWithThingie: return "TableWithThingie";
+            case ObjectID::TarnStatue: return "TarnStatue";
+            case ObjectID::TheMagiciansLamp: return "TheMagiciansLamp";
+            case ObjectID::TheSoldiersGrave: return "TheSoldiersGrave";
+            case ObjectID::ThreeStones: return "ThreeStones";
+            case ObjectID::TinyXFeetTable: return "TinyXFeetTable";
+            case ObjectID::Tree: return "Tree";
+            case ObjectID::WHATTHEFUCKStatue: return "WHATTHEFUCKStatue";
+            case ObjectID::WTF: return "WTF";
+            case ObjectID::WallTorch: return "WallTorch";
+            case ObjectID::WallWithSecret: return "WallWithSecret";
+            case ObjectID::WallWithSecret2: return "WallWithSecret2";
+            case ObjectID::WallWithSpikeTrap: return "WallWithSpikeTrap";
+            case ObjectID::WallWriting: return "WallWriting";
+            case ObjectID::WallWriting2: return "WallWriting2";
+            case ObjectID::WallWriting3: return "WallWriting3";
+            case ObjectID::WaterWell: return "WaterWell";
+            case ObjectID::WeaponA1: return "WeaponA1";
+            case ObjectID::WeaponA2: return "WeaponA2";
+            case ObjectID::WeaponA3: return "WeaponA3";
+            case ObjectID::WeaponA4: return "WeaponA4";
+            case ObjectID::WeaponA5: return "WeaponA5";
+            case ObjectID::WeaponArbalest: return "WeaponArbalest";
+            case ObjectID::WeaponBastardSword: return "WeaponBastardSword";
+            case ObjectID::WeaponBattleHammer: return "WeaponBattleHammer";
+            case ObjectID::WeaponBow: return "WeaponBow";
+            case ObjectID::WeaponCrescentAxe: return "WeaponCrescentAxe";
+            case ObjectID::WeaponDagger: return "WeaponDagger";
+            case ObjectID::WeaponDarkSlayer: return "WeaponDarkSlayer";
+            case ObjectID::WeaponFlameSword: return "WeaponFlameSword";
+            case ObjectID::WeaponIceBlade: return "WeaponIceBlade";
+            case ObjectID::WeaponKnightSword: return "WeaponKnightSword";
+            case ObjectID::WeaponMoonlightSword: return "WeaponMoonlightSword";
+            case ObjectID::WeaponMorningStar: return "WeaponMorningStar";
+            case ObjectID::WeaponSeathsSword: return "WeaponSeathsSword";
+            case ObjectID::WeaponShiden: return "WeaponShiden";
+            case ObjectID::WeaponShortSword: return "WeaponShortSword";
+            case ObjectID::WeaponSpider: return "WeaponSpider";
+            case ObjectID::WeirdPillarRENAME_ME: return "WeirdPillarRENAME_ME";
+            case ObjectID::WhitePinkFlower: return "WhitePinkFlower";
+            case ObjectID::WoodenChestBody: return "WoodenChestBody";
+            case ObjectID::WoodenChestLid: return "WoodenChestLid";
+            case ObjectID::WoodenThingRENAME_ME: return "WoodenThingRENAME_ME";
+            case ObjectID::XFeetTable: return "XFeetTable";
+            default: return unknownString;
+        }
     }
 
-    static ObjectID getObjectIDFromByte(byte objectId)
+    inline static ObjectID getObjectIDFromByte(const byte objectId)
     {
         return static_cast<ObjectID>(objectId);
     }
 
-    static ObjectID getObjectIDFromUShort(unsigned short objectId)
+    inline static ObjectID getObjectIDFromUShort(const uint16_t objectId)
     {
         return static_cast<ObjectID>(objectId);
     }
 
-    static byte getObjectIDAsByte(ObjectID objectId)
+    inline static byte getObjectIDAsByte(const ObjectID objectId)
     {
         return static_cast<byte>(objectId);
     }
 
-    static unsigned short getObjectIDAsUShort(ObjectID objectId)
+    inline static unsigned short getObjectIDAsUShort(const ObjectID objectId)
     {
         return static_cast<unsigned short>(objectId);
     }
 
-    static const QString getWeaponStatsName(byte weaponStatsIndex)
+    static const QString getWeaponStatsName(const byte weaponStatsIndex)
     {
         switch(weaponStatsIndex)
         {
@@ -1021,7 +966,7 @@ namespace KingsField
             case 15: return "Dark Slayer";
             case 16: return "Bow";
             case 17: return "Arbalest";
-            default: return "ERROR";
+            default: return unknownString;
         }
     }
 
@@ -1134,7 +1079,7 @@ namespace KingsField
         {
             quint8 tempByte;
             in >> tempByte;
-            classDecl.MeshID = KingsField::getEntityMeshIDFromByte(tempByte);
+            classDecl.MeshID = KingsFieldII::getEntityMeshIDFromByte(tempByte);
             in >> classDecl.FourOrForty;
             in >> classDecl.field_0x2;
             in >> classDecl.KnockbackResistance;
@@ -1177,7 +1122,7 @@ namespace KingsField
 
         friend QDataStream &operator<<(QDataStream &out, const EntityClassDeclaration &classDecl)
         {
-            out << KingsField::getEntityMeshIDAsByte(classDecl.MeshID);
+            out << KingsFieldII::getEntityMeshIDAsByte(classDecl.MeshID);
             out << classDecl.FourOrForty;
             out << classDecl.field_0x2;
             out << classDecl.KnockbackResistance;
@@ -1242,7 +1187,7 @@ namespace KingsField
             in >> instance.NSYTilePos;
             in >> instance.RespawnChance;
             in >> tempByte;
-            instance.DroppedItem = KingsField::getObjectIDFromByte(tempByte);
+            instance.DroppedItem = KingsFieldII::getObjectIDFromByte(tempByte);
             in >> instance.Layer;
             in >> instance.ZRotation;
             in >> instance.FineWEXPos;
@@ -1685,9 +1630,9 @@ namespace KingsField
             in >> weaponStat.StrStaminaCost;
             in >> weaponStat.Unknown_x02;
             in >> tempByte;
-            weaponStat.Spell1 = KingsField::getMagicIDFromByte(tempByte);
+            weaponStat.Spell1 = KingsFieldII::getMagicIDFromByte(tempByte);
             in >> tempByte;
-            weaponStat.Spell2 = KingsField::getMagicIDFromByte(tempByte);
+            weaponStat.Spell2 = KingsFieldII::getMagicIDFromByte(tempByte);
             in >> weaponStat.Spell1ShotAmount;
             in >> weaponStat.OffSlash;
             in >> weaponStat.OffChop;
@@ -1723,8 +1668,8 @@ namespace KingsField
             out << weaponStat.SoundEffect;
             out << weaponStat.StrStaminaCost;
             out << weaponStat.Unknown_x02;
-            out << KingsField::getMagicIDAsByte(weaponStat.Spell1);
-            out << KingsField::getMagicIDAsByte(weaponStat.Spell2);
+            out << KingsFieldII::getMagicIDAsByte(weaponStat.Spell1);
+            out << KingsFieldII::getMagicIDAsByte(weaponStat.Spell2);
             out << weaponStat.Spell1ShotAmount;
             out << weaponStat.OffSlash;
             out << weaponStat.OffChop;

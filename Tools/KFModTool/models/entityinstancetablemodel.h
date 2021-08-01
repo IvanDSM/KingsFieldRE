@@ -1,15 +1,15 @@
 #ifndef ENTITYINSTANCETABLEMODEL_H
 #define ENTITYINSTANCETABLEMODEL_H
 
+#include "kf2types.h"
 #include <QAbstractTableModel>
-#include <kftypes.h>
 
 class EntityInstanceTableModel : public QAbstractTableModel
 {
     Q_OBJECT
 public:
     explicit EntityInstanceTableModel(QObject *parent,
-                                      KingsField::EntityInstance &entityInstance_) :
+                                      KingsFieldII::EntityInstance &entityInstance_) :
         QAbstractTableModel(parent),
         entityInstance(entityInstance_) {}
 
@@ -51,7 +51,7 @@ public:
     }
 
 private:
-    KingsField::EntityInstance &entityInstance;
+    KingsFieldII::EntityInstance &entityInstance;
 };
 
 #endif // ENTITYINSTANCETABLEMODEL_H

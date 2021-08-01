@@ -26,6 +26,6 @@ QVariant EntityInstanceListModel::data(const QModelIndex &index, int role) const
     
     const auto &entityClass = map->getEntityClassDeclaration(map->getEntityInstance(index.row()).EntityClass);
     
-    return QString::number(index.row()) + ": " + KingsField::getEntityMeshName(entityClass.MeshID) +
+    return QString::number(index.row()) + ": " + KingsFieldII::getEntityMeshName(entityClass.MeshID) +
             " @ 0x" + QString::number(0x8016c544 + (index.row() * 0x7c), 16);
 }

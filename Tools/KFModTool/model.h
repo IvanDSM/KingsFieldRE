@@ -1,8 +1,8 @@
 #ifndef MODEL_H
 #define MODEL_H
 
+#include "kf2types.h"
 #include "kfmterror.h"
-#include "kftypes.h"
 #include <QVector3D>
 #include <QVector4D>
 

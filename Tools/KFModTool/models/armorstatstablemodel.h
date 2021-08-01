@@ -1,15 +1,15 @@
 #ifndef ARMORSTATSTABLEMODEL_H
 #define ARMORSTATSTABLEMODEL_H
 
+#include "kf2types.h"
 #include <QAbstractTableModel>
-#include "kftypes.h"
 
 class ArmorStatsTableModel : public QAbstractTableModel
 {
     Q_OBJECT
 public:
     ArmorStatsTableModel(QObject * parent,
-                          KingsField::ArmorStats &armorStats_) :
+                          KingsFieldII::ArmorStats &armorStats_) :
         QAbstractTableModel(parent), armorStats(armorStats_) {}
 
     int columnCount(const QModelIndex &parent) const override
@@ -50,7 +50,7 @@ public:
     }
 
 private:
-    KingsField::ArmorStats &armorStats;
+    KingsFieldII::ArmorStats &armorStats;
 };
 
 #endif // ARMORSTATSTABLEMODEL_H
