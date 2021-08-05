@@ -14,6 +14,32 @@ Model::Model(QByteArray & modelFile)
         KFMTError::error("Model: Tried to build a model from a file that's not MO, RTMD or TMD.");
 }
 
+void Model::fixShiftedIndices()
+{
+    //Quick Hack:
+    //  Loop through each primitive and convert the vertex offsets to indices
+    //
+    for (Model::Mesh& mesh : Model::baseObjects)
+    {
+        for (Model::Primitive& prim : mesh.primitives)
+        {
+            prim.vertex0 = prim.vertex0 >> 3;
+            prim.vertex1 = prim.vertex1 >> 3;
+            prim.vertex2 = prim.vertex2 >> 3;
+            if (prim.isQuad()) prim.vertex3 = prim.vertex3 >> 3;
+
+            prim.normal0 = prim.normal0 >> 3;
+
+            if (prim.isSmooth())
+            {
+                prim.normal1 = prim.normal1 >> 3;
+                prim.normal2 = prim.normal2 >> 3;
+                if (prim.isQuad()) prim.normal3 = prim.normal3 >> 3;
+            }
+        }
+    }
+}
+
 void Model::loadMO(const QByteArray &file)
 {
     QDataStream moStream(file);
@@ -36,6 +62,7 @@ void Model::loadMO(const QByteArray &file)
     
     // Here we do things a bit backwards: We'll read the TMD first
     auto tmdSection = file.mid(tmdOffset);
+
     if (!Utilities::fileIsTMD(tmdSection))
     {
         KFMTError::error("Model::loadMO: Did not find a TMD at the expected location!");
@@ -45,9 +72,8 @@ void Model::loadMO(const QByteArray &file)
     loadTMD(tmdSection);
 
     // If there are no animations, we pack up and go. This MO serves as just a TMD encapsulator.
-    if (animationAmount_ == 0)
-        return;
-    
+    if (animationAmount_ == 0 || Utilities::fileIsSTTMD(tmdSection)) return;
+
     // Read the morph target table offsets
     moStream.device()->seek(morphTargetTableOffset);
 
@@ -185,49 +211,10 @@ void Model::loadRTMD(const QByteArray &file)
     for (auto objIt = baseObjects.begin() + 1; objIt != baseObjects.end(); objIt++)
         objIt->visible = false;
 
-    //Quick Hack:
-    //  Loop through each primitive and convert the vertex offsets to indices
-    //
-    for(Model::Mesh &mesh : Model::baseObjects)
-    {
-        for(Model::Primitive &prim : mesh.primitives)
-        {
-            if(prim.isTriangle())
-            {
-                prim.vertex0 = prim.vertex0 >> 3;
-                prim.vertex1 = prim.vertex1 >> 3;
-                prim.vertex2 = prim.vertex2 >> 3;
-
-                prim.normal0 = prim.normal0 >> 3;
-
-                if(prim.isSmooth())
-                {
-                    prim.normal1 = prim.normal1 >> 3;
-                    prim.normal2 = prim.normal2 >> 3;
-                }
-            }else
-            if(prim.isQuad()){
-                prim.vertex0 = prim.vertex0 >> 3;
-                prim.vertex1 = prim.vertex1 >> 3;
-                prim.vertex2 = prim.vertex2 >> 3;
-                prim.vertex3 = prim.vertex3 >> 3;
-
-                prim.normal0 = prim.normal0 >> 3;
-
-                if(prim.isSmooth())
-                {
-                    prim.normal1 = prim.normal1 >> 3;
-                    prim.normal2 = prim.normal2 >> 3;
-                    prim.normal3 = prim.normal3 >> 3;
-                }
-            }else{
-
-            }
-        }
-    }
+    fixShiftedIndices();
 }
 
-void Model::loadTMD(const QByteArray &file)
+void Model::loadTMD(const QByteArray& file)
 {
     QDataStream tmdStream(file);
     tmdStream.setByteOrder(QDataStream::LittleEndian);
@@ -247,8 +234,12 @@ void Model::loadTMD(const QByteArray &file)
     
     tmdStream >> nobj;
     baseObjects.resize(nobj);
-    
+
     quint64 objTableOffset = tmdStream.device()->pos();
+
+    // We need to check if this is a Shadow Tower TMD file or a traditional TMD file.
+    // You'll find out why soon.
+    bool isShadowTower = Utilities::fileIsSTTMD(file);
 
     for (quint32 curObj = 0; curObj < nobj; curObj++)
     {
@@ -266,36 +257,121 @@ void Model::loadTMD(const QByteArray &file)
         tmdStream >> normalCount;
         tmdStream >> primitivesOffset;
         tmdStream >> primitiveCount;
-        tmdStream >> tempScale;
-        scale = static_cast<float>(tempScale) / 4096.f;
+        if (!isShadowTower)
+        {
+            tmdStream >> tempScale;
+            scale = static_cast<float>(tempScale) / 4096.f;
+        }
 
         verticesOffset += objTableOffset;
         normalsOffset += objTableOffset;
         primitivesOffset += objTableOffset;
 
-        auto &objMesh = baseObjects[curObj];
-        
-        objMesh.vertices.resize(vertexCount);
-        objMesh.normals.resize(normalCount);
-        objMesh.primitives.resize(primitiveCount);
+        auto& obj = baseObjects[curObj];
+
+        obj.vertices.resize(vertexCount);
+        obj.normals.resize(normalCount);
+        obj.primitives.resize(primitiveCount);
+
+        // Shadow Tower has a customized TMD that does some funky stuff to eliminate the 4 byte
+        // overhead of the primitive header, replacing that with a fixed number of primitive counts
+        // in the TMD header.
+
+        uint16_t stPrimx24Count; // Size: 0x14
+        uint16_t stPrimx34Count; // Size: 0x18
+        uint16_t stPrimx2cCount; // Size: 0x1c
+        uint16_t stPrimx3cCount; // Size: 0x20
+        uint16_t stPrimx20Count;
+        uint16_t stPrimx30Count;
+        uint16_t stPrimx28Count;
+        uint16_t stPrimx38Count;
+
+        if (isShadowTower)
+        {
+            tmdStream >> stPrimx24Count;
+            tmdStream >> stPrimx34Count;
+            tmdStream >> stPrimx2cCount;
+            tmdStream >> stPrimx3cCount;
+            tmdStream >> stPrimx20Count;
+            tmdStream >> stPrimx30Count;
+            tmdStream >> stPrimx28Count;
+            tmdStream >> stPrimx38Count;
+
+            size_t curPrim = 0;
+
+            for (uint16_t i = 0; i < stPrimx24Count; i++, curPrim++)
+            {
+                obj.primitives[curPrim].mode = Primitive::PrimitiveMode::x24TriFlatTexOpaqueLit;
+                obj.primitives[curPrim].readx24(tmdStream);
+            }
+            for (uint16_t i = 0; i < stPrimx34Count; i++, curPrim++)
+            {
+                obj.primitives[curPrim].mode = Primitive::PrimitiveMode::x34TriGouraudTexOpaqueLit;
+                obj.primitives[curPrim].readx34(tmdStream);
+            }
+            for (uint16_t i = 0; i < stPrimx2cCount; i++, curPrim++)
+            {
+                obj.primitives[curPrim].mode = Primitive::PrimitiveMode::x2cQuadFlatTexOpaqueLit;
+                obj.primitives[curPrim].readx2c(tmdStream);
+            }
+            for (uint16_t i = 0; i < stPrimx3cCount; i++, curPrim++)
+            {
+                obj.primitives[curPrim].mode = Primitive::PrimitiveMode::x3cQuadGouraudTexOpaqueLit;
+                obj.primitives[curPrim].readx3c(tmdStream);
+            }
+            for (uint16_t i = 0; i < stPrimx20Count; i++, curPrim++)
+            {
+                obj.primitives[curPrim].flag
+                    = Primitive::PrimitiveFlag::SingleColorSingleFaceLightSourceCalc;
+                obj.primitives[curPrim].mode = Primitive::PrimitiveMode::x20TriFlatNoTexOpaqueLit;
+                obj.primitives[curPrim].readx20(tmdStream);
+            }
+            for (uint16_t i = 0; i < stPrimx30Count; i++, curPrim++)
+            {
+                obj.primitives[curPrim].flag
+                    = Primitive::PrimitiveFlag::SingleColorSingleFaceLightSourceCalc;
+                obj.primitives[curPrim].mode = Primitive::PrimitiveMode::x30TriGouraudNoTexOpaqueLit;
+                obj.primitives[curPrim].readx30(tmdStream);
+            }
+            for (uint16_t i = 0; i < stPrimx28Count; i++, curPrim++)
+            {
+                obj.primitives[curPrim].flag
+                    = Primitive::PrimitiveFlag::SingleColorSingleFaceLightSourceCalc;
+                obj.primitives[curPrim].mode = Primitive::PrimitiveMode::x28QuadFlatNoTexOpaqueLit;
+                obj.primitives[curPrim].readx28(tmdStream);
+            }
+            for (uint16_t i = 0; i < stPrimx38Count; i++, curPrim++)
+            {
+                obj.primitives[curPrim].flag
+                    = Primitive::PrimitiveFlag::SingleColorSingleFaceLightSourceCalc;
+                obj.primitives[curPrim].mode = Primitive::PrimitiveMode::x38QuadGouraudNoTexOpaqueLit;
+                obj.primitives[curPrim].readx38(tmdStream);
+            }
+
+            fixShiftedIndices();
+        }
 
         // Read object vertices
         tmdStream.device()->seek(verticesOffset);
-        for (auto &vertex : objMesh.vertices)
-            vertex.readSVECTOR(tmdStream);
+        for (auto& vertex : obj.vertices) vertex.readSVECTOR(tmdStream);
 
         // Read object normals
         tmdStream.device()->seek(normalsOffset);
-        for (auto &normal : objMesh.normals)
-            normal.readSVECTOR(tmdStream);
+        for (auto& normal : obj.normals) normal.readSVECTOR(tmdStream);
 
-        // Read object primitives
-        tmdStream.device()->seek(primitivesOffset);
-        for (auto &primitive : objMesh.primitives)
-            tmdStream >> primitive;
-        
+        if (!isShadowTower)
+        {
+            // Read object primitives
+            tmdStream.device()->seek(primitivesOffset);
+            for (auto& primitive : obj.primitives) primitive.readFrom(tmdStream);
+        }
+
         // Seek to the next object's position in the object table
-        tmdStream.device()->seek(objTableOffset + ((curObj + 1) * 28));
+        // ST TMD object tables are bigger than normal TMDs, so we need a distinction
+        if (isShadowTower)
+            tmdStream.device()->seek(objTableOffset + ((curObj + 1u) * 40u));
+        else
+            tmdStream.device()->seek(objTableOffset + ((curObj + 1u) * 28u));
     }
 }
 
@@ -325,232 +401,238 @@ void Model::Vec3::readSVECTOR(QDataStream & in)
     z = static_cast<float>(vz) / 4096.f;
 }
 
-QDataStream &operator>>(QDataStream & in, Model::Primitive & primitive)
+void Model::Primitive::readFrom(QDataStream& stream)
 {
     uint8_t tempByte;
-    
-    // Lambda for reading gradation if necessary
-    auto readGradation = [](QDataStream &inStream, Model::Primitive &prim)
-    {
-        if (prim.isGradation())
-        {
-            inStream >> prim.r1;
-            inStream >> prim.g1;
-            inStream >> prim.b1;
-            inStream.skipRawData(1);
-            inStream >> prim.r2;
-            inStream >> prim.g2;
-            inStream >> prim.b2;
-            inStream.skipRawData(1);
-            if (prim.isQuad())
-            {
-                inStream >> prim.r3;
-                inStream >> prim.g3;
-                inStream >> prim.b3;
-                inStream.skipRawData(1);
-            }
-        }
-    };
-    
+
     // The elements are read in inverse order because the PS1 is a little endian architecture,
     // and this entire section is read as one 32-bit integer to save speed on the actual hardware.
-    in >> primitive.olen;
-    in >> primitive.ilen;
-    
-    in >> tempByte;
-    primitive.flag = static_cast<Model::Primitive::PrimitiveFlag>(tempByte);
-    
-    in >> tempByte;
-    primitive.mode = static_cast<Model::Primitive::PrimitiveMode>(tempByte);
-    
+    stream >> olen;
+    stream >> ilen;
+
+    stream >> tempByte;
+    flag = static_cast<Model::Primitive::PrimitiveFlag>(tempByte);
+
+    stream >> tempByte;
+    mode = static_cast<Model::Primitive::PrimitiveMode>(tempByte);
+
     if (tempByte < 0x20 || tempByte > 0x7e)
     {
-        KFMTError::error(QString::asprintf("Model: TMD: Invalid mode 0x%x.", tempByte));
-        in.skipRawData(primitive.ilen);
-        return in;
+        KFMTError::error(
+            QString::asprintf("Model: TMD: Invalid mode 0x%x (ilen = %d).", tempByte, ilen));
+        stream.skipRawData(ilen * 4);
+        return;
     }
-    
-    switch(primitive.mode)
+
+    switch (mode)
     {
-        case(Model::Primitive::PrimitiveMode::x22TriFlatNoTexTranslucentLit):
-            primitive.alpha = 127;
+        case (Model::Primitive::PrimitiveMode::x22TriFlatNoTexTranslucentLit):
+            alpha = 127;
             [[fallthrough]];
-        case(Model::Primitive::PrimitiveMode::x20TriFlatNoTexOpaqueLit):
-            in >> primitive.r0;
-            in >> primitive.g0;
-            in >> primitive.b0;
-            in.skipRawData(1);
-            readGradation(in, primitive);
-            in >> primitive.normal0;
-            in >> primitive.vertex0;
-            in >> primitive.vertex1;
-            in >> primitive.vertex2;
-            break;
-        case(Model::Primitive::PrimitiveMode::x26TriFlatTexTranslucentLit):
-            primitive.alpha = 127;
+        case (Model::Primitive::PrimitiveMode::x20TriFlatNoTexOpaqueLit): readx20(stream); break;
+        case (Model::Primitive::PrimitiveMode::x26TriFlatTexTranslucentLit):
+            alpha = 127;
             [[fallthrough]];
-        case(Model::Primitive::PrimitiveMode::x24TriFlatTexOpaqueLit):
-            in >> primitive.u0;
-            in >> primitive.v0;
-            in >> primitive.cba;
-            in >> primitive.u1;
-            in >> primitive.v1;
-            in >> primitive.tsb;
-            in >> primitive.u2;
-            in >> primitive.v2;
-            in.skipRawData(2);
-            in >> primitive.normal0;
-            in >> primitive.vertex0;
-            in >> primitive.vertex1;
-            in >> primitive.vertex2;
-            break;
-        case(Model::Primitive::PrimitiveMode::x27TriFlatTexTranslucentUnlit):
-            primitive.alpha = 127;
+        case (Model::Primitive::PrimitiveMode::x24TriFlatTexOpaqueLit): readx24(stream); break;
+        case (Model::Primitive::PrimitiveMode::x27TriFlatTexTranslucentUnlit):
+            alpha = 127;
             [[fallthrough]];
-        case(Model::Primitive::PrimitiveMode::x25TriFlatTexOpaqueUnlit):
-            in >> primitive.u0;
-            in >> primitive.v0;
-            in >> primitive.cba;
-            in >> primitive.u1;
-            in >> primitive.v1;
-            in >> primitive.tsb;
-            in >> primitive.u2;
-            in >> primitive.v2;
-            in.skipRawData(2);
-            // FIXME: Is this supposed to be here?
-            in >> primitive.r0;
-            in >> primitive.g0;
-            in >> primitive.b0;
-            in.skipRawData(1);
-            in >> primitive.vertex0;
-            in >> primitive.vertex1;
-            in >> primitive.vertex2;
-            in.skipRawData(2);
-            break;
-        case(Model::Primitive::PrimitiveMode::x2aQuadFlatNoTexTranslucentLit):
-            primitive.alpha = 127;
+        case (Model::Primitive::PrimitiveMode::x25TriFlatTexOpaqueUnlit): readx25(stream); break;
+        case (Model::Primitive::PrimitiveMode::x2aQuadFlatNoTexTranslucentLit):
+            alpha = 127;
             [[fallthrough]];
-        case(Model::Primitive::PrimitiveMode::x28QuadFlatNoTexOpaqueLit):
-            in >> primitive.r0;
-            in >> primitive.g0;
-            in >> primitive.b0;
-            in.skipRawData(1);
-            readGradation(in, primitive);
-            in >> primitive.normal0;
-            in >> primitive.vertex0;
-            in >> primitive.vertex1;
-            in >> primitive.vertex2;
-            in >> primitive.vertex3;
-            in.skipRawData(2);
-            break;
-        case(Model::Primitive::PrimitiveMode::x2eQuadFlatTexTranslucentLit):
-            primitive.alpha = 127;
+        case (Model::Primitive::PrimitiveMode::x28QuadFlatNoTexOpaqueLit): readx28(stream); break;
+        case (Model::Primitive::PrimitiveMode::x2eQuadFlatTexTranslucentLit):
+            alpha = 127;
             [[fallthrough]];
-        case(Model::Primitive::PrimitiveMode::x2cQuadFlatTexOpaqueLit):
-            in >> primitive.u0;
-            in >> primitive.v0;
-            in >> primitive.cba;
-            in >> primitive.u1;
-            in >> primitive.v1;
-            in >> primitive.tsb;
-            in >> primitive.u2;
-            in >> primitive.v2;
-            in.skipRawData(2);
-            in >> primitive.u3;
-            in >> primitive.v3;
-            in.skipRawData(2);
-            in >> primitive.normal0;
-            in >> primitive.vertex0;
-            in >> primitive.vertex1;
-            in >> primitive.vertex2;
-            in >> primitive.vertex3;
-            in.skipRawData(2);
-            break;
-        case(Model::Primitive::PrimitiveMode::x32TriGouraudNoTexTranslucentLit):
-            primitive.alpha = 127;
+        case (Model::Primitive::PrimitiveMode::x2cQuadFlatTexOpaqueLit): readx2c(stream); break;
+        case (Model::Primitive::PrimitiveMode::x32TriGouraudNoTexTranslucentLit):
+            alpha = 127;
             [[fallthrough]];
-        case(Model::Primitive::PrimitiveMode::x30TriGouraudNoTexOpaqueLit):
-            in >> primitive.r0;
-            in >> primitive.g0;
-            in >> primitive.b0;
-            in.skipRawData(1);
-            readGradation(in, primitive);
-            in >> primitive.normal0;
-            in >> primitive.vertex0;
-            in >> primitive.normal1;
-            in >> primitive.vertex1;
-            in >> primitive.normal2;
-            in >> primitive.vertex2;         
-            break;
-        case(Model::Primitive::PrimitiveMode::x36TriGouraudTexTranslucentLit):
-            primitive.alpha = 127;
+        case (Model::Primitive::PrimitiveMode::x30TriGouraudNoTexOpaqueLit): readx30(stream); break;
+        case (Model::Primitive::PrimitiveMode::x36TriGouraudTexTranslucentLit):
+            alpha = 127;
             [[fallthrough]];
-        case(Model::Primitive::PrimitiveMode::x34TriGouraudTexOpaqueLit):
-            in >> primitive.u0;
-            in >> primitive.v0;
-            in >> primitive.cba;
-            in >> primitive.u1;
-            in >> primitive.v1;
-            in >> primitive.tsb;
-            in >> primitive.u2;
-            in >> primitive.v2;
-            in.skipRawData(2);
-            in >> primitive.normal0;
-            in >> primitive.vertex0;
-            in >> primitive.normal1;
-            in >> primitive.vertex1;
-            in >> primitive.normal2;
-            in >> primitive.vertex2;
-            break;
-        case(Model::Primitive::PrimitiveMode::x3aQuadGouraudNoTexTranslucentLit):
-            primitive.alpha = 127;
+        case (Model::Primitive::PrimitiveMode::x34TriGouraudTexOpaqueLit): readx34(stream); break;
+        case (Model::Primitive::PrimitiveMode::x3aQuadGouraudNoTexTranslucentLit):
+            alpha = 127;
             [[fallthrough]];
-        case(Model::Primitive::PrimitiveMode::x38QuadGouraudNoTexOpaqueLit):
-            in >> primitive.r0;
-            in >> primitive.g0;
-            in >> primitive.b0;
-            in.skipRawData(1);
-            readGradation(in, primitive);
-            in >> primitive.normal0;
-            in >> primitive.vertex0;
-            in >> primitive.normal1;
-            in >> primitive.vertex1;
-            in >> primitive.normal2;
-            in >> primitive.vertex2;
-            in >> primitive.normal3;
-            in >> primitive.vertex3;           
+        case (Model::Primitive::PrimitiveMode::x38QuadGouraudNoTexOpaqueLit):
+            readx38(stream);
             break;
-        case(Model::Primitive::PrimitiveMode::x3eQuadGouraudTexTranslucentLit):
-            primitive.alpha = 127;
+        case (Model::Primitive::PrimitiveMode::x3eQuadGouraudTexTranslucentLit):
+            alpha = 127;
             [[fallthrough]];
-        case(Model::Primitive::PrimitiveMode::x3cQuadGouraudTexOpaqueLit):
-            in >> primitive.u0;
-            in >> primitive.v0;
-            in >> primitive.cba;
-            in >> primitive.u1;
-            in >> primitive.v1;
-            in >> primitive.tsb;
-            in >> primitive.u2;
-            in >> primitive.v2;
-            in.skipRawData(2);
-            in >> primitive.u3;
-            in >> primitive.v3;
-            in.skipRawData(2);
-            in >> primitive.normal0;
-            in >> primitive.vertex0;
-            in >> primitive.normal1;
-            in >> primitive.vertex1;
-            in >> primitive.normal2;
-            in >> primitive.vertex2;
-            in >> primitive.normal3;
-            in >> primitive.vertex3;
-            break;
+        case (Model::Primitive::PrimitiveMode::x3cQuadGouraudTexOpaqueLit): readx3c(stream); break;
         default:
             KFMTError::error(QString::asprintf("Model: TMD: Unsupported mode 0x%x. Please "
                                                "implement!\n",
-                                               static_cast<unsigned int>(primitive.mode)));
-            in.skipRawData(primitive.ilen * 4);
+                                               static_cast<unsigned int>(mode)));
+            stream.skipRawData(ilen * 4);
             break;
     }
-    return in;
+}
+
+void Model::Primitive::readx20(QDataStream& stream)
+{
+    stream >> r0;
+    stream >> g0;
+    stream >> b0;
+    stream.skipRawData(1);
+    readGradation(stream);
+    stream >> normal0;
+    stream >> vertex0;
+    stream >> vertex1;
+    stream >> vertex2;
+}
+
+void Model::Primitive::readx24(QDataStream& stream)
+{
+    stream >> u0;
+    stream >> v0;
+    stream >> cba;
+    stream >> u1;
+    stream >> v1;
+    stream >> tsb;
+    stream >> u2;
+    stream >> v2;
+    stream.skipRawData(2);
+    stream >> normal0;
+    stream >> vertex0;
+    stream >> vertex1;
+    stream >> vertex2;
+}
+
+void Model::Primitive::readx25(QDataStream& stream)
+{
+    stream >> u0;
+    stream >> v0;
+    stream >> cba;
+    stream >> u1;
+    stream >> v1;
+    stream >> tsb;
+    stream >> u2;
+    stream >> v2;
+    stream.skipRawData(2);
+    // FIXME: Is this supposed to be here?
+    stream >> r0;
+    stream >> g0;
+    stream >> b0;
+    stream.skipRawData(1);
+    stream >> vertex0;
+    stream >> vertex1;
+    stream >> vertex2;
+    stream.skipRawData(2);
+}
+
+void Model::Primitive::readx28(QDataStream& stream)
+{
+    stream >> r0;
+    stream >> g0;
+    stream >> b0;
+    stream.skipRawData(1);
+    readGradation(stream);
+    stream >> normal0;
+    stream >> vertex0;
+    stream >> vertex1;
+    stream >> vertex2;
+    stream >> vertex3;
+    stream.skipRawData(2);
+}
+
+void Model::Primitive::readx2c(QDataStream& stream)
+{
+    stream >> u0;
+    stream >> v0;
+    stream >> cba;
+    stream >> u1;
+    stream >> v1;
+    stream >> tsb;
+    stream >> u2;
+    stream >> v2;
+    stream.skipRawData(2);
+    stream >> u3;
+    stream >> v3;
+    stream.skipRawData(2);
+    stream >> normal0;
+    stream >> vertex0;
+    stream >> vertex1;
+    stream >> vertex2;
+    stream >> vertex3;
+    stream.skipRawData(2);
+}
+
+void Model::Primitive::readx30(QDataStream& stream)
+{
+    stream >> r0;
+    stream >> g0;
+    stream >> b0;
+    stream.skipRawData(1);
+    readGradation(stream);
+    stream >> normal0;
+    stream >> vertex0;
+    stream >> normal1;
+    stream >> vertex1;
+    stream >> normal2;
+    stream >> vertex2;
+}
+
+void Model::Primitive::readx34(QDataStream& stream)
+{
+    stream >> u0;
+    stream >> v0;
+    stream >> cba;
+    stream >> u1;
+    stream >> v1;
+    stream >> tsb;
+    stream >> u2;
+    stream >> v2;
+    stream.skipRawData(2);
+    stream >> normal0;
+    stream >> vertex0;
+    stream >> normal1;
+    stream >> vertex1;
+    stream >> normal2;
+    stream >> vertex2;
+}
+
+void Model::Primitive::readx38(QDataStream& stream)
+{
+    stream >> r0;
+    stream >> g0;
+    stream >> b0;
+    stream.skipRawData(1);
+    readGradation(stream);
+    stream >> normal0;
+    stream >> vertex0;
+    stream >> normal1;
+    stream >> vertex1;
+    stream >> normal2;
+    stream >> vertex2;
+    stream >> normal3;
+    stream >> vertex3;
+}
+
+void Model::Primitive::readx3c(QDataStream& stream)
+{
+    stream >> u0;
+    stream >> v0;
+    stream >> cba;
+    stream >> u1;
+    stream >> v1;
+    stream >> tsb;
+    stream >> u2;
+    stream >> v2;
+    stream.skipRawData(2);
+    stream >> u3;
+    stream >> v3;
+    stream.skipRawData(2);
+    stream >> normal0;
+    stream >> vertex0;
+    stream >> normal1;
+    stream >> vertex1;
+    stream >> normal2;
+    stream >> vertex2;
+    stream >> normal3;
+    stream >> vertex3;
 }

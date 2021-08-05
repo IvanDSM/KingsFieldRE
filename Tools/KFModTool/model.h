@@ -65,18 +65,19 @@ public:
     std::vector<MOAnimation> animations;
     std::vector<MOFrame> animFrames;
     std::vector<Mesh> morphTargets;
-    
+
 private:
+    void fixShiftedIndices();
     void loadMO(const QByteArray &file);
-    void loadRTMD(const QByteArray &file);
-    void loadTMD(const QByteArray &file);
+    void loadRTMD(const QByteArray& file);
+    void loadTMD(const QByteArray& file);
 };
 
 /*!
- * \brief Operator for reading a primitive from a QDataStream
- * \param in QDataStream to read from
- * \param primitive Primitive to read into
- * \return The QDataStream after reading
+ * \brief Operator for reading a primitive from a QDataStream.
+ * \param in QDataStream to read from.
+ * \param primitive Primitive to read into.
+ * \return The QDataStream after reading.
  */
 QDataStream &operator>>(QDataStream &in, Model::Primitive& primitive);
 
@@ -129,7 +130,6 @@ struct Model::Primitive
     PrimitiveMode mode;
     uint8_t ilen;
     uint8_t olen;
-
     // The following variables represent packet elements. Not all of them are present in all types,
     // and the only reason all of them are declared here is to save time and not have to do some
     // sketchy inheritance stuff that'd make the file 5x bigger.
@@ -226,6 +226,40 @@ struct Model::Primitive
         auto mode_ = static_cast<uint8_t>(mode);
         return (mode_ >> 5) && !((mode_ >> 3) & 1);
     }
+
+    void readFrom(QDataStream& stream);
+    // Helper method for reading gradation
+    void readGradation(QDataStream& stream)
+    {
+        if (isGradation())
+        {
+            stream >> r1;
+            stream >> g1;
+            stream >> b1;
+            stream.skipRawData(1);
+            stream >> r2;
+            stream >> g2;
+            stream >> b2;
+            stream.skipRawData(1);
+            if (isQuad())
+            {
+                stream >> r3;
+                stream >> g3;
+                stream >> b3;
+                stream.skipRawData(1);
+            }
+        }
+    }
+    // Primitive packet readers
+    void readx20(QDataStream& stream);
+    void readx24(QDataStream& stream);
+    void readx25(QDataStream& stream);
+    void readx28(QDataStream& stream);
+    void readx2c(QDataStream& stream);
+    void readx30(QDataStream& stream);
+    void readx34(QDataStream& stream);
+    void readx38(QDataStream& stream);
+    void readx3c(QDataStream& stream);
 };
 
 struct Model::Vec3

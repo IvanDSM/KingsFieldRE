@@ -1,8 +1,10 @@
 #ifndef UTILITIES_H
 #define UTILITIES_H
 
-#include <QtGlobal>
+#include <cstring>
+#include <numeric>
 #include <QByteArray>
+#include <QtGlobal>
 
 namespace Utilities
 {
@@ -139,7 +141,7 @@ namespace Utilities
     {
         return file.left(4).compare(QByteArray::fromHex("70514553")) == 0;
     }
-    
+
     /*!
      * \brief Checks whether a file is an TIM file.
      * This is done by checking if the file's first 4 bytes as an unsigned int is 
@@ -168,7 +170,28 @@ namespace Utilities
         return file.left(8).compare(QByteArray::fromHex("4100000000000000")) == 0 ||
                file.left(8).compare(QByteArray::fromHex("4100000001000000")) == 0;
     }
-    
+
+    /*!
+     * \brief Checks whether a file is a Shadow Tower TMD file.
+     * This is done by first running the standard TMD check, and if that passes,
+     * we check if there's the weird primitive stuff.
+     * \param file File to check.
+     * \return Whether the file is a Shadow Tower TMD file.
+     */
+    inline bool fileIsSTTMD(const QByteArray& file)
+    {
+        if (!fileIsTMD(file)) return false;
+
+        // I know this looks terrible, but for some reason QByteArray::toUShort isn't working right
+        // here. I don't know why and I'm too angry at it to try and figure out.
+        const auto tmdPrimCount = *(reinterpret_cast<uint16_t*>(file.mid(0x20, 2).data()));
+        uint16_t stPrimCounts[8];
+
+        std::memcpy(&stPrimCounts, file.mid(0x24, 16).data(), 16);
+
+        return tmdPrimCount == std::accumulate(std::begin(stPrimCounts), std::end(stPrimCounts), 0);
+    }
+
     /*!
      * \brief Checks whether a file is a VB file.
      * This is done by checking if the file's first 16 bytes are zero.
