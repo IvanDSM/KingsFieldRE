@@ -11,5 +11,7 @@
         <file>litMime.vert</file>
         <file>tex_icon.png</file>
         <file>checker.png</file>
+        <file>KFModTool.ico</file>
+        <file>KFModTool.png</file>
     </qresource>
 </RCC>
