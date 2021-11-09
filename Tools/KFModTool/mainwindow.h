@@ -2,14 +2,16 @@
 #define MAINWINDOW_H
 
 #include "aboutdialog.h"
-#include "kfmttreewidgetitem.h"
-#include "mixfile.h"
-#include "tfile.h"
+#include "core/kfmtcore.h"
+#include "core/kfmterror.h"
+#include "editors/kfmteditor.h"
+#include "models/filelistmodel.h"
 #include "ui_mainwindow.h"
+#include <memory>
 #include <QDir>
 #include <QMainWindow>
 #include <QMessageBox>
-#include <memory>
+#include <QTreeWidgetItem>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -25,8 +27,12 @@ public:
         , ui(new Ui::MainWindow)
     {
         ui->setupUi(this);
+        if (strcmp(RUNID, "DEVELOPMENT") != 0) setWindowTitle("KFModTool r" RUNID);
         KFMTError::setParent(this);
+        ui->filesTree->setModel(new FileListModel(ui->filesTree));
     }
+
+    ~MainWindow() { delete ui; }
 
 private slots:
     void on_actionAbout_Qt_triggered()
@@ -42,84 +48,28 @@ private slots:
 
     void on_actionLoad_files_triggered();
 
-    void on_filesTree_itemDoubleClicked(QTreeWidgetItem *item_, int);
-
     void on_editorTabs_tabCloseRequested(int index)
     {
-        auto tabName = ui->editorTabs->tabText(index);
-        openTabs.erase(openTabs.find(tabName));
-        auto tabWidget = ui->editorTabs->widget(index);
+        auto* tab = ui->editorTabs->widget(index);
+        auto it = std::find_if(openTabs.begin(), openTabs.end(), [&](auto& entry) {
+            return entry.second == tab;
+        });
+
+        if (it != openTabs.end()) openTabs.erase(it);
         ui->editorTabs->removeTab(index);
-        tabWidget->deleteLater();
+        // FIXME: Is this necessary?
+        tab->deleteLater();
     }
 
     void on_actionSave_changes_triggered();
 
-    void on_actionExit_triggered()
-    {
-        close();
-    }
+    void on_actionExit_triggered() { close(); }
+
+    void on_filesTree_doubleClicked(const QModelIndex& index);
 
 private:
-    struct KFMTFile
-    {
-        enum class KFMTFileType
-        {
-            MIX,
-            Raw,
-            T
-        };
-        KFMTFile(const QString& srcDir, const QString& path, KFMTFileType fileType);
-        void saveChanges();
-        void writeFile(const QDir& outDir);
-        
-        KFMTFileType type;
-        
-        std::unique_ptr<MIXFile> mixFile = nullptr;
-        QString filePath;
-        QByteArray rawFileData;
-        QString srcPath;
-        std::unique_ptr<QTreeWidgetItem> treeItem = nullptr;
-        std::unique_ptr<TFile> tFile = nullptr;
-    };
-    
-    KFMTTreeWidgetItem *addGameDB(QTreeWidgetItem *parent, QByteArray &file);
-    KFMTTreeWidgetItem *addMap(QTreeWidgetItem *parent, QByteArray &file1, QByteArray & file2, QByteArray & file3, const QString &filename);
-    KFMTTreeWidgetItem *addModel(QTreeWidgetItem *parent, QByteArray &file, const QString &filename);
-    KFMTTreeWidgetItem *addTexture(QTreeWidgetItem *parent, QByteArray &file, const QString &filename);
-    
-    void loadJDemo();
-    void loadJ();
-    void load2J();
-    void loadEU();
-    void load3JorPS();
+    Ui::MainWindow* ui;
 
-    // We don't support anything from the Armored Core P*.T files yet
-    void loadACProto();
-    void loadACSampler4Demo();
-
-    /*!
-     * \brief Loads the retail Shadow Tower CD.
-     */
-    void loadSTower();
-    /*!
-     * \brief Loads the Shadow Tower demo from the PlayStation Undeground v2.4 CD (SCUS-94298)
-     */
-    void loadSTowerDemo();
-
-    void loadMIXFile(QString path);
-    void loadRawFile(QString path);
-    void loadTFile(QString path);
-    
-    void writeFiles(QDir &outDir);
-    
-    std::unique_ptr<Ui::MainWindow> ui;
-
-    QString curSourceDirectory;
-
-    std::list<KFMTFile> files;
-    
-    // TODO: Implement this stuff
-    std::unordered_map<QString, QWidget *> openTabs;
+    std::unordered_map<KFMTFile*, KFMTEditor*> openTabs;
 };
 #endif // MAINWINDOW_H

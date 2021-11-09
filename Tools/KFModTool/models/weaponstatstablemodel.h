@@ -1,17 +1,17 @@
 #ifndef WEAPONSTATSTABLEMODEL_H
 #define WEAPONSTATSTABLEMODEL_H
 
-#include "kf2types.h"
+#include "datahandlers/gamedb.h"
+#include "games/kf2.h"
 #include <QAbstractTableModel>
 
 class WeaponStatsTableModel : public QAbstractTableModel
 {
     Q_OBJECT
 public:
-    WeaponStatsTableModel(QObject *parent,
-                          KingsFieldII::WeaponStats &weaponStats_) :
-        QAbstractTableModel(parent),
-        weaponStats(weaponStats_) {}
+    WeaponStatsTableModel(GameDB& gameDB_, QObject* parent = nullptr)
+        : QAbstractTableModel(parent), gameDB(gameDB_)
+    {}
 
     int columnCount(const QModelIndex &parent) const override
     {
@@ -42,6 +42,12 @@ public:
         return 37;
     }
 
+    void setCurWeapon(size_t index)
+    {
+        curWeapon = index;
+        emit layoutChanged();
+    }
+
     bool setData(const QModelIndex &index, const QVariant &value, int role = Qt::EditRole) override;
 
     bool setHeaderData(int section, Qt::Orientation orientation, const QVariant &value, int role = Qt::EditRole) override
@@ -50,8 +56,8 @@ public:
         return false;
     }
 private:
-    KingsFieldII::WeaponStats &weaponStats;
-
+    GameDB& gameDB;
+    size_t curWeapon = 0;
 };
 
 #endif // WEAPONSTATSTABLEMODEL_H

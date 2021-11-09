@@ -1,59 +1,73 @@
 #include "entityinstancetablemodel.h"
 
+static const auto random_ = QStringLiteral(" (Random)");
+static const auto nonrandom_ = QStringLiteral(" (Non-Random)");
+static const auto invalid_ = QStringLiteral(" (Invalid Value)");
+
+inline const QString& getNonRandomStr(const byte& value)
+{
+    switch (value)
+    {
+        case 0: return random_;
+        case 1: return nonrandom_;
+        default: return invalid_;
+    }
+}
+
 QVariant EntityInstanceTableModel::data(const QModelIndex &index, int role) const
 {
-    QVariant result;
-    if (role == Qt::DisplayRole && (index.row() < rowCount(index) && index.row() >= 0 && index.column() == 0))
+    if (role != Qt::DisplayRole || !index.isValid()) return {};
+
+    switch (index.row())
     {
-        static constexpr std::array<const char *, 2> nonRandomStr = {"Random", "Non-Random"};
-        switch (index.row())
-        {
-            case 0: result.setValue(QString::number(entityInstance.RespawnMode)); break;
-            case 1: result.setValue(QString::number(entityInstance.EntityClass)); break;
-            case 2: result.setValue(QString::number(entityInstance.NonRandomRotation) + " ("
-                                    + nonRandomStr.at(entityInstance.NonRandomRotation) + ")"); break;
-            case 3: result.setValue(QString::number(entityInstance.WEXTilePos)); break;
-            case 4: result.setValue(QString::number(entityInstance.NSYTilePos)); break;
-            case 5: result.setValue(QString::number(entityInstance.RespawnChance)); break;
-            case 6: result.setValue(QString::number(KingsFieldII::getObjectIDAsByte(entityInstance.DroppedItem)) + " ("
-                                + KingsFieldII::getObjectName(entityInstance.DroppedItem) + ")");
-                break;
-            case 7: result.setValue(QString::number(entityInstance.Layer)); break;
-            case 8: result.setValue(QString::number(entityInstance.ZRotation) + " ("
-                                + QString::number(entityInstance.ZRotation * KingsFieldII::rotationCoefficient)
-                                + "°)"); break;
-            case 9: result.setValue(QString::number(entityInstance.FineWEXPos)); break;
-            case 10: result.setValue(QString::number(entityInstance.FineNSYPos)); break;
-            case 11: result.setValue(QString::number(entityInstance.FineZPos)); break;
-        }
+        case 0: return QString::number(entity->RespawnMode); break;
+        case 1: return QString::number(entity->EntityClass); break;
+        case 2:
+            return QString::number(entity->NonRandomRotation)
+                   + getNonRandomStr(entity->NonRandomRotation);
+            break;
+        case 3: return QString::number(entity->WEXTilePos); break;
+        case 4: return QString::number(entity->NSYTilePos); break;
+        case 5: return QString::number(entity->RespawnChance); break;
+        case 6:
+            return QString::number(KingsFieldII::getObjectIDAsByte(entity->DroppedItem)) + " ("
+                   + KingsFieldII::getObjectName(entity->DroppedItem) + ")";
+            break;
+        case 7: return QString::number(entity->Layer); break;
+        case 8:
+            return QString::number(entity->ZRotation) + " ("
+                   + QString::number(entity->ZRotation * KingsFieldII::rotationCoefficient) + "°)";
+            break;
+        case 9: return QString::number(entity->FineWEXPos); break;
+        case 10: return QString::number(entity->FineNSYPos); break;
+        case 11: return QString::number(entity->FineZPos); break;
     }
 
-    return result;
+    return {};
 }
 
 QVariant EntityInstanceTableModel::headerData(int section, Qt::Orientation orientation, int role) const
 {
     if (role == Qt::DisplayRole)
     {
-        if (orientation == Qt::Horizontal)
-            return "Value";
+        if (orientation == Qt::Horizontal) return QStringLiteral("Value");
 
         if (orientation == Qt::Vertical)
         {
             switch (section)
             {
-                case 0: return "Respawn Mode";
-                case 1: return "Entity Class";
-                case 2: return "Non-Random Z Rot.";
-                case 3: return "X Tile Position";
-                case 4: return "Y Tile Position";
-                case 5: return "Respawn Chance";
-                case 6: return "Dropped Item";
-                case 7: return "Layer";
-                case 8: return "Z Rotation";
-                case 9: return "Fine X Position";
-                case 10: return "Fine Y Position";
-                case 11: return "Fine Z Position";
+                case 0: return QStringLiteral("Respawn Mode");
+                case 1: return QStringLiteral("Entity Class");
+                case 2: return QStringLiteral("Non-Random Z Rot.");
+                case 3: return QStringLiteral("X Tile Position");
+                case 4: return QStringLiteral("Y Tile Position");
+                case 5: return QStringLiteral("Respawn Chance");
+                case 6: return QStringLiteral("Dropped Item");
+                case 7: return QStringLiteral("Layer");
+                case 8: return QStringLiteral("Z Rotation");
+                case 9: return QStringLiteral("Fine X Position");
+                case 10: return QStringLiteral("Fine Y Position");
+                case 11: return QStringLiteral("Fine Z Position");
                 default: break;
             }
         }
@@ -64,42 +78,39 @@ QVariant EntityInstanceTableModel::headerData(int section, Qt::Orientation orien
 
 bool EntityInstanceTableModel::setData(const QModelIndex &index, const QVariant &value, int role)
 {
-    bool result = false;
+    if (!value.isValid() || value.toString().isEmpty() || role != Qt::EditRole || !index.isValid())
+        return false;
 
-    if (!value.toString().isEmpty() && value.isValid() && role == Qt::EditRole && index.row() < rowCount(index) && index.row() >= 0 && index.column() == 0)
+    short shortValue = qMax(-32767, qMin(32767, value.toInt()));
+    u_short uShortValue = qMin(65535u, value.toUInt());
+    byte byteValue = qMin(255u, value.toUInt());
+    bool boolValue = qMin(1u, value.toUInt());
+
+    switch (index.row())
     {
-        short shortValue = qMax(-32767, qMin(32767, value.toInt()));
-        u_short uShortValue = qMin(65535u, value.toUInt());
-        byte byteValue = qMin(255u, value.toUInt());
-        bool boolValue = qMin(1u, value.toUInt());
-        switch (index.row())
-        {
-            case 0: entityInstance.RespawnMode = byteValue; break;
-            case 1: entityInstance.EntityClass = byteValue; break;
-            case 2: entityInstance.NonRandomRotation = boolValue; break;
-            case 3: entityInstance.WEXTilePos = byteValue; break;
-            case 4: entityInstance.NSYTilePos = byteValue; break;
-            case 5: entityInstance.RespawnChance = byteValue; break;
-            case 6: entityInstance.DroppedItem = static_cast<KingsFieldII::ObjectID>(uShortValue); break;
-            case 7: entityInstance.Layer = byteValue; break;
-            case 8:
-                if (value.toString().right(1) == "°" || value.toString().right(1) == "º" ||
-                    value.toString().right(1) == "ª")
-                    uShortValue = value.toString().chopped(1).toUInt() / KingsFieldII::rotationCoefficient;
-                else
-                    uShortValue = value.toUInt() % 4096;
-                entityInstance.ZRotation = uShortValue;
-                break;
-            case 9: entityInstance.FineWEXPos = shortValue; break;
-            case 10: entityInstance.FineNSYPos = shortValue; break;
-            case 11: entityInstance.FineZPos = shortValue; break;
-        }
-
-        result = true;
+        case 0: entity->RespawnMode = byteValue; break;
+        case 1: entity->EntityClass = byteValue; break;
+        case 2: entity->NonRandomRotation = boolValue; break;
+        case 3: entity->WEXTilePos = byteValue; break;
+        case 4: entity->NSYTilePos = byteValue; break;
+        case 5: entity->RespawnChance = byteValue; break;
+        case 6: entity->DroppedItem = static_cast<KingsFieldII::ObjectID>(uShortValue); break;
+        case 7: entity->Layer = byteValue; break;
+        case 8:
+            if (value.toString().right(1) == "°" || value.toString().right(1) == "º"
+                || value.toString().right(1) == "ª")
+                uShortValue = value.toString().chopped(1).toUInt()
+                              / KingsFieldII::rotationCoefficient;
+            else
+                uShortValue = value.toUInt() % 4096;
+            entity->ZRotation = uShortValue;
+            break;
+        case 9: entity->FineWEXPos = shortValue; break;
+        case 10: entity->FineNSYPos = shortValue; break;
+        case 11: entity->FineZPos = shortValue; break;
     }
 
-    if (result)
-        emit dataChanged(index, index);
+    emit dataChanged(index, index);
 
-    return result;
+    return true;
 }

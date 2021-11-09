@@ -1,17 +1,17 @@
 #ifndef OBJECTCLASSTABLEMODEL_H
 #define OBJECTCLASSTABLEMODEL_H
 
-#include "kf2types.h"
+#include "datahandlers/gamedb.h"
+#include "games/kf2.h"
 #include <QAbstractTableModel>
 
 class ObjectClassTableModel : public QAbstractTableModel
 {
     Q_OBJECT
 public:
-    ObjectClassTableModel(QObject *parent,
-                          KingsFieldII::ObjectClassDeclaration &objClass_) :
-        QAbstractTableModel(parent),
-        objClass(objClass_) {}
+    ObjectClassTableModel(GameDB& gameDB_, QObject* parent = nullptr)
+        : QAbstractTableModel(parent), gameDB(gameDB_)
+    {}
 
     int columnCount(const QModelIndex &parent) const override
     {
@@ -42,6 +42,12 @@ public:
         return 23;
     }
 
+    void setCurObjectClass(size_t index)
+    {
+        curObjectClass = index;
+        emit layoutChanged();
+    }
+
     bool setData(const QModelIndex &index, const QVariant &value, int role = Qt::EditRole) override;
 
     bool setHeaderData(int section, Qt::Orientation orientation, const QVariant &value, int role = Qt::EditRole) override
@@ -51,7 +57,8 @@ public:
     }
 
 private:
-    KingsFieldII::ObjectClassDeclaration &objClass;
+    GameDB& gameDB;
+    size_t curObjectClass = 0;
 };
 
 #endif // OBJECTCLASSTABLEMODEL_H

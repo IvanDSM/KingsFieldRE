@@ -1,16 +1,17 @@
 #ifndef MODELOBJECTLISTMODEL_H
 #define MODELOBJECTLISTMODEL_H
 
-#include "model.h"
+#include "datahandlers/model.h"
 #include <QAbstractTableModel>
 
 class ModelObjectTableModel : public QAbstractTableModel
 {
     Q_OBJECT
 public:
-    ModelObjectTableModel(QObject *parent, std::shared_ptr<Model> model_) : 
-        QAbstractTableModel(parent), model(model_) {}
-    
+    ModelObjectTableModel(QObject* parent, Model& model_)
+        : QAbstractTableModel(parent), model(model_)
+    {}
+
     int columnCount(const QModelIndex &parent) const override
     {
         Q_UNUSED(parent)
@@ -45,7 +46,9 @@ public:
     int rowCount(const QModelIndex &parent) const override
     {
         Q_UNUSED(parent)
-        return model->baseObjects.size();
+        //if (parent.isValid()) return 0;
+
+        return model.baseObjects.size();
     }
     
     bool setData(const QModelIndex &index, const QVariant &value, int role = Qt::EditRole) override;
@@ -57,8 +60,8 @@ public:
     }
         
 private:
-    std::shared_ptr<Model> model;
-    
+    Model& model;
+
     static constexpr int textColumn = 0;
     static constexpr int tickColumn = 1;
 };

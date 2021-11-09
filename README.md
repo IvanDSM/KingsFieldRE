@@ -15,32 +15,36 @@ For King's Field IV Tools and Documentation, check out [TheStolenBattenberg's To
 
 All the tools in KingsFieldRE are written using C++17 and the Qt Framework.
 
-Automated builds for 64-bit Linux (cross-distribution AppImages based on Ubuntu 16.04) and Windows are available on the project's [GitHub Actions page](https://github.com/IvanDSM/KingsFieldRE/actions). Just select the latest run (the first run on the page)! 
-
-You will need to be signed into GitHub to download the automated builds due to GitHub limitations. **We do not receive any information about you when you download a build.**
+Automated builds for 64-bit Linux (cross-distribution AppImages based on Ubuntu 16.04) and Windows are available on the project's [Releases page](https://github.com/IvanDSM/KingsFieldRE/releases).
 
 ## KFModTool
-Early modding tool for King's Field. Breaks often, so be careful!
+Early modding/datamining tool for King's Field. Breaks often, so be careful!
 
 ![KFModTool screenshot](wiki/kfmodtool.png)
 
 Features:
 
-* Rough map editing, including editing entity classes and instances as well as object instances.
-* Game Database editing, enabling you to modify spell attributes, player level data, object class data and weapon stats.
+* Basic map editing with 3D preview, including editing entities and objects.
+* Game Database editing, enabling you to modify armor stats, object classes, spell attributes, player level data, and weapon stats.
+* Game Executable editing, allowing you to edit strings and shop info. (KF1U only so far)
 * Texture viewing, exporting and replacement
 * 3D model viewing (no support for animated KF1J models yet!)
 
 KFModTool currently supports loading files from the following games:
-* Armored Core "Preview Only 7-3-97" Prototype
-* Armored Core Interactive CD Sampler Vol. 4 (SCUS-94418) Demo
-* King's Field 1 (SLPS-00017)
-* King's Field 2 (All EU, JP and US versions)
-* King's Field 3 (JP and US versions)
-* King's Field Pilot Style
-* Shadow Tower Retail and PlayStation Underground v2.4 (SCUS-94298) Demo
 
-**BEWARE:** The main focus is still KF2. King's Field 3 maps will load but will have incorrect entity/object/sound/weapon names since we haven't documented KF3 yet and the KF2 names are loaded. Support for all games except KF2 is only for loading model and texture files.
+* Armored Core [SCUS-94182, SLUS-01323]
+* Armored Core Demo from Interactive CD Sampler Volume 4 [SCUS-94418]
+* Armored Core "Preview Only 7-3-97" Prototype
+* King's Field I [SLPS 00017, SLPS 03578]
+* King's Field I Demo from DemoDemo PlayStation Soukan-gou Vol. 1 [PCPX 96003]
+* King's Field II [NPJJ-00083, SCES-00510, SLPS-00069, SLPS-03579, SLPS-91003, SLPS-91423, SLUS-00158]
+* King's Field III [SLPS-00377, SLPS-03580, SLPS-91089, SLUS-00255]
+* King's Field III: Pilot Style [SLPM-80029]
+    * KFModTool also supports loading the King's Field 3 demo present in the Pre-Pre Vol. 3 disc [PCPX-96028]. It has the same content as Pilot Style, but has limited time.
+* Shadow Tower [SLPS-01420, SLUS-00863]
+* Shadow Tower Demo from PlayStation Underground v2.4 [SCUS-94298]
+
+**BEWARE:** The main focus is still KF2. King's Field 3 maps will load but will have incorrect entity/sound/weapon names and missing objects since we haven't documented KF3 yet and the KF2 names are loaded instead. Support for all games except KF2 is only for loading model and texture files.
 
 ## checksum_tool
 This is a very simple command line tool for calculating a file's checksum according to the way the game calculates it for integrity checking. The game's method for calculating a file's checksum is described [in the repository's wiki](https://github.com/IvanDSM/KingsFieldRE/wiki/File-Checksum-Algorithm).

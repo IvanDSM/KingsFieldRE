@@ -1,16 +1,17 @@
 #ifndef PLAYERLEVELDATATABLEMODEL_H
 #define PLAYERLEVELDATATABLEMODEL_H
 
-#include "kf2types.h"
+#include "datahandlers/gamedb.h"
+#include "games/kf2.h"
 #include <QAbstractTableModel>
 
 class PlayerLevelDataTableModel : public QAbstractTableModel
 {
     Q_OBJECT
 public:
-    PlayerLevelDataTableModel(QObject *parent,
-                          KingsFieldII::PlayerLvlData &playerLvl_) :
-        QAbstractTableModel(parent), playerLvl(playerLvl_) {}
+    PlayerLevelDataTableModel(GameDB& gameDB_, QObject* parent = nullptr)
+        : QAbstractTableModel(parent), gameDB(gameDB_)
+    {}
 
     int columnCount(const QModelIndex &parent) const override
     {
@@ -41,6 +42,12 @@ public:
         return 5;
     }
 
+    void setCurLevel(size_t index)
+    {
+        curLevel = index;
+        emit layoutChanged();
+    }
+
     bool setData(const QModelIndex &index, const QVariant &value, int role = Qt::EditRole) override;
 
     bool setHeaderData(int section, Qt::Orientation orientation, const QVariant &value, int role = Qt::EditRole) override
@@ -50,7 +57,8 @@ public:
     }
 
 private:
-    KingsFieldII::PlayerLvlData &playerLvl;
+    GameDB& gameDB;
+    size_t curLevel = 0;
 };
 
 #endif // PLAYERLEVELDATATABLEMODEL_H

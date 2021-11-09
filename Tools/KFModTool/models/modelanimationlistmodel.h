@@ -1,17 +1,18 @@
 #ifndef MODELANIMATIONLISTMODEL_H
 #define MODELANIMATIONLISTMODEL_H
 
-#include "model.h"
+#include "datahandlers/model.h"
 #include <QAbstractListModel>
 
 class ModelAnimationListModel : public QAbstractListModel
 {
     Q_OBJECT
 public:
-    ModelAnimationListModel(QObject *parent, std::shared_ptr<Model> model_) : 
-        QAbstractListModel(parent), model(model_) {}
-    
-    int columnCount(const QModelIndex &parent) const override
+    ModelAnimationListModel(QObject* parent, Model& model_)
+        : QAbstractListModel(parent), model(model_)
+    {}
+
+    int columnCount(const QModelIndex& parent) const override
     {
         Q_UNUSED(parent)
         return 1;
@@ -41,7 +42,9 @@ public:
     int rowCount(const QModelIndex &parent) const override
     {
         Q_UNUSED(parent)
-        return model->animations.size();
+        //if (parent.isValid()) return 0;
+
+        return model.animations.size();
     }
 
     bool setHeaderData(int section, Qt::Orientation orientation, const QVariant &value, int role = Qt::EditRole) override
@@ -51,7 +54,7 @@ public:
     }
         
 private:
-    std::shared_ptr<Model> model;
+    Model& model;
 };
 
 #endif // MODELANIMATIONLISTMODEL_H

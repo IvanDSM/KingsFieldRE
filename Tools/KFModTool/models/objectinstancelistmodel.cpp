@@ -1,30 +1,33 @@
 #include "objectinstancelistmodel.h"
-
+#include "core/kfmtcore.h"
 #include <utility>
-
-ObjectInstanceListModel::ObjectInstanceListModel(QObject *parent, std::shared_ptr<Map> map_)
-    : QAbstractListModel(parent), map(std::move(map_))
-{
-}
 
 int ObjectInstanceListModel::rowCount(const QModelIndex &parent) const
 {
-    // For list models only the root node (an invalid parent) should return the list's size. For all
-    // other (valid) parents, rowCount() should return 0 so that it does not become a tree model.
-    if (parent.isValid())
-        return 0;
-    
-    return map->getObjectInstanceDeclarations().size();
+    if (parent.isValid()) return 0;
+
+    return Map::objectInstancesSize;
 }
 
 QVariant ObjectInstanceListModel::data(const QModelIndex &index, int role) const
 {
-    Q_UNUSED(role)
-    
-    if (!index.isValid() || role != Qt::DisplayRole)
-        return QVariant();
-    
-    return QString::number(index.row()) + ": " + 
-           KingsFieldII::getObjectName(map->getObjectInstance(index.row()).ObjectID) + 
-           " @ 0x" + QString::number(0x80177714 + (index.row() * 0x44), 16);
+    if (!index.isValid() || role != Qt::DisplayRole) return {};
+
+    const auto& object = map.getObjectInstance(index.row());
+
+    // Variable for calculating the RAM address of this object
+    uint32_t ramAddress = 0;
+    // Set correct object array base address
+    switch (core.currentVersionedGame())
+    {
+        case KFMTCore::VersionedGame::KF2U: ramAddress = 0x80177714; break;
+        default: break;
+    }
+    // FIXME: This still assumes KF2!! As we add support for more games' maps we will need to rework this.
+    ramAddress += index.row() * 0x44;
+
+    return QStringLiteral("%1: %2 instanced at 0x%3")
+        .arg(QString::number(index.row()),
+             KingsFieldII::getObjectName(object.ID),
+             QString::number(ramAddress, 16));
 }

@@ -1,16 +1,15 @@
 #ifndef VFXINSTANCETABLEMODEL_H
 #define VFXINSTANCETABLEMODEL_H
 
-#include "kf2types.h"
+#include "datahandlers/map.h"
+#include "games/kf2.h"
 #include <QAbstractTableModel>
 
 class VFXInstanceTableModel : public QAbstractTableModel
 {
     Q_OBJECT
 public:
-    VFXInstanceTableModel(QObject * parent,
-                          KingsFieldII::VFXInstanceDeclaration &vfxInstance_) :
-        QAbstractTableModel(parent), vfxInstance(vfxInstance_) {}
+    VFXInstanceTableModel(QObject* parent = nullptr) : QAbstractTableModel(parent) {}
 
     int columnCount(const QModelIndex &parent) const override
     {
@@ -35,22 +34,24 @@ public:
         return createIndex(row, column);
     }
 
-    int rowCount(const QModelIndex &parent) const override
+    int rowCount(const QModelIndex&) const override
     {
-        Q_UNUSED(parent)
+        if (vfx == nullptr) return 0;
         return 12;
+    }
+
+    void set(KingsFieldII::VFX& vfx_)
+    {
+        vfx = &vfx_;
+        emit layoutChanged();
     }
 
     bool setData(const QModelIndex &index, const QVariant &value, int role = Qt::EditRole) override;
 
-    bool setHeaderData(int section, Qt::Orientation orientation, const QVariant &value, int role = Qt::EditRole) override
-    {
-        Q_UNUSED(section) Q_UNUSED(value) Q_UNUSED(role) Q_UNUSED(orientation)
-        return false;
-    }
+    bool setHeaderData(int, Qt::Orientation, const QVariant&, int) override { return false; }
 
 private:
-    KingsFieldII::VFXInstanceDeclaration &vfxInstance;
+    KingsFieldII::VFX* vfx;
 };
 
 #endif // VFXINSTANCETABLEMODEL_H

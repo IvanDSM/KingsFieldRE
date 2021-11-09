@@ -1,15 +1,17 @@
 <RCC>
     <qresource prefix="/">
-        <file>tfile_icon.png</file>
-        <file>map_icon.png</file>
-        <file>db_icon.png</file>
-        <file>3d_icon.png</file>
+        <file>icons/3d_icon.png</file>
+        <file>icons/db_icon.png</file>
+        <file>icons/gameexe_icon.png</file>
+        <file>icons/map_icon.png</file>
+        <file>icons/tex_icon.png</file>
+        <file>icons/tfile_icon.png</file>
+        <file>icons/unk_icon.png</file>
         <file>unlitSimple.vert</file>
         <file>unlitSimple.frag</file>
         <file>litCommon.frag</file>
         <file>litStatic.vert</file>
         <file>litMime.vert</file>
-        <file>tex_icon.png</file>
         <file>checker.png</file>
         <file>KFModTool.ico</file>
         <file>KFModTool.png</file>

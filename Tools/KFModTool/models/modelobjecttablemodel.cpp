@@ -5,9 +5,9 @@ QVariant ModelObjectTableModel::data(const QModelIndex & index, int role) const
     if (index.row() < rowCount(index) && index.row() >= 0)
     {
         if (index.column() == textColumn && role == Qt::DisplayRole)
-            return "Object " + QString::number(index.row());
+            return QStringLiteral("Object ") + QString::number(index.row());
         if (index.column() == tickColumn && role == Qt::CheckStateRole)
-            return model->baseObjects.at(index.row()).visible ? Qt::Checked : Qt::Unchecked;
+            return model.baseObjects.at(index.row()).visible ? Qt::Checked : Qt::Unchecked;
     }
     
     return {};
@@ -19,7 +19,7 @@ bool ModelObjectTableModel::setData(const QModelIndex & index, const QVariant & 
         index.row() < rowCount(index) && index.row() >= 0 
         && index.column() == tickColumn)
     {
-        model->baseObjects.at(index.row()).visible = value.toBool();
+        model.baseObjects.at(index.row()).visible = value.toBool();
         emit dataChanged(index, index);
         return true;
     }

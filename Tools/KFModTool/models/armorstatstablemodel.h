@@ -1,16 +1,17 @@
 #ifndef ARMORSTATSTABLEMODEL_H
 #define ARMORSTATSTABLEMODEL_H
 
-#include "kf2types.h"
+#include "datahandlers/gamedb.h"
+#include "games/kf2.h"
 #include <QAbstractTableModel>
 
 class ArmorStatsTableModel : public QAbstractTableModel
 {
     Q_OBJECT
 public:
-    ArmorStatsTableModel(QObject * parent,
-                          KingsFieldII::ArmorStats &armorStats_) :
-        QAbstractTableModel(parent), armorStats(armorStats_) {}
+    ArmorStatsTableModel(GameDB& gameDB_, QObject* parent = nullptr)
+        : QAbstractTableModel(parent), gameDB(gameDB_)
+    {}
 
     int columnCount(const QModelIndex &parent) const override
     {
@@ -41,6 +42,12 @@ public:
         return 16;
     }
 
+    void setCurArmor(size_t index)
+    {
+        curArmorStat = index;
+        emit layoutChanged();
+    }
+
     bool setData(const QModelIndex &index, const QVariant &value, int role = Qt::EditRole) override;
 
     bool setHeaderData(int section, Qt::Orientation orientation, const QVariant &value, int role = Qt::EditRole) override
@@ -50,7 +57,8 @@ public:
     }
 
 private:
-    KingsFieldII::ArmorStats &armorStats;
+    GameDB& gameDB;
+    size_t curArmorStat = 0;
 };
 
 #endif // ARMORSTATSTABLEMODEL_H

@@ -3,6 +3,10 @@ name: Build all projects
 on:
   push:
     branches: [ master ]
+    paths-ignore:
+      - '**.md'
+      - '**.png'
+      - "**.txt"
   pull_request:
     branches: [ master ]
 
@@ -217,3 +221,15 @@ jobs:
         name: tfile_tool Windows (64-bit) build
         path: Tools\tfile_tool\tfile_tool\
 
+  # This is practically copied from DuckStation's GitHub Actions workflow.
+  create-release:
+    needs: [linux-build, windows-build]
+    runs-on: ubuntu-latest
+    
+    steps:
+     - name: "Download all artifacts"
+       uses:  actions/download-artifact@v2
+    
+     - name: "ls for debugging"
+       run: |
+          ls

@@ -1,254 +1,127 @@
 #include "objectinstancetablemodel.h"
+#include "utilities.h"
 
 QVariant ObjectInstanceTableModel::data(const QModelIndex &index, int role) const
 {
-    QVariant result;
-    if (role == Qt::DisplayRole && (index.row() < rowCount(index) && index.row() >= 0 && index.column() == 0))
+    if (role != Qt::DisplayRole) return {};
+    if (!index.isValid()) return {};
+
+    switch (index.row())
     {
-        switch (index.row())
-        {
-            case 0: result.setValue(QString::number(objInstance.TileLayer)); break;
-            case 1: result.setValue(QString::number(objInstance.WEXTilePos)); break;
-            case 2: result.setValue(QString::number(objInstance.NSYTilePos)); break;
-            case 3: result.setValue(QString::number(objInstance.field_0x3)); break;
-            case 4: result.setValue(QString::number(KingsFieldII::getObjectIDAsByte(objInstance.ObjectID))
-                                    + " ("
-                                    + KingsFieldII::getObjectName(objInstance.ObjectID) + ")"); break;
-            case 5: result.setValue(QString::number(objInstance.ZRotation) + " (" +
-                                    QString::number(objInstance.ZRotation * KingsFieldII::rotationCoefficient) +
-                                    "°)"); break;
-            case 6: result.setValue(QString::number(objInstance.FineWEXPos)); break;
-            case 7: result.setValue(QString::number(objInstance.FineNSYPos)); break;
-            case 8: result.setValue(QString::number(objInstance.FineZPos)); break;
-            case 9: result.setValue(QString::number(objInstance.Flags[0])); break;
-            case 10: result.setValue(QString::number(objInstance.Flags[1])); break;
-            case 11: result.setValue(QString::number(objInstance.Flags[2])); break;
-            case 12: result.setValue(QString::number(objInstance.Flags[3])); break;
-            case 13: result.setValue(QString::number(objInstance.Flags[4])); break;
-            case 14: result.setValue(QString::number(objInstance.Flags[5])); break;
-            case 15: result.setValue(QString::number(objInstance.Flags[6])); break;
-            case 16: result.setValue(QString::number(objInstance.Flags[7])); break;
-            case 17: result.setValue(QString::number(objInstance.Flags[8])); break;
-            case 18: result.setValue(QString::number(objInstance.Flags[9])); break;
-        }
+        case 0: return QString::number(object->TileLayer);
+        case 1: return QString::number(object->WEXTilePos);
+        case 2: return QString::number(object->NSYTilePos);
+        case 3: return QString::number(object->field_0x3);
+        case 4:
+            return QString::number(KingsFieldII::getObjectIDAsByte(object->ID)) + " ("
+                   + KingsFieldII::getObjectName(object->ID) + ")";
+        case 5:
+            return QString::number(object->ZRotation) + " ("
+                   + QString::number(object->ZRotation * KingsFieldII::rotationCoefficient) + "°)";
+        case 6: return QString::number(object->FineWEXPos);
+        case 7: return QString::number(object->FineNSYPos);
+        case 8: return QString::number(object->FineZPos);
+        case 9: return QString::number(object->Flags[0]);
+        case 10: return QString::number(object->Flags[1]);
+        case 11: return QString::number(object->Flags[2]);
+        case 12: return QString::number(object->Flags[3]);
+        case 13: return QString::number(object->Flags[4]);
+        case 14: return QString::number(object->Flags[5]);
+        case 15: return QString::number(object->Flags[6]);
+        case 16: return QString::number(object->Flags[7]);
+        case 17: return QString::number(object->Flags[8]);
+        case 18: return QString::number(object->Flags[9]);
+        default: return {};
     }
-    return result;
 }
 
 QVariant ObjectInstanceTableModel::headerData(int section, Qt::Orientation orientation, int role) const
 {
-    if (role == Qt::DisplayRole)
+    if (role != Qt::DisplayRole) return {};
+    if (orientation == Qt::Horizontal) return QStringLiteral("Value");
+
+    // if (orientation == Qt::Vertical):
+    if (section > 8 && section < 19) return getFlagLabel(section - 9);
+    switch (section)
     {
-        if (orientation == Qt::Horizontal)
-            return "Value";
-
-        if (orientation == Qt::Vertical)
-        {
-            switch (section)
-            {
-                case 0: return "Tile Layer";
-                case 1: return "X Tile Position";
-                case 2: return "Y Tile Position";
-                case 3: return "Unknown 03";
-                case 4: return "Object ID";
-                case 5: return "Z Rotation";
-                case 6: return "Fine X Position";
-                case 7: return "Fine Y Position";
-                case 8: return "Fine Z Position";
-                case 9: return "Flags[0]";
-                case 10: return "Flags[1]";
-                case 11: return "Flags[2]";
-                case 12: return "Flags[3]";
-                case 13: return "Flags[4]";
-                case 14: return "Flags[5]";
-                case 15: return "Flags[6]";
-                case 16: return "Flags[7]";
-                case 17: return "Flags[8]";
-                case 18: return "Flags[9]";
-                default: break;
-            }
-        }
+        case 0: return QStringLiteral("Tile Layer");
+        case 1: return QStringLiteral("X Tile Position");
+        case 2: return QStringLiteral("Y Tile Position");
+        case 3: return QStringLiteral("Unknown 03");
+        case 4: return QStringLiteral("Object ID");
+        case 5: return QStringLiteral("Z Rotation");
+        case 6: return QStringLiteral("Fine X Position");
+        case 7: return QStringLiteral("Fine Y Position");
+        case 8: return QStringLiteral("Fine Z Position");
+        default: return {};
     }
-
-    return QVariant();
 }
 
 bool ObjectInstanceTableModel::setData(const QModelIndex &index, const QVariant &value, int role)
 {
-    bool result = false;
-    if (!value.toString().isEmpty() && value.isValid() && role == Qt::EditRole && index.row() < rowCount(index) && index.row() >= 0 && index.column() == 0)
+    if (!value.isValid() || value.toString().isEmpty() || role != Qt::EditRole || !index.isValid())
+        return false;
+
+    auto intValue = value.toInt();
+    auto uIntValue = value.toInt();
+    auto byteValue = Utilities::clampToByte(uIntValue);
+    auto uShortValue = Utilities::clampToUShort(uIntValue);
+    auto shortValue = Utilities::clampToShort(intValue);
+    switch (index.row())
     {
-        int intValue = 0;
-        unsigned int uIntValue = 0;
-        switch (index.row())
-        {
-            case 0:
-                uIntValue = value.toUInt();
-                if (uIntValue < 256)
-                {
-                    objInstance.TileLayer = static_cast<quint8>(uIntValue);
-                    result = true;
-                }
-                break;
-            case 1:
-                uIntValue = value.toUInt();
-                if (uIntValue < 256)
-                {
-                    objInstance.WEXTilePos = static_cast<quint8>(uIntValue);
-                    result = true;
-                }
-                break;
-            case 2:
-                uIntValue = value.toUInt();
-                if (uIntValue < 256)
-                {
-                    objInstance.NSYTilePos = static_cast<quint8>(uIntValue);
-                    result = true;
-                }
-                break;
-            case 3:
-                uIntValue = value.toUInt();
-                if (uIntValue < 256)
-                {
-                    objInstance.field_0x3 = static_cast<quint8>(uIntValue);
-                    result = true;
-                }
-                break;
-            case 4:
-                uIntValue = value.toUInt();
-                if (uIntValue < 65536)
-                {
-                    objInstance.ObjectID = KingsFieldII::getObjectIDFromUShort(static_cast<unsigned short>(uIntValue));
-                    result = true;
-                }
-                break;
-            case 5:
-                if (value.toString().right(1) == "°" ||
-                    value.toString().right(1) == "º" ||
-                    value.toString().right(1) == "ª")
-                    uIntValue = static_cast<unsigned int>(value.toString().chopped(1).toUInt() / KingsFieldII::rotationCoefficient);
-                else
-                    uIntValue = value.toUInt() % 4096;
-                objInstance.ZRotation = static_cast<u_short>(uIntValue);
-                result = true;
-                break;
+        case 0: object->TileLayer = byteValue; break;
+        case 1: object->WEXTilePos = byteValue; break;
+        case 2: object->NSYTilePos = byteValue; break;
+        case 3: object->field_0x3 = byteValue; break;
+        case 4: object->ID = KingsFieldII::getObjectIDFromUShort(uShortValue); break;
+        case 5:
+            if (value.toString().right(1) == "°" || value.toString().right(1) == "º"
+                || value.toString().right(1) == "ª")
+                uShortValue = static_cast<uint16_t>(value.toString().chopped(1).toUInt()
+                                                    / KingsFieldII::rotationCoefficient);
+            else
+                uShortValue %= 4096;
+            object->ZRotation = uShortValue;
+            break;
 
-            case 6:
-                intValue = value.toInt();
-                if (intValue > -32768 && intValue < 32767)
-                {
-                    objInstance.FineWEXPos = static_cast<short>(intValue);
-                    result = true;
-                }
-                break;
-
-            case 7:
-                intValue = value.toInt();
-                if (intValue > -32768 && intValue < 32767)
-                {
-                    objInstance.FineNSYPos = static_cast<short>(intValue);
-                    result = true;
-                }
-                break;
-
-            case 8:
-                intValue = value.toInt();
-                if (intValue > -32768 && intValue < 32767)
-                {
-                    objInstance.FineZPos = static_cast<short>(intValue);
-                    result = true;
-                }
-                break;
-            case 9:
-                uIntValue = value.toUInt();
-                if (uIntValue < 256)
-                {
-                    objInstance.Flags[0] = static_cast<quint8>(uIntValue);
-                    result = true;
-                }
-                break;
-
-            case 10:
-                uIntValue = value.toUInt();
-                if (uIntValue < 256)
-                {
-                    objInstance.Flags[1] = static_cast<quint8>(uIntValue);
-                    result = true;
-                }
-                break;
-
-            case 11:
-                uIntValue = value.toUInt();
-                if (uIntValue < 256)
-                {
-                    objInstance.Flags[2] = static_cast<quint8>(uIntValue);
-                    result = true;
-                }
-                break;
-
-            case 12:
-                uIntValue = value.toUInt();
-                if (uIntValue < 256)
-                {
-                    objInstance.Flags[3] = static_cast<quint8>(uIntValue);
-                    result = true;
-                }
-                break;
-
-            case 13:
-                uIntValue = value.toUInt();
-                if (uIntValue < 256)
-                {
-                    objInstance.Flags[4] = static_cast<quint8>(uIntValue);
-                    result = true;
-                }
-                break;
-
-            case 14:
-                uIntValue = value.toUInt();
-                if (uIntValue < 256)
-                {
-                    objInstance.Flags[5] = static_cast<quint8>(uIntValue);
-                    result = true;
-                }
-                break;
-
-            case 15:
-                uIntValue = value.toUInt();
-                if (uIntValue < 256)
-                {
-                    objInstance.Flags[6] = static_cast<quint8>(uIntValue);
-                    result = true;
-                }
-                break;
-
-            case 16:
-                uIntValue = value.toUInt();
-                if (uIntValue < 256)
-                {
-                    objInstance.Flags[7] = static_cast<quint8>(uIntValue);
-                    result = true;
-                }
-                break;
-
-            case 17:
-                uIntValue = value.toUInt();
-                if (uIntValue < 256)
-                {
-                    objInstance.Flags[8] = static_cast<quint8>(uIntValue);
-                    result = true;
-                }
-                break;
-
-            case 18:
-                uIntValue = value.toUInt();
-                if (uIntValue < 256)
-                {
-                    objInstance.Flags[9] = static_cast<quint8>(uIntValue);
-                    result = true;
-                }
-                break;
-        }
+        case 6: object->FineWEXPos = shortValue; break;
+        case 7: object->FineNSYPos = shortValue; break;
+        case 8: object->FineZPos = shortValue; break;
+        case 9: object->Flags[0] = byteValue; break;
+        case 10: object->Flags[1] = byteValue; break;
+        case 11: object->Flags[2] = byteValue; break;
+        case 12: object->Flags[3] = byteValue; break;
+        case 13: object->Flags[4] = byteValue; break;
+        case 14: object->Flags[5] = byteValue; break;
+        case 15: object->Flags[6] = byteValue; break;
+        case 16: object->Flags[7] = byteValue; break;
+        case 17: object->Flags[8] = byteValue; break;
+        case 18: object->Flags[9] = byteValue; break;
     }
-    return result;
+    return true;
+}
+
+QString ObjectInstanceTableModel::getFlagLabel(unsigned int flagNo) const
+{
+    // TODO: Think about how to bring this back. This is hard because we don't receive the map
+    // anymore.
+    //switch (objClass.ClassType)
+    //{
+    //    case KingsFieldII::ObjectClassType::VerticalDoor2:
+    //        if (flagNo < 2u || flagNo == 7) break;
+    //        switch (flagNo)
+    //        {
+    //            case 2: return QStringLiteral("Key Item ID");
+    //            case 3: return QStringLiteral("Some Tile A X");
+    //            case 4: return QStringLiteral("Some Tile A Y");
+    //            case 5: return QStringLiteral("Some Tile B X");
+    //            case 6: return QStringLiteral("Some Tile B Y");
+    //            case 8: return QStringLiteral("Message ID for Wrong Key");
+    //            case 9: return QStringLiteral("Message ID when Locked");
+    //        }
+
+    //        default: break;
+    //    }
+
+    return QStringLiteral("Flag %1").arg(flagNo);
 }

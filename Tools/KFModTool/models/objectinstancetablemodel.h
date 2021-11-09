@@ -1,17 +1,15 @@
 #ifndef OBJECTINSTANCETABLEMODEL_H
 #define OBJECTINSTANCETABLEMODEL_H
 
-#include "kf2types.h"
+#include "datahandlers/map.h"
+#include "games/kf2.h"
 #include <QAbstractTableModel>
 
 class ObjectInstanceTableModel : public QAbstractTableModel
 {
     Q_OBJECT
 public:
-    explicit ObjectInstanceTableModel(QObject *parent,
-                                      KingsFieldII::ObjectInstanceDeclaration &objInstance_) :
-        QAbstractTableModel(parent),
-        objInstance(objInstance_) {}
+    explicit ObjectInstanceTableModel(QObject* parent = nullptr) : QAbstractTableModel(parent) {}
 
     int columnCount(const QModelIndex &parent) const override
     {
@@ -39,7 +37,14 @@ public:
     int rowCount(const QModelIndex &parent) const override
     {
         Q_UNUSED(parent)
+        if (object == nullptr) return 0;
         return 19;
+    }
+
+    void set(KingsFieldII::ObjectInstance& object_)
+    {
+        object = &object_;
+        emit layoutChanged();
     }
 
     bool setData(const QModelIndex &index, const QVariant &value, int role = Qt::EditRole) override;
@@ -51,7 +56,9 @@ public:
     }
 
 private:
-    KingsFieldII::ObjectInstanceDeclaration &objInstance;
+    KingsFieldII::ObjectInstance* object = nullptr;
+
+    QString getFlagLabel(unsigned int flagNo) const;
 };
 
 #endif // OBJECTINSTANCETABLEMODEL_H

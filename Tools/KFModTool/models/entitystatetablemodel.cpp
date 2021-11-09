@@ -1,34 +1,31 @@
 #include "entitystatetablemodel.h"
-#include "kf2types.h"
+#include "games/kf2.h"
 
 QVariant EntityStateTableModel::headerData(int section, Qt::Orientation orientation, int role) const
 {
     if (role == Qt::DisplayRole)
     {
-        if (orientation == Qt::Horizontal)
-            return "Value";
+        if (orientation == Qt::Horizontal) return QStringLiteral("Value");
 
         if (orientation == Qt::Vertical)
         {
             switch (section)
             {
-                case 0: return "State ID";
-                case 1: return "Animation";
-                case 4: return "Entity Sound Effect";
-                case 8: return "Look At Margin? Low Byte";
-                case 9: return "Look At Margin? High Byte";
-                case 10: return "Tick Something? Low Byte";
-                case 11: return "Tick Something? High Byte";
-                case 12: 
-                    if (*statePointer == 0x70)
-                        return "Dialogue Base Low Byte";
-                    return "Walk Speed Low Byte";
-                case 13: 
-                    if (*statePointer == 0x70)
-                        return "Dialogue Base High Byte";
-                    return "Walk Speed High Byte";
-                case 14: return "Turn Speed Low Byte";
-                case 15: return "Turn Speed High Byte";
+                case 0: return QStringLiteral("State ID");
+                case 1: return QStringLiteral("Animation");
+                case 4: return QStringLiteral("Entity Sound Effect");
+                case 8: return QStringLiteral("Look At Margin? Low Byte");
+                case 9: return QStringLiteral("Look At Margin? High Byte");
+                case 10: return QStringLiteral("Tick Something? Low Byte");
+                case 11: return QStringLiteral("Tick Something? High Byte");
+                case 12:
+                    if (*statePointer == 0x70) return QStringLiteral("Dialogue Base Low Byte");
+                    return QStringLiteral("Walk Speed Low Byte");
+                case 13:
+                    if (*statePointer == 0x70) return QStringLiteral("Dialogue Base High Byte");
+                    return QStringLiteral("Walk Speed High Byte");
+                case 14: return QStringLiteral("Turn Speed Low Byte");
+                case 15: return QStringLiteral("Turn Speed High Byte");
                 default:
                     return QString::asprintf("Unknown %x", section);
             }

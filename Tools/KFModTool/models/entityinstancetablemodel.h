@@ -1,17 +1,15 @@
 #ifndef ENTITYINSTANCETABLEMODEL_H
 #define ENTITYINSTANCETABLEMODEL_H
 
-#include "kf2types.h"
+#include "datahandlers/map.h"
+#include "games/kf2.h"
 #include <QAbstractTableModel>
 
 class EntityInstanceTableModel : public QAbstractTableModel
 {
     Q_OBJECT
 public:
-    explicit EntityInstanceTableModel(QObject *parent,
-                                      KingsFieldII::EntityInstance &entityInstance_) :
-        QAbstractTableModel(parent),
-        entityInstance(entityInstance_) {}
+    explicit EntityInstanceTableModel(QObject* parent = nullptr) : QAbstractTableModel(parent) {}
 
     int columnCount(const QModelIndex &parent) const override
     {
@@ -39,7 +37,14 @@ public:
     int rowCount(const QModelIndex &parent) const override
     {
         Q_UNUSED(parent)
+        if (entity == nullptr) return 0;
         return 12;
+    }
+
+    void set(KingsFieldII::EntityInstance& entity_)
+    {
+        entity = &entity_;
+        emit layoutChanged();
     }
 
     bool setData(const QModelIndex &index, const QVariant &value, int role = Qt::EditRole) override;
@@ -51,7 +56,7 @@ public:
     }
 
 private:
-    KingsFieldII::EntityInstance &entityInstance;
+    KingsFieldII::EntityInstance* entity = nullptr;
 };
 
 #endif // ENTITYINSTANCETABLEMODEL_H

@@ -1,17 +1,18 @@
 #ifndef TEXTURELISTMODEL_H
 #define TEXTURELISTMODEL_H
 
-#include "texturedb.h"
+#include "datahandlers/texturedb.h"
 #include <QAbstractListModel>
 
 class TextureListModel : public QAbstractListModel
 {
     Q_OBJECT
 public:
-    TextureListModel(QObject *parent, std::shared_ptr<TextureDB> textureDB_) : 
-        QAbstractListModel(parent), textureDB(textureDB_) {}
-    
-    int columnCount(const QModelIndex &parent) const override
+    TextureListModel(TextureDB& textureDB_, QObject* parent)
+        : QAbstractListModel(parent), textureDB(textureDB_)
+    {}
+
+    int columnCount(const QModelIndex& parent) const override
     {
         Q_UNUSED(parent)
         return 1;
@@ -41,7 +42,7 @@ public:
     int rowCount(const QModelIndex &parent) const override
     {
         Q_UNUSED(parent)
-        return textureDB->getTextureCount();
+        return textureDB.getTextureCount();
     }
     
     bool setHeaderData(int section, Qt::Orientation orientation, const QVariant &value, int role = Qt::EditRole) override
@@ -51,7 +52,7 @@ public:
     }
     
 private:
-    std::shared_ptr<TextureDB> textureDB;
+    TextureDB& textureDB;
 };
 
 #endif // TEXTURELISTMODEL_H

@@ -1,15 +1,17 @@
 #ifndef MAGICTABLEMODEL_H
 #define MAGICTABLEMODEL_H
 
-#include "kf2types.h"
+#include "datahandlers/gamedb.h"
+#include "games/kf2.h"
 #include <QAbstractTableModel>
 
 class MagicTableModel : public QAbstractTableModel
 {
     Q_OBJECT
 public:
-    MagicTableModel(QObject *parent, KingsFieldII::Magic &spell_) : QAbstractTableModel(parent),
-        spell(spell_) {}
+    MagicTableModel(GameDB& gameDB_, QObject* parent = nullptr)
+        : QAbstractTableModel(parent), gameDB(gameDB_)
+    {}
 
     int columnCount(const QModelIndex &parent) const override
     {
@@ -39,6 +41,11 @@ public:
         Q_UNUSED(parent)
         return 18;
     }
+    void setCurMagic(size_t index)
+    {
+        curMagic = index;
+        emit layoutChanged();
+    }
 
     bool setData(const QModelIndex &index, const QVariant &value, int role = Qt::EditRole) override;
 
@@ -49,7 +56,8 @@ public:
     }
 
 private:
-    KingsFieldII::Magic &spell;
+    GameDB& gameDB;
+    size_t curMagic = 0;
 };
 
 #endif // MAGICTABLEMODEL_H
