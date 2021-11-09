@@ -246,6 +246,7 @@ jobs:
        run: |
           sudo apt install tree
           tree
+
      - name: "Create release"
        uses: "marvinpinto/action-automatic-releases@latest"
        with:
@@ -254,11 +255,4 @@ jobs:
          prerelease: false
          title: "KingsFieldRE r${{ github.run_number }}"
          files: |
-           "./checksum_tool Linux (64-bit) AppImage/checksum_tool_(KingsFieldRE)-*-x86_64.AppImage"
-           "./checksum_tool Windows (64-bit) build/checksum_tool Windows (64-bit) build.zip"
-           "./KFModTool Linux (64-bit) AppImage/KFModTool_(KingsFieldRE)-*-x86_64.AppImage"
-           "./KFModTool Windows (64-bit) build/KFModTool Windows (64-bit) build.zip"
-           "./KFRandomizer Linux (64-bit) AppImage/KFRandomizer_(KingsFieldRE)-*-x86_64.AppImage"
-           "./KFRandomizer Windows (64-bit) build/KFRandomizer Windows (64-bit) build.zip"
-           "./tfile_tool Linux (64-bit) AppImage/tfile_tool_(KingsFieldRE)-*-x86_64.AppImage"
-           "./tfile_tool Windows (64-bit) build/tfile_tool Windows (64-bit) build.zip"
+           "*"
