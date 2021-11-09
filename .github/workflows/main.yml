@@ -154,7 +154,9 @@ jobs:
       run : |
         cd Tools\checksum_tool\release
         windeployqt --compiler-runtime checksum_tool.exe
-        del *.o *.cpp *.h
+        del *.o
+        del *.cpp
+        del *.h
         cp $env:Qt5_Dir\bin\libgcc_s_seh-1.dll .
         cp $env:Qt5_Dir\bin\libstdc++-6.dll .
         cp $env:Qt5_Dir\bin\libwinpthread-1.dll .
@@ -166,14 +168,16 @@ jobs:
       uses: actions/upload-artifact@v2
       with:
         name: checksum_tool Windows (64-bit) build
-        path: "Tools\checksum_tool\checksum_tool\checksum_tool Windows (64-bit) build.zip"
+        path: 'Tools\checksum_tool\checksum_tool\checksum_tool Windows (64-bit) build.zip'
 
     - name: Deploy KFModTool
       continue-on-error: true
       run : |
         cd Tools\KFModTool\release
         windeployqt --compiler-runtime KFModTool.exe
-        del *.o *.cpp *.h
+        del *.o
+        del *.cpp
+        del *.h
         cp $env:Qt5_Dir\bin\libgcc_s_seh-1.dll .
         cp $env:Qt5_Dir\bin\libstdc++-6.dll .
         cp $env:Qt5_Dir\bin\libwinpthread-1.dll .
@@ -186,13 +190,15 @@ jobs:
       uses: actions/upload-artifact@v2
       with:
         name: KFModTool Windows (64-bit) build
-        path: Tools\KFModTool\KFModTool\
+        path: 'Tools\KFModTool\KFModTool\KFModTool Windows (64-bit) build.zip'
 
     - name: Deploy KFRandomizer
       run : |
         cd Tools\KFRandomizer\release
         windeployqt --compiler-runtime KFRandomizer.exe
-        del *.o *.cpp *.h
+        del *.o
+        del *.cpp
+        del *.h
         cp $env:Qt5_Dir\bin\libgcc_s_seh-1.dll .
         cp $env:Qt5_Dir\bin\libstdc++-6.dll .
         cp $env:Qt5_Dir\bin\libwinpthread-1.dll .
@@ -204,13 +210,15 @@ jobs:
       uses: actions/upload-artifact@v2
       with:
         name: KFRandomizer Windows (64-bit) build
-        path: "Tools\KFRandomizer\KFRandomizer\KFRandomizer Windows (64-bit) build.zip"
+        path: 'Tools\KFRandomizer\KFRandomizer\KFRandomizer Windows (64-bit) build.zip'
 
     - name: Deploy tfile_tool
       run : |
         cd Tools\tfile_tool\release
         windeployqt --compiler-runtime tfile_tool.exe
-        del *.o *.cpp *.h
+        del *.o
+        del *.cpp
+        del *.h
         cp $env:Qt5_Dir\bin\libgcc_s_seh-1.dll .
         cp $env:Qt5_Dir\bin\libstdc++-6.dll .
         cp $env:Qt5_Dir\bin\libwinpthread-1.dll .
@@ -223,7 +231,7 @@ jobs:
       uses: actions/upload-artifact@v2
       with:
         name: tfile_tool Windows (64-bit) build
-        path: "Tools\tfile_tool\tfile_tool Windows (64-bit) build.zip"
+        path: 'Tools\tfile_tool\tfile_tool Windows (64-bit) build.zip'
 
   # This is practically copied from DuckStation's GitHub Actions workflow.
   create-release:
