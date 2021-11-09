@@ -168,7 +168,7 @@ jobs:
       uses: actions/upload-artifact@v2
       with:
         name: checksum_tool Windows (64-bit) build
-        path: 'Tools\checksum_tool\checksum_tool\checksum_tool Windows (64-bit) build.zip'
+        path: 'Tools\checksum_tool\checksum_tool Windows (64-bit) build.zip'
 
     - name: Deploy KFModTool
       continue-on-error: true
@@ -190,7 +190,7 @@ jobs:
       uses: actions/upload-artifact@v2
       with:
         name: KFModTool Windows (64-bit) build
-        path: 'Tools\KFModTool\KFModTool\KFModTool Windows (64-bit) build.zip'
+        path: 'Tools\KFModTool\KFModTool Windows (64-bit) build.zip'
 
     - name: Deploy KFRandomizer
       run : |
@@ -210,7 +210,7 @@ jobs:
       uses: actions/upload-artifact@v2
       with:
         name: KFRandomizer Windows (64-bit) build
-        path: 'Tools\KFRandomizer\KFRandomizer\KFRandomizer Windows (64-bit) build.zip'
+        path: 'Tools\KFRandomizer\KFRandomizer Windows (64-bit) build.zip'
 
     - name: Deploy tfile_tool
       run : |
@@ -246,3 +246,21 @@ jobs:
        run: |
           sudo apt install tree
           tree
+
+#     - uses: "marvinpinto/action-automatic-releases@latest"
+#     with:
+#       repo_token: "${{ secrets.GITHUB_TOKEN }}"
+#          automatic_release_tag: "r${{ github.run_number }}"
+#          prerelease: false
+#          title: "KingsFieldRE r${{ github.run_number }}"
+#          files: |
+#            windows/duckstation-windows-x64-release.zip
+#            windows/duckstation-windows-x64-release-symbols.zip
+#            windows-arm64/duckstation-windows-arm64-release.zip
+#            windows-arm64/duckstation-windows-arm64-release-symbols.zip
+#            windows-uwp/duckstation-uwp.appx
+#            windows-uwp/duckstation-uwp.der
+#            linux-x64-appimage-nogui/duckstation-nogui-x64.AppImage
+#            linux-x64-appimage-nogui-zsync/duckstation-nogui-x64.AppImage.zsync
+#            linux-x64-appimage-qt/duckstation-qt-x64.AppImage
+#            linux-x64-appimage-qt-zsync/duckstation-qt-x64.AppImage.zsync
