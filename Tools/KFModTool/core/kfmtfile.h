@@ -23,6 +23,8 @@ public:
         MapDB,
         MapScript,
         Model,
+        SoundBankBody,
+        SoundBankHeader,
         TextureDB,
         Unknown
     };

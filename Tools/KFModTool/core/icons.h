@@ -15,6 +15,8 @@ extern QIcon gameDb;
 extern QIcon gameExe;
 extern QIcon map;
 extern QIcon model;
+extern QIcon soundbankBody;
+extern QIcon soundbankHeader;
 extern QIcon textureDb;
 extern QIcon unknown;
 

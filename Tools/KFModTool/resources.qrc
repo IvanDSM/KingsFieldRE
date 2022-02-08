@@ -15,5 +15,7 @@
         <file>checker.png</file>
         <file>KFModTool.ico</file>
         <file>KFModTool.png</file>
+        <file>icons/sndbody_icon.png</file>
+        <file>icons/sndhead_icon.png</file>
     </qresource>
 </RCC>

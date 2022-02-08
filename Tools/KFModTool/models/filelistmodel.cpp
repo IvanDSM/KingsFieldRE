@@ -64,13 +64,9 @@ QVariant FileListModel::data(const QModelIndex &index, int role) const
     if (role == Qt::DisplayRole)
     {
         const auto& filePath = reinterpret_cast<KFMTFile*>(index.internalPointer())->filePath;
-        switch (core.curGame)
+        switch (core.currentGame())
         {
-            case KFMTCore::VersionedGame::KF2Jv1_0: [[fallthrough]];
-            case KFMTCore::VersionedGame::KF2Jv1_7: [[fallthrough]];
-            case KFMTCore::VersionedGame::KF2Jv1_8A: [[fallthrough]];
-            case KFMTCore::VersionedGame::KF2Jv1_8B: [[fallthrough]];
-            case KFMTCore::VersionedGame::KF2U: return PrettyNames::kf2(filePath);
+            case KFMTCore::SimpleGame::KF2: return PrettyNames::kf2(filePath);
             default: return filePath;
         }
     }
@@ -86,6 +82,8 @@ QVariant FileListModel::data(const QModelIndex &index, int role) const
             case KFMTFile::DataType::MapDB: [[fallthrough]];
             case KFMTFile::DataType::MapScript: return Icons::map;
             case KFMTFile::DataType::Model: return Icons::model;
+            case KFMTFile::DataType::SoundBankBody: return Icons::soundbankBody;
+            case KFMTFile::DataType::SoundBankHeader: return Icons::soundbankHeader;
             case KFMTFile::DataType::TextureDB: return Icons::textureDb;
             default: return Icons::unknown;
         }

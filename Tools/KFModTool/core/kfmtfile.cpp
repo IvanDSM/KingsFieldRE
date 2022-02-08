@@ -120,6 +120,10 @@ void KFMTFile::detectDataType()
         dataType = DataType::MapScript;
     else if (Utilities::fileIsGameDB(rawData))
         dataType = DataType::GameDB;
+    else if (Utilities::fileIsVH(rawData))
+        dataType = DataType::SoundBankHeader;
+    else if (Utilities::fileIsVB(rawData))
+        dataType = DataType::SoundBankBody;
     else
         dataType = DataType::Unknown;
 }

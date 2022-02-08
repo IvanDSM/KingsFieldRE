@@ -7,6 +7,8 @@ QIcon gameDb;
 QIcon gameExe;
 QIcon map;
 QIcon model;
+QIcon soundbankBody;
+QIcon soundbankHeader;
 QIcon textureDb;
 QIcon unknown;
 
@@ -17,6 +19,8 @@ void init()
     gameExe = QIcon(QStringLiteral(":/icons/gameexe_icon.png"));
     map = QIcon(QStringLiteral(":/icons/map_icon.png"));
     model = QIcon(QStringLiteral(":/icons/3d_icon.png"));
+    soundbankBody = QIcon(QStringLiteral(":/icons/sndbody_icon.png"));
+    soundbankHeader = QIcon(QStringLiteral(":/icons/sndhead_icon.png"));
     textureDb = QIcon(QStringLiteral(":/icons/tex_icon.png"));
     unknown = QIcon(QStringLiteral(":/icons/unk_icon.png"));
 }
