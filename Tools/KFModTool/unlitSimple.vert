@@ -1,9 +1,11 @@
-attribute vec3 inVertex;
-attribute vec3 inColour;
+#version 330 core
+
+layout(location = 0) in vec3 inVertex;
+layout(location = 1) in vec3 inColour;
+
+out vec4 vColour;
 
 uniform mat4 uMVP;
-
-varying vec4 vColour;
 
 void main(void)
 {

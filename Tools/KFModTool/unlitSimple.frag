@@ -1,4 +1,6 @@
-varying vec4 vColour;
+#version 330 core
+
+in vec4 vColour;
 
 void main(void)
 {
