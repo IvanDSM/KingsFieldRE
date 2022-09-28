@@ -106,6 +106,7 @@ HEADERS += \
     models/vfxinstancetablemodel.h \
     models/weaponstatslistmodel.h \
     models/weaponstatstablemodel.h \
+    platform/psx.h \
     utilities.h
     
 SOURCES += \
