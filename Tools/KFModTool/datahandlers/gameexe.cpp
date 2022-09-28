@@ -1,5 +1,6 @@
 #include "gameexe.h"
 #include "core/kfmtcore.h"
+#include "core/kfmterror.h"
 #include "utilities.h"
 
 constexpr inline size_t ramToFilePos(size_t ramPos)
@@ -14,13 +15,13 @@ GameEXE::GameEXE(KFMTFile& file_) : KFMTDataHandler(file_)
     {
         case KFMTCore::VersionedGame::KF2Jv1_0:
 
-            //uiStrings1 = &Utilities::as<KingsFieldII::PosString>(file.rawData,
+            //uiStrings1 = &Utilities::as<KF2::PosString>(file.rawData,
             //                                                     ramToFilePos(0x80064cf0));
-            //uiStrings2 = &Utilities::as<KingsFieldII::String>(file.rawData,
+            //uiStrings2 = &Utilities::as<KF2::String>(file.rawData,
             //                                                  ramToFilePos(0x80065674));
-            //itemStrings = &Utilities::as<KingsFieldII::String>(file.rawData,
+            //itemStrings = &Utilities::as<KF2::String>(file.rawData,
             //                                                   ramToFilePos(0x80065b24));
-            //magicStrings = &Utilities::as<KingsFieldII::String>(file.rawData,
+            //magicStrings = &Utilities::as<KF2::String>(file.rawData,
             //                                                    ramToFilePos(0x80066664));
 
             for (size_t i = 0; i < 6; i++)
@@ -44,13 +45,13 @@ GameEXE::GameEXE(KFMTFile& file_) : KFMTDataHandler(file_)
 
             break;
         case KFMTCore::VersionedGame::KF2U:
-            uiStrings1 = &Utilities::as<KingsFieldII::PosString>(file.rawData,
+            uiStrings1 = &Utilities::as<KF2::PosString>(file.rawData,
                                                                  ramToFilePos(0x80064cf0));
-            uiStrings2 = &Utilities::as<KingsFieldII::String>(file.rawData,
+            uiStrings2 = &Utilities::as<KF2::String>(file.rawData,
                                                               ramToFilePos(0x80065674));
-            itemStrings = &Utilities::as<KingsFieldII::String>(file.rawData,
+            itemStrings = &Utilities::as<KF2::String>(file.rawData,
                                                                ramToFilePos(0x80065b24));
-            magicStrings = &Utilities::as<KingsFieldII::String>(file.rawData,
+            magicStrings = &Utilities::as<KF2::String>(file.rawData,
                                                                 ramToFilePos(0x80066664));
             for (size_t i = 0; i < 6; i++)
             {

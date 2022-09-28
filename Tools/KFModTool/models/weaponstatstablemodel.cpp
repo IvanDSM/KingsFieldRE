@@ -13,11 +13,11 @@ QVariant WeaponStatsTableModel::data(const QModelIndex &index, int role) const
         case 1: return QString::number(weaponStat.StrStaminaCost);
         case 2: return QString::number(weaponStat.Unknown_x02);
         case 3:
-            return QString::number(KingsFieldII::getMagicIDAsByte(weaponStat.Spell1))
-                   + QStringLiteral(" (") + KingsFieldII::getMagicIDName(weaponStat.Spell1) + ')';
+            return QString::number(static_cast<int>(weaponStat.Spell1))
+                   + QStringLiteral(" (") + KF2::getMagicIDName(weaponStat.Spell1) + ')';
         case 4:
-            return QString::number(KingsFieldII::getMagicIDAsByte(weaponStat.Spell2))
-                   + QStringLiteral(" (") + KingsFieldII::getMagicIDName(weaponStat.Spell2) + ')';
+            return QString::number(static_cast<int>(weaponStat.Spell2))
+                   + QStringLiteral(" (") + KF2::getMagicIDName(weaponStat.Spell2) + ')';
         case 5: return QString::number(weaponStat.Spell1ShotAmount);
         case 6: return QString::number(weaponStat.OffSlash);
         case 7: return QString::number(weaponStat.OffChop);
@@ -111,51 +111,49 @@ bool WeaponStatsTableModel::setData(const QModelIndex &index, const QVariant &va
 
     auto& weaponStat = gameDB.getWeaponStats(curWeapon);
 
-    int intValue = value.toInt();
-    unsigned int uIntValue = value.toUInt();
     switch (index.row())
     {
-        case 0: weaponStat.SoundEffect = Utilities::clampToByte(uIntValue); break;
-        case 1: weaponStat.StrStaminaCost = Utilities::clampToByte(uIntValue); break;
-        case 2: weaponStat.Unknown_x02 = Utilities::clampToByte(uIntValue); break;
+        case 0: weaponStat.SoundEffect = Utilities::clampToByte(value.toUInt()); break;
+        case 1: weaponStat.StrStaminaCost = Utilities::clampToByte(value.toUInt()); break;
+        case 2: weaponStat.Unknown_x02 = Utilities::clampToByte(value.toUInt()); break;
         case 3:
-            weaponStat.Spell1 = KingsFieldII::getMagicIDFromByte(Utilities::clampToByte(uIntValue));
+            weaponStat.Spell1 = static_cast<KF2::MagicID>(value.toUInt());
             break;
         case 4:
-            weaponStat.Spell2 = KingsFieldII::getMagicIDFromByte(Utilities::clampToByte(uIntValue));
+            weaponStat.Spell2 = static_cast<KF2::MagicID>(value.toUInt());
             break;
-        case 5: weaponStat.Spell1ShotAmount = Utilities::clampToByte(uIntValue); break;
-        case 6: weaponStat.OffSlash = Utilities::clampToUShort(uIntValue); break;
-        case 7: weaponStat.OffChop = Utilities::clampToUShort(uIntValue); break;
-        case 8: weaponStat.OffStab = Utilities::clampToUShort(uIntValue); break;
-        case 9: weaponStat.OffHolyM = Utilities::clampToUShort(uIntValue); break;
-        case 10: weaponStat.OffFireM = Utilities::clampToUShort(uIntValue); break;
-        case 11: weaponStat.OffEarthM = Utilities::clampToUShort(uIntValue); break;
-        case 12: weaponStat.OffWindM = Utilities::clampToUShort(uIntValue); break;
-        case 13: weaponStat.OffWaterM = Utilities::clampToUShort(uIntValue); break;
-        case 14: weaponStat.HPRestoreTimer = Utilities::clampToUShort(uIntValue); break;
-        case 15: weaponStat.MPRestoreTimer = Utilities::clampToUShort(uIntValue); break;
-        case 16: weaponStat.AttackRange = Utilities::clampToShort(intValue); break;
-        case 17: weaponStat.SwingSpeed = Utilities::clampToUShort(uIntValue); break;
-        case 18: weaponStat.SwingDamageStartTime = Utilities::clampToUShort(uIntValue); break;
-        case 19: weaponStat.Spell1CastStartTime = Utilities::clampToUShort(uIntValue); break;
-        case 20: weaponStat.Spell1CastEndTime = Utilities::clampToUShort(uIntValue); break;
-        case 21: weaponStat.Spell2AnimSpeed = Utilities::clampToShort(intValue); break;
-        case 22: weaponStat.Unknown_x26 = Utilities::clampToUShort(uIntValue); break;
-        case 23: weaponStat.Spell2DamageStartTime = Utilities::clampToUShort(uIntValue); break;
-        case 24: weaponStat.Unknown_x2a = Utilities::clampToUShort(uIntValue); break;
-        case 25: weaponStat.Unknown_x2c = Utilities::clampToUShort(uIntValue); break;
-        case 26: weaponStat.Unknown_x2e = Utilities::clampToUShort(uIntValue); break;
-        case 27: weaponStat.Unknown_x30 = Utilities::clampToUShort(uIntValue); break;
-        case 28: weaponStat.Unknown_x32 = Utilities::clampToShort(intValue); break;
-        case 29: weaponStat.Position.vx = Utilities::clampToShort(intValue); break;
-        case 30: weaponStat.Position.vy = Utilities::clampToShort(intValue); break;
-        case 31: weaponStat.Position.vz = Utilities::clampToShort(intValue); break;
-        case 32: weaponStat.Position.pad = Utilities::clampToShort(intValue); break;
-        case 33: weaponStat.SomeVec.vx = Utilities::clampToShort(intValue); break;
-        case 34: weaponStat.SomeVec.vy = Utilities::clampToShort(intValue); break;
-        case 35: weaponStat.SomeVec.vz = Utilities::clampToShort(intValue); break;
-        case 36: weaponStat.SomeVec.pad = Utilities::clampToShort(intValue); break;
+        case 5: weaponStat.Spell1ShotAmount = Utilities::clampToByte(value.toUInt()); break;
+        case 6: weaponStat.OffSlash = Utilities::clampToUShort(value.toUInt()); break;
+        case 7: weaponStat.OffChop = Utilities::clampToUShort(value.toUInt()); break;
+        case 8: weaponStat.OffStab = Utilities::clampToUShort(value.toUInt()); break;
+        case 9: weaponStat.OffHolyM = Utilities::clampToUShort(value.toUInt()); break;
+        case 10: weaponStat.OffFireM = Utilities::clampToUShort(value.toUInt()); break;
+        case 11: weaponStat.OffEarthM = Utilities::clampToUShort(value.toUInt()); break;
+        case 12: weaponStat.OffWindM = Utilities::clampToUShort(value.toUInt()); break;
+        case 13: weaponStat.OffWaterM = Utilities::clampToUShort(value.toUInt()); break;
+        case 14: weaponStat.HPRestoreTimer = Utilities::clampToUShort(value.toUInt()); break;
+        case 15: weaponStat.MPRestoreTimer = Utilities::clampToUShort(value.toUInt()); break;
+        case 16: weaponStat.AttackRange = Utilities::clampToShort(value.toInt()); break;
+        case 17: weaponStat.SwingSpeed = Utilities::clampToUShort(value.toUInt()); break;
+        case 18: weaponStat.SwingDamageStartTime = Utilities::clampToUShort(value.toUInt()); break;
+        case 19: weaponStat.Spell1CastStartTime = Utilities::clampToUShort(value.toUInt()); break;
+        case 20: weaponStat.Spell1CastEndTime = Utilities::clampToUShort(value.toUInt()); break;
+        case 21: weaponStat.Spell2AnimSpeed = Utilities::clampToShort(value.toInt()); break;
+        case 22: weaponStat.Unknown_x26 = Utilities::clampToUShort(value.toUInt()); break;
+        case 23: weaponStat.Spell2DamageStartTime = Utilities::clampToUShort(value.toUInt()); break;
+        case 24: weaponStat.Unknown_x2a = Utilities::clampToUShort(value.toUInt()); break;
+        case 25: weaponStat.Unknown_x2c = Utilities::clampToUShort(value.toUInt()); break;
+        case 26: weaponStat.Unknown_x2e = Utilities::clampToUShort(value.toUInt()); break;
+        case 27: weaponStat.Unknown_x30 = Utilities::clampToUShort(value.toUInt()); break;
+        case 28: weaponStat.Unknown_x32 = Utilities::clampToShort(value.toInt()); break;
+        case 29: weaponStat.Position.vx = Utilities::clampToShort(value.toInt()); break;
+        case 30: weaponStat.Position.vy = Utilities::clampToShort(value.toInt()); break;
+        case 31: weaponStat.Position.vz = Utilities::clampToShort(value.toInt()); break;
+        case 32: weaponStat.Position.pad = Utilities::clampToShort(value.toInt()); break;
+        case 33: weaponStat.SomeVec.vx = Utilities::clampToShort(value.toInt()); break;
+        case 34: weaponStat.SomeVec.vy = Utilities::clampToShort(value.toInt()); break;
+        case 35: weaponStat.SomeVec.vz = Utilities::clampToShort(value.toInt()); break;
+        case 36: weaponStat.SomeVec.pad = Utilities::clampToShort(value.toInt()); break;
         default: return false;
     }
 

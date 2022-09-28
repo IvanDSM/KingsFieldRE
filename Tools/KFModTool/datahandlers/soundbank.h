@@ -2,181 +2,82 @@
 #define SOUNDBANK_H
 
 #include "core/kfmterror.h"
+#include "datahandlers/kfmtdatahandler.h"
 #include <vector>
 #include <QtMath>
-
-//
-// Formats
-//
-namespace VABFormat
+/*
+class SoundBank : public KFMTDataHandler
 {
-    struct Header
+    class Sound
     {
-        unsigned int magicNumber;
-        unsigned int version;
-        unsigned int bankID;
-        unsigned int fileSize;
-        unsigned short reserved0;
-        unsigned short numProgram;
-        unsigned short numTone;
-        unsigned short numWaveform;
-        unsigned char  masterVolume;
-        unsigned char  masterPan;
-        unsigned char  attribute1;
-        unsigned char  attribute2;
-        unsigned int reserved1;
+        std::vector<uint16_t> samples;
+        uint32_t sampleRate;
     };
 
-    struct Program
-    {
-        unsigned char numTone;
-        unsigned char volume;
-        unsigned char priority;
-        unsigned char mode;
-        unsigned char pan;
-        unsigned char reserved0;
-        unsigned short attribute;
-        unsigned int reserved1;
-        unsigned int reserved2;
-    };
-
-    struct ASDR
-    {
-        unsigned short asdr;
-        union {
-            unsigned short attack : 4;
-            unsigned short decay  : 4;
-            unsigned short sustain : 4;
-            unsigned short release : 4;
-        };
-    };
-
-    struct Tone
-    {
-        unsigned char priority;
-        unsigned char mode;
-        unsigned char volume;
-        unsigned char pan;
-        unsigned char centerNote;
-        unsigned char pitchCorrection;
-        unsigned char minNote;
-        unsigned char maxNote;
-        unsigned char vibratoWidth;
-        unsigned char vibratoHz;
-        unsigned char portamentoWidth;
-        unsigned char portamentoHz;
-        unsigned char pitchBendMin;
-        unsigned char pitchBendMax;
-        unsigned char reserved1;
-        unsigned char reserved2;
-        ASDR asdr1;
-        ASDR asdr2;
-        unsigned short parentProgram;
-        unsigned short vagID;
-        unsigned short reserved[4];
-    };
-
-    struct VagTable
-    {
-        unsigned short vagTable[256];   //There's always 256 vag offsets (512 bytes)
-    };
-}
-namespace PSXSpu
-{
-    static const signed char pos_adpcm_filter[] = {0, +60, +115, +98, +122};
-    static const signed char neg_adpcm_filter[] = {0,   0,  -52, -55,  -60};
-
-    struct adpcm_block_shift
-    {
-        unsigned char shiftFilter;
-        union {
-            unsigned char shift : 4;
-            unsigned char filter : 3;
-            unsigned char reserved : 1;
-        };
-    };
-
-    struct adpcm_block_flag
-    {
-        unsigned char flag;
-        union {
-            unsigned char loopEnd : 1;
-            unsigned char loopRepeat : 1;
-            unsigned char loopStart : 1;
-            unsigned char reserved : 5;
-        };
-    };
-
-    struct adpcm_block_sample
-    {
-        unsigned char sample;
-        union {
-            unsigned char first : 4;
-            unsigned char second : 4;
-        };
-    };
-
-    struct adpcm_block
-    {
-        adpcm_block_shift shiftFilter;
-        adpcm_block_flag  flags;
-        adpcm_block_sample samples[14];
-    };
-}
-
-class Sound {
-public:
-    Sound();
-    ~Sound();
-
-public:
-
-    /*!
-     * \brief Decode a block of SPU ADPCM (MONO) and converts it to S16 PCM (MONO)
-     * \param in spu_adpcm_block
-     * \param out pcm data
-     * \return n/a
-     */
-    void decodeSpuADPCM(PSXSpu::adpcm_block block, signed short *pcm);
-
-private:
-
-    //These values relate to the decoding of ADPCM data.
-    signed short sampleOld    = 0;
-    signed short sampleOldest = 0;
-
-};
-
-class SoundBank {
 public:
     SoundBank();
     ~SoundBank();
 
 public:
-    void loadVAB(const QByteArray &vh, const QByteArray &vb); //Should take a VH and VB file
-
-    /*!
-     * \brief Get a sound object from the sound bank.
-     * \param in Sound Index
-     * \return A previously loaded sound.
-     */
-    Sound *getSound(unsigned int index)
-    {
-       if(index >= sound.size())
-       {
-           KFMTError::error("SoundBank: Invalid Sound ID");
-           return nullptr;
-       }
-
-       return sound[index];
-    }
+    explicit SoundBank(KFMTFile& vh, KFMTFile& vb);
 
 private:
-    std::vector<VABFormat::Program*> program;
-    std::vector<VABFormat::Tone*> tone;
-
-    std::vector<Sound*> sound;
-
+    std::vector<Sound> sounds;
 };
 
+struct ProgramAttributes
+{
+    uint8_t toneCount;
+    uint8_t voume;
+    uint8_t priority;
+    uint8_t mode;
+    uint8_t pan;
+    uint8_t systemReserved0;
+    uint8_t attr;
+    uint8_t systemReserved1;
+    uint8_t systemReserved2;
+} __attribute__((packed, aligned(1)));
+
+struct ToneAttributes
+{
+    uint8_t priority;
+    uint8_t mode;
+    uint8_t volume;
+    uint8_t pan;
+    uint8_t centerNote;
+    uint8_t centerNoteTuneOffset;
+    uint8_t minimumNote;
+    uint8_t maximumNote;
+    uint8_t vibratoDepth;
+    uint8_t vibratoLength;
+    uint8_t portamentoDepth;
+    uint8_t portamentoLength;
+    uint8_t pitchBendMinimum;
+    uint8_t pitchBendMaximum;
+    uint16_t systemReserved0;
+    uint16_t adsr1;
+    uint16_t adsr2;
+    int16_t program;
+    int16_t vag;
+    uint64_t systemReserved1;
+};
+
+struct VABHeader
+{
+    uint32_t magic;
+    uint32_t version;
+    uint32_t vabId;
+    uint32_t fileSize;
+    uint16_t systemReserved0;
+    uint16_t programCount;
+    uint16_t toneCount;
+    uint16_t vagCount;
+    uint8_t masterVolume;
+    uint8_t masterPan;
+    uint8_t bankAttr1;
+    uint8_t bankAttr2;
+    uint32_t systemReserved1;
+    ProgramAttributes programAttrs[128];
+} __attribute__((packed, aligned(1)));
+*/
 #endif // SOUNDBANK_H

@@ -1,4 +1,5 @@
 #include "shoptablemodel.h"
+#include "kf2/object.h"
 
 QVariant ShopTableModel::headerData(int section, Qt::Orientation orientation, int role) const
 {
@@ -18,7 +19,7 @@ QVariant ShopTableModel::headerData(int section, Qt::Orientation orientation, in
                 default: return {};
             }
         case Qt::Vertical:
-            return KingsFieldII::getObjectName(static_cast<KingsFieldII::ObjectID>(section));
+            return KF2::getObjectName(static_cast<KF2::ObjectID>(section));
         default: return {};
     }
 }

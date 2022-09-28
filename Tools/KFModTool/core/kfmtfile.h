@@ -1,8 +1,10 @@
 #ifndef KFMTFILE_H
 #define KFMTFILE_H
 
+#include "core/kfmterror.h"
 #include <memory>
 #include <QDir>
+#include <QRegularExpression>
 
 class KFMTFile
 {
@@ -50,13 +52,24 @@ public:
      */
     void extractTo(const QDir& outDir);
 
-    inline DataType getDataType() const { return dataType; }
-    const QString& getFileExtension() const;
-    inline FileType getFileType() const { return fileType; }
-    inline KFMTFile* getSubFile(size_t index)
+    [[nodiscard]] inline DataType getDataType() const { return dataType; }
+    [[nodiscard]] const QString& getFileExtension() const;
+    [[nodiscard]] inline FileType getFileType() const { return fileType; }
+    [[nodiscard]] inline KFMTFile* getSubFile(size_t index)
     {
         return index < subFiles.size() ? &subFiles[index] : nullptr;
     }
+
+    [[nodiscard]] auto indexInContainer()
+    {
+        if (dataType == DataType::Container)
+            KFMTError::fatalError("KFMTFile::indexInContainer(): called for container!");
+
+        static const QRegularExpression numberRE{"[0-9]+"};
+        auto fileName = filePath.mid(filePath.lastIndexOf('\\'));
+        return fileName.midRef(fileName.indexOf(numberRE)).toUInt();
+    }
+
     void writeFile(const QDir& outDir);
 
     QString filePath;
@@ -69,6 +82,7 @@ private:
      * THIS SHOULD ONLY BE RUN FOR T FILE SUBFILES.
      */
     void recalculateChecksum();
+
     void loadMIX(QFile& fileHandle);
     void loadT(QFile& fileHandle);
     void writeMIX(QFile& fileHandle);

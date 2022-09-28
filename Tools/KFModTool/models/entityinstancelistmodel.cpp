@@ -14,7 +14,7 @@ QVariant EntityInstanceListModel::data(const QModelIndex &index, int role) const
     if (!index.isValid() || role != Qt::DisplayRole) return {};
 
     const auto& entity = map.getEntityInstance(index.row());
-    auto meshID = KingsFieldII::EntityMeshID::None;
+    auto meshID = KF2::EntityMeshID::None;
     if (entity.EntityClass < Map::entityClassesSize)
         meshID = map.getEntityClassDeclaration(entity.EntityClass).MeshID;
 
@@ -31,7 +31,7 @@ QVariant EntityInstanceListModel::data(const QModelIndex &index, int role) const
 
     auto res = QStringLiteral("%1: %2 instanced at 0x%3")
                    .arg(QString::number(index.row()),
-                        KingsFieldII::getEntityMeshName(meshID),
+                        KF2::getEntityMeshName(meshID),
                         QString::number(ramAddress, 16));
 
     return res;

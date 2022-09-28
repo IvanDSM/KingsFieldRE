@@ -18,5 +18,5 @@ QVariant MagicListModel::data(const QModelIndex &index, int role) const
     auto result = QStringLiteral("%1 (0x%2) %3")
                       .arg(QString::number(index.row()), QString::number(index.row(), 16));
 
-    return result.arg(KingsFieldII::getMagicIDName(KingsFieldII::getMagicIDFromByte(index.row())));
+    return result.arg(KF2::getMagicIDName(static_cast<KF2::MagicID>(index.row())));
 }

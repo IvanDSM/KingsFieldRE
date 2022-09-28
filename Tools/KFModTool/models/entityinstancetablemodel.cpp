@@ -1,10 +1,11 @@
 #include "entityinstancetablemodel.h"
+#include "platform/psx.h"
 
 static const auto random_ = QStringLiteral(" (Random)");
 static const auto nonrandom_ = QStringLiteral(" (Non-Random)");
 static const auto invalid_ = QStringLiteral(" (Invalid Value)");
 
-inline const QString& getNonRandomStr(const byte& value)
+inline const QString& getNonRandomStr(const uint8_t& value)
 {
     switch (value)
     {
@@ -30,13 +31,13 @@ QVariant EntityInstanceTableModel::data(const QModelIndex &index, int role) cons
         case 4: return QString::number(entity->NSYTilePos); break;
         case 5: return QString::number(entity->RespawnChance); break;
         case 6:
-            return QString::number(KingsFieldII::getObjectIDAsByte(entity->DroppedItem)) + " ("
-                   + KingsFieldII::getObjectName(entity->DroppedItem) + ")";
+            return QString::number(static_cast<uint16_t>(entity->DroppedItem)) + " ("
+                   + KF2::getObjectName(entity->DroppedItem) + ")";
             break;
         case 7: return QString::number(entity->Layer); break;
         case 8:
             return QString::number(entity->ZRotation) + " ("
-                   + QString::number(entity->ZRotation * KingsFieldII::rotationCoefficient) + "°)";
+                   + QString::number(PSX::fromAngle(entity->ZRotation)) + "°)";
             break;
         case 9: return QString::number(entity->FineWEXPos); break;
         case 10: return QString::number(entity->FineNSYPos); break;
@@ -82,8 +83,8 @@ bool EntityInstanceTableModel::setData(const QModelIndex &index, const QVariant 
         return false;
 
     short shortValue = qMax(-32767, qMin(32767, value.toInt()));
-    u_short uShortValue = qMin(65535u, value.toUInt());
-    byte byteValue = qMin(255u, value.toUInt());
+    uint16_t uShortValue = qMin(65535u, value.toUInt());
+    uint8_t byteValue = qMin(255u, value.toUInt());
     bool boolValue = qMin(1u, value.toUInt());
 
     switch (index.row())
@@ -94,13 +95,12 @@ bool EntityInstanceTableModel::setData(const QModelIndex &index, const QVariant 
         case 3: entity->WEXTilePos = byteValue; break;
         case 4: entity->NSYTilePos = byteValue; break;
         case 5: entity->RespawnChance = byteValue; break;
-        case 6: entity->DroppedItem = static_cast<KingsFieldII::ObjectID>(uShortValue); break;
+        case 6: entity->DroppedItem = static_cast<KF2::ObjectID>(uShortValue); break;
         case 7: entity->Layer = byteValue; break;
         case 8:
             if (value.toString().right(1) == "°" || value.toString().right(1) == "º"
                 || value.toString().right(1) == "ª")
-                uShortValue = value.toString().chopped(1).toUInt()
-                              / KingsFieldII::rotationCoefficient;
+                uShortValue = PSX::toAngle(value.toString().chopped(1).toUInt());
             else
                 uShortValue = value.toUInt() % 4096;
             entity->ZRotation = uShortValue;

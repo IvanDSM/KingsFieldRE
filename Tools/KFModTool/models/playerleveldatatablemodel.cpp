@@ -1,4 +1,5 @@
 #include "playerleveldatatablemodel.h"
+#include "utilities.h"
 
 QVariant PlayerLevelDataTableModel::data(const QModelIndex &index, int role) const
 {
@@ -10,8 +11,8 @@ QVariant PlayerLevelDataTableModel::data(const QModelIndex &index, int role) con
     {
         case 0: return QString::number(level.BaseHP);
         case 1: return QString::number(level.BaseMP);
-        case 2: return QString::number(level.StrPowerPlus);
-        case 3: return QString::number(level.MagPowerPlus);
+        case 2: return QString::number(level.StrPowerDiff);
+        case 3: return QString::number(level.MagPowerDiff);
         case 4: return QString::number(level.ExpForNextLevel);
         default: return {};
     }
@@ -61,22 +62,19 @@ bool PlayerLevelDataTableModel::setData(const QModelIndex &index, const QVariant
     switch (index.row())
     {
         case 0:
-            level.BaseHP = qMin(static_cast<quint16>(65535), static_cast<quint16>(value.toUInt()));
+            level.BaseHP = Utilities::clampToUShort(value.toUInt());
             break;
         case 1:
-            level.BaseMP = qMin(static_cast<quint16>(65535), static_cast<quint16>(value.toUInt()));
+            level.BaseMP = Utilities::clampToUShort(value.toUInt());
             break;
         case 2:
-            level.StrPowerPlus = qMin(static_cast<quint16>(65535),
-                                      static_cast<quint16>(value.toUInt()));
+            level.StrPowerDiff = Utilities::clampToUShort(value.toUInt());
             break;
         case 3:
-            level.MagPowerPlus = qMin(static_cast<quint16>(65535),
-                                      static_cast<quint16>(value.toUInt()));
+            level.MagPowerDiff = Utilities::clampToUShort(value.toUInt());
             break;
         case 4:
-            level.ExpForNextLevel = qMin(static_cast<quint16>(4294967295),
-                                         static_cast<quint16>(value.toUInt()));
+            level.ExpForNextLevel = std::min(4294967295u, value.toUInt());
             break;
         default: return false;
     }

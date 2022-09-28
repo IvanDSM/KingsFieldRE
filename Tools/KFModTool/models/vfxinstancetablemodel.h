@@ -2,7 +2,7 @@
 #define VFXINSTANCETABLEMODEL_H
 
 #include "datahandlers/map.h"
-#include "games/kf2.h"
+#include "kf2/vfx.h"
 #include <QAbstractTableModel>
 
 class VFXInstanceTableModel : public QAbstractTableModel
@@ -40,7 +40,7 @@ public:
         return 12;
     }
 
-    void set(KingsFieldII::VFX& vfx_)
+    void set(KF2::VFX& vfx_)
     {
         vfx = &vfx_;
         emit layoutChanged();
@@ -51,7 +51,7 @@ public:
     bool setHeaderData(int, Qt::Orientation, const QVariant&, int) override { return false; }
 
 private:
-    KingsFieldII::VFX* vfx;
+    KF2::VFX* vfx;
 };
 
 #endif // VFXINSTANCETABLEMODEL_H

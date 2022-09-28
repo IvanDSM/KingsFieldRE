@@ -24,7 +24,7 @@ EXEEditor::EXEEditor(KFMTFile& file_, QWidget* parent)
     ui->shopCombo->setModel(new ShopListModel(ui->shopCombo));
 
     // Set string delegate for string tables
-    ui->uiStr1Tbl->setItemDelegate(new KingsFieldII::KF2UTextDelegate(ui->uiStr1Tbl));
+    // ui->uiStr1Tbl->setItemDelegate(new KF2::KF2UTextDelegate(ui->uiStr1Tbl));
 }
 
 EXEEditor::~EXEEditor()

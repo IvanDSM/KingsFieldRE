@@ -28,6 +28,6 @@ QVariant ObjectInstanceListModel::data(const QModelIndex &index, int role) const
 
     return QStringLiteral("%1: %2 instanced at 0x%3")
         .arg(QString::number(index.row()),
-             KingsFieldII::getObjectName(object.ID),
+             KF2::getObjectName(object.ID),
              QString::number(ramAddress, 16));
 }

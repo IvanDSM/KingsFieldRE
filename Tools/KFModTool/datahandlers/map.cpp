@@ -5,37 +5,37 @@
 Map::Map(KFMTFile& file1, KFMTFile& file2, KFMTFile& file3)
     : KFMTDataHandler(file1), mapDB(file2), mapScript(file3)
 {
-    tileMap = &Utilities::as<KingsFieldII::MetaTile>(file.rawData, 4);
+    tileMap = &Utilities::as<KF2::MetaTile>(file.rawData, 4);
 
     QDataStream mapDBStream(mapDB.rawData);
     mapDBStream.setByteOrder(QDataStream::LittleEndian);
     uint32_t sectionSize;
 
     mapDBStream >> sectionSize; // Read entity class declaration + state info section size
-    entityClasses = &Utilities::as<KingsFieldII::EntityClass>(mapDB.rawData,
+    entityClasses = &Utilities::as<KF2::EntityClass>(mapDB.rawData,
                                                               mapDBStream.device()->pos());
     mapDBStream.skipRawData(sectionSize);
 
     entityStateBlob = reinterpret_cast<uint8_t*>(entityClasses + entityClassesSize);
 
     mapDBStream >> sectionSize; // Read entity instance declaration section size
-    entityInstances = &Utilities::as<KingsFieldII::EntityInstance>(mapDB.rawData,
+    entityInstances = &Utilities::as<KF2::EntityInstance>(mapDB.rawData,
                                                                    mapDBStream.device()->pos());
     mapDBStream.skipRawData(sectionSize);
 
     mapDBStream >> sectionSize; // Read object instance declaration section size
-    objectInstances = &Utilities::as<KingsFieldII::ObjectInstance>(mapDB.rawData,
+    objectInstances = &Utilities::as<KF2::ObjectInstance>(mapDB.rawData,
                                                                    mapDBStream.device()->pos());
     mapDBStream.skipRawData(sectionSize);
 
     mapDBStream >> sectionSize; // Read VFX instance declaration section size
-    vfxInstances = &Utilities::as<KingsFieldII::VFX>(mapDB.rawData, mapDBStream.device()->pos());
+    vfxInstances = &Utilities::as<KF2::VFX>(mapDB.rawData, mapDBStream.device()->pos());
     mapDBStream.skipRawData(sectionSize);
 }
 
-std::vector<KingsFieldII::EntityInstance*> Map::entitiesAt(byte x, byte y, byte layer)
+std::vector<KF2::EntityInstance*> Map::entitiesAt(uint8_t x, uint8_t y, uint8_t layer)
 {
-    std::vector<KingsFieldII::EntityInstance*> entities;
+    std::vector<KF2::EntityInstance*> entities;
 
     for (size_t i = 0; i < Map::entityInstancesSize; i++)
     {
@@ -48,9 +48,9 @@ std::vector<KingsFieldII::EntityInstance*> Map::entitiesAt(byte x, byte y, byte 
     return entities;
 }
 
-std::vector<KingsFieldII::ObjectInstance*> Map::objectsAt(byte x, byte y, byte layer)
+std::vector<KF2::ObjectInstance*> Map::objectsAt(uint8_t x, uint8_t y, uint8_t layer)
 {
-    std::vector<KingsFieldII::ObjectInstance*> objects;
+    std::vector<KF2::ObjectInstance*> objects;
 
     for (size_t i = 0; i < Map::objectInstancesSize; i++)
     {
@@ -63,9 +63,9 @@ std::vector<KingsFieldII::ObjectInstance*> Map::objectsAt(byte x, byte y, byte l
     return objects;
 }
 
-std::vector<KingsFieldII::VFX*> Map::vfxsAt(byte x, byte y, byte layer)
+std::vector<KF2::VFX*> Map::vfxsAt(uint8_t x, uint8_t y, uint8_t layer)
 {
-    std::vector<KingsFieldII::VFX*> vfxs;
+    std::vector<KF2::VFX*> vfxs;
 
     for (size_t i = 0; i < Map::vfxInstancesSize; i++)
     {

@@ -17,7 +17,7 @@ void MainWindow::on_actionLoad_files_triggered()
     if (directory.isEmpty()) return;
 
     // Close all tabs
-    for (int tab = ui->editorTabs->count() - 1; tab >= 0; tab++) ui->editorTabs->removeTab(tab);
+    for (int tab = ui->editorTabs->count() - 1; tab >= 0; tab--) ui->editorTabs->removeTab(tab);
 
     core.loadFrom(directory);
 
@@ -63,95 +63,82 @@ void MainWindow::on_filesTree_doubleClicked(const QModelIndex& index)
     }
 
     KFMTEditor* editor = nullptr;
+    QIcon* icon = &Icons::unknown;
+    auto tabTitle = index.data().value<QString>();
 
-    switch (file->getDataType())
-    {
-        case KFMTFile::DataType::GameDB: {
-            editor = new GameDBEditWidget(*file, ui->editorTabs);
-            openTabs.emplace(file, editor);
-            ui->editorTabs->addTab(editor, Icons::gameDb, index.data().value<QString>());
+    switch (file->getDataType()) {
+    case KFMTFile::DataType::GameDB:
+        editor = new GameDBEditWidget(*file, ui->editorTabs);
+        icon = &Icons::gameDb;
+        break;
+    case KFMTFile::DataType::GameEXE:
+        editor = new EXEEditor(*file, ui->editorTabs);
+        icon = &Icons::gameExe;
+        break;
+    case KFMTFile::DataType::MapTilemap:
+        [[fallthrough]];
+    case KFMTFile::DataType::MapDB:
+        [[fallthrough]];
+    case KFMTFile::DataType::MapScript: {
+        // FIXME: This way of getting the DB/script files is *still* terrible. There must be a better way.
+        const auto fileIndex = file->indexInContainer();
+        const auto containerName = file->filePath.left(file->filePath.size()
+                                                       - QString::number(fileIndex).size());
+        size_t tilemapIndex;
+        size_t dbIndex;
+        size_t scriptIndex;
+        switch (file->getDataType()) {
+        case KFMTFile::DataType::MapTilemap:
+            tilemapIndex = fileIndex;
+            dbIndex = fileIndex + 1;
+            scriptIndex = fileIndex + 2;
             break;
-        }
-        case KFMTFile::DataType::GameEXE: {
-            editor = new EXEEditor(*file, ui->editorTabs);
-            openTabs.emplace(file, editor);
-            ui->editorTabs->addTab(editor, Icons::gameExe, index.data().value<QString>());
+        case KFMTFile::DataType::MapDB:
+            tilemapIndex = fileIndex - 1;
+            dbIndex = fileIndex;
+            scriptIndex = fileIndex + 1;
             break;
+        case KFMTFile::DataType::MapScript:
+            tilemapIndex = fileIndex - 2;
+            dbIndex = fileIndex - 1;
+            scriptIndex = fileIndex;
+            break;
+        default:
+            KFMTError::fatalError(
+                "MainWindow::on_filesTree_doubleClicked: This should be unreachable...");
         }
-        case KFMTFile::DataType::MapTilemap: {
-            // FIXME: This way of getting the DB/script files is terrible. There must be a better way.
-            auto firstNum = file->filePath.indexOf(QRegExp("[0-9]"));
-            auto containerName = file->filePath.left(firstNum);
-            auto tileIndex = file->filePath.midRef(firstNum).toULong();
-            auto* db = core.getFile(containerName, tileIndex + 1);
-            auto* sc = core.getFile(containerName, tileIndex + 2);
 
-            auto tabTitle = index.data().value<QString>();
+        editor = new MapEditWidget(*core.getFile(containerName, tilemapIndex),
+                                   *core.getFile(containerName, dbIndex),
+                                   *core.getFile(containerName, scriptIndex),
+                                   ui->editorTabs);
+        icon = &Icons::map;
+        tabTitle = tabTitle.left(tabTitle.lastIndexOf(' '));
+        // The following needs to be done since there's a space in 'Map DB'.
+        // If we don't do this, we end up creating a tab name like "Western Shore Map".
+        if (file->getDataType() == KFMTFile::DataType::MapDB)
             tabTitle = tabTitle.left(tabTitle.lastIndexOf(' '));
 
-            editor = new MapEditWidget(*file, *db, *sc, ui->editorTabs);
-            openTabs.emplace(file, editor);
-            ui->editorTabs->addTab(editor, Icons::map, tabTitle);
-
-            break;
-        }
-        case KFMTFile::DataType::MapDB: {
-            // FIXME: This way of getting the tilemap/script files is terrible. There must be a better way.
-            auto firstNum = file->filePath.indexOf(QRegExp("[0-9]"));
-            auto containerName = file->filePath.left(firstNum);
-            auto tileIndex = file->filePath.midRef(firstNum).toULong();
-
-            auto* tm = core.getFile(containerName, tileIndex - 1);
-            if (openTabs.find(tm) != openTabs.end())
-            {
-                ui->editorTabs->setCurrentWidget(openTabs.find(tm)->second);
-                return;
-            }
-            auto* sc = core.getFile(containerName, tileIndex + 1);
-
-            auto tabTitle = index.data().value<QString>();
-            tabTitle = tabTitle.left(tabTitle.lastIndexOf(" M"));
-
-            editor = new MapEditWidget(*tm, *file, *sc, ui->editorTabs);
-            openTabs.emplace(tm, editor);
-            ui->editorTabs->addTab(editor, Icons::map, tabTitle);
-            break;
-        }
-        case KFMTFile::DataType::MapScript: {
-            // FIXME: This way of getting the tilemap/script files is terrible. There must be a better way.
-            auto firstNum = file->filePath.indexOf(QRegExp("[0-9]"));
-            auto containerName = file->filePath.left(firstNum);
-            auto tileIndex = file->filePath.midRef(firstNum).toULong();
-
-            auto* tm = core.getFile(containerName, tileIndex - 2);
-            if (openTabs.find(tm) != openTabs.end())
-            {
-                ui->editorTabs->setCurrentWidget(openTabs.find(tm)->second);
-                return;
-            }
-            auto* db = core.getFile(containerName, tileIndex - 1);
-
-            auto tabTitle = index.data().value<QString>();
-            tabTitle = tabTitle.left(tabTitle.lastIndexOf(' '));
-
-            editor = new MapEditWidget(*tm, *db, *file, ui->editorTabs);
-            openTabs.emplace(tm, editor);
-            ui->editorTabs->addTab(editor, Icons::map, tabTitle);
-            break;
-        }
-        case KFMTFile::DataType::Model: {
-            editor = new ModelViewerWidget(*file, ui->editorTabs);
-            openTabs.emplace(file, editor);
-            ui->editorTabs->addTab(editor, Icons::model, index.data().value<QString>());
-            break;
-        }
-        case KFMTFile::DataType::TextureDB: {
-            editor = new TextureDBViewer(*file, ui->editorTabs);
-            openTabs.emplace(file, editor);
-            ui->editorTabs->addTab(editor, Icons::textureDb, index.data().value<QString>());
-        }
-        default: break;
+        // This is done so that we don't create multiple tabs for the same map
+        // Since the tabs are organized by file pointer, we use the tilemap file as our canonical
+        // "index".
+        file = core.getFile(containerName, tilemapIndex);
+        break;
+    }
+    case KFMTFile::DataType::Model:
+        editor = new ModelViewerWidget(*file, ui->editorTabs);
+        icon = &Icons::model;
+        break;
+    case KFMTFile::DataType::TextureDB:
+        editor = new TextureDBViewer(*file, ui->editorTabs);
+        icon = &Icons::textureDb;
+    default:
+        break;
     }
 
-    if (editor != nullptr) ui->editorTabs->setCurrentWidget(editor);
+    openTabs.emplace(file, editor);
+    ui->editorTabs->addTab(editor, *icon, tabTitle);
+
+    if (editor != nullptr)
+        ui->editorTabs->setCurrentWidget(editor);
 }

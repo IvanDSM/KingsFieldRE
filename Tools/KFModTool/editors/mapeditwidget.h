@@ -33,11 +33,11 @@ private:
     void getTileset(size_t mapIndex);
     void setCurTile(size_t tileIndex);
 
-    KingsFieldII::Tile* curTile = nullptr;
+    KF2::Tile* curTile = nullptr;
     Ui::MapEditWidget* ui;
 
 private slots:
-    void pickedTile(KingsFieldII::Tile& tile, uint8_t x, uint8_t y);
+    void pickedTile(KF2::Tile& tile, uint8_t x, uint8_t y);
 
     void on_layerCombo_currentIndexChanged(int index);
 

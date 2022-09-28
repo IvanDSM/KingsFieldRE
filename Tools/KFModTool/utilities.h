@@ -5,6 +5,7 @@
 #include <iostream>
 #include <numeric>
 #include <QByteArray>
+#include <QRegularExpression>
 #include <QtGlobal>
 
 namespace Utilities
@@ -30,19 +31,19 @@ const T& as(const uint8_t* ptr, size_t offset = 0)
 }
 
 template<class T>
-quint8 clampToByte(T value)
+uint8_t clampToByte(T value)
 {
     return static_cast<quint8>(qMin(static_cast<T>(0xFF), value));
 }
 
 template<class T>
-short clampToShort(T value)
+int16_t clampToShort(T value)
 {
-    return static_cast<short>(qMax(static_cast<T>(-32767), qMin(static_cast<T>(32767), value)));
+    return static_cast<int16_t>(qMax(static_cast<T>(-32767), qMin(static_cast<T>(32767), value)));
 }
 
 template<class T>
-quint16 clampToUShort(T value)
+uint16_t clampToUShort(T value)
 {
     return static_cast<quint16>(qMin(static_cast<T>(0xFFFF), value));
 }

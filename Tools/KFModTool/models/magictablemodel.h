@@ -2,7 +2,7 @@
 #define MAGICTABLEMODEL_H
 
 #include "datahandlers/gamedb.h"
-#include "games/kf2.h"
+#include "kf2/magic.h"
 #include <QAbstractTableModel>
 
 class MagicTableModel : public QAbstractTableModel

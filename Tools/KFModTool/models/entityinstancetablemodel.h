@@ -2,7 +2,7 @@
 #define ENTITYINSTANCETABLEMODEL_H
 
 #include "datahandlers/map.h"
-#include "games/kf2.h"
+#include "kf2/entity.h"
 #include <QAbstractTableModel>
 
 class EntityInstanceTableModel : public QAbstractTableModel
@@ -41,7 +41,7 @@ public:
         return 12;
     }
 
-    void set(KingsFieldII::EntityInstance& entity_)
+    void set(KF2::EntityInstance& entity_)
     {
         entity = &entity_;
         emit layoutChanged();
@@ -56,7 +56,7 @@ public:
     }
 
 private:
-    KingsFieldII::EntityInstance* entity = nullptr;
+    KF2::EntityInstance* entity = nullptr;
 };
 
 #endif // ENTITYINSTANCETABLEMODEL_H

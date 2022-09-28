@@ -2,7 +2,7 @@
 #define OBJECTINSTANCETABLEMODEL_H
 
 #include "datahandlers/map.h"
-#include "games/kf2.h"
+#include "kf2/object.h"
 #include <QAbstractTableModel>
 
 class ObjectInstanceTableModel : public QAbstractTableModel
@@ -41,7 +41,7 @@ public:
         return 19;
     }
 
-    void set(KingsFieldII::ObjectInstance& object_)
+    void set(KF2::ObjectInstance& object_)
     {
         object = &object_;
         emit layoutChanged();
@@ -56,7 +56,7 @@ public:
     }
 
 private:
-    KingsFieldII::ObjectInstance* object = nullptr;
+    KF2::ObjectInstance* object = nullptr;
 
     QString getFlagLabel(unsigned int flagNo) const;
 };

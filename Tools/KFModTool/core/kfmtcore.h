@@ -2,6 +2,7 @@
 #define KFMTCORE_H
 
 #include "kfmtfile.h"
+#include <optional>
 
 class KFMTCore
 {
@@ -39,10 +40,14 @@ public:
     {
         None,      ///< No game loaded.
         ACU,       ///< Armored Core (USA) [SCUS-94182, SLUS-01323]
-        ACDemo,    ///< Armored Core Demo from Interactive CD Sampler Volume 4 [SCUS-94418]
+        ACDemoD2,   ///< Armored Core (Japan) Demo from Dengeki PS D2 [SLPM-80109]
+        ACDemoHR7,  ///< Armored Core (Japan) Demo from Hyper PS Remix Vol. 7 [SLPM-80113]
+        ACDemoISV4, ///< Armored Core (USA) Demo from Interactive CD Sampler Volume 4 [SCUS-94418]
+        ACDemoPUG3, ///< Armored Core (USA) Demo from PS Underground Number 3 [SCUS-94191] and OPM Demo Disc 2 [SCUS-94198]
+        ACDemoT977, ///< Armored Core (Japan) Demo from Tech PS 97-7 [SLPM-80108]
         ACProto,   ///< Armored Core "Preview Only 7-3-97" Prototype
         KF,        ///< King's Field I (Japan) [SLPS 00017, SLPS 03578]
-        KFDemo,    ///< King's Field I Demo from DemoDemo PlayStation Soukan-gou Vol. 1 [PCPX 96003]
+        KFDemo,    ///< King's Field I (Japan) Demo from DemoDemo PlayStation Soukan-gou Vol. 1 [PCPX 96003]
         KF2E,      ///< King's Field II (Europe) [SCES-00510]
         KF2Jv1_0,  ///< King's Field II (Japan) [SLPS-00069]
         KF2Jv1_7,  ///< King's Field II (Japan) (PSOne Classics) [NPJJ-00083]
@@ -85,5 +90,6 @@ private:
 };
 
 extern KFMTCore core;
+extern const QString unknownString;
 
 #endif // KFMTCORE_H

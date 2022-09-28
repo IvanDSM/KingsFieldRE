@@ -19,7 +19,7 @@ QVariant TileContentsListModel::data(const QModelIndex &index, int role) const
         {
             const auto* entity = entities[index.row()];
             const auto& entityClass = map.getEntityClassDeclaration(entity->EntityClass);
-            const auto className = KingsFieldII::getEntityMeshName(entityClass.MeshID);
+            const auto className = KF2::getEntityMeshName(entityClass.MeshID);
             return QStringLiteral("Entity: %1 (%2)")
                 .arg(className, QString::number(entity->EntityClass));
         }
@@ -32,7 +32,7 @@ QVariant TileContentsListModel::data(const QModelIndex &index, int role) const
         if (role == Qt::DisplayRole)
         {
             const auto id = objects[index.row() - entities.size()]->ID;
-            const auto name = KingsFieldII::getObjectName(id);
+            const auto name = KF2::getObjectName(id);
             return QStringLiteral("Object: %1 (%2)").arg(name).arg(static_cast<int>(id));
         }
         else if (role == Qt::UserRole)

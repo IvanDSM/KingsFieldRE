@@ -19,5 +19,5 @@ QVariant WeaponStatsListModel::data(const QModelIndex &index, int role) const
     auto result = QStringLiteral("%1 (0x%2) %3")
                       .arg(QString::number(index.row()), QString::number(index.row(), 16));
 
-    return result.arg(KingsFieldII::getWeaponStatsName(index.row()));
+    return result.arg(KF2::getWeaponName(index.row()));
 }

@@ -71,7 +71,15 @@ HEADERS += \
     editors/subwidgets/mapviewer.h \
     editors/subwidgets/mapviewer3d.h \
     editors/subwidgets/modelglview.h \
-    games/kf2.h \
+    kf2/armor.h \
+    kf2/entity.h \
+    kf2/magic.h \
+    kf2/object.h \
+    kf2/playerlevel.h \
+    kf2/text.h \
+    kf2/tile.h \
+    kf2/vfx.h \
+    kf2/weapon.h \
     mainwindow.h \
     models/armorstatslistmodel.h \
     models/armorstatstablemodel.h \
@@ -122,7 +130,11 @@ SOURCES += \
     editors/subwidgets/mapviewer.cpp \
     editors/subwidgets/mapviewer3d.cpp \
     editors/subwidgets/modelglview.cpp \
-    games/kf2.cpp \
+    kf2/entity.cpp \
+    kf2/magic.cpp \
+    kf2/object.cpp \
+    kf2/text.cpp \
+    kf2/weapon.cpp \
     main.cpp \
     mainwindow.cpp \
     models/armorstatslistmodel.cpp \

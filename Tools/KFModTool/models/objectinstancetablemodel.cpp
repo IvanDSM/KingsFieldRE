@@ -1,4 +1,5 @@
 #include "objectinstancetablemodel.h"
+#include "platform/psx.h"
 #include "utilities.h"
 
 QVariant ObjectInstanceTableModel::data(const QModelIndex &index, int role) const
@@ -13,11 +14,11 @@ QVariant ObjectInstanceTableModel::data(const QModelIndex &index, int role) cons
         case 2: return QString::number(object->NSYTilePos);
         case 3: return QString::number(object->field_0x3);
         case 4:
-            return QString::number(KingsFieldII::getObjectIDAsByte(object->ID)) + " ("
-                   + KingsFieldII::getObjectName(object->ID) + ")";
+            return QString::number(static_cast<uint8_t>(object->ID)) + " ("
+                   + KF2::getObjectName(object->ID) + ")";
         case 5:
             return QString::number(object->ZRotation) + " ("
-                   + QString::number(object->ZRotation * KingsFieldII::rotationCoefficient) + "°)";
+                   + QString::number(PSX::fromAngle(object->ZRotation)) + "°)";
         case 6: return QString::number(object->FineWEXPos);
         case 7: return QString::number(object->FineNSYPos);
         case 8: return QString::number(object->FineZPos);
@@ -63,40 +64,36 @@ bool ObjectInstanceTableModel::setData(const QModelIndex &index, const QVariant 
         return false;
 
     auto intValue = value.toInt();
-    auto uIntValue = value.toInt();
-    auto byteValue = Utilities::clampToByte(uIntValue);
-    auto uShortValue = Utilities::clampToUShort(uIntValue);
-    auto shortValue = Utilities::clampToShort(intValue);
+    auto uShortValue = Utilities::clampToUShort(value.toUInt());
     switch (index.row())
     {
-        case 0: object->TileLayer = byteValue; break;
-        case 1: object->WEXTilePos = byteValue; break;
-        case 2: object->NSYTilePos = byteValue; break;
-        case 3: object->field_0x3 = byteValue; break;
-        case 4: object->ID = KingsFieldII::getObjectIDFromUShort(uShortValue); break;
+        case 0: object->TileLayer = Utilities::clampToByte(value.toUInt()); break;
+        case 1: object->WEXTilePos = Utilities::clampToByte(value.toUInt()); break;
+        case 2: object->NSYTilePos = Utilities::clampToByte(value.toUInt()); break;
+        case 3: object->field_0x3 = Utilities::clampToByte(value.toUInt()); break;
+        case 4: object->ID = static_cast<KF2::ObjectID>(value.toUInt()); break;
         case 5:
             if (value.toString().right(1) == "°" || value.toString().right(1) == "º"
                 || value.toString().right(1) == "ª")
-                uShortValue = static_cast<uint16_t>(value.toString().chopped(1).toUInt()
-                                                    / KingsFieldII::rotationCoefficient);
+                uShortValue = static_cast<uint16_t>(PSX::toAngle(value.toString().chopped(1).toUInt()));
             else
                 uShortValue %= 4096;
             object->ZRotation = uShortValue;
             break;
 
-        case 6: object->FineWEXPos = shortValue; break;
-        case 7: object->FineNSYPos = shortValue; break;
-        case 8: object->FineZPos = shortValue; break;
-        case 9: object->Flags[0] = byteValue; break;
-        case 10: object->Flags[1] = byteValue; break;
-        case 11: object->Flags[2] = byteValue; break;
-        case 12: object->Flags[3] = byteValue; break;
-        case 13: object->Flags[4] = byteValue; break;
-        case 14: object->Flags[5] = byteValue; break;
-        case 15: object->Flags[6] = byteValue; break;
-        case 16: object->Flags[7] = byteValue; break;
-        case 17: object->Flags[8] = byteValue; break;
-        case 18: object->Flags[9] = byteValue; break;
+        case 6: object->FineWEXPos = Utilities::clampToShort(intValue); break;
+        case 7: object->FineNSYPos = Utilities::clampToShort(intValue); break;
+        case 8: object->FineZPos = Utilities::clampToShort(intValue); break;
+        case 9: object->Flags[0] = Utilities::clampToByte(value.toUInt()); break;
+        case 10: object->Flags[1] = Utilities::clampToByte(value.toUInt()); break;
+        case 11: object->Flags[2] = Utilities::clampToByte(value.toUInt()); break;
+        case 12: object->Flags[3] = Utilities::clampToByte(value.toUInt()); break;
+        case 13: object->Flags[4] = Utilities::clampToByte(value.toUInt()); break;
+        case 14: object->Flags[5] = Utilities::clampToByte(value.toUInt()); break;
+        case 15: object->Flags[6] = Utilities::clampToByte(value.toUInt()); break;
+        case 16: object->Flags[7] = Utilities::clampToByte(value.toUInt()); break;
+        case 17: object->Flags[8] = Utilities::clampToByte(value.toUInt()); break;
+        case 18: object->Flags[9] = Utilities::clampToByte(value.toUInt()); break;
     }
     return true;
 }
@@ -107,7 +104,7 @@ QString ObjectInstanceTableModel::getFlagLabel(unsigned int flagNo) const
     // anymore.
     //switch (objClass.ClassType)
     //{
-    //    case KingsFieldII::ObjectClassType::VerticalDoor2:
+    //    case KF2::ObjectClassType::VerticalDoor2:
     //        if (flagNo < 2u || flagNo == 7) break;
     //        switch (flagNo)
     //        {

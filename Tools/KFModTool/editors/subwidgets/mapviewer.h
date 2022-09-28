@@ -33,7 +33,7 @@ public:
         repaint();
     }
 
-    void setBrush(byte brush)
+    void setBrush(uint8_t brush)
     {
         curBrush = brush;
     }
@@ -66,7 +66,7 @@ public:
 
 signals:
     void curMousePosChanged(qint8 x, qint8 y);
-    void pickedTile(KingsFieldII::Tile& tile, uint8_t x, uint8_t y);
+    void pickedTile(KF2::Tile& tile, uint8_t x, uint8_t y);
 
 public slots:
     void leaveEvent(QEvent *event) override;
@@ -94,7 +94,7 @@ private:
     const TilesetIcons* icons;
 
     // Internal stuff
-    byte curBrush = 127;
+    uint8_t curBrush = 127;
     MapElement curBrushElement = MapElement::CollisionIndex;
     MapElement curElement = MapElement::CollisionIndex;
     MapLayer curLayer = MapLayer::Layer2;

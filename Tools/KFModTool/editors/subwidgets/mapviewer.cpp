@@ -88,7 +88,7 @@ void MapViewer::drawObjects()
     for (size_t i = 0; i < Map::objectInstancesSize; i++)
     {
         auto& object = map->objectInstances[i];
-        if (object.ID != KingsFieldII::ObjectID::None
+        if (object.ID != KF2::ObjectID::None
             && static_cast<MapLayer>(object.TileLayer) == curLayer)
             mapImage.setPixelColor(object.WEXTilePos, object.NSYTilePos, MapViewer::objectColor);
     }

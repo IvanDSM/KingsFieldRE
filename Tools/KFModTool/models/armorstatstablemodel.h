@@ -2,7 +2,7 @@
 #define ARMORSTATSTABLEMODEL_H
 
 #include "datahandlers/gamedb.h"
-#include "games/kf2.h"
+#include "kf2/armor.h"
 #include <QAbstractTableModel>
 
 class ArmorStatsTableModel : public QAbstractTableModel

@@ -9,8 +9,8 @@ QVariant EntityClassTableModel::data(const QModelIndex &index, int role) const
     switch (index.row())
     {
         case 0:
-            return QString::number(KingsFieldII::getEntityMeshIDAsByte(entityClass->MeshID)) + " ("
-                   + KingsFieldII::getEntityMeshName(entityClass->MeshID) + ')';
+            return QString::number(static_cast<uint8_t>(entityClass->MeshID)) + " ("
+                   + KF2::getEntityMeshName(entityClass->MeshID) + ')';
             break;
         case 1: return QString::number(entityClass->FourOrForty); break;
         case 2: return QString::number(entityClass->field_0x2); break;
@@ -132,13 +132,13 @@ bool EntityClassTableModel::setData(const QModelIndex &index, const QVariant &va
         return false;
 
     short shortValue = qMax(-32767, qMin(32767, value.toInt()));
-    u_short uShortValue = qMin(65535u, value.toUInt());
-    byte byteValue = qMin(255u, value.toUInt());
+    uint16_t uShortValue = qMin(65535u, value.toUInt());
+    uint8_t byteValue = qMin(255u, value.toUInt());
     unsigned int uIntValue = value.toUInt();
 
     switch (index.row())
     {
-        case 0: entityClass->MeshID = KingsFieldII::getEntityMeshIDFromByte(byteValue); break;
+        case 0: entityClass->MeshID = static_cast<KF2::EntityMeshID>(byteValue); break;
         case 1: entityClass->FourOrForty = byteValue; break;
         case 2: entityClass->field_0x2 = byteValue; break;
         case 3: entityClass->KnockbackResistance = uShortValue; break;

@@ -31,7 +31,7 @@ public:
         shader.release();
         shader.removeAllShaders();
     }
-    void setMap(Map& map_) { map = &map_; }
+    void setMap(Map& map_);
 
 protected:
     // QWidget interface
@@ -69,7 +69,7 @@ private:
 
         QOpenGLVertexArrayObject vao;
         QOpenGLBuffer buffer;
-        size_t vertexCount;
+        size_t vertexCount = 0;
     };
 
     void buildShader();

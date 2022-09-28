@@ -32,9 +32,9 @@ private:
     uint8_t y = 0;
     uint8_t layer = 2;
 
-    std::vector<KingsFieldII::EntityInstance*> entities;
-    std::vector<KingsFieldII::ObjectInstance*> objects;
-    std::vector<KingsFieldII::VFX*> vfxs;
+    std::vector<KF2::EntityInstance*> entities;
+    std::vector<KF2::ObjectInstance*> objects;
+    std::vector<KF2::VFX*> vfxs;
 };
 
 #endif // TILECONTENTSLISTMODEL_H

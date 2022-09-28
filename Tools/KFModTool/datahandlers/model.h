@@ -1,9 +1,9 @@
 #ifndef MODEL_H
 #define MODEL_H
 
-#include "core/kfmterror.h"
 #include "datahandlers/kfmtdatahandler.h"
-#include "games/kf2.h"
+#include <QDataStream>
+#include <QOpenGLBuffer>
 #include <QVector3D>
 #include <QVector4D>
 

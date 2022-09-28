@@ -1,6 +1,7 @@
 #ifndef MODELGLVIEW_H
 #define MODELGLVIEW_H
 
+#include "core/kfmterror.h"
 #include "datahandlers/model.h"
 #include <QMatrix4x4>
 #include <QOpenGLExtraFunctions>

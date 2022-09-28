@@ -33,7 +33,11 @@ Features:
 KFModTool currently supports loading files from the following games:
 
 * Armored Core [SCUS-94182, SLUS-01323]
-* Armored Core Demo from Interactive CD Sampler Volume 4 [SCUS-94418]
+* Armored Core (Japan) Demo from Dengeki PlayStation D2 [SLPM-80109]
+* Armored Core (Japan) Demo from Hyper PS Remix Vol. 7 [SLPM-80113]
+* Armored Core (USA) Demo from Interactive CD Sampler Volume 4 [SCUS-94418]
+* Armored Core (USA) Demo from PlayStation Underground Number 3 [SCUS-94191] and OPM Demo Disc 2 [SCUS-94198]
+* Armored Core (Japan) Demo from Tech PS 97-7 [SLPM-80108]
 * Armored Core "Preview Only 7-3-97" Prototype
 * King's Field I [SLPS 00017, SLPS 03578]
 * King's Field I Demo from DemoDemo PlayStation Soukan-gou Vol. 1 [PCPX 96003]

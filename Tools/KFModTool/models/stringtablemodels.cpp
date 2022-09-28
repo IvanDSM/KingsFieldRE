@@ -1,9 +1,12 @@
 #include "stringtablemodels.h"
+#include "kf2/magic.h"
+#include "kf2/object.h"
+#include "kf2/text.h"
 #include <cstring>
 
 // Codec for the table models
 // I don't like just throwing it here but the way QTextCodec works there's nothing else I can do.
-static QTextCodec* codec = new KingsFieldII::KF2UTextCodec();
+//static QTextCodec* codec = new KF2::KF2UTextCodec();
 
 // UIStrings1TableModel
 
@@ -11,7 +14,7 @@ QVariant UIStrings1TableModel::data(const QModelIndex& index, int role) const
 {
     if (role != Qt::DisplayRole || !index.isValid()) return {};
 
-    return codec->toUnicode(gameExe.uiStrings1[index.row()].str, 24);
+    return KF2::TextConversion::from(gameExe.uiStrings1[index.row()].str, 24);
 }
 
 Qt::ItemFlags UIStrings1TableModel::flags(const QModelIndex& index) const
@@ -74,7 +77,7 @@ bool UIStrings1TableModel::setData(const QModelIndex& index, const QVariant& val
     if (!value.isValid() || value.toString().isEmpty() || role != Qt::EditRole || !index.isValid())
         return false;
 
-    const auto converted = codec->fromUnicode(value.toString());
+    const auto converted = KF2::TextConversion::to(value.toString());
     auto* string = &gameExe.uiStrings1[index.row()];
 
     std::fill(std::begin(string->str), std::end(string->str), static_cast<char>(0xffu));
@@ -92,7 +95,7 @@ QVariant UIStrings2TableModel::data(const QModelIndex& index, int role) const
 {
     if (role != Qt::DisplayRole || !index.isValid()) return {};
 
-    return codec->toUnicode(gameExe.uiStrings2[index.row()].str, 24);
+    return KF2::TextConversion::from(gameExe.uiStrings2[index.row()].str, 24);
 }
 
 Qt::ItemFlags UIStrings2TableModel::flags(const QModelIndex& index) const
@@ -168,7 +171,7 @@ QVariant ItemStringsTableModel::data(const QModelIndex& index, int role) const
 {
     if (role != Qt::DisplayRole || !index.isValid()) return {};
 
-    return codec->toUnicode(gameExe.itemStrings[index.row()].str, 24);
+    return KF2::TextConversion::from(gameExe.itemStrings[index.row()].str, 24);
 }
 
 Qt::ItemFlags ItemStringsTableModel::flags(const QModelIndex& index) const
@@ -185,7 +188,7 @@ QVariant ItemStringsTableModel::headerData(int section, Qt::Orientation orientat
 
     //if (orientation == Qt::Vertical):
 
-    return KingsFieldII::getObjectName(static_cast<KingsFieldII::ObjectID>(section));
+    return KF2::getObjectName(static_cast<KF2::ObjectID>(section));
 }
 
 bool ItemStringsTableModel::setData(const QModelIndex& index, const QVariant& value, int role) {}
@@ -196,7 +199,7 @@ QVariant MagicStringsTableModel::data(const QModelIndex& index, int role) const
 {
     if (role != Qt::DisplayRole || !index.isValid()) return {};
 
-    return codec->toUnicode(gameExe.magicStrings[index.row()].str, 24);
+    return KF2::TextConversion::from(gameExe.magicStrings[index.row()].str, 24);
 }
 
 Qt::ItemFlags MagicStringsTableModel::flags(const QModelIndex& index) const
@@ -213,7 +216,7 @@ QVariant MagicStringsTableModel::headerData(int section, Qt::Orientation orienta
 
     //if (orientation == Qt::Vertical):
 
-    return KingsFieldII::getMagicIDName(static_cast<KingsFieldII::MagicID>(section));
+    return KF2::getMagicIDName(static_cast<KF2::MagicID>(section));
 }
 
 bool MagicStringsTableModel::setData(const QModelIndex& index, const QVariant& value, int role) {}

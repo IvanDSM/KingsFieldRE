@@ -2,7 +2,7 @@
 #define PLAYERLEVELDATATABLEMODEL_H
 
 #include "datahandlers/gamedb.h"
-#include "games/kf2.h"
+#include "kf2/playerlevel.h"
 #include <QAbstractTableModel>
 
 class PlayerLevelDataTableModel : public QAbstractTableModel

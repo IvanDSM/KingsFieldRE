@@ -68,14 +68,8 @@ void MapViewer3D::initializeGL()
 
 void MapViewer3D::paintGL()
 {
-    if (map != nullptr && !initialized)
-    {
-        buildShader();
-        buildTileset();
-        buildVRAM();
-
-        initialized = true;
-    }
+    if (!initialized)
+        return;
 
     //Clear Buffers
     glFuncs->glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -123,6 +117,17 @@ void MapViewer3D::resizeGL(int w, int h)
     projection.perspective(pFoV, static_cast<float>(w) / static_cast<float>(h), zNear, zFar);
 }
 
+void MapViewer3D::setMap(Map& map_)
+{
+    map = &map_;
+
+    buildShader();
+    buildTileset();
+    buildVRAM();
+
+    initialized = true;
+}
+
 void MapViewer3D::buildShader()
 {
     if (!shader.addShaderFromSourceFile(QOpenGLShader::Vertex, ":/litStatic.vert"))
@@ -139,8 +144,7 @@ void MapViewer3D::buildShader()
 
 void MapViewer3D::buildTileset()
 {
-    const auto fileName = map->getFile().filePath;
-    const auto index = fileName.midRef(fileName.lastIndexOf(QRegularExpression("[0-9]+"))).toUInt();
+    const auto index = map->getFile().indexInContainer();
     auto rtmd = Model(*core.getFile("RTMD.T", index / 3));
 
     tileset.reserve(rtmd.baseObjects.size());
@@ -290,8 +294,7 @@ void MapViewer3D::buildVRAM()
     }
 
     // We also load appropriate subtextures
-    const auto fileName = map->getFile().filePath;
-    const auto index = fileName.midRef(fileName.lastIndexOf(QRegularExpression("[0-9]+"))).toUInt();
+    const auto index = map->getFile().indexInContainer();
     textureDBs.emplace_back(*core.getFile("RTIM.T", index / 3));
 
     QImage image({4096, 512}, QImage::Format::Format_RGBA8888);

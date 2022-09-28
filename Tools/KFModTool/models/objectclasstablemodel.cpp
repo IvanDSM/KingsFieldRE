@@ -1,4 +1,5 @@
 #include "objectclasstablemodel.h"
+#include "utilities.h"
 
 QVariant ObjectClassTableModel::data(const QModelIndex &index, int role) const
 {
@@ -10,7 +11,7 @@ QVariant ObjectClassTableModel::data(const QModelIndex &index, int role) const
     {
         case 0:
             return QString::number(objectClass.ClassType) + " ("
-                   + KingsFieldII::getObjectClassTypeName(objectClass.ClassType) + ')';
+                   + KF2::getObjectClassTypeName(objectClass.ClassType) + ')';
         case 1: return QString::number(objectClass.TransformType);
         case 2: return QString::number(objectClass.field_0x2);
         case 3: return QString::number(objectClass.field_0x3);
@@ -80,35 +81,33 @@ bool ObjectClassTableModel::setData(const QModelIndex &index, const QVariant &va
 
     auto& objectClass = gameDB.getObjClass(curObjectClass);
 
-    byte byteValue = static_cast<byte>(qMin(255u, value.toUInt()));
-    u_short uShortValue = static_cast<u_short>(qMin(65535u, value.toUInt()));
     switch (index.row())
     {
         case 0:
-            objectClass.ClassType = static_cast<KingsFieldII::ObjectClassType>(byteValue);
+            objectClass.ClassType = static_cast<KF2::ObjectClassType>(value.toUInt());
             break;
-        case 1: objectClass.TransformType = byteValue; break;
-        case 2: objectClass.field_0x2 = byteValue; break;
-        case 3: objectClass.field_0x3 = byteValue; break;
-        case 4: objectClass.CollisionRadius = uShortValue; break;
-        case 5: objectClass.field_0x6 = byteValue; break;
-        case 6: objectClass.field_0x7 = byteValue; break;
-        case 7: objectClass.field_0x8 = byteValue; break;
-        case 8: objectClass.field_0x9 = byteValue; break;
-        case 9: objectClass.field_0xa = byteValue; break;
-        case 10: objectClass.field_0xb = byteValue; break;
-        case 11: objectClass.field_0xc = byteValue; break;
-        case 12: objectClass.field_0xd = byteValue; break;
-        case 13: objectClass.field_0xe = byteValue; break;
-        case 14: objectClass.field_0xf = byteValue; break;
-        case 15: objectClass.field_0x10 = byteValue; break;
-        case 16: objectClass.field_0x11 = byteValue; break;
-        case 17: objectClass.field_0x12 = byteValue; break;
-        case 18: objectClass.field_0x13 = byteValue; break;
-        case 19: objectClass.field_0x14 = byteValue; break;
-        case 20: objectClass.field_0x15 = byteValue; break;
-        case 21: objectClass.field_0x16 = byteValue; break;
-        case 22: objectClass.field_0x17 = byteValue; break;
+        case 1: objectClass.TransformType = Utilities::clampToByte(value.toUInt()); break;
+        case 2: objectClass.field_0x2 = Utilities::clampToByte(value.toUInt()); break;
+        case 3: objectClass.field_0x3 = Utilities::clampToByte(value.toUInt()); break;
+        case 4: objectClass.CollisionRadius = Utilities::clampToUShort(value.toUInt()); break;
+        case 5: objectClass.field_0x6 = Utilities::clampToByte(value.toUInt()); break;
+        case 6: objectClass.field_0x7 = Utilities::clampToByte(value.toUInt()); break;
+        case 7: objectClass.field_0x8 = Utilities::clampToByte(value.toUInt()); break;
+        case 8: objectClass.field_0x9 = Utilities::clampToByte(value.toUInt()); break;
+        case 9: objectClass.field_0xa = Utilities::clampToByte(value.toUInt()); break;
+        case 10: objectClass.field_0xb = Utilities::clampToByte(value.toUInt()); break;
+        case 11: objectClass.field_0xc = Utilities::clampToByte(value.toUInt()); break;
+        case 12: objectClass.field_0xd = Utilities::clampToByte(value.toUInt()); break;
+        case 13: objectClass.field_0xe = Utilities::clampToByte(value.toUInt()); break;
+        case 14: objectClass.field_0xf = Utilities::clampToByte(value.toUInt()); break;
+        case 15: objectClass.field_0x10 = Utilities::clampToByte(value.toUInt()); break;
+        case 16: objectClass.field_0x11 = Utilities::clampToByte(value.toUInt()); break;
+        case 17: objectClass.field_0x12 = Utilities::clampToByte(value.toUInt()); break;
+        case 18: objectClass.field_0x13 = Utilities::clampToByte(value.toUInt()); break;
+        case 19: objectClass.field_0x14 = Utilities::clampToByte(value.toUInt()); break;
+        case 20: objectClass.field_0x15 = Utilities::clampToByte(value.toUInt()); break;
+        case 21: objectClass.field_0x16 = Utilities::clampToByte(value.toUInt()); break;
+        case 22: objectClass.field_0x17 = Utilities::clampToByte(value.toUInt()); break;
         default: return false;
     }
 

@@ -3,7 +3,10 @@
 
 #include "core/kfmterror.h"
 #include "datahandlers/kfmtdatahandler.h"
-#include "games/kf2.h"
+#include "kf2/entity.h"
+#include "kf2/object.h"
+#include "kf2/tile.h"
+#include "kf2/vfx.h"
 #include <QMessageBox>
 
 class Map : public KFMTDataHandler
@@ -11,21 +14,21 @@ class Map : public KFMTDataHandler
 public:
     Map(KFMTFile& file1, KFMTFile& file2, KFMTFile& file3);
 
-    KingsFieldII::EntityClass& getEntityClassDeclaration(byte classIndex)
+    KF2::EntityClass& getEntityClassDeclaration(uint8_t classIndex)
     {
         if (classIndex >= entityClassesSize)
             KFMTError::outOfRange(classIndex, QStringLiteral("entity class declaration"));
         return entityClasses[classIndex];
     }
 
-    KingsFieldII::EntityInstance &getEntityInstance(size_t instanceIndex)
+    KF2::EntityInstance &getEntityInstance(size_t instanceIndex)
     {
         if (instanceIndex >= entityInstancesSize)
             KFMTError::outOfRange(instanceIndex, QStringLiteral("entity instance declaration"));
         return entityInstances[instanceIndex];
     }
 
-    KingsFieldII::ObjectInstance& getObjectInstance(size_t instanceIndex)
+    KF2::ObjectInstance& getObjectInstance(size_t instanceIndex)
     {
         if (instanceIndex >= objectInstancesSize)
             KFMTError::outOfRange(instanceIndex, QStringLiteral("object instance declaration"));
@@ -35,7 +38,7 @@ public:
 
     uint8_t* getEntityStateBlobOffset(size_t offset) { return entityStateBlob + offset; }
 
-    KingsFieldII::Tile& getTile(size_t line, size_t column, size_t layer)
+    KF2::Tile& getTile(size_t line, size_t column, size_t layer)
     {
         if (line >= 80u || column >= 80u)
             KFMTError::fatalError(
@@ -53,7 +56,7 @@ public:
         }
     }
 
-    KingsFieldII::VFX& getVFXInstance(size_t instanceIndex)
+    KF2::VFX& getVFXInstance(size_t instanceIndex)
     {
         if (instanceIndex >= vfxInstancesSize)
             KFMTError::outOfRange(instanceIndex, QStringLiteral("VFX instance declaration"));
@@ -64,9 +67,9 @@ public:
     void saveChanges() override {}
 
     // Convenience methods
-    std::vector<KingsFieldII::EntityInstance*> entitiesAt(byte x, byte y, byte layer);
-    std::vector<KingsFieldII::ObjectInstance*> objectsAt(byte x, byte y, byte layer);
-    std::vector<KingsFieldII::VFX*> vfxsAt(byte x, byte y, byte layer);
+    std::vector<KF2::EntityInstance*> entitiesAt(uint8_t x, uint8_t y, uint8_t layer);
+    std::vector<KF2::ObjectInstance*> objectsAt(uint8_t x, uint8_t y, uint8_t layer);
+    std::vector<KF2::VFX*> vfxsAt(uint8_t x, uint8_t y, uint8_t layer);
 
     static constexpr size_t entityClassesSize = 40;
     static constexpr size_t entityInstancesSize = 200;
@@ -74,14 +77,14 @@ public:
     static constexpr size_t vfxInstancesSize = 128;
 
 private:
-    KingsFieldII::MetaTile* tileMap; ///< 2-layer 80x80 tilemap.
+    KF2::MetaTile* tileMap; ///< 2-layer 80x80 tilemap.
     KFMTFile& mapDB;
     KFMTFile& mapScript;
-    KingsFieldII::EntityClass* entityClasses;
-    KingsFieldII::EntityInstance* entityInstances;
+    KF2::EntityClass* entityClasses;
+    KF2::EntityInstance* entityInstances;
     uint8_t* entityStateBlob;
-    KingsFieldII::ObjectInstance* objectInstances;
-    KingsFieldII::VFX* vfxInstances;
+    KF2::ObjectInstance* objectInstances;
+    KF2::VFX* vfxInstances;
 
     // MapViewer needs access to the arrays
     friend class MapViewer;

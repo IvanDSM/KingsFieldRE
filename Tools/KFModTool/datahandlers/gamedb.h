@@ -3,42 +3,46 @@
 
 #include "core/kfmterror.h"
 #include "datahandlers/kfmtdatahandler.h"
-#include "games/kf2.h"
+#include "kf2/armor.h"
+#include "kf2/magic.h"
+#include "kf2/object.h"
+#include "kf2/playerlevel.h"
+#include "kf2/weapon.h"
 
 class GameDB : public KFMTDataHandler
 {
 public:
     explicit GameDB(KFMTFile& file);
 
-    KingsFieldII::ArmorStats& getArmorStat(size_t armorIndex)
+    KF2::Armor& getArmorStat(size_t armorIndex)
     {
         if (armorIndex >= armorStatsSize)
             KFMTError::outOfRange(armorIndex, QStringLiteral("armor stats"));
         return armorStats[armorIndex];
     }
 
-    KingsFieldII::PlayerLvlData &getLevel(size_t levelIndex)
+    KF2::PlayerLevel &getLevel(size_t levelIndex)
     {
         if (levelIndex >= lvlDataSize)
             KFMTError::outOfRange(levelIndex, QStringLiteral("player level data"));
         return lvlData[levelIndex];
     }
 
-    KingsFieldII::Magic &getMagic(size_t magicIndex)
+    KF2::Magic &getMagic(size_t magicIndex)
     {
         if (magicIndex >= magicDataSize)
             KFMTError::outOfRange(magicIndex, QStringLiteral("magic data"));
         return magicData[magicIndex];
     }
 
-    KingsFieldII::ObjectClass& getObjClass(size_t objClassIndex)
+    KF2::ObjectClass& getObjClass(size_t objClassIndex)
     {
         if (objClassIndex >= objClassesSize)
             KFMTError::outOfRange(objClassIndex, QStringLiteral("object class declaration"));
         return objClasses[objClassIndex];
     }
 
-    KingsFieldII::WeaponStats &getWeaponStats(size_t weaponIndex)
+    KF2::Weapon &getWeaponStats(size_t weaponIndex)
     {
         if (weaponIndex >= weaponStatsSize)
             KFMTError::outOfRange(weaponIndex, QStringLiteral("weapon stats"));
@@ -54,11 +58,11 @@ public:
     static constexpr size_t weaponStatsSize = 18;
 
 private:
-    KingsFieldII::ArmorStats* armorStats;
-    KingsFieldII::ObjectClass* objClasses;
-    KingsFieldII::PlayerLvlData* lvlData;
-    KingsFieldII::Magic* magicData;
-    KingsFieldII::WeaponStats* weaponStats;
+    KF2::Armor* armorStats;
+    KF2::ObjectClass* objClasses;
+    KF2::PlayerLevel* lvlData;
+    KF2::Magic* magicData;
+    KF2::Weapon* weaponStats;
 };
 
 #endif // GAMEDB_H

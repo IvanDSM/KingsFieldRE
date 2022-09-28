@@ -4,13 +4,20 @@
 
 // Declaring the global
 KFMTCore core;
+// Declaring the unknown string
+const QString unknownString = QStringLiteral("???");
 
 KFMTCore::SimpleGame KFMTCore::currentGame() const
 {
     switch (curGame)
     {
         case VersionedGame::None: return SimpleGame::None;
-        case VersionedGame::ACDemo: [[fallthrough]];
+        case VersionedGame::ACU: [[fallthrough]];
+        case VersionedGame::ACDemoD2:  [[fallthrough]];
+        case VersionedGame::ACDemoHR7: [[fallthrough]];
+        case VersionedGame::ACDemoISV4: [[fallthrough]];
+        case VersionedGame::ACDemoPUG3: [[fallthrough]];
+        case VersionedGame::ACDemoT977: [[fallthrough]];
         case VersionedGame::ACProto: return SimpleGame::AC;
         case VersionedGame::KF: [[fallthrough]];
         case VersionedGame::KFDemo: return SimpleGame::KF1;
@@ -46,7 +53,40 @@ void KFMTCore::loadFrom(const QDir& srcDir)
     switch (curGame)
     {
         case VersionedGame::None: return;
-        case VersionedGame::ACDemo:
+        case VersionedGame::ACDemoD2: [[fallthrough]];
+        case VersionedGame::ACDemoHR7:
+            loadT("COM/FDAT.T");
+            loadT("COM/PA00.T");
+            loadT("COM/PA01.T");
+            loadT("COM/PA05.T");
+            loadT("COM/PA06.T");
+            loadT("COM/PA09.T");
+            loadT("COM/PA10.T");
+            loadT("COM/PA11.T");
+            loadT("COM/PA12.T");
+            loadT("COM/PA13.T");
+            loadT("COM/PA42.T");
+            loadT("COM/PA43.T");
+            loadT("COM/RTIM.T");
+            loadT("MS/ARMS_T.T");
+            loadT("MS/BST_T.T");
+            loadT("MS/BWL_T.T");
+            loadT("MS/BWR_T.T");
+            loadT("MS/COMP_T.T");
+            loadT("MS/CORE_T.T");
+            loadT("MS/GENE_T.T");
+            loadT("MS/HEAD_T.T");
+            loadT("MS/LEG_T.T");
+            loadT("MS/MENU_TIM.T");
+            loadT("MS/MENU_TMD.T");
+            loadT("MS/MENU_VAB.T");
+            loadT("MS/MIS.T");
+            loadT("MS/SPEC_T.T");
+            loadT("MS/WEL_T.T");
+            loadT("MS/WER_T.T");
+            break;
+        case VersionedGame::ACDemoISV4: [[fallthrough]];
+        case VersionedGame::ACDemoPUG3:
             loadT("COM/FDAT.T");
             loadT("COM/RTIM.T");
             loadT("MS/ARMS_T.T");
@@ -65,6 +105,28 @@ void KFMTCore::loadFrom(const QDir& srcDir)
             loadT("MS/SPEC_T.T");
             loadT("MS/WEL_T.T");
             loadT("MS/WER_T.T");
+            break;
+        case VersionedGame::ACDemoT977:
+            loadT("COM/FDAT.T");
+            loadT("COM/PA00.T");
+            loadT("COM/PA06.T");
+            loadT("COM/RTIM.T");
+            loadT("MS/ARMS_T.T");
+            loadT("MS/BST_T.T");
+            loadT("MS/BWL_T.T");
+            loadT("MS/BWR_T.T");
+            loadT("MS/COMP_T.T");
+            loadT("MS/CORE_T.T");
+            loadT("MS/GENE_T.T");
+            loadT("MS/HEAD_T.T");
+            loadT("MS/LEG_T.T");
+            loadT("MS/MENU_TIM.T");
+            loadT("MS/MENU_TMD.T");
+            loadT("MS/MENU_VAB.T");
+            loadT("MS/MIS.T");
+            loadT("MS/SPEC_T.T");
+            loadT("MS/WEL_T.T");
+            loadT("MS/WER_T.T");                                                                     
             break;
         case VersionedGame::ACU: [[fallthrough]];
         case VersionedGame::ACProto:
@@ -527,8 +589,19 @@ void KFMTCore::detectGame(const QDir& srcDir)
 {
     if (srcDir.exists("SCUS_941.82") || srcDir.exists("SLUS_013.23"))
         curGame = VersionedGame::ACU;
+    else if (srcDir.exists("STR") && srcDir.exists("AC.EXE"))
+        curGame = VersionedGame::ACDemoD2;
+    else if (srcDir.exists("STR") && srcDir.exists("DEMO1"))
+        curGame = VersionedGame::ACDemoHR7;
     else if (srcDir.exists("USA10.EXE"))
-        curGame = VersionedGame::ACDemo;
+    {
+        if (srcDir.exists(QStringLiteral("COM%1DEMO00.XA").arg(QDir::separator())))
+            curGame = VersionedGame::ACDemoISV4;
+        else if (srcDir.exists(QStringLiteral("COM%1DEMO01.XA").arg(QDir::separator())))
+            curGame = VersionedGame::ACDemoPUG3;
+    }
+    else if (!srcDir.exists("STR") && srcDir.exists("AC.EXE"))
+        curGame = VersionedGame::ACDemoT977;
     else if (srcDir.exists("SLPS_009.00"))
         curGame = VersionedGame::ACProto;
     else if (srcDir.exists("PSX.EXE") && srcDir.exists("E0") && srcDir.exists("E1")

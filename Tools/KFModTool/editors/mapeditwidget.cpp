@@ -59,7 +59,7 @@ void MapEditWidget::setCurTile(size_t tileIndex)
     ui->tileViewer->repaint();
 }
 
-void MapEditWidget::pickedTile(KingsFieldII::Tile& tile, uint8_t x, uint8_t y)
+void MapEditWidget::pickedTile(KF2::Tile& tile, uint8_t x, uint8_t y)
 {
     curTile = &tile;
 
@@ -131,8 +131,8 @@ void MapEditWidget::on_inTileList_clicked(const QModelIndex& index)
         case TileContentsListModel::ContentType::Entity:
             ui->entityClassContainer->setVisible(true);
             entityModel.set(
-                *reinterpret_cast<KingsFieldII::EntityInstance*>(index.internalPointer()));
-            entityClassModel.setFromEntity(*reinterpret_cast<KingsFieldII::EntityInstance*>(
+                *reinterpret_cast<KF2::EntityInstance*>(index.internalPointer()));
+            entityClassModel.setFromEntity(*reinterpret_cast<KF2::EntityInstance*>(
                                                index.internalPointer()),
                                            *reinterpret_cast<Map*>(handler.get()));
 
@@ -141,13 +141,13 @@ void MapEditWidget::on_inTileList_clicked(const QModelIndex& index)
         case TileContentsListModel::ContentType::Object:
             ui->entityClassContainer->setVisible(false);
             objectModel.set(
-                *reinterpret_cast<KingsFieldII::ObjectInstance*>(index.internalPointer()));
+                *reinterpret_cast<KF2::ObjectInstance*>(index.internalPointer()));
 
             ui->inTileTable->setModel(&objectModel);
             break;
         case TileContentsListModel::ContentType::VFX:
             ui->entityClassContainer->setVisible(false);
-            vfxModel.set(*reinterpret_cast<KingsFieldII::VFX*>(index.internalPointer()));
+            vfxModel.set(*reinterpret_cast<KF2::VFX*>(index.internalPointer()));
 
             ui->inTileTable->setModel(&vfxModel);
             break;

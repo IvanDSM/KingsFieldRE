@@ -14,5 +14,5 @@ QVariant EntityClassListModel::data(const QModelIndex &index, int role) const
     const auto& entityClass = map.getEntityClassDeclaration(index.row());
 
     return QStringLiteral("%1: %2").arg(QString::number(index.row()),
-                                        KingsFieldII::getEntityMeshName(entityClass.MeshID));
+                                        KF2::getEntityMeshName(entityClass.MeshID));
 }

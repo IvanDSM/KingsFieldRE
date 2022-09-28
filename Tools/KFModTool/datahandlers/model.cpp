@@ -1,5 +1,6 @@
 #include "model.h"
 #include "core/kfmtcore.h"
+#include "core/kfmterror.h"
 #include "utilities.h"
 #include <iostream>
 #include <QVector2D>

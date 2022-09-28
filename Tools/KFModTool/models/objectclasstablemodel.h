@@ -2,7 +2,7 @@
 #define OBJECTCLASSTABLEMODEL_H
 
 #include "datahandlers/gamedb.h"
-#include "games/kf2.h"
+#include "kf2/object.h"
 #include <QAbstractTableModel>
 
 class ObjectClassTableModel : public QAbstractTableModel

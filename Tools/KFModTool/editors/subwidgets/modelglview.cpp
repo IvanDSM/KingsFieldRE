@@ -616,7 +616,7 @@ void ModelGLView::buildTexture()
 
     // We also load appropriate subtextures
     const auto fileName = model->getFile().filePath;
-    const auto index = fileName.midRef(fileName.lastIndexOf(QRegularExpression("[0-9]+"))).toUInt();
+    const auto index = model->getFile().indexInContainer();
 
     if (fileName.contains("RTMD")) { textureDBs.emplace_back(*core.getFile("RTIM.T", index)); }
     else if (fileName.contains("MO"))
@@ -641,10 +641,6 @@ void ModelGLView::buildTexture()
                                    QRectF(0, 0, texture.pxWidth, texture.pxHeight));
         }
     imagePainter.end();
-
-    //image.save("/home/ivan/test_vram_"
-    //               + QDateTime::currentDateTime().toString("dd_MM_yyyy_hh_mm_ss") + ".png",
-    //           "PNG");
 
     psxVRAM.setData(image);
     psxVRAM.setMagnificationFilter(QOpenGLTexture::Filter::Nearest);

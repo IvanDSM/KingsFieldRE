@@ -21,7 +21,7 @@ QVariant ArmorStatsListModel::data(const QModelIndex &index, int role) const
 
     if (index.row() < 39)
         return result.arg(
-            KingsFieldII::getObjectName(static_cast<KingsFieldII::ObjectID>(index.row() + 0x15)));
+            KF2::getObjectName(static_cast<KF2::ObjectID>(index.row() + 0x15)));
     else
         return result.arg(QStringLiteral("Unused"));
 }

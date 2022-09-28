@@ -2,7 +2,7 @@
 #define ENTITYCLASSTABLEMODEL_H
 
 #include "datahandlers/map.h"
-#include "games/kf2.h"
+#include "kf2/entity.h"
 #include <QAbstractTableModel>
 
 class EntityClassTableModel : public QAbstractTableModel
@@ -41,9 +41,9 @@ public:
         return 47;
     }
 
-    void set(KingsFieldII::EntityClass& entityClass_) { entityClass = &entityClass_; }
+    void set(KF2::EntityClass& entityClass_) { entityClass = &entityClass_; }
 
-    void setFromEntity(KingsFieldII::EntityInstance& entity, Map& map)
+    void setFromEntity(KF2::EntityInstance& entity, Map& map)
     {
         entityClass = &map.getEntityClassDeclaration(entity.EntityClass);
         emit layoutChanged();
@@ -52,7 +52,7 @@ public:
     bool setData(const QModelIndex &index, const QVariant &value, int role = Qt::EditRole) override;
 
 private:
-    KingsFieldII::EntityClass* entityClass = nullptr;
+    KF2::EntityClass* entityClass = nullptr;
 
     static const QString nullStr;
     const QString getSomePointer(size_t somePtrIndex) const

@@ -2,7 +2,7 @@
 #define WEAPONSTATSTABLEMODEL_H
 
 #include "datahandlers/gamedb.h"
-#include "games/kf2.h"
+#include "kf2/weapon.h"
 #include <QAbstractTableModel>
 
 class WeaponStatsTableModel : public QAbstractTableModel
