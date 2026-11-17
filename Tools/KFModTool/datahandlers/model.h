@@ -72,6 +72,9 @@ public:
     explicit Model(KFMTFile& modelFile);
     void saveChanges() override {}
 
+    // >>> Adding PA Geometry Block Loader <<<
+    static std::vector<Mesh> parseAC1PABlock(const QByteArray& block);
+
     std::vector<Mesh> baseObjects;
     float scale = 1.0f;
 

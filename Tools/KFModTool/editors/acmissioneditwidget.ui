@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>ACMissionEditWidget</class>
+ <widget class="QWidget" name="ACMissionEditWidget">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1020</width>
+    <height>640</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>AC1 Mission &amp; Level Editor</string>
+  </property>
+  <layout class="QHBoxLayout" name="horizontalLayout" stretch="5,3">
+   <item>
+    <widget class="ModelGLView" name="modelGLView"/>
+   </item>
+   <item>
+    <widget class="QTabWidget" name="editorTabs">
+     <property name="currentIndex">
+      <number>0</number>
+     </property>
+     <widget class="QWidget" name="sectionsTab">
+      <attribute name="title">
+       <string>Sections (Chunk 7)</string>
+      </attribute>
+      <layout class="QVBoxLayout" name="verticalLayout_sections">
+       <item>
+        <widget class="QCheckBox" name="showCeilingsCheck">
+         <property name="text">
+          <string>Show Ceilings</string>
+         </property>
+         <property name="checked">
+          <bool>false</bool>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QListView" name="sectionList"/>
+       </item>
+       <item>
+        <widget class="QTableView" name="sectionTable"/>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="spawnsTab">
+      <attribute name="title">
+       <string>Spawns (Chunk 12)</string>
+      </attribute>
+      <layout class="QVBoxLayout" name="verticalLayout_spawns">
+       <item>
+        <widget class="QListView" name="spawnList"/>
+       </item>
+       <item>
+        <widget class="QTableView" name="spawnTable"/>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="blocksTab">
+      <attribute name="title">
+       <string>Blocks (Chunk 0)</string>
+      </attribute>
+      <layout class="QVBoxLayout" name="verticalLayout_blocks">
+       <item>
+        <widget class="QComboBox" name="blockCombo"/>
+       </item>
+       <item>
+        <widget class="QComboBox" name="subObjectCombo"/>
+       </item>
+       <item>
+        <layout class="QHBoxLayout" name="translateLayout">
+         <item>
+          <widget class="QSpinBox" name="dxSpin">
+           <property name="prefix"><string>dX: </string></property>
+           <property name="minimum"><number>-32768</number></property>
+           <property name="maximum"><number>32767</number></property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QSpinBox" name="dySpin">
+           <property name="prefix"><string>dY: </string></property>
+           <property name="minimum"><number>-32768</number></property>
+           <property name="maximum"><number>32767</number></property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QSpinBox" name="dzSpin">
+           <property name="prefix"><string>dZ: </string></property>
+           <property name="minimum"><number>-32768</number></property>
+           <property name="maximum"><number>32767</number></property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <widget class="QPushButton" name="applyTranslateBtn">
+         <property name="text">
+          <string>Apply Offset to Sub-Object</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QTableView" name="vertexTable"/>
+       </item>
+      </layout>
+     </widget>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>ModelGLView</class>
+   <extends>QOpenGLWidget</extends>
+   <header>editors/subwidgets/modelglview.h</header>
+  </customwidget>
+ </customwidgets>
+ <resources/>
+ <connections/>
+</ui>

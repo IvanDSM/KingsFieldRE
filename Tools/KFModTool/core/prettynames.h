@@ -6,11 +6,18 @@
 namespace PrettyNames
 {
 extern const QHash<const QString, QString> prettyKF2;
+extern const QHash<const QString, QString> prettyAC1;
 
 inline const QString& kf2(const QString& filePath)
 {
     const auto iterator = prettyKF2.find(filePath.mid(filePath.lastIndexOf(QDir::separator()) + 1));
     return iterator == prettyKF2.end() ? filePath : *iterator;
+}
+
+inline const QString& ac1(const QString& filePath)
+{
+    const auto iterator = prettyAC1.find(filePath.mid(filePath.lastIndexOf(QDir::separator()) + 1));
+    return iterator == prettyAC1.end() ? filePath : *iterator;
 }
 } // namespace PrettyNames
 #endif // PRETTYNAMES_H

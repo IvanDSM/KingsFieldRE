@@ -1,5 +1,6 @@
 #include "mainwindow.h"
 #include "core/icons.h"
+#include "editors/acmissioneditwidget.h" // Adding for AC Mission edit widget
 #include "editors/exeeditor.h"
 #include "editors/gamedbeditwidget.h"
 #include "editors/mapeditwidget.h"
@@ -67,6 +68,11 @@ void MainWindow::on_filesTree_doubleClicked(const QModelIndex& index)
     auto tabTitle = index.data().value<QString>();
 
     switch (file->getDataType()) {
+        // Adding this case for the AC Mission Stream
+    case KFMTFile::DataType::ACMissionStream:
+        editor = new ACMissionEditWidget(*file, ui->editorTabs);
+        icon = &Icons::map;
+        break;
     case KFMTFile::DataType::GameDB:
         editor = new GameDBEditWidget(*file, ui->editorTabs);
         icon = &Icons::gameDb;

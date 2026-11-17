@@ -323,7 +323,7 @@ struct ObjectInstance
     uint8_t WEXTilePos;
     uint8_t NSYTilePos;
     uint8_t field_0x3;
-    ObjectID ID : 16;
+    ObjectID ID;
     uint16_t ZRotation;
     int16_t FineWEXPos;
     int16_t FineNSYPos;

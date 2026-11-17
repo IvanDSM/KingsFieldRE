@@ -3,6 +3,7 @@
 
 #include "core/kfmterror.h"
 #include "datahandlers/model.h"
+#include <functional>
 #include <QMatrix4x4>
 #include <QOpenGLExtraFunctions>
 #include <QOpenGLShaderProgram>
@@ -111,44 +112,50 @@ public:
 
     ~ModelGLView()
     {
-        makeCurrent();
-        glFuncs->glBindVertexArray(0);
-        glFuncs->glBindBuffer(GL_ARRAY_BUFFER, 0);
-
-        if(model != nullptr)
+        if (glFuncs != nullptr)
         {
-            for(GLMesh &mesh : meshes)
-            {
-                glFuncs->glDeleteVertexArrays(1, &mesh.VAO);
-                glFuncs->glDeleteBuffers(mesh.frames.size(), mesh.frames.data());
-            }
-            meshes.clear();
+            makeCurrent();
+            glFuncs->glBindVertexArray(0);
+            glFuncs->glBindBuffer(GL_ARRAY_BUFFER, 0);
 
-            if(model->animFrames.empty())
+            if (model != nullptr)
             {
-                //Clear Shader
-                glTMDProgram.release();
-                glTMDProgram.removeAllShaders();
-            }
-            else
-            {
-                //Clear Shader
-                glMOProgram.release();
-                glMOProgram.removeAllShaders();
+                for (GLMesh& mesh : meshes)
+                {
+                    glFuncs->glDeleteVertexArrays(1, &mesh.VAO);
+                    glFuncs->glDeleteBuffers(mesh.frames.size(), mesh.frames.data());
+                }
+                meshes.clear();
 
-                glMOProgramMVP = 12345678;
+                if (model->animFrames.empty())
+                {
+                    glTMDProgram.release();
+                    glTMDProgram.removeAllShaders();
+                }
+                else
+                {
+                    glMOProgram.release();
+                    glMOProgram.removeAllShaders();
+                    glMOProgramMVP = 12345678;
+                }
             }
+
+            //Clear Grid
+            glFuncs->glDeleteVertexArrays(1, &gridMesh.VAO);
+            glFuncs->glDeleteBuffers(gridMesh.frames.size(), gridMesh.frames.data());
+
+            //Clear Gizmo
+            if (glGizmoVAO != 0) glFuncs->glDeleteVertexArrays(1, &glGizmoVAO);
+            if (glGizmoVBO != 0) glFuncs->glDeleteBuffers(1, &glGizmoVBO);
+
+            glSimpleProgram.release();
+            glSimpleProgram.removeAllShaders();
         }
 
-        //Clear Grid
-        glFuncs->glDeleteVertexArrays(1, &gridMesh.VAO);
-        glFuncs->glDeleteBuffers(gridMesh.frames.size(), gridMesh.frames.data());
-
-        glSimpleProgram.release();
-        glSimpleProgram.removeAllShaders();
-
-        psxVRAM.destroy();
+        if (psxVRAM.isCreated())
+            psxVRAM.destroy();
     }
+
     
     bool setCurAnim(int animationIndex)
     {
@@ -165,11 +172,57 @@ public:
 
         return true;
     }
+    
+    // adding a rebuild section to avoid a ModelGLView error. Also making scale and zFar adjustable
+    void setModel(Model& model_)
+    {
+        model = &model_;
+        curModelType = ModelType::None;
+    }
 
-    void setModel(Model& model_) { model = &model_; }
+    void showAllObjects()
+    {
+        if (!model) return;
+        for (auto& obj : model->baseObjects) obj.visible = true;
+    }
+    //center the camera when selecting a section
+    void focusOn(const QVector3D& worldTarget)
+    {
+        const QVector3D offset = glCamFrom - glCamTo;
+        glCamTo = worldTarget;
+        glCamFrom = glCamTo + offset;
+        repaint();
+    }
+    //create a 3D Gizmo to allow for easier translation in viewport
+    using GizmoSnapFilter = std::function<QVector3D(int axis, const QVector3D& candidatePos, Qt::KeyboardModifiers mods)>;
+
+    void setGizmo(bool enabled,
+                  const QVector3D& pos,
+                  std::function<void(const QVector3D&)> onDragCallback = nullptr,
+                  GizmoSnapFilter snapFilter = nullptr)
+    {
+        gizmoEnabled = enabled;
+        gizmoPos = pos;
+        if (onDragCallback) onGizmoDragged = std::move(onDragCallback);
+        if (snapFilter) gizmoSnapFilter = std::move(snapFilter);
+        repaint();
+    }
+
+    struct SpawnMarker
+    {
+        QVector3D pos;
+        bool selected = false;
+    };
+
+    void setSpawns(std::vector<SpawnMarker> markers)
+    {
+        spawnMarkers = std::move(markers);
+        repaint();
+    }
 
 protected:
     void initializeGL() override;
+    void mousePressEvent(QMouseEvent *event) override;
     void mouseMoveEvent(QMouseEvent *event) override;
     void mouseReleaseEvent(QMouseEvent *event) override;
     void wheelEvent(QWheelEvent *event) override;
@@ -191,6 +244,13 @@ private:
 
     void BuildGrid();
     void DrawGrid();
+
+    void BuildGizmo();                                
+    void DrawGizmo();                                 
+    int hitTestGizmo(const QPoint& mousePos) const;
+    QVector3D projectAxisDelta(int axis, const QPoint& p0, const QPoint& p1) const;
+
+    void DrawSpawns();
 
     void buildTexture();
 
@@ -216,7 +276,7 @@ private:
     
     // Some constants
     static constexpr float zNear = 0.1f;
-    static constexpr float zFar  = 2048.0f;
+    static constexpr float zFar  = 16384.0f;
     static constexpr float pFoV  = 60.f;
 
     // Matrices & Vectors
@@ -230,6 +290,23 @@ private:
     QMatrix4x4 glMatProj;
     QMatrix4x4 glMatView;
     QMatrix4x4 glMatWorld;
+
+    //Gizmo
+    bool gizmoEnabled = false;
+    QVector3D gizmoPos = {0.f, 0.f, 0.f};
+    QVector3D gizmoDragStartPos = {0.f, 0.f, 0.f};
+    QVector3D gizmoAccumDelta = {0.f, 0.f, 0.f};
+    float gizmoSnapStep = 32.f;
+    int hoveredGizmoAxis = -1; // -1 = none, 0 = X, 1 = Y, 2 = Z
+    int activeGizmoAxis = -1;
+    unsigned int glGizmoVAO = 0;
+    unsigned int glGizmoVBO = 0;
+    std::function<void(const QVector3D&)> onGizmoDragged;
+    GizmoSnapFilter gizmoSnapFilter;
+
+    //SpawnMarkers
+    std::vector<SpawnMarker> spawnMarkers;
+
 
     //Meshes
     std::vector<GLMesh> meshes;

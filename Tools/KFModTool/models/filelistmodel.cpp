@@ -67,6 +67,7 @@ QVariant FileListModel::data(const QModelIndex &index, int role) const
         switch (core.currentGame())
         {
             case KFMTCore::SimpleGame::KF2: return PrettyNames::kf2(filePath);
+            case KFMTCore::SimpleGame::AC: return PrettyNames::ac1(filePath);
             default: return filePath;
         }
     }

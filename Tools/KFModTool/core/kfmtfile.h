@@ -18,6 +18,7 @@ public:
 
     enum class DataType
     {
+        ACMissionStream, // Adding to register AC changes
         Container,
         GameDB,
         GameEXE,

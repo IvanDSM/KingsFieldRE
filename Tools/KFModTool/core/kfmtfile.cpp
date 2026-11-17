@@ -1,4 +1,5 @@
 #include "kfmtfile.h"
+#include "kfmtcore.h" // >>> Adding to read new AC code
 #include "kfmterror.h"
 #include "utilities.h"
 
@@ -104,6 +105,16 @@ void KFMTFile::writeFile(const QDir& outDir)
 
 void KFMTFile::detectDataType()
 {
+        // Adding this to continue to register file changes
+    if (core.currentGame() == KFMTCore::SimpleGame::AC && filePath.contains("FDAT.T"))
+    {
+        const auto idx = indexInContainer();
+        if (idx < 200 && (idx % 2 == 1) && rawData.size() > 2048)
+        {
+            dataType = DataType::ACMissionStream;
+            return;
+        }
+    }
     if (Utilities::fileIsPSXEXE(rawData))
         dataType = DataType::GameEXE;
     else if (Utilities::fileIsTMD(rawData))
@@ -311,22 +322,18 @@ void KFMTFile::writeMIX(QFile& fileHandle)
 
 void KFMTFile::writeT(QFile& fileHandle)
 {
-    for (auto& file : subFiles) file.recalculateChecksum();
-
+    // Replaced THE OLD checksum + for-loop to prevent hanging on load <<<
     // Create data blob
     QByteArray dataBlob;
 
     std::vector<uint16_t> newTrueOffsets;
 
-    for (const auto& file : subFiles)
+    for (auto& file : subFiles)
     {
-        QByteArray alignedFile;
-        auto alignedSize = static_cast<uint16_t>(file.rawData.size() / 2048u);
-        if (file.rawData.size() % 2048u != 0) alignedSize += 1;
+        const auto rem = file.rawData.size() % 2048;
+        if (rem != 0) file.rawData.append(QByteArray(2048 - rem, '\0'));
 
-        alignedFile.resize(alignedSize * 2048u);
-        alignedFile.fill(0);
-        std::memcpy(alignedFile.data(), file.rawData.data(), file.rawData.size());
+        file.recalculateChecksum();
 
         newTrueOffsets.push_back((dataBlob.size() + 2048u) / 2048u);
         dataBlob.append(file.rawData);

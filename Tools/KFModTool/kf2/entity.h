@@ -199,7 +199,7 @@ struct EntityInstance
     uint8_t WEXTilePos;
     uint8_t NSYTilePos;
     uint8_t RespawnChance;
-    ObjectID DroppedItem : 8;
+    ObjectID DroppedItem;
     uint8_t Layer;
     uint16_t ZRotation;
     int16_t FineWEXPos;

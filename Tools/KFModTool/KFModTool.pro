@@ -48,12 +48,14 @@ QMAKE_CXXFLAGS += -isystem "$$[QT_INSTALL_HEADERS]/qt5" -isystem "$$[QT_INSTALL_
                   -isystem "$$[QT_INSTALL_HEADERS]/QtCore"
 
 HEADERS += \
+    ac1/mission.h \
     aboutdialog.h \
     core/icons.h \
     core/kfmtcore.h \
     core/kfmterror.h \
     core/kfmtfile.h \
     core/prettynames.h \
+    datahandlers/acmission.h \
     datahandlers/gamedb.h \
     datahandlers/gameexe.h \
     datahandlers/kfmtdatahandler.h \
@@ -62,6 +64,7 @@ HEADERS += \
     datahandlers/soundbank.h \
     datahandlers/texturedb.h \
     datahandlers/tileseticons.h \
+    editors/acmissioneditwidget.h \
     editors/exeeditor.h \
     editors/gamedbeditwidget.h \
     editors/kfmteditor.h \
@@ -81,6 +84,9 @@ HEADERS += \
     kf2/vfx.h \
     kf2/weapon.h \
     mainwindow.h \
+    models/acblockvertextablemodel.h \
+    models/acsectiontablemodel.h \
+    models/acspawntablemodel.h \
     models/armorstatslistmodel.h \
     models/armorstatstablemodel.h \
     models/entityclasslistmodel.h \
@@ -116,6 +122,7 @@ SOURCES += \
     core/kfmterror.cpp \
     core/kfmtfile.cpp \
     core/prettynames.cpp \
+    datahandlers/acmission.cpp \
     datahandlers/gamedb.cpp \
     datahandlers/gameexe.cpp \
     datahandlers/map.cpp \
@@ -123,6 +130,7 @@ SOURCES += \
     datahandlers/soundbank.cpp \
     datahandlers/texturedb.cpp \
     datahandlers/tileseticons.cpp \
+    editors/acmissioneditwidget.cpp \
     editors/exeeditor.cpp \
     editors/gamedbeditwidget.cpp \
     editors/mapeditwidget.cpp \
@@ -138,6 +146,9 @@ SOURCES += \
     kf2/weapon.cpp \
     main.cpp \
     mainwindow.cpp \
+    models/acblockvertextablemodel.cpp \
+    models/acsectiontablemodel.cpp \
+    models/acspawntablemodel.cpp \
     models/armorstatslistmodel.cpp \
     models/armorstatstablemodel.cpp \
     models/entityclasslistmodel.cpp \
@@ -166,6 +177,7 @@ SOURCES += \
 
 FORMS += \
     aboutdialog.ui \
+    editors/acmissioneditwidget.ui \
     editors/exeeditor.ui \
     editors/gamedbeditwidget.ui \
     editors/mapeditwidget.ui \

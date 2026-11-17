@@ -15,8 +15,202 @@ Model::Model(KFMTFile& modelFile) : KFMTDataHandler(modelFile)
         loadRTMD(modelFile.rawData);
     else if (Utilities::fileIsTMD(modelFile.rawData))
         loadTMD(modelFile.rawData);
+    // Adding handler so ACMission can construct a model container without triggering an error.
+    else if (core.currentGame() == KFMTCore::SimpleGame::AC)
+    {
+        if (modelFile.getDataType() == KFMTFile::DataType::ACMissionStream)
+            return; // ACMission populates baseObjects directly
+        baseObjects = parseAC1PABlock(modelFile.rawData);
+    }
     else
         KFMTError::error(QStringLiteral("Model: Tried to make a model from an unknown file type."));
+}
+
+std::vector<Model::Mesh> Model::parseAC1PABlock(const QByteArray& block)
+{
+    std::vector<Mesh> meshes;
+    if (block.size() < 12) return meshes;
+
+    const auto* raw = reinterpret_cast<const uint8_t*>(block.constData());
+    auto readU16 = [&](size_t off) -> uint16_t {
+        return static_cast<uint16_t>(raw[off] | (raw[off + 1] << 8));
+    };
+    auto readI16 = [&](size_t off) -> int16_t {
+        return static_cast<int16_t>(readU16(off));
+    };
+    auto readU32 = [&](size_t off) -> uint32_t {
+        return static_cast<uint32_t>(raw[off] | (raw[off + 1] << 8) | (raw[off + 2] << 16)
+                                     | (raw[off + 3] << 24));
+    };
+
+    const uint32_t a0 = readU32(8);
+    const uint32_t reloc = a0 + 12;
+    if (reloc + 8 > static_cast<size_t>(block.size())) return meshes;
+
+    const uint32_t subCount = readU32(a0 + 8);
+    const uint32_t tbl = a0 + 12;
+
+    for (uint32_t i = 0; i < subCount; i++)
+    {
+        const size_t o = tbl + i * 28;
+        if (o + 28 > static_cast<size_t>(block.size())) break;
+
+        const uint16_t flags = readU16(o + 0x0E);
+        if (flags & 0x8000) continue; // terminated/skipped sub-object
+
+        const uint32_t vtxOff = readU32(o + 0x00) + reloc;
+        const uint16_t vBase = readU16(o + 0x04);
+        const uint16_t vDetail = readU16(o + 0x06);
+        const uint32_t vtxCnt = vBase + vDetail;
+
+        const uint32_t normOff = readU32(o + 0x08) + reloc;
+        const uint16_t normCnt = readU16(o + 0x0C);
+
+        const uint32_t primOff = readU32(o + 0x10) + reloc;
+        const uint16_t primBase = readU16(o + 0x14);
+        const uint32_t primCnt = primBase + (flags & 0x1FF);
+
+        Mesh mesh;
+        mesh.vertices.reserve(vtxCnt);
+        for (uint32_t v = 0; v < vtxCnt; v++)
+        {
+            const size_t p = vtxOff + v * 8;
+            if (p + 8 > static_cast<size_t>(block.size())) break;
+            // Scale by 1/4096.f to match KFModTool's Vec3::readSVECTOR convention
+            mesh.vertices.push_back({static_cast<float>(readI16(p)) / 4096.f,
+                                     static_cast<float>(readI16(p + 2)) / 4096.f,
+                                     static_cast<float>(readI16(p + 4)) / 4096.f});
+        }
+
+        mesh.normals.reserve(normCnt);
+        for (uint32_t n = 0; n < normCnt; n++)
+        {
+            const size_t p = normOff + n * 8;
+            if (p + 8 > static_cast<size_t>(block.size())) break;
+            mesh.normals.push_back({static_cast<float>(readI16(p)) / 4096.f,
+                                    static_cast<float>(readI16(p + 2)) / 4096.f,
+                                    static_cast<float>(readI16(p + 4)) / 4096.f});
+        }
+
+        size_t cur = primOff;
+        for (uint32_t pIdx = 0; pIdx < primCnt && cur + 4 <= static_cast<size_t>(block.size());
+             pIdx++)
+        {
+            const uint8_t b1 = raw[cur + 1];
+            const uint8_t rawType = raw[cur + 3];
+            const uint8_t typ = rawType & 0xBC;
+            const size_t reclen = 4 + b1 * 4;
+            if (reclen < 4 || cur + reclen > static_cast<size_t>(block.size())) break;
+
+            Primitive prim{};
+            const bool isTex = (typ & 0x04) != 0;
+            const bool isQuad = (typ & 0x08) != 0;
+            const bool isGouraud = (typ & 0x10) != 0;
+            const bool isUnlit = (typ & 0x80) != 0;
+
+            prim.flag = isUnlit
+                            ? Primitive::PrimitiveFlag::SingleColorDoubleFaceLightSourceNoCalc
+                            : Primitive::PrimitiveFlag::SingleColorDoubleFaceLightSourceCalc;
+
+            if (!isTex && !isQuad && !isGouraud)
+                prim.mode = Primitive::PrimitiveMode::x20TriFlatNoTexOpaqueLit;
+            else if (isTex && !isQuad && !isGouraud)
+                prim.mode = Primitive::PrimitiveMode::x24TriFlatTexOpaqueLit;
+            else if (!isTex && isQuad && !isGouraud)
+                prim.mode = Primitive::PrimitiveMode::x28QuadFlatNoTexOpaqueLit;
+            else if (isTex && isQuad && !isGouraud)
+                prim.mode = Primitive::PrimitiveMode::x2cQuadFlatTexOpaqueLit;
+            else if (!isTex && !isQuad && isGouraud)
+                prim.mode = Primitive::PrimitiveMode::x30TriGouraudNoTexOpaqueLit;
+            else if (isTex && !isQuad && isGouraud)
+                prim.mode = Primitive::PrimitiveMode::x34TriGouraudTexOpaqueLit;
+            else if (!isTex && isQuad && isGouraud)
+                prim.mode = Primitive::PrimitiveMode::x38QuadGouraudNoTexOpaqueLit;
+            else
+                prim.mode = Primitive::PrimitiveMode::x3cQuadGouraudTexOpaqueLit;
+
+            if (!isTex)
+            {
+                prim.r0 = raw[cur + 4];
+                prim.g0 = raw[cur + 5];
+                prim.b0 = raw[cur + 6];
+            }
+            else if (cur + 0x12 <= static_cast<size_t>(block.size()))
+            {
+                prim.u0 = raw[cur + 4];
+                prim.v0 = raw[cur + 5];
+                prim.cba = readU16(cur + 6);
+                prim.u1 = raw[cur + 8];
+                prim.v1 = raw[cur + 9];
+                prim.tsb = readU16(cur + 10);
+                prim.u2 = raw[cur + 12];
+                prim.v2 = raw[cur + 13];
+                if (isQuad)
+                {
+                    prim.u3 = raw[cur + 16];
+                    prim.v3 = raw[cur + 17];
+                }
+                if (isUnlit && cur + (isQuad ? 0x18 : 0x14) <= static_cast<size_t>(block.size()))
+                {
+                    const size_t colOff = isQuad ? cur + 0x14 : cur + 0x10;
+                    prim.r0 = static_cast<uint8_t>(std::min(255, raw[colOff] * 2));
+                    prim.g0 = static_cast<uint8_t>(std::min(255, raw[colOff + 1] * 2));
+                    prim.b0 = static_cast<uint8_t>(std::min(255, raw[colOff + 2] * 2));
+                }
+            }
+
+            // Vertex index offset & stride per PA_FORMAT.md table
+            size_t vOff = 0;
+            size_t vStride = isGouraud ? 4 : 2;
+            switch (typ)
+            {
+                case 0x20: case 0x28: case 0x30: case 0x38: vOff = 0x0A; break;
+                case 0x24: case 0x34: vOff = 0x12; break;
+                case 0x2C: case 0x3C: vOff = 0x16; break;
+                case 0xA0: case 0xA8: vOff = 0x08; break;
+                case 0xA4: vOff = 0x14; break;
+                case 0xAC: vOff = 0x18; break;
+                default: break;
+            }
+
+            const size_t nVerts = isQuad ? 4 : 3;
+            if (vOff > 0 && cur + vOff + vStride * (nVerts - 1) + 2 <= static_cast<size_t>(block.size()))
+            {
+                prim.vertex0 = readU16(cur + vOff);
+                prim.vertex1 = readU16(cur + vOff + vStride);
+                prim.vertex2 = readU16(cur + vOff + vStride * 2);
+                if (isQuad) prim.vertex3 = readU16(cur + vOff + vStride * 3);
+
+                if (!isUnlit)
+                {
+                    prim.normal0 = readU16(cur + vOff - 2);
+                    if (isGouraud)
+                    {
+                        prim.normal1 = readU16(cur + vOff + vStride - 2);
+                        prim.normal2 = readU16(cur + vOff + vStride * 2 - 2);
+                        if (isQuad) prim.normal3 = readU16(cur + vOff + vStride * 3 - 2);
+                    }
+                }
+
+                // Bounds check before adding primitive
+                const size_t maxV = mesh.vertices.size();
+                if (prim.vertex0 < maxV && prim.vertex1 < maxV && prim.vertex2 < maxV
+                    && (!isQuad || prim.vertex3 < maxV))
+                {
+                    mesh.primitives.push_back(prim);
+                }
+            }
+
+            cur += reclen;
+        }
+
+        // Adding this for a fallback normal check so unlit primitives never index empty normals vector
+        if (mesh.normals.empty()) mesh.normals.push_back({0.f, 1.f, 0.f});
+
+        meshes.push_back(std::move(mesh));
+    }
+
+    return meshes;
 }
 
 void Model::fixShiftedIndices()
